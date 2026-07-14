@@ -15,4 +15,4 @@
  * Once deployed, paste its URL here, e.g.:
  *   'https://renata-os.your-subdomain.workers.dev'
  */
-export const RENATA_OS_ENDPOINT = '';
+export const RENATA_OS_ENDPOINT = 'https://renata-os-worker.renaser.workers.dev';
