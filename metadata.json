@@ -1,0 +1,6 @@
+{
+  "name": "RenaSer",
+  "description": "Guided 30-day emotional transformation journey to overcome the fear of showing up online.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
