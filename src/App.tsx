@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Compass, BookOpen, Star, Heart, Settings, ShieldAlert, 
+  Compass, BookOpen, Star, Settings, ShieldAlert,
   Sparkles, Award, Lock, Menu, X, ArrowUpRight, Home, Users, User
 } from 'lucide-react';
 
@@ -38,6 +38,7 @@ import LibraryView from './components/LibraryView';
 import ProfileView from './components/ProfileView';
 import BrandIdentityView from './components/BrandIdentityView';
 import RenaSerLogo from './components/RenaSerLogo';
+import RenataOSChat from './components/RenataOSChat';
 
 import { adaptMessage } from './utils/grammar';
 import { useSystem } from './engines/SystemEngine';
@@ -52,6 +53,36 @@ export default function App() {
   const [lang, setLang] = useState<Language>('pt'); // Default language
   const [activeTab, setActiveTab] = useState<TabId>('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Admin-only gate for Brand Identity & Creator Studio (CMS).
+  // NOTE: this is a client-side deterrent, not real security — anyone who reads
+  // the deployed JS bundle can find ADMIN_PASSPHRASE. Change it below if needed.
+  const [isAdminUnlocked, setIsAdminUnlocked] = useState(() => localStorage.getItem('renaser_admin_unlocked') === 'true');
+  const [showAdminPrompt, setShowAdminPrompt] = useState(false);
+  const [adminPassInput, setAdminPassInput] = useState('');
+  const [adminPassError, setAdminPassError] = useState(false);
+  const ADMIN_PASSPHRASE = 'renaser-admin-2026';
+
+  const handleAdminUnlock = () => {
+    if (adminPassInput === ADMIN_PASSPHRASE) {
+      setIsAdminUnlocked(true);
+      localStorage.setItem('renaser_admin_unlocked', 'true');
+      setShowAdminPrompt(false);
+      setAdminPassInput('');
+      setAdminPassError(false);
+      setActiveTab('brand');
+    } else {
+      setAdminPassError(true);
+    }
+  };
+
+  const handleAdminLock = () => {
+    setIsAdminUnlocked(false);
+    localStorage.removeItem('renaser_admin_unlocked');
+    if (activeTab === 'brand' || activeTab === 'cms') {
+      setActiveTab('home');
+    }
+  };
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const defaultProgress = loadUserProgressFromStorage();
     return defaultProgress.theme || 'light';
@@ -406,11 +437,11 @@ export default function App() {
         {/* Elegant Natural Butterfly Crossing slowly */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
           <motion.div
-            initial={{ x: '-15vw', y: '65vh', rotate: 18, opacity: 0 }}
+            initial={{ x: '-15vw', y: '65vh', rotate: 15, opacity: 0 }}
             animate={{
               x: '115vw',
               y: ['65vh', '48vh', '55vh', '32vh', '40vh', '15vh'],
-              rotate: [18, 8, 22, 10, 25, 30],
+              rotate: [15, 18, 20, 19, 22, 25],
               opacity: [0, 1, 1, 1, 1, 0]
             }}
             transition={{
@@ -419,26 +450,14 @@ export default function App() {
             }}
             className="absolute"
           >
-            <div className="relative h-8" style={{ aspectRatio: '187 / 144', perspective: 300 }}>
-              {/* Left wing half */}
-              <motion.img
-                src="/assets/images/butterfly.png"
-                alt=""
-                animate={{ rotateY: [0, 55, 0] }}
-                transition={{ duration: 0.45, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 h-full w-full object-contain origin-right"
-                style={{ clipPath: 'inset(0 50% 0 0)' }}
-              />
-              {/* Right wing half */}
-              <motion.img
-                src="/assets/images/butterfly.png"
-                alt=""
-                animate={{ rotateY: [0, -55, 0] }}
-                transition={{ duration: 0.45, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 h-full w-full object-contain origin-left"
-                style={{ clipPath: 'inset(0 0 0 50%)' }}
-              />
-            </div>
+            <motion.img
+              src="/assets/images/butterfly.png"
+              alt=""
+              animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
+              transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut" }}
+              className="h-8 w-auto"
+              style={{ transformOrigin: 'center 70%' }}
+            />
           </motion.div>
         </div>
 
@@ -659,22 +678,6 @@ export default function App() {
               {labels.profile}
             </button>
 
-            <button
-              onClick={() => setActiveTab('brand')}
-              className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
-                activeTab === 'brand' 
-                  ? 'bg-[#B76E79] text-white shadow-sm shadow-rosegold/25 ring-1 ring-[#B76E79]/20' 
-                  : 'text-[#B76E79] dark:text-[#E8B4A0] hover:bg-rose-50/50 dark:hover:bg-rosegold/10 font-bold'
-              }`}
-            >
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="h-3 w-3 text-[#D4AF37] animate-pulse" />
-                {labels.brand}
-              </span>
-            </button>
-
-            <span className="h-5 w-px bg-rose-100 dark:bg-rosegold/20 mx-2" />
-
             {/* Next Level Locking logic */}
             <button
               onClick={() => isNextLevelUnlocked && setActiveTab('nextlevel')}
@@ -691,28 +694,64 @@ export default function App() {
               <span>{labels.nextlevel}</span>
             </button>
 
-            <button
-              onClick={() => setActiveTab('cms')}
-              className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
-                activeTab === 'cms' 
-                  ? 'bg-[#2C221E] dark:bg-rosegold text-white shadow-sm' 
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
-              }`}
-            >
-              {labels.cms}
-            </button>
+            {isAdminUnlocked && (
+              <>
+                <span className="h-5 w-px bg-rose-100 dark:bg-rosegold/20 mx-2" />
+                <button
+                  onClick={() => setActiveTab('brand')}
+                  className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
+                    activeTab === 'brand'
+                      ? 'bg-[#B76E79] text-white shadow-sm shadow-rosegold/25 ring-1 ring-[#B76E79]/20'
+                      : 'text-[#B76E79] dark:text-[#E8B4A0] hover:bg-rose-50/50 dark:hover:bg-rosegold/10 font-bold'
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Sparkles className="h-3 w-3 text-[#D4AF37] animate-pulse" />
+                    {labels.brand}
+                  </span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('cms')}
+                  className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
+                    activeTab === 'cms'
+                      ? 'bg-[#2C221E] dark:bg-rosegold text-white shadow-sm'
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
+                  }`}
+                >
+                  {labels.cms}
+                </button>
+                <button
+                  onClick={handleAdminLock}
+                  className="p-2 rounded-xl text-slate-400 hover:text-rosegold hover:bg-rose-50/30 dark:hover:bg-rosegold/10 transition"
+                  title={lang === 'pt' ? 'Sair do modo admin' : lang === 'es' ? 'Salir del modo admin' : 'Exit admin mode'}
+                >
+                  <Lock className="h-4 w-4" />
+                </button>
+              </>
+            )}
 
             <button
               onClick={() => setActiveTab('settings')}
               className={`p-2 rounded-xl transition ${
-                activeTab === 'settings' 
-                  ? 'bg-rosegold/15 text-rosegold dark:bg-rosegold/20 dark:text-rosegold-light' 
+                activeTab === 'settings'
+                  ? 'bg-rosegold/15 text-rosegold dark:bg-rosegold/20 dark:text-rosegold-light'
                   : 'text-slate-500 dark:text-slate-400 hover:bg-rose-50/30 dark:hover:bg-rosegold/10 hover:text-slate-800'
               }`}
               title="Settings"
             >
               <Settings className="h-4 w-4" />
             </button>
+
+            {/* Inconspicuous admin entry point — not styled like a normal nav item */}
+            {!isAdminUnlocked && (
+              <button
+                onClick={() => setShowAdminPrompt(true)}
+                className="p-2 rounded-xl text-slate-300 dark:text-slate-700 hover:text-slate-400 transition opacity-50 hover:opacity-100"
+                title=" "
+              >
+                <Lock className="h-3 w-3" />
+              </button>
+            )}
           </nav>
 
           {/* Mobile responsive toggle */}
@@ -788,18 +827,11 @@ export default function App() {
               </button>
 
               <button
-                onClick={() => { setActiveTab('brand'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'brand' ? 'bg-[#B76E79] text-white font-bold shadow-sm' : 'text-[#B76E79] dark:text-[#E8B4A0] font-bold bg-rose-50/20 dark:bg-rosegold/5'}`}
-              >
-                ✦ {labels.brand}
-              </button>
-
-              <button
                 onClick={() => { if (isNextLevelUnlocked) { setActiveTab('nextlevel'); setMobileMenuOpen(false); } }}
                 disabled={!isNextLevelUnlocked}
                 className={`w-full py-2.5 px-4 text-left rounded-xl flex items-center justify-between transition ${
-                  isNextLevelUnlocked 
-                    ? 'bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 font-bold' 
+                  isNextLevelUnlocked
+                    ? 'bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 font-bold'
                     : 'text-slate-300 dark:text-slate-600 bg-slate-50 dark:bg-warmbrown-light/10 cursor-not-allowed'
                 }`}
               >
@@ -808,20 +840,94 @@ export default function App() {
               </button>
 
               <button
-                onClick={() => { setActiveTab('cms'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl ${activeTab === 'cms' ? 'bg-slate-900 text-white font-bold' : 'text-slate-700'}`}
-              >
-                {labels.cms}
-              </button>
-
-              <button
                 onClick={() => { setActiveTab('settings'); setMobileMenuOpen(false); }}
                 className={`w-full py-2.5 px-4 text-left rounded-xl ${activeTab === 'settings' ? 'bg-slate-900 text-white font-bold' : 'text-slate-700'}`}
               >
                 {labels.settings}
               </button>
+
+              {isAdminUnlocked && (
+                <>
+                  <button
+                    onClick={() => { setActiveTab('brand'); setMobileMenuOpen(false); }}
+                    className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'brand' ? 'bg-[#B76E79] text-white font-bold shadow-sm' : 'text-[#B76E79] dark:text-[#E8B4A0] font-bold bg-rose-50/20 dark:bg-rosegold/5'}`}
+                  >
+                    ✦ {labels.brand}
+                  </button>
+                  <button
+                    onClick={() => { setActiveTab('cms'); setMobileMenuOpen(false); }}
+                    className={`w-full py-2.5 px-4 text-left rounded-xl ${activeTab === 'cms' ? 'bg-slate-900 text-white font-bold' : 'text-slate-700'}`}
+                  >
+                    {labels.cms}
+                  </button>
+                  <button
+                    onClick={() => { handleAdminLock(); setMobileMenuOpen(false); }}
+                    className="w-full py-2.5 px-4 text-left rounded-xl text-slate-400 text-xs"
+                  >
+                    {lang === 'pt' ? 'Sair do modo admin' : lang === 'es' ? 'Salir del modo admin' : 'Exit admin mode'}
+                  </button>
+                </>
+              )}
+
+              {!isAdminUnlocked && (
+                <button
+                  onClick={() => setShowAdminPrompt(true)}
+                  className="w-full py-2 px-4 text-left text-[10px] text-slate-300 dark:text-slate-700"
+                >
+                  ·
+                </button>
+              )}
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Admin unlock prompt — gates Brand Identity & Creator Studio */}
+      <AnimatePresence>
+        {showAdminPrompt && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-6">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              className="bg-[#FAF8F5] dark:bg-[#1E1715] max-w-sm w-full rounded-3xl p-8 border border-rosegold/20 shadow-rosegold space-y-4"
+            >
+              <div className="flex items-center gap-2">
+                <Lock className="h-4 w-4 text-rosegold" />
+                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">
+                  {lang === 'pt' ? 'Acesso Admin' : lang === 'es' ? 'Acceso Admin' : 'Admin Access'}
+                </h3>
+              </div>
+              <input
+                type="password"
+                autoFocus
+                value={adminPassInput}
+                onChange={(e) => { setAdminPassInput(e.target.value); setAdminPassError(false); }}
+                onKeyDown={(e) => e.key === 'Enter' && handleAdminUnlock()}
+                placeholder={lang === 'pt' ? 'Senha' : lang === 'es' ? 'Contraseña' : 'Passphrase'}
+                className="w-full text-sm bg-white dark:bg-[#130E0D] border border-rose-100/20 dark:border-rosegold/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3 text-slate-700 dark:text-slate-200"
+              />
+              {adminPassError && (
+                <p className="text-[11px] text-red-500 font-sans">
+                  {lang === 'pt' ? 'Senha incorreta.' : lang === 'es' ? 'Contraseña incorrecta.' : 'Incorrect passphrase.'}
+                </p>
+              )}
+              <div className="flex justify-end gap-2 pt-1">
+                <button
+                  onClick={() => { setShowAdminPrompt(false); setAdminPassInput(''); setAdminPassError(false); }}
+                  className="px-4 py-2 text-xs font-sans font-semibold text-slate-500 hover:text-slate-700 transition cursor-pointer"
+                >
+                  {lang === 'pt' ? 'Cancelar' : lang === 'es' ? 'Cancelar' : 'Cancel'}
+                </button>
+                <button
+                  onClick={handleAdminUnlock}
+                  className="px-5 py-2 bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider rounded-xl transition cursor-pointer"
+                >
+                  {lang === 'pt' ? 'Entrar' : lang === 'es' ? 'Entrar' : 'Enter'}
+                </button>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
@@ -911,7 +1017,7 @@ export default function App() {
               />
             )}
 
-            {activeTab === 'cms' && (
+            {activeTab === 'cms' && isAdminUnlocked && (
               <CmsView
                 days={days}
                 lang={lang}
@@ -955,7 +1061,7 @@ export default function App() {
               />
             )}
 
-            {activeTab === 'brand' && (
+            {activeTab === 'brand' && isAdminUnlocked && (
               <BrandIdentityView
                 lang={lang}
               />
@@ -977,24 +1083,13 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Floating Emotional SOS Action Button */}
-        <div className="fixed bottom-24 right-6 z-40 sm:bottom-28">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setActiveTab('sos')}
-            className={`flex items-center gap-2 p-4 sm:px-5 sm:py-3.5 rounded-full shadow-lg transition-all border ${
-              activeTab === 'sos'
-                ? 'bg-rose-600 text-white border-rose-500 ring-4 ring-rose-600/20'
-                : 'bg-white border-rose-100 text-rose-500 hover:bg-rose-50'
-            }`}
-          >
-            <Heart className="h-5 w-5 fill-current animate-pulse" />
-            <span className="text-xs font-mono font-bold uppercase tracking-wider hidden sm:inline">
-              {labels.sos}
-            </span>
-          </motion.button>
-        </div>
+        {/* Floating Renata OS Action Button (replaces the old floating SOS button) */}
+        <RenataOSChat
+          lang={lang}
+          progress={progress}
+          currentDayNumber={focusedDayNumber}
+          onOpenSos={() => setActiveTab('sos')}
+        />
 
         {/* Ecosystem Bottom Navigation Bar */}
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-md bg-white/95 dark:bg-[#2C221E]/95 backdrop-blur-md border border-rose-100/40 dark:border-rosegold/15 py-2.5 px-4 rounded-full shadow-2xl flex items-center justify-around">

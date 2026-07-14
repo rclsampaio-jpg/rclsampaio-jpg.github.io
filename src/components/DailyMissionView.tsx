@@ -5,13 +5,17 @@
 
 import { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Play, Pause, Copy, Check, Star, ArrowRight, ArrowLeft, Heart, Sparkles, 
-  Volume2, Info, Compass, HelpCircle, X, BookOpen, Smile, Wind, Award
+import {
+  Play, Pause, Copy, Check, Star, ArrowRight, ArrowLeft, Heart, Sparkles,
+  Info, Compass, HelpCircle, X, BookOpen, Smile, Wind, Award,
+  RotateCcw, RotateCw, MoreHorizontal
 } from 'lucide-react';
 import { MissionDay, Language, DayType, UserProgress } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
 import { adaptMessage } from '../utils/grammar';
+
+// Joins the 3 required promise-proof links into the single stored video-link string
+const LINK_SEPARATOR = '|||';
 
 interface DailyMissionViewProps {
   currentDay: MissionDay;
@@ -268,6 +272,12 @@ const surpriseLetters: Record<number, Record<Language, { note: string; p: string
   }
 };
 
+// Stable organic-looking waveform bar heights (percentage), generated once at module load
+const WAVEFORM_BARS = Array.from({ length: 48 }, (_, i) => {
+  const wave = Math.sin(i * 0.5) * 0.3 + Math.sin(i * 0.23) * 0.5 + Math.sin(i * 0.9) * 0.2;
+  return 22 + Math.abs(wave) * 65;
+});
+
 export default function DailyMissionView({
   currentDay,
   progress,
@@ -285,7 +295,7 @@ export default function DailyMissionView({
   const [duration, setDuration] = useState(0);
   const [activeScriptTab, setActiveScriptTab] = useState<number>(0);
   const [reflectionInput, setReflectionInput] = useState('');
-  const [videoUrlInput, setVideoUrlInput] = useState('');
+  const [promiseLinks, setPromiseLinks] = useState({ inertia: '', confidence: '', evidence: '' });
   const [copiedScriptIndex, setCopiedScriptIndex] = useState<number | null>(null);
   const [copiedHook, setCopiedHook] = useState(false);
   const [selectedMood, setSelectedMood] = useState<'calm' | 'hopeful' | 'neutral' | 'heavy' | 'emotional' | null>(null);
@@ -305,6 +315,10 @@ export default function DailyMissionView({
   // Letter popup state
   const [showSurpriseLetter, setShowSurpriseLetter] = useState(false);
 
+  // Audio player card local UI state
+  const [audioLiked, setAudioLiked] = useState(false);
+  const [showAudioMoreMenu, setShowAudioMoreMenu] = useState(false);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const isCompleted = progress.completionHistory.includes(currentDay.dayNumber);
@@ -313,35 +327,6 @@ export default function DailyMissionView({
 
   const currentPhaseId = getPhaseId(currentDay.dayNumber);
   const localizedPhase = phasesInfo[currentPhaseId as keyof typeof phasesInfo][lang];
-
-  // Progressive guidance description based on day count
-  const getProgressiveGuidance = () => {
-    if (currentDay.dayNumber <= 7) {
-      return {
-        pt: "Apoio Completo: Use esta fase para desarmar a tensão. A preparação de hoje é guiada de forma simples e segura. Leia cada palavra com calma. Não há pressa.",
-        en: "Full Support: Use this phase to defuse all tension. Today's preparation is guided simply and safely. Read every word with calm. There is no rush.",
-        es: "Soporte Completo: Usa esta fase para desarmar la tensión. La preparación de hoy está guiada de forma simple y segura. Lee cada palabra con calma. No hay prisa."
-      }[lang];
-    } else if (currentDay.dayNumber <= 14) {
-      return {
-        pt: "Estabilidade e Hábito: Suas bases físicas já foram formadas. Hoje, foque no ritmo respiratório inicial e na consistência das palavras. Siga o roteiro de apoio de forma objetiva.",
-        en: "Habit & Consistency: Your foundations are already set. Today, focus on the initial breathing rhythm and words consistency. Use the support scripts objectively.",
-        es: "Estabilidad y Hábito: Tus bases físicas ya están formadas. Hoy, enfócate en el ritmo respiratorio inicial y en la consistencia de las palabras. Sigue el guión de apoyo de manera objetiva."
-      }[lang];
-    } else if (currentDay.dayNumber <= 21) {
-      return {
-        pt: "Liberdade Autêntica: Menos explicações teóricas. O mentor confia no seu instinto expressivo. Use o gancho para brincar com sua criatividade.",
-        en: "Authentic Liberty: Less theoretical explanations. The mentor trusts your expressive instinct. Use the hook to play with your personal creativity.",
-        es: "Libertad Auténtica: Menos explicaciones teóricas. El mentor confía en tu instinto expresivo. Usa el gancho para jugar con tu creatividad."
-      }[lang];
-    } else {
-      return {
-        pt: "Plena Autonomia: Roteiro ultra-minimalista. Você já conquistou a sua segurança física. Vá direto para a lente. Você não precisa mais de suporte extenso.",
-        en: "Full Autonomy: Ultra-minimalistic guidance. You have conquered physical safety. Go straight to the lens. You no longer need extensive explanation.",
-        es: "Plena Autonomía: Guía ultra-minimalista. Ya has conquistado tu seguridad física. Ve directo a la lente. Ya no necesitas soporte extenso."
-      }[lang];
-    }
-  };
 
   // Check if reflection is a seventh-day moment
   const isSeventhDayReflection = currentDay.dayNumber % 7 === 0;
@@ -379,7 +364,8 @@ export default function DailyMissionView({
     setAudioCompleted(false);
     setActiveScriptTab(0);
     setReflectionInput(progress.reflections[currentDay.dayNumber] || '');
-    setVideoUrlInput(progress.videoLinks[currentDay.dayNumber] || '');
+    const [savedInertia = '', savedConfidence = '', savedEvidence = ''] = (progress.videoLinks[currentDay.dayNumber] || '').split(LINK_SEPARATOR);
+    setPromiseLinks({ inertia: savedInertia, confidence: savedConfidence, evidence: savedEvidence });
 
     // Reset daily promises checkboxes
     setPromisesChecked({
@@ -485,6 +471,44 @@ export default function DailyMissionView({
     setAudioCompleted(true);
   };
 
+  const handleSkipBack15 = () => {
+    if (audioRef.current && duration > 0) {
+      const newTime = Math.max(0, audioRef.current.currentTime - 15);
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+      setAudioProgress((newTime / duration) * 100);
+    } else {
+      setAudioProgress((prev) => Math.max(0, prev - 10));
+    }
+  };
+
+  const handleSkipForward15 = () => {
+    if (audioRef.current && duration > 0) {
+      const newTime = Math.min(duration, audioRef.current.currentTime + 15);
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+      const nextProgress = (newTime / duration) * 100;
+      setAudioProgress(nextProgress);
+      if (nextProgress >= 100) {
+        setIsPlaying(false);
+        setAudioCompleted(true);
+      }
+    } else {
+      setAudioProgress((prev) => {
+        const next = Math.min(100, prev + 10);
+        if (next >= 100) {
+          setIsPlaying(false);
+          setAudioCompleted(true);
+        }
+        return next;
+      });
+    }
+  };
+
+  const cycleAudioSpeed = () => {
+    setAudioSpeed((prev) => (prev === 1 ? 1.25 : prev === 1.25 ? 1.5 : 1));
+  };
+
   const formatTime = (seconds: number) => {
     if (isNaN(seconds) || seconds === 0) return '0:00';
     const mins = Math.floor(seconds / 60);
@@ -505,11 +529,12 @@ export default function DailyMissionView({
   };
 
   // Validation checking for Three Promises + Audio + Reflection Text
-  const allPromisesKept = promisesChecked.inertia && promisesChecked.confidence && promisesChecked.evidence;
+  const allPromiseLinksFilled = promiseLinks.inertia.trim().length > 0 && promiseLinks.confidence.trim().length > 0 && promiseLinks.evidence.trim().length > 0;
+  const allPromisesKept = promisesChecked.inertia && promisesChecked.confidence && promisesChecked.evidence && allPromiseLinksFilled;
   const canComplete = isRestDay || (audioCompleted && reflectionInput.trim().length > 3 && allPromisesKept);
+  const combinedPromiseLinks = [promiseLinks.inertia, promiseLinks.confidence, promiseLinks.evidence].join(LINK_SEPARATOR);
 
   const prefGrammar = progress.grammarPreference || 'neutral';
-  const guideStyle = progress.guideStyle || 'gentle';
 
   const rawContent = currentDay.content[lang] || currentDay.content['pt'] || {
     audioUrl: '',
@@ -531,21 +556,19 @@ export default function DailyMissionView({
   const textDict = {
     pt: {
       dailyMission: 'Missão Diária',
-      audioTitle: 'Áudio do Mentor',
+      audioTitle: 'Mensagem da Renata',
       audioSub: 'Sintonize seu estado emocional antes de agir',
       audioFinished: '✓ Sintonização Concluída',
-      audioListen: 'Ouvir Mentor',
+      audioListen: 'Ouvir Renata',
       audioPause: 'Pausar',
       audioSkip: 'Marcar como ouvido',
       speed: 'Velocidade',
-      hookTitle: 'Gancho de Alto Impacto',
+      hookTitle: 'Mensagem do Dia',
       scriptsTitle: '3 Exemplos de Roteiro Prático',
       exposureTitle: 'Ação de Exposição Externa',
       reflectionTitle: 'Sua Reflexão Honesta',
       reflectionPlaceholder: 'Como você se sentiu hoje? Escreva com verdade sobre o medo, julgamento ou vitória ao realizar esta missão...',
       reflectionWarning: 'Escreva pelo menos uma frase curta para validar seu progresso.',
-      videoLinkTitle: 'Link do seu Vídeo/Story (Opcional)',
-      videoLinkPlaceholder: 'Ex: https://instagram.com/stories/...',
       completeBtn: 'Concluir Missão do Dia',
       completeBtnRest: '✓ Eu Descansei e Integrei Hoje',
       completedBadge: 'Missão Integrada',
@@ -562,32 +585,57 @@ export default function DailyMissionView({
       reflection7Q1: '1. O que mais te surpreendeu na sua capacidade de agir esta semana?',
       reflection7Q2: '2. O que se tornou visivelmente mais fácil em relação ao primeiro dia?',
       reflection7Q3: '3. Do que exatamente você sente mais orgulho em si mesma hoje?',
-      autonomyTitle: 'Seu nível de autonomia',
       sanctuaryTitle: 'Santuário de Descanso Estratégico',
       inhale: 'Inspire...',
       hold: 'Prenda o ar...',
       exhale: 'Expire devagar...',
       rest: 'Vazio e calma...',
       closeLetter: 'Integrar Conselho',
-      identityHeader: 'Quem você provou ser hoje:'
+      identityHeader: 'Quem você provou ser hoje:',
+      step01: 'Passo 01',
+      step02: 'Passo 02',
+      step03: 'Passo 03',
+      step04: 'Passo 04',
+      copy: 'Copiar',
+      copied: 'Copiado!',
+      option: 'Opção',
+      copiedOption: 'Opção Copiada',
+      copyScript: 'Copiar Roteiro',
+      promise1Label: 'Promessa 1: Romper a Inércia',
+      promise2Label: 'Promessa 2: Construir Confiança',
+      promise3Label: 'Promessa 3: Criar Evidência',
+      progressLockTitle: 'Requisitos de Conclusão',
+      statusTitle: 'Status do Dia',
+      listenItem: '1. Ouvir a Mensagem da Renata',
+      promisesItem: '2. As 3 Promessas de Hoje',
+      completedStatus: 'Concluído',
+      pendingStatus: 'Pendente',
+      reflectionMoment: 'Momento de Reflexão:',
+      readLetterTooltip: 'Ler Carta da Renata',
+      favoriteTooltip: 'Favoritar Gancho',
+      linkRequiredTitle: 'Link de comprovação (obrigatório)',
+      linkRequiredPlaceholder: 'Cole o link aqui...',
+      linkRequiredWarning: 'Adicione o link para validar esta promessa.',
+      moreOptions: 'Mais opções',
+      audioSpeedTooltip: 'Velocidade de reprodução',
+      skipBack: 'Voltar 15s',
+      skipForward: 'Avançar 15s'
     },
     en: {
       dailyMission: 'Daily Mission',
-      audioTitle: 'Mentor Session',
+      audioTitle: "Renata's Message",
       audioSub: 'Tune into your emotional state before taking action',
       audioFinished: '✓ Calibration Complete',
-      audioListen: 'Listen to Mentor',
+      audioListen: 'Listen to Renata',
       audioPause: 'Pause',
       audioSkip: 'Mark as listened',
       speed: 'Speed',
-      hookTitle: 'High-Impact Hook',
+      hookTitle: "Today's Message",
       scriptsTitle: '3 Practical Script Examples',
       exposureTitle: 'External Exposure Action',
       reflectionTitle: 'Your Honest Reflection',
       reflectionPlaceholder: 'How did you feel today? Write honestly about the fear, judgment, or victory during this mission...',
       reflectionWarning: 'Write at least a short sentence to validate your progress.',
-      videoLinkTitle: 'Your Video/Story Link (Optional)',
-      videoLinkPlaceholder: 'E.g., https://instagram.com/stories/...',
       completeBtn: 'Complete Today\'s Mission',
       completeBtnRest: '✓ I Rested & Integrated Today',
       completedBadge: 'Mission Completed',
@@ -604,32 +652,57 @@ export default function DailyMissionView({
       reflection7Q1: '1. What surprised you the most about your capacity to act this week?',
       reflection7Q2: '2. What has become visibly easier compared to the first day?',
       reflection7Q3: '3. What exactly are you most proud of about yourself today?',
-      autonomyTitle: 'Your Autonomy Level',
       sanctuaryTitle: 'Strategic Rest Sanctuary',
       inhale: 'Inhale...',
       hold: 'Hold...',
       exhale: 'Exhale slowly...',
       rest: 'Stay empty & calm...',
       closeLetter: 'Integrate Council',
-      identityHeader: 'Who you proved to be today:'
+      identityHeader: 'Who you proved to be today:',
+      step01: 'Step 01',
+      step02: 'Step 02',
+      step03: 'Step 03',
+      step04: 'Step 04',
+      copy: 'Copy',
+      copied: 'Copied!',
+      option: 'Option',
+      copiedOption: 'Copied Option',
+      copyScript: 'Copy Script',
+      promise1Label: 'Promise 1: Break Inertia',
+      promise2Label: 'Promise 2: Build Confidence',
+      promise3Label: 'Promise 3: Create Evidence',
+      progressLockTitle: 'Completion Requirements',
+      statusTitle: 'Day Status',
+      listenItem: "1. Listen to Renata's Message",
+      promisesItem: "2. Today's 3 Promises",
+      completedStatus: 'Completed',
+      pendingStatus: 'Pending',
+      reflectionMoment: 'Reflection Moment:',
+      readLetterTooltip: "Read Renata's Letter",
+      favoriteTooltip: 'Favorite Hook',
+      linkRequiredTitle: 'Proof link (required)',
+      linkRequiredPlaceholder: 'Paste the link here...',
+      linkRequiredWarning: 'Add the link to validate this promise.',
+      moreOptions: 'More options',
+      audioSpeedTooltip: 'Playback speed',
+      skipBack: 'Back 15s',
+      skipForward: 'Forward 15s'
     },
     es: {
       dailyMission: 'Misión Diaria',
-      audioTitle: 'Audio del Mentor',
+      audioTitle: 'Mensaje de Renata',
       audioSub: 'Sintoniza tu estado emocional antes de actuar',
       audioFinished: '✓ Sintonización Completada',
-      audioListen: 'Escuchar Mentor',
+      audioListen: 'Escuchar a Renata',
       audioPause: 'Pausar',
       audioSkip: 'Marcar como escuchado',
       speed: 'Velocidad',
-      hookTitle: 'Gancho de Alto Impacto',
+      hookTitle: 'Mensagem do Dia',
       scriptsTitle: '3 Ejemplos de Guiones Prácticos',
       exposureTitle: 'Acción de Exposición Externa',
       reflectionTitle: 'Tu Reflexión Sincera',
       reflectionPlaceholder: '¿Cómo te sentiste hoy? Escribe con honestidad sobre el miedo, juicio o victoria al realizar esta misión...',
       reflectionWarning: 'Escribe al menos una frase corta para validar tu progreso.',
-      videoLinkTitle: 'Enlace de tu Video/Story (Opcional)',
-      videoLinkPlaceholder: 'Ej: https://instagram.com/stories/...',
       completeBtn: 'Completar Misión del Día',
       completeBtnRest: '✓ Yo Descansé e Integré Hoy',
       completedBadge: 'Misión Integrada',
@@ -646,14 +719,41 @@ export default function DailyMissionView({
       reflection7Q1: '1. ¿Qué es lo que más te sorprendió de tu capacidad para actuar esta semana?',
       reflection7Q2: '2. ¿Qué se ha vuelto visiblemente más fácil en relación con el primer día?',
       reflection7Q3: '3. ¿De qué te sientes exactamente más orgulloso de ti mismo hoy?',
-      autonomyTitle: 'Tu nivel de autonomía',
       sanctuaryTitle: 'Santuario de Descanso Estratégico',
       inhale: 'Inhala...',
       hold: 'Retén el aire...',
       exhale: 'Exhala despacio...',
       rest: 'Vacío y calma...',
       closeLetter: 'Integrar Consejo',
-      identityHeader: 'Quién demostraste ser hoy:'
+      identityHeader: 'Quién demostraste ser hoy:',
+      step01: 'Paso 01',
+      step02: 'Paso 02',
+      step03: 'Paso 03',
+      step04: 'Paso 04',
+      copy: 'Copiar',
+      copied: '¡Copiado!',
+      option: 'Opción',
+      copiedOption: 'Opción Copiada',
+      copyScript: 'Copiar Guión',
+      promise1Label: 'Promesa 1: Romper la Inercia',
+      promise2Label: 'Promesa 2: Construir Confianza',
+      promise3Label: 'Promesa 3: Crear Evidencia',
+      progressLockTitle: 'Requisitos de Finalización',
+      statusTitle: 'Estado del Día',
+      listenItem: '1. Escuchar el Mensaje de Renata',
+      promisesItem: '2. Las 3 Promesas de Hoy',
+      completedStatus: 'Completado',
+      pendingStatus: 'Pendiente',
+      reflectionMoment: 'Momento de Reflexión:',
+      readLetterTooltip: 'Leer Carta de Renata',
+      favoriteTooltip: 'Marcar Gancho como Favorito',
+      linkRequiredTitle: 'Enlace de prueba (obligatorio)',
+      linkRequiredPlaceholder: 'Pega el enlace aquí...',
+      linkRequiredWarning: 'Agrega el enlace para validar esta promesa.',
+      moreOptions: 'Más opciones',
+      audioSpeedTooltip: 'Velocidad de reproducción',
+      skipBack: 'Retroceder 15s',
+      skipForward: 'Avanzar 15s'
     }
   }[lang];
 
@@ -747,71 +847,58 @@ export default function DailyMissionView({
         )}
       </AnimatePresence>
 
-      {/* Active Day Header Card */}
-      <motion.div 
+      {/* Day Header — directly on the page background, no card */}
+      <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-        className="relative overflow-hidden rounded-[2rem] bg-gradient-to-b from-[#251E1C] to-[#1E1715] dark:from-[#1E1715] dark:to-[#17110F] border border-rosegold/15 p-8 sm:p-10 text-white shadow-rosegold"
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6"
       >
-        <div className="absolute top-0 right-0 h-48 w-48 bg-rosegold/10 blur-3xl rounded-full" />
-        <div className="absolute -bottom-10 -left-10 h-48 w-48 bg-rosegold-light/5 blur-3xl rounded-full" />
-
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 relative z-10">
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="px-3 py-1 bg-gradient-to-r from-rosegold to-rosegold-light text-[9px] uppercase font-sans tracking-[0.2em] rounded-full font-bold shadow-rosegold">
-                {textDict.dailyMission} • {currentDay.dayNumber}/30
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-3 py-1 bg-gradient-to-r from-rosegold to-rosegold-light text-[9px] uppercase font-sans tracking-[0.2em] rounded-full font-bold text-white shadow-rosegold">
+              {textDict.dailyMission} • {currentDay.dayNumber}/30
+            </span>
+            <span className="px-2.5 py-1 bg-rosegold/10 text-[9px] uppercase font-mono tracking-[0.25em] rounded-full border border-rosegold/15 font-semibold text-rosegold">
+              {localizedPhase.title}
+            </span>
+            {isCompleted && (
+              <span className="px-3 py-1 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-[9px] uppercase font-sans tracking-[0.2em] rounded-full border border-emerald-500/20 font-bold">
+                {textDict.completedBadge}
               </span>
-              <span className="px-2.5 py-1 bg-white/10 text-[9px] uppercase font-mono tracking-[0.25em] rounded-full border border-white/5 font-semibold text-accentgold">
-                {localizedPhase.title}
-              </span>
-              {isCompleted && (
-                <span className="px-3 py-1 bg-emerald-500/15 text-emerald-400 text-[9px] uppercase font-sans tracking-[0.2em] rounded-full border border-emerald-500/20 font-bold">
-                  {textDict.completedBadge}
-                </span>
-              )}
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl font-display font-light tracking-tight text-white leading-tight">
-              {adaptMessage(currentDay.title[lang] || currentDay.title['pt'], prefGrammar, lang)}
-            </h1>
-            <p className="text-xs text-rosegold-light font-sans tracking-[0.1em] uppercase font-medium">
-              {getDayTypeLabel(currentDay.type, lang)}
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2.5 shrink-0">
-            {[3, 11, 18, 25].includes(currentDay.dayNumber) && (
-              <button
-                onClick={() => setShowSurpriseLetter(true)}
-                className="p-3.5 rounded-2xl bg-gradient-to-r from-accentgold/20 to-rosegold/20 border border-accentgold/35 text-accentgold animate-pulse hover:scale-105 transition-all cursor-pointer"
-                title="Read Mentor's Letter"
-              >
-                <BookOpen className="h-5 w-5" />
-              </button>
             )}
-
-            <button
-              onClick={() => onToggleFavorite(currentDay.dayNumber)}
-              className={`p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer ${
-                isFavorite 
-                  ? 'bg-accentgold/15 border-accentgold/40 text-accentgold shadow-rosegold' 
-                  : 'bg-white/5 border-white/10 text-rose-200/60 hover:text-white hover:bg-white/10'
-              }`}
-              title="Favorite Hook"
-            >
-              <Star className="h-5 w-5 fill-current" />
-            </button>
           </div>
+
+          <h1 className="text-3xl sm:text-4xl font-display font-light tracking-tight text-slate-900 dark:text-white leading-tight">
+            {adaptMessage(currentDay.title[lang] || currentDay.title['pt'], prefGrammar, lang)}
+          </h1>
+          <p className="text-xs text-rosegold font-sans tracking-[0.1em] uppercase font-medium">
+            {getDayTypeLabel(currentDay.type, lang)}
+          </p>
         </div>
 
-        {/* Dynamic Progressive Guidance Banner */}
-        <div className="mt-6 pt-5 border-t border-white/5 text-xs text-slate-400 font-sans flex items-center gap-3">
-          <span className="font-bold text-[9px] uppercase tracking-[0.2em] text-rosegold bg-rosegold/10 px-2 py-0.5 rounded-md shrink-0">
-            {textDict.autonomyTitle}:
-          </span>
-          <span className="italic leading-relaxed text-slate-300">{getProgressiveGuidance()}</span>
+        <div className="flex items-center gap-2.5 shrink-0">
+          {[3, 11, 18, 25].includes(currentDay.dayNumber) && (
+            <button
+              onClick={() => setShowSurpriseLetter(true)}
+              className="p-3.5 rounded-2xl bg-gradient-to-r from-accentgold/15 to-rosegold/15 border border-accentgold/35 text-accentgold animate-pulse hover:scale-105 transition-all cursor-pointer"
+              title={textDict.readLetterTooltip}
+            >
+              <BookOpen className="h-5 w-5" />
+            </button>
+          )}
+
+          <button
+            onClick={() => onToggleFavorite(currentDay.dayNumber)}
+            className={`p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer ${
+              isFavorite
+                ? 'bg-accentgold/15 border-accentgold/40 text-accentgold shadow-rosegold'
+                : 'bg-rose-50 dark:bg-white/5 border-rose-100/20 dark:border-white/10 text-slate-400 hover:text-rosegold hover:bg-rose-100/40'
+            }`}
+            title={textDict.favoriteTooltip}
+          >
+            <Star className="h-5 w-5 fill-current" />
+          </button>
         </div>
       </motion.div>
 
@@ -880,162 +967,18 @@ export default function DailyMissionView({
             </motion.div>
           ) : (
             <>
-              {/* STEP 1: Calming Audio Session */}
-              <motion.div 
+              {/* Today's Message (not numbered — it's a message, not a step) */}
+              <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-[2rem] bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold"
-              >
-                <div className="flex items-start gap-4">
-                  <div className={`p-3.5 rounded-2xl transition-all duration-500 ${audioCompleted ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-rose-50 dark:bg-rosegold/15 text-rosegold'}`}>
-                    <Volume2 className="h-6 w-6" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[9px] font-sans tracking-[0.2em] text-rosegold uppercase font-extrabold block mb-1">
-                      Step 01 • {textDict.audioTitle}
-                    </span>
-                    <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 font-sans">
-                      {audioCompleted ? textDict.audioFinished : textDict.audioSub}
-                    </h3>
-
-                    {/* HTML5 Streaming & Seekable Player */}
-                    <div className="mt-5 bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/15 dark:border-rosegold/5 rounded-2xl p-5 shadow-inner">
-                      <audio
-                        ref={audioRef}
-                        src={localizedContent.audioUrl}
-                        onTimeUpdate={handleAudioTimeUpdate}
-                        onLoadedMetadata={handleAudioLoadedMetadata}
-                        onEnded={handleAudioEnded}
-                        className="hidden"
-                      />
-                      
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                        <button
-                          onClick={handlePlayToggle}
-                          className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-                            isPlaying 
-                              ? 'bg-slate-800 dark:bg-[#2C221E] text-white shadow-md' 
-                              : 'bg-rosegold text-white hover:bg-[#A35D68] shadow-rosegold'
-                          }`}
-                        >
-                          {isPlaying ? (
-                            <>
-                              <Pause className="h-4 w-4 fill-current" />
-                              <span>{textDict.audioPause}</span>
-                            </>
-                          ) : (
-                            <>
-                              <Play className="h-4 w-4 fill-current" />
-                              <span>{textDict.audioListen}</span>
-                            </>
-                          )}
-                        </button>
-
-                        <div className="flex items-center justify-between sm:justify-end gap-4">
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-[9px] font-sans font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">{textDict.speed}:</span>
-                            {[1, 1.25, 1.5].map((speed) => (
-                              <button
-                                key={speed}
-                                onClick={() => setAudioSpeed(speed)}
-                                className={`px-2.5 py-1 text-xs font-sans font-bold rounded-lg transition-all duration-250 cursor-pointer ${
-                                  audioSpeed === speed 
-                                    ? 'bg-rose-50 dark:bg-rosegold/15 text-rosegold shadow-sm' 
-                                    : 'text-slate-500 hover:bg-rose-50/20 dark:hover:bg-rosegold/5'
-                                }`}
-                              >
-                                {speed}x
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Seekable range slider */}
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between text-[11px] font-sans text-slate-400 dark:text-slate-500">
-                          <span>{formatTime(currentTime)}</span>
-                          <span>{formatTime(duration)}</span>
-                        </div>
-
-                        <div className="relative group">
-                          <input
-                            type="range"
-                            min="0"
-                            max="100"
-                            step="0.1"
-                            value={audioProgress}
-                            onChange={handleSeekChange}
-                            className="w-full h-1.5 bg-rose-100 dark:bg-[#2C221E] rounded-lg appearance-none cursor-pointer accent-rosegold transition-all focus:outline-none"
-                          />
-                        </div>
-
-                        {/* Force fully listened helper */}
-                        {!audioCompleted && (
-                          <div className="flex justify-end pt-1">
-                            <button
-                              onClick={handleFastForwardAudio}
-                              className="text-[10px] font-sans text-slate-400 dark:text-slate-500 hover:text-rosegold transition-all cursor-pointer hover:underline"
-                            >
-                              {textDict.audioSkip}
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Custom Adaptive Coach Tip card */}
-              <div className="bg-rose-50/15 dark:bg-[#1E1715]/30 border border-rose-100/20 dark:border-rosegold/10 p-6 rounded-[1.5rem] flex gap-4 items-start relative overflow-hidden shadow-sm">
-                <div className="text-2xl shrink-0">
-                  {guideStyle === 'gentle' ? '🌿' : guideStyle === 'challenger' ? '🔥' : guideStyle === 'strategic' ? '💪' : '✨'}
-                </div>
-                <div className="space-y-1.5">
-                  <span className="text-[9px] font-sans font-bold uppercase tracking-[0.15em] text-rosegold dark:text-rosegold-light">
-                    {lang === 'pt' ? 'O Toque de Orientação Personalizado' : lang === 'es' ? 'El Toque de Guía Personalizado' : 'Your Adaptive Mentor Advice'}
-                  </span>
-                  <p className="text-xs text-slate-700 dark:text-slate-300 italic font-medium leading-relaxed font-sans">
-                    "{adaptMessage({
-                      gentle: {
-                        pt: "🌿 Respire fundo. Não se preocupe com a perfeição hoje. Seu maior poder está em dar pequenos passos carinhosos consigo mesma. Você já está segura aqui.",
-                        en: "🌿 Breathe deeply. Do not worry about perfection today. Your greatest power lies in taking kind, gentle steps with yourself. You are already safe.",
-                        es: "🌿 Respira hondo. No te preocupe por la perfección hoy. Tu mayor poder está em dar pequeños pasos cariñosos contigo misma. Ya estás segura aquí."
-                      },
-                      challenger: {
-                        pt: "🔥 Sem desculpas hoje. Dê o play agora e faça seu teste inicial sem pensar duas vezes. O crítico só morre na ação rápida. Vá lá e mostre seu poder!",
-                        en: "🔥 No excuses today. Press play right now and record your test draft without overthinking. The critic only dies in swift action. Go out there and make it happen!",
-                        es: "🔥 Sin excusas hoy. Presiona grabar ahora mismo y haz tu primer borrador sin pensarlo dos veces. El crítico solo muere en la acción rápida. ¡Ve y demuestra tu poder!"
-                      },
-                      strategic: {
-                        pt: "💪 Foco no objetivo: gravar por 15 segundos mantendo contato visual com a lente. Execute a tarefa ignorando julgamentos externos secundários. Consistência gera métricas.",
-                        en: "💪 Focus on the target: record for 15 seconds maintaining eye-contact with the lens. Complete the task ignoring secondary external judgments. Consistency drives metrics.",
-                        es: "💪 Foco en el objetivo: grabar por 15 segundos manteniendo contacto visual con la lente. Ejecuta la tarea ignorando juicios externos secundarios. La consistencia genera métricas."
-                      },
-                      inspirational: {
-                        pt: "✨ Hoje, sintonize com sua alma. Sua voz carrega um propósito único que as pessoas estão esperando para ouvir. Deixe que a verdade flua livremente.",
-                        en: "✨ Today, tune in with your soul. Your voice carries a unique purpose that people are waiting to receive. Let your deep truth flow freely through you.",
-                        es: "✨ Hoy, sintoniza con tu alma. Tu voz lleva un propósito único que la gente está esperando escuchar. Deja que tu verdad fluya libremente de adentro hacia afuera."
-                      }
-                    }[guideStyle as 'gentle' | 'challenger' | 'strategic' | 'inspirational']?.[lang] || "Your guide is here.", prefGrammar, lang)}"
-                  </p>
-                </div>
-              </div>
-
-              {/* STEP 2: High-Impact Hook */}
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
                 className="rounded-[2rem] bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold space-y-5"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[9px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
-                    Step 02 • {textDict.hookTitle}
+                    {textDict.hookTitle}
                   </span>
-                  
+
                   <button
                     onClick={() => copyToClipboard(localizedContent.hook, true)}
                     className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-rosegold transition-colors duration-250 cursor-pointer hover:scale-105"
@@ -1043,12 +986,12 @@ export default function DailyMissionView({
                     {copiedHook ? (
                       <>
                         <Check className="h-3.5 w-3.5 text-emerald-500" />
-                        <span className="text-emerald-500 font-bold">Copied!</span>
+                        <span className="text-emerald-500 font-bold">{textDict.copied}</span>
                       </>
                     ) : (
                       <>
                         <Copy className="h-3.5 w-3.5" />
-                        <span>Copy</span>
+                        <span>{textDict.copy}</span>
                       </>
                     )}
                   </button>
@@ -1061,6 +1004,139 @@ export default function DailyMissionView({
                 </div>
               </motion.div>
 
+              {/* STEP 1: Calming Audio Session */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="rounded-[2rem] bg-[#FAF3EF] dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold relative overflow-hidden"
+              >
+                <audio
+                  ref={audioRef}
+                  src={localizedContent.audioUrl}
+                  onTimeUpdate={handleAudioTimeUpdate}
+                  onLoadedMetadata={handleAudioLoadedMetadata}
+                  onEnded={handleAudioEnded}
+                  className="hidden"
+                />
+
+                {/* Top row: label + favorite */}
+                <div className="flex items-start justify-between relative z-10">
+                  <span className="text-[9px] font-sans tracking-[0.2em] text-rosegold uppercase font-extrabold block">
+                    {textDict.step01} • {textDict.audioTitle}
+                  </span>
+                  <button
+                    onClick={() => setAudioLiked((v) => !v)}
+                    className="h-9 w-9 shrink-0 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
+                  >
+                    <Heart className={`h-4 w-4 transition-colors ${audioLiked ? 'text-rosegold fill-current' : 'text-slate-400'}`} />
+                  </button>
+                </div>
+
+                {/* Title + duration */}
+                <div className="mt-3 space-y-1 relative z-10">
+                  <h3 className="text-xl sm:text-2xl font-serif font-semibold text-slate-800 dark:text-slate-100">
+                    {audioCompleted ? textDict.audioFinished : adaptMessage(currentDay.title[lang] || currentDay.title['pt'], prefGrammar, lang)}
+                  </h3>
+                  <span className="text-xs text-slate-400 dark:text-slate-500 font-sans block">
+                    {formatTime(duration)}
+                  </span>
+                </div>
+
+                {/* Waveform + centered play button */}
+                <div className="relative mt-6 h-20 flex items-center justify-center gap-[3px] px-2">
+                  {WAVEFORM_BARS.map((h, i) => {
+                    const played = (i / WAVEFORM_BARS.length) * 100 < audioProgress;
+                    return (
+                      <div
+                        key={i}
+                        className={`flex-1 rounded-full transition-colors duration-300 ${played ? 'bg-rosegold' : 'bg-rosegold/25 dark:bg-rosegold/15'}`}
+                        style={{ height: `${h}%` }}
+                      />
+                    );
+                  })}
+
+                  <button
+                    onClick={handlePlayToggle}
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-16 w-16 rounded-full bg-gradient-to-br from-rosegold to-[#A35D68] shadow-rosegold flex items-center justify-center text-white transition-transform duration-300 cursor-pointer hover:scale-105 ring-4 ring-[#FAF3EF] dark:ring-[#1E1715]"
+                  >
+                    {isPlaying ? (
+                      <Pause className="h-6 w-6 fill-current" />
+                    ) : (
+                      <Play className="h-6 w-6 fill-current ml-0.5" />
+                    )}
+                  </button>
+                </div>
+
+                {/* Seekable progress bar */}
+                <div className="mt-4 relative z-10">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value={audioProgress}
+                    onChange={handleSeekChange}
+                    className="w-full h-1 bg-rose-200/50 dark:bg-[#2C221E] rounded-full appearance-none cursor-pointer accent-rosegold transition-all focus:outline-none"
+                  />
+                  <div className="flex items-center justify-between text-[11px] font-sans text-slate-400 dark:text-slate-500 mt-2">
+                    <span>{formatTime(currentTime)}</span>
+                    <span>{formatTime(duration)}</span>
+                  </div>
+                </div>
+
+                {/* Bottom control row */}
+                <div className="mt-4 flex items-center justify-between relative z-10">
+                  <button
+                    onClick={cycleAudioSpeed}
+                    title={textDict.audioSpeedTooltip}
+                    className="h-10 w-10 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center text-xs font-sans font-bold text-rosegold transition-all duration-300 cursor-pointer hover:scale-105"
+                  >
+                    {audioSpeed}x
+                  </button>
+
+                  <button
+                    onClick={handleSkipBack15}
+                    title={textDict.skipBack}
+                    className="h-10 w-10 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex flex-col items-center justify-center text-rosegold transition-all duration-300 cursor-pointer hover:scale-105"
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                  </button>
+
+                  <button
+                    onClick={handleSkipForward15}
+                    title={textDict.skipForward}
+                    className="h-10 w-10 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex flex-col items-center justify-center text-rosegold transition-all duration-300 cursor-pointer hover:scale-105"
+                  >
+                    <RotateCw className="h-4 w-4" />
+                  </button>
+
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowAudioMoreMenu((v) => !v)}
+                      title={textDict.moreOptions}
+                      className="h-10 w-10 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 cursor-pointer hover:scale-105"
+                    >
+                      <MoreHorizontal className="h-4 w-4" />
+                    </button>
+
+                    {showAudioMoreMenu && !audioCompleted && (
+                      <div className="absolute bottom-12 right-0 z-20 bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 rounded-xl shadow-rosegold p-1.5 w-max">
+                        <button
+                          onClick={() => {
+                            handleFastForwardAudio();
+                            setShowAudioMoreMenu(false);
+                          }}
+                          className="text-xs font-sans text-slate-600 dark:text-slate-300 hover:text-rosegold transition-all cursor-pointer whitespace-nowrap px-3 py-2 rounded-lg hover:bg-rose-50/50 dark:hover:bg-rosegold/5"
+                        >
+                          {textDict.audioSkip}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+
               {/* STEP 3: 3 Practical Script Examples */}
               <motion.div 
                 initial={{ opacity: 0, y: 15 }}
@@ -1070,7 +1146,7 @@ export default function DailyMissionView({
               >
                 <div className="flex items-center justify-between pb-2 border-b border-rose-100/15 dark:border-rosegold/5">
                   <span className="text-[9px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
-                    Step 03 • {textDict.scriptsTitle}
+                    {textDict.step02} • {textDict.scriptsTitle}
                   </span>
                 </div>
 
@@ -1086,7 +1162,7 @@ export default function DailyMissionView({
                           : 'text-slate-500 hover:text-rosegold hover:bg-rose-50/50'
                       }`}
                     >
-                      Option {idx + 1}
+                      {textDict.option} {idx + 1}
                     </button>
                   ))}
                 </div>
@@ -1104,12 +1180,12 @@ export default function DailyMissionView({
                       {copiedScriptIndex === activeScriptTab ? (
                         <>
                           <Check className="h-3.5 w-3.5 text-emerald-500" />
-                          <span className="text-emerald-500">Copied Option</span>
+                          <span className="text-emerald-500">{textDict.copiedOption}</span>
                         </>
                       ) : (
                         <>
                           <Copy className="h-3.5 w-3.5" />
-                          <span>Copy Script</span>
+                          <span>{textDict.copyScript}</span>
                         </>
                       )}
                     </button>
@@ -1126,14 +1202,29 @@ export default function DailyMissionView({
               >
                 <div className="flex items-center gap-2">
                   <span className="text-[9px] font-sans tracking-[0.2em] text-rosegold bg-rose-50/50 dark:bg-rosegold/10 px-3 py-1 rounded-full uppercase font-extrabold">
-                    Step 04 • {textDict.exposureTitle}
+                    {textDict.step03} • {textDict.exposureTitle}
                   </span>
                 </div>
                 
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-rose-50/15 to-rose-50/5 dark:from-[#2C221E]/10 dark:to-rosegold/5 border border-rose-100/15 dark:border-rosegold/10 shadow-sm">
-                  <p className="text-slate-800 dark:text-slate-200 text-sm font-sans leading-relaxed">
-                    {localizedContent.exposureAction}
-                  </p>
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-rose-50/15 to-rose-50/5 dark:from-[#2C221E]/10 dark:to-rosegold/5 border border-rose-100/15 dark:border-rosegold/10 shadow-sm space-y-3">
+                  {(() => {
+                    const [title, ...bullets] = localizedContent.exposureAction.split('\n').filter(Boolean);
+                    return (
+                      <>
+                        <p className="text-slate-800 dark:text-slate-200 text-sm font-sans font-semibold leading-relaxed">
+                          {title}
+                        </p>
+                        <ul className="space-y-2">
+                          {bullets.map((bullet, idx) => (
+                            <li key={idx} className="flex gap-2 text-slate-700 dark:text-slate-300 text-sm font-sans leading-relaxed">
+                              <span className="text-rosegold shrink-0">•</span>
+                              <span>{bullet.replace(/^•\s*/, '')}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    );
+                  })()}
                 </div>
               </motion.div>
 
@@ -1155,47 +1246,28 @@ export default function DailyMissionView({
                 </div>
 
                 <div className="space-y-3.5 pt-1">
-                  <label className="flex items-start gap-3.5 p-4 bg-white dark:bg-[#1E1715] rounded-2xl border border-rose-100/10 cursor-pointer hover:bg-amber-50/30 dark:hover:bg-rosegold/5 transition-all duration-300 select-none shadow-xs">
-                    <input
-                      type="checkbox"
-                      checked={promisesChecked.inertia}
-                      disabled={isCompleted}
-                      onChange={(e) => setPromisesChecked(p => ({ ...p, inertia: e.target.checked }))}
-                      className="mt-0.5 h-4.5 w-4.5 rounded-md text-rosegold border-slate-300 focus:ring-rosegold transition-all duration-300"
-                    />
-                    <div className="text-xs font-sans">
-                      <span className="font-semibold text-slate-700 dark:text-slate-200 block">Promise 1: Break Inertia</span>
-                      <span className="text-slate-500 dark:text-slate-400 block mt-1 leading-relaxed">{textDict.promise1}</span>
-                    </div>
-                  </label>
-
-                  <label className="flex items-start gap-3.5 p-4 bg-white dark:bg-[#1E1715] rounded-2xl border border-rose-100/10 cursor-pointer hover:bg-amber-50/30 dark:hover:bg-rosegold/5 transition-all duration-300 select-none shadow-xs">
-                    <input
-                      type="checkbox"
-                      checked={promisesChecked.confidence}
-                      disabled={isCompleted}
-                      onChange={(e) => setPromisesChecked(p => ({ ...p, confidence: e.target.checked }))}
-                      className="mt-0.5 h-4.5 w-4.5 rounded-md text-rosegold border-slate-300 focus:ring-rosegold transition-all duration-300"
-                    />
-                    <div className="text-xs font-sans">
-                      <span className="font-semibold text-slate-700 dark:text-slate-200 block">Promise 2: Build Confidence</span>
-                      <span className="text-slate-500 dark:text-slate-400 block mt-1 leading-relaxed">{textDict.promise2}</span>
-                    </div>
-                  </label>
-
-                  <label className="flex items-start gap-3.5 p-4 bg-white dark:bg-[#1E1715] rounded-2xl border border-rose-100/10 cursor-pointer hover:bg-amber-50/30 dark:hover:bg-rosegold/5 transition-all duration-300 select-none shadow-xs">
-                    <input
-                      type="checkbox"
-                      checked={promisesChecked.evidence}
-                      disabled={isCompleted}
-                      onChange={(e) => setPromisesChecked(p => ({ ...p, evidence: e.target.checked }))}
-                      className="mt-0.5 h-4.5 w-4.5 rounded-md text-rosegold border-slate-300 focus:ring-rosegold transition-all duration-300"
-                    />
-                    <div className="text-xs font-sans">
-                      <span className="font-semibold text-slate-700 dark:text-slate-200 block">Promise 3: Create Evidence</span>
-                      <span className="text-slate-500 dark:text-slate-400 block mt-1 leading-relaxed">{textDict.promise3}</span>
-                    </div>
-                  </label>
+                  {([
+                    { key: 'inertia' as const, label: textDict.promise1Label, desc: textDict.promise1 },
+                    { key: 'confidence' as const, label: textDict.promise2Label, desc: textDict.promise2 },
+                    { key: 'evidence' as const, label: textDict.promise3Label, desc: textDict.promise3 }
+                  ]).map((item) => (
+                    <label
+                      key={item.key}
+                      className="flex items-start gap-3.5 p-4 bg-white dark:bg-[#1E1715] rounded-2xl border border-rose-100/10 cursor-pointer hover:bg-amber-50/30 dark:hover:bg-rosegold/5 transition-all duration-300 select-none shadow-xs"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={promisesChecked[item.key]}
+                        disabled={isCompleted}
+                        onChange={(e) => setPromisesChecked(p => ({ ...p, [item.key]: e.target.checked }))}
+                        className="mt-0.5 h-4.5 w-4.5 rounded-md text-rosegold border-slate-300 focus:ring-rosegold transition-all duration-300"
+                      />
+                      <div className="text-xs font-sans">
+                        <span className="font-semibold text-slate-700 dark:text-slate-200 block">{item.label}</span>
+                        <span className="text-slate-500 dark:text-slate-400 block mt-1 leading-relaxed">{item.desc}</span>
+                      </div>
+                    </label>
+                  ))}
                 </div>
               </motion.div>
             </>
@@ -1214,32 +1286,61 @@ export default function DailyMissionView({
           >
             <div>
               <h3 className="text-xs font-sans text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-3.5 font-extrabold">
-                {isRestDay ? 'Status' : 'Progress Lock'}
+                {isRestDay ? textDict.statusTitle : textDict.progressLockTitle}
               </h3>
-              
+
               {!isRestDay && (
                 <div className="space-y-3">
                   {/* Validation checkmark widgets */}
                   <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 p-4 rounded-xl shadow-xs">
-                    <span className="text-slate-600 dark:text-slate-300 font-semibold font-sans">1. Listen to Mentor Session</span>
+                    <span className="text-slate-600 dark:text-slate-300 font-semibold font-sans">{textDict.listenItem}</span>
                     <span className={`px-3 py-1 rounded-full text-[9px] font-sans font-bold uppercase tracking-wider ${
-                      audioCompleted 
-                        ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400' 
+                      audioCompleted
+                        ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
                         : 'bg-rose-50 dark:bg-rosegold/15 text-rosegold'
                     }`}>
-                      {audioCompleted ? 'Completed' : 'Pending'}
+                      {audioCompleted ? textDict.completedStatus : textDict.pendingStatus}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 p-4 rounded-xl shadow-xs">
-                    <span className="text-slate-600 dark:text-slate-300 font-semibold font-sans">2. Today's 3 Promises</span>
+                    <span className="text-slate-600 dark:text-slate-300 font-semibold font-sans">{textDict.promisesItem}</span>
                     <span className={`px-3 py-1 rounded-full text-[9px] font-sans font-bold uppercase tracking-wider ${
-                      allPromisesKept 
-                        ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400' 
+                      allPromisesKept
+                        ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
                         : 'bg-amber-500/15 text-accentgold'
                     }`}>
-                      {allPromisesKept ? 'Completed' : 'Pending'}
+                      {allPromisesKept ? textDict.completedStatus : textDict.pendingStatus}
                     </span>
+                  </div>
+
+                  {/* 3 mandatory proof-of-promise links */}
+                  <div className="space-y-3 pt-1">
+                    {([
+                      { key: 'inertia' as const, label: textDict.promise1Label },
+                      { key: 'confidence' as const, label: textDict.promise2Label },
+                      { key: 'evidence' as const, label: textDict.promise3Label }
+                    ]).map((item) => (
+                      <div key={item.key} className="bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 p-4 rounded-xl shadow-xs space-y-1.5">
+                        <label className="block text-[10px] font-sans text-rosegold font-bold uppercase tracking-wider">
+                          {item.label} — {textDict.linkRequiredTitle}
+                        </label>
+                        <input
+                          type="url"
+                          value={promiseLinks[item.key]}
+                          disabled={isCompleted}
+                          onChange={(e) => setPromiseLinks(p => ({ ...p, [item.key]: e.target.value }))}
+                          placeholder={textDict.linkRequiredPlaceholder}
+                          className="w-full text-xs bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3 text-slate-700 dark:text-slate-200 transition-all duration-300"
+                        />
+                        {!isCompleted && promiseLinks[item.key].trim().length === 0 && (
+                          <p className="text-[10px] text-[#D4AF37] flex items-center gap-1 font-sans font-medium">
+                            <Info className="h-3.5 w-3.5 shrink-0" />
+                            {textDict.linkRequiredWarning}
+                          </p>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
@@ -1254,7 +1355,7 @@ export default function DailyMissionView({
                 
                 {isSeventhDayReflection ? (
                   <div className="text-xs text-slate-500 dark:text-slate-400 space-y-2 p-4 rounded-2xl bg-amber-500/5 border border-accentgold/20 font-sans italic">
-                    <p className="font-bold text-accentgold not-italic uppercase tracking-widest text-[9px]">{localizedPhase.title} Reflection Moment:</p>
+                    <p className="font-bold text-accentgold not-italic uppercase tracking-widest text-[9px]">{localizedPhase.title} {textDict.reflectionMoment}</p>
                     <p>{textDict.reflection7Q1}</p>
                     <p>{textDict.reflection7Q2}</p>
                     <p>{textDict.reflection7Q3}</p>
@@ -1280,21 +1381,6 @@ export default function DailyMissionView({
                     {textDict.reflectionWarning}
                   </p>
                 )}
-
-                {/* Optional Social Link */}
-                <div className="space-y-2 pt-1">
-                  <label className="block text-xs font-sans text-slate-500 font-bold uppercase tracking-wider">
-                    {textDict.videoLinkTitle}
-                  </label>
-                  <input
-                    type="url"
-                    value={videoUrlInput}
-                    onChange={(e) => setVideoUrlInput(e.target.value)}
-                    placeholder={textDict.videoLinkPlaceholder}
-                    disabled={isCompleted}
-                    className="w-full text-xs bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/20 dark:border-rosegold/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-slate-200 transition-all duration-300"
-                  />
-                </div>
 
                 {/* Daily Mood Integration */}
                 <div className="space-y-3 pt-2">
@@ -1421,7 +1507,7 @@ export default function DailyMissionView({
                     <div className="space-y-1.5 text-[11px] font-sans">
                       <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
                         <Check className="h-4 w-4 text-emerald-500 shrink-0" />
-                        <span>{lang === 'pt' ? 'Sessão de Mentoria Concluída' : lang === 'es' ? 'Sesión de Mentoría Completada' : 'Mentoring Session Completed'}</span>
+                        <span>{lang === 'pt' ? 'Mensagem da Renata Concluída' : lang === 'es' ? 'Mensaje de Renata Completado' : "Renata's Message Completed"}</span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
                         <Check className="h-4 w-4 text-emerald-500 shrink-0" />
@@ -1439,7 +1525,7 @@ export default function DailyMissionView({
               </div>
             ) : (
               <button
-                onClick={() => onCompleteDay(reflectionInput, videoUrlInput, selectedMood || 'neutral')}
+                onClick={() => onCompleteDay(reflectionInput, combinedPromiseLinks, selectedMood || 'neutral')}
                 disabled={!canComplete}
                 className={`w-full py-4.5 px-6 rounded-2xl text-xs font-sans font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2.5 transition-all duration-300 cursor-pointer ${
                   canComplete 

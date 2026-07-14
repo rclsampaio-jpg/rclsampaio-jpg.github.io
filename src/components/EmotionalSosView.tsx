@@ -100,7 +100,7 @@ export default function EmotionalSosView({
       altTitle: 'Nós salvamos o seu lugar.',
       altDesc: 'Tudo bem não se sentir 100% [pronta/pronto/pronte] ainda. Sua evolução é única. Escolha outra ferramenta de acolhimento:',
       altOptionBreathing: 'Realizar mais uma rodada de respiração',
-      altOptionLetter: 'Ler Carta de Acolhimento do Mentor',
+      altOptionLetter: 'Ler Carta de Acolhimento da Renata',
       altOptionSupport: 'Contatar Suporte de Coragem',
       letterTitle: 'Uma Carta para Você',
       letterClose: 'Concluir Sintonização',
@@ -132,7 +132,7 @@ export default function EmotionalSosView({
       altTitle: 'We saved your place.',
       altDesc: 'It is okay not to feel 100% ready yet. Your pace is unique. Choose another calming resource:',
       altOptionBreathing: 'Do another round of breathing',
-      altOptionLetter: 'Read Creator\'s Letter of Comfort',
+      altOptionLetter: "Read Renata's Letter of Comfort",
       altOptionSupport: 'Access Courage Support',
       letterTitle: 'A Letter for You',
       letterClose: 'Complete Tuning',
@@ -164,7 +164,7 @@ export default function EmotionalSosView({
       altTitle: 'Nosotros guardamos tu lugar.',
       altDesc: 'Está bien no sentirse 100% [lista/listo/liste] todavía. Tu evolución es única. Elige otra herramienta de apoyo:',
       altOptionBreathing: 'Hacer otra ronda de respiración',
-      altOptionLetter: 'Leer Carta de Apoyo del Mentor',
+      altOptionLetter: 'Leer Carta de Apoyo de Renata',
       altOptionSupport: 'Contactar Soporte de Coraje',
       letterTitle: 'Una Carta para Ti',
       letterClose: 'Concluir Sintonización',
@@ -200,7 +200,7 @@ export default function EmotionalSosView({
       },
       overwhelm: {
         title: 'Sensação de Sobrecarga',
-        text: 'Nós guardamos o seu lugar. Vá no seu ritmo. O descanso também é parte da jornada de crescimento, não um sinal de falha. Se hoje você não consegue gravar, está tudo bem. Apenas cumpra a promessa de se acolher e escutar o áudio do mentor. Respire fundo, reduza as expectativas para hoje e continue amanhã.'
+        text: 'Nós guardamos o seu lugar. Vá no seu ritmo. O descanso também é parte da jornada de crescimento, não um sinal de falha. Se hoje você não consegue gravar, está tudo bem. Apenas cumpra a promessa de se acolher e escutar a mensagem da Renata. Respire fundo, reduza as expectativas para hoje e continue amanhã.'
       }
     },
     en: {
@@ -222,7 +222,7 @@ export default function EmotionalSosView({
       },
       overwhelm: {
         title: 'Feeling Overwhelmed',
-        text: 'We saved your place. Go at your own pace. Rest is also a part of the growth journey, not a sign of failure. If you cannot record today, that is completely fine. Just keep the promise to cuddle yourself and listen to the mentor\'s audio. Breathe deeply, lower your expectations for today, and resume tomorrow.'
+        text: "We saved your place. Go at your own pace. Rest is also a part of the growth journey, not a sign of failure. If you cannot record today, that is completely fine. Just keep the promise to cuddle yourself and listen to Renata's message. Breathe deeply, lower your expectations for today, and resume tomorrow."
       }
     },
     es: {
@@ -244,16 +244,16 @@ export default function EmotionalSosView({
       },
       overwhelm: {
         title: 'Sensación de Sobrecarga',
-        text: 'Nosotros guardamos tu lugar. Ve a tu propio ritmo. El descanso también es parte del viaje de crecimiento, no una señal de fracaso. Si hoy no puedes grabar, está bien. Cumple la promesa de abrazarte y escuchar al mentor. Respira hondo, reduce las expectativas para hoy y continúa mañana.'
+        text: 'Nosotros guardamos tu lugar. Ve a tu propio ritmo. El descanso también es parte del viaje de crecimiento, no una señal de fracaso. Si hoy no puedes grabar, está bien. Cumple la promesa de abrazarte y escuchar el mensaje de Renata. Respira hondo, reduce las expectativas para hoy y continúa mañana.'
       }
     }
   }[lang];
 
   // Specific Letter of Comfort from Creator
   const comfortLetter = {
-    pt: `Querida alma,\n\nSe você está lendo isso, por favor, coloque as mãos sobre o coração por um segundo. Sinta o bater do seu peito. Esse ritmo é real, é o seu corpo apoiando você.\n\nVocê não está [atrasada/atrasado/atrasade]. Você não falhou. Nós guardamos o seu lugar com todo o respeito. Não existe fracasso em precisar de uma pausa; o verdadeiro erro é fingir força quando seu corpo e alma gritam por descanso.\n\nA jornada RenaSer não é sobre virar um gerador automático de vídeos perfeitos. É sobre visibilidade real. E a primeira pessoa que precisa ver você, respeitar seus limites e abraçar seu ritmo é [você mesma/você mesmo/você mesme].\n\nBeba um copo d'água. Sinta a terra sob seus pés. Quando estiver [pronta/pronto/pronte], o portal estará aqui, exatamente do jeito que você o deixou.\n\nCom carinho,\nSeu Mentor`,
-    en: `Dear soul,\n\nIf you are reading this, please place your hands on your heart for a second. Feel your chest rise and fall. This rhythm is real; it is your body supporting you.\n\nYou are not late. You haven't failed. We saved your place with deep respect. There is no failure in needing a pause; the real mistake is pretending to be strong when your body and soul cry for rest.\n\nThe RenaSer journey is not about becoming an automatic producer of perfect videos. It is about true visibility. And the first person who needs to see you, respect your boundaries, and embrace your pace is yourself.\n\nDrink a glass of water. Feel the ground beneath your feet. When you are ready, the portal will be here, exactly as you left it.\n\nWith love,\nYour Mentor`,
-    es: `Querida alma,\n\nSi estás leyendo esto, por favor coloca tus manos sobre tu corazón por un segundo. Siente el latido de tu pecho. Este ritmo es real, es tu cuerpo apoyándote.\n\nNo vas tarde. No has fallado. Guardamos tu lugar con absoluto respeto. No hay fracaso en necesitar una pausa; el verdadero error es fingir fuerza cuando tu cuerpo y alma gritan por descanso.\n\nEl viaje RenaSer no se trata de convertirte en un generador automático de videos perfectos. Se trata de visibilidad real. Y la primera persona que necesita verte, respetar tus límites y abrazar tu ritmo eres [tú misma/tú mismo/tú misme].\n\nBebe un vaso de agua. Siente la tierra bajo tus pies. Cuando estés [lista/listo/liste], el portal estará aquí, exactamente como lo dejaste.\n\nCon cariño,\nTu Mentor`
+    pt: `Querida alma,\n\nSe você está lendo isso, por favor, coloque as mãos sobre o coração por um segundo. Sinta o bater do seu peito. Esse ritmo é real, é o seu corpo apoiando você.\n\nVocê não está [atrasada/atrasado/atrasade]. Você não falhou. Nós guardamos o seu lugar com todo o respeito. Não existe fracasso em precisar de uma pausa; o verdadeiro erro é fingir força quando seu corpo e alma gritam por descanso.\n\nA jornada RenaSer não é sobre virar um gerador automático de vídeos perfeitos. É sobre visibilidade real. E a primeira pessoa que precisa ver você, respeitar seus limites e abraçar seu ritmo é [você mesma/você mesmo/você mesme].\n\nBeba um copo d'água. Sinta a terra sob seus pés. Quando estiver [pronta/pronto/pronte], o portal estará aqui, exatamente do jeito que você o deixou.\n\nCom carinho,\nSua mentora, Renata`,
+    en: `Dear soul,\n\nIf you are reading this, please place your hands on your heart for a second. Feel your chest rise and fall. This rhythm is real; it is your body supporting you.\n\nYou are not late. You haven't failed. We saved your place with deep respect. There is no failure in needing a pause; the real mistake is pretending to be strong when your body and soul cry for rest.\n\nThe RenaSer journey is not about becoming an automatic producer of perfect videos. It is about true visibility. And the first person who needs to see you, respect your boundaries, and embrace your pace is yourself.\n\nDrink a glass of water. Feel the ground beneath your feet. When you are ready, the portal will be here, exactly as you left it.\n\nWith love,\nYour mentor, Renata`,
+    es: `Querida alma,\n\nSi estás leyendo esto, por favor coloca tus manos sobre tu corazón por un segundo. Siente el latido de tu pecho. Este ritmo es real, es tu cuerpo apoyándote.\n\nNo vas tarde. No has fallado. Guardamos tu lugar con absoluto respeto. No hay fracaso en necesitar una pausa; el verdadero error es fingir fuerza cuando tu cuerpo y alma gritan por descanso.\n\nEl viaje RenaSer no se trata de convertirte en un generador automático de videos perfectos. Se trata de visibilidad real. Y la primera persona que necesita verte, respetar tus límites y abrazar tu ritmo eres [tú misma/tú mismo/tú misme].\n\nBebe un vaso de agua. Siente la tierra bajo tus pies. Cuando estés [lista/listo/liste], el portal estará aquí, exactamente como lo dejaste.\n\nCon cariño,\nTu mentora, Renata`
   }[lang];
 
   const handleSelectCategory = (cat: string) => {

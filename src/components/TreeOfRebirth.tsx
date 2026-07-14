@@ -187,6 +187,7 @@ export default function TreeOfRebirth({ completedCount, lang }: TreeOfRebirthPro
           src={getTreeImage(stage)}
           alt={info.title[lang]}
           className="w-full h-full object-contain"
+          style={stage >= 9 ? { scaleY: 1.18, transformOrigin: 'bottom center' } : undefined}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{
             opacity: 1,
@@ -199,6 +200,70 @@ export default function TreeOfRebirth({ completedCount, lang }: TreeOfRebirthPro
             y: { duration: 7, repeat: Infinity, ease: "easeInOut" }
           }}
         />
+
+        {/* Butterflies fluttering around the fully-bloomed tree's canopy */}
+        {stage >= 9 && (
+          <>
+            <motion.div
+              className="absolute pointer-events-none"
+              style={{ top: '14%', left: '18%' }}
+              animate={{
+                x: [0, 8, 2, 10, 0],
+                y: [0, -6, 3, -5, 0],
+                rotate: [0, 8, -6, 6, 0]
+              }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <motion.img
+                src="/assets/images/butterfly.png"
+                alt=""
+                className="h-4 w-auto"
+                animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
+                transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut" }}
+                style={{ transformOrigin: 'center 70%' }}
+              />
+            </motion.div>
+            <motion.div
+              className="absolute pointer-events-none"
+              style={{ top: '8%', right: '12%' }}
+              animate={{
+                x: [0, -7, -1, -9, 0],
+                y: [0, 5, -3, 6, 0],
+                rotate: [0, -8, 6, -6, 0]
+              }}
+              transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+            >
+              <motion.img
+                src="/assets/images/butterfly.png"
+                alt=""
+                className="h-3 w-auto"
+                animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
+                transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut", delay: 0.15 }}
+                style={{ transformOrigin: 'center 70%' }}
+              />
+            </motion.div>
+            {/* Third butterfly, looping in a wider orbit around the canopy */}
+            <motion.div
+              className="absolute pointer-events-none"
+              style={{ top: '18%', left: '42%' }}
+              animate={{
+                x: [0, 16, 0, -16, 0],
+                y: [0, -10, -16, -10, 0],
+                rotate: [0, 10, 0, -10, 0]
+              }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <motion.img
+                src="/assets/images/butterfly.png"
+                alt=""
+                className="h-3.5 w-auto"
+                animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
+                transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                style={{ transformOrigin: 'center 70%' }}
+              />
+            </motion.div>
+          </>
+        )}
 
         {/* Small floating Sparkles badge */}
         <div className="absolute bottom-1 right-1 p-1 bg-[#D4AF37]/15 rounded-full border border-[#D4AF37]/35 text-[#D4AF37]">

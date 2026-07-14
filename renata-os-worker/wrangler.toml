@@ -1,0 +1,15 @@
+name = "renata-os-worker"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Restrict which site is allowed to call this Worker.
+# Update this if your GitHub Pages URL changes.
+[vars]
+ALLOWED_ORIGIN = "https://rclsampaio-jpg.github.io"
+
+# GEMINI_API_KEY is NOT set here — it must be added as a secret, so it never
+# ends up in this file or in git. Run this once, from this folder:
+#
+#   npx wrangler secret put GEMINI_API_KEY
+#
+# It will prompt you to paste the key directly in your terminal.
