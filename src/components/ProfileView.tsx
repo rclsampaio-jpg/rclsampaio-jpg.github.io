@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, useRef, ChangeEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  User, Award, Star, Flame, Settings, Sparkles, Sliders, 
-  HelpCircle, Check, ArrowRight, BookOpen, Compass, Shield, Heart
+import {
+  User, Award, Star, Flame, Settings, Sparkles, Sliders,
+  HelpCircle, Check, ArrowRight, BookOpen, Compass, Shield, Heart, Camera
 } from 'lucide-react';
 import { Language, UserProgress, MissionDay } from '../types';
 import MyTransformationView from './MyTransformationView';
@@ -22,10 +22,21 @@ interface ProfileViewProps {
 
 export default function ProfileView({ lang, progress, days, onUpdateProgress }: ProfileViewProps) {
   const [activeProfileSection, setActiveProfileSection] = useState<'scrapbook' | 'personalization'>('scrapbook');
+  const avatarInputRef = useRef<HTMLInputElement | null>(null);
 
   // Load personalization presets or defaults
   const guideStyle = progress.guideStyle || 'gentle';
   const grammarPreference = resolveGrammarPreference(progress.grammarPreference);
+
+  const handleAvatarUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      onUpdateProgress({ ...progress, avatarUrl: reader.result as string });
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleUpdateGuideStyle = (style: 'gentle' | 'challenger' | 'strategic' | 'inspirational') => {
     onUpdateProgress({ ...progress, guideStyle: style });
@@ -142,17 +153,34 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
 
         <div className="flex flex-col sm:flex-row gap-5 items-center relative z-10 text-center sm:text-left">
           
-          {/* Avatar Ring */}
-          <div className="relative h-20 w-20 rounded-full bg-rosegold/20 border-2 border-[#D4AF37] flex items-center justify-center shadow-lg group">
-            <User className="h-10 w-10 text-rosegold-light" />
+          {/* Avatar Ring — click to upload a profile photo */}
+          <input
+            ref={avatarInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarUpload}
+            className="hidden"
+          />
+          <button
+            onClick={() => avatarInputRef.current?.click()}
+            className="relative h-20 w-20 rounded-full bg-rosegold/20 border-2 border-[#D4AF37] flex items-center justify-center shadow-lg group cursor-pointer overflow-hidden shrink-0"
+          >
+            {progress.avatarUrl ? (
+              <img src={progress.avatarUrl} alt="" className="h-full w-full object-cover" />
+            ) : (
+              <User className="h-10 w-10 text-rosegold-light" />
+            )}
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+              <Camera className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
             <div className="absolute -bottom-1 -right-1 bg-[#D4AF37] text-slate-950 p-1 rounded-full text-[9px] font-bold">
               VIP
             </div>
-          </div>
+          </button>
 
           <div className="space-y-1">
             <h3 className="text-xl sm:text-2xl font-serif font-light text-amber-50">
-              {progress.displayName || (lang === 'pt' ? 'Estudante RenaSer' : lang === 'es' ? 'Estudiante RenaSer' : 'RenaSer Student')}
+              {progress.displayName || (lang === 'pt' ? 'Estrela RenaSer' : lang === 'es' ? 'Estrella RenaSer' : 'RenaSer Star')}
             </h3>
             <p className="text-[10px] uppercase font-mono tracking-widest text-[#D4AF37] font-bold">
               {trans.pioneiro}

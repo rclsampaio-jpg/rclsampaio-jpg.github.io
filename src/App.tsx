@@ -207,7 +207,7 @@ export default function App() {
   };
 
   // Action for completing a day's mission
-  const handleCompleteDay = (reflectionText: string, videoLink: string) => {
+  const handleCompleteDay = (reflectionText: string, videoLink: string, mood?: string) => {
     const dayNum = focusedDayNumber;
     if (progress.completionHistory.includes(dayNum)) return; // Already completed
 
@@ -263,6 +263,10 @@ export default function App() {
       videoLinks: {
         ...progress.videoLinks,
         [dayNum]: videoLink
+      },
+      journalMoods: {
+        ...progress.journalMoods,
+        [dayNum]: mood || 'neutral'
       }
     };
 
