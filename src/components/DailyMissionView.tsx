@@ -11,7 +11,7 @@ import {
   RotateCcw, RotateCw
 } from 'lucide-react';
 import { MissionDay, Language, DayType, UserProgress } from '../types';
-import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions } from '../data/templateData';
+import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions, getHookCategoryLabel } from '../data/templateData';
 import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 
 // Joins the 3 required promise-proof links into the single stored video-link string
@@ -552,6 +552,7 @@ export default function DailyMissionView({
   };
 
   const hookOptions = getHookOptionsForDay(currentDay.dayNumber, lang, progress.journeyStartDate);
+  const hookCategoryLabel = getHookCategoryLabel(currentDay.dayNumber, lang, progress.journeyStartDate);
   const actionHookOptions = getActionHookOptions(lang);
 
   // Translation Dictionary
@@ -572,8 +573,8 @@ export default function DailyMissionView({
       tabOpenLabel: 'Abertura',
       tabDailyLabel: 'Hook do Dia',
       tabIdeaLabel: 'Minha Ideia',
-      openHookHeading: 'Hook de como abrir o vídeo',
-      dailyHookHeading: 'Hook de script do dia',
+      openHookHeading: 'Hoje usaremos ganchos de ação',
+      dailyHookHeadingPrefix: 'Hoje usaremos ganchos de',
       noDailyHookFallback: 'Hoje não tem hook temático — use o hook de abertura ou escreva o seu na aba "Minha Ideia".',
       ideaHeading: 'Qual a sua ideia?',
       ideaSubtitle: 'Se você decidiu por um gancho autoral, escreva abaixo:',
@@ -645,8 +646,8 @@ export default function DailyMissionView({
       tabOpenLabel: 'Opening',
       tabDailyLabel: "Today's Hook",
       tabIdeaLabel: 'My Idea',
-      openHookHeading: 'Hook for how to open the video',
-      dailyHookHeading: "Today's script hook",
+      openHookHeading: "Today we'll use action hooks",
+      dailyHookHeadingPrefix: "Today's hook theme:",
       noDailyHookFallback: 'No themed hook today — use the opening hook, or write your own in the "My Idea" tab.',
       ideaHeading: 'What is your idea?',
       ideaSubtitle: "If you've decided on your own original hook, write it below:",
@@ -719,8 +720,8 @@ export default function DailyMissionView({
       tabOpenLabel: 'Apertura',
       tabDailyLabel: 'Hook del Día',
       tabIdeaLabel: 'Mi Idea',
-      openHookHeading: 'Hook de cómo abrir el video',
-      dailyHookHeading: 'Hook de guión del día',
+      openHookHeading: 'Hoy usaremos ganchos de acción',
+      dailyHookHeadingPrefix: 'Hoy usaremos ganchos de',
       noDailyHookFallback: 'Hoy no hay hook temático — usa el hook de apertura o escribe el tuyo en la pestaña "Mi Idea".',
       ideaHeading: '¿Cuál es tu idea?',
       ideaSubtitle: 'Si decidiste usar un hook propio, escríbelo abajo:',
@@ -1203,9 +1204,11 @@ export default function DailyMissionView({
 
                 {activeHookTab === 1 && (
                   <div className="space-y-3">
-                    <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">
-                      {textDict.dailyHookHeading}
-                    </h4>
+                    {hookCategoryLabel && (
+                      <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">
+                        {textDict.dailyHookHeadingPrefix} {hookCategoryLabel}
+                      </h4>
+                    )}
                     {hookOptions.length > 0 ? (
                       <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
                         {hookOptions.map((option, idx) => (

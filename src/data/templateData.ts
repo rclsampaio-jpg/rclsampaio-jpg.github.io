@@ -369,6 +369,26 @@ export function getHookOptionsForDay(dayNumber: number, lang: Language, startDat
   return set[lang] && set[lang].length > 0 ? set[lang] : set.pt;
 }
 
+// Category name for the themed hook set of the day (matches HOOK_OPTIONS_BY_TYPE
+// above), used to tell the user which kind of hook they're looking at today.
+// Null for day types with no themed set (RestartIntention, Rest, Presence).
+const HOOK_CATEGORY_LABEL: Record<DayType, Record<Language, string> | null> = {
+  [DayType.RestartIntention]: null,
+  [DayType.Truth]: { pt: 'Verdade', en: 'Truth', es: 'Verdad' },
+  [DayType.Storytelling]: { pt: 'Storytelling', en: 'Storytelling', es: 'Storytelling' },
+  [DayType.ContrarianThinking]: { pt: 'Pensamento Contrário', en: 'Contrarian Thinking', es: 'Pensamiento Contrario' },
+  [DayType.Rest]: null,
+  [DayType.Presence]: null,
+  [DayType.Reflection]: { pt: 'Reflexão', en: 'Reflection', es: 'Reflexión' }
+};
+
+export function getHookCategoryLabel(dayNumber: number, lang: Language, startDate?: string | null): string | null {
+  const type = getDayType(dayNumber, startDate);
+  const labels = HOOK_CATEGORY_LABEL[type];
+  if (!labels) return null;
+  return labels[lang] || labels.pt;
+}
+
 // Real recorded daily audio, one file per day, added incrementally.
 // Days not listed here fall back to the placeholder ambience sound below.
 const DAILY_AUDIO_FILES: Record<number, string> = {
