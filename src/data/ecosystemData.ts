@@ -104,9 +104,9 @@ export const DEFAULT_MENTORING_CONFIG: MentoringConfig = {
     es: 'Reserva una Sesión Privada de Mentoría 1 a 1'
   },
   description: {
-    pt: 'Agende um encontro exclusivo de 45 minutos com o criador do RenaSer para realizar uma calibração postural na lente, auditar seus ganchos de vídeo, estruturar sua linha editorial única e vencer travas psicológicas profundas.',
-    en: 'Schedule an exclusive 45-minute private session with the creator of RenaSer to calibrate your on-camera posture, audit your hook structures, align your unique content pillars, and dismantle deep-seated blocks.',
-    es: 'Agenda un encuentro exclusivo de 45 minutos con el creador de RenaSer para calibrar tu postura frente a la lente, auditar tus ganchos de video, estructurar tu línea editorial única y vencer bloqueos psicológicos profundos.'
+    pt: 'Agende um encontro estratégico de 1h20 minutos com a Renata, mentora e desenvolvedora do RenaSer. Você vai sair da sessão com uma calibração de postura e posicionamento, auditar seus vídeos e estruturar e identificar seus padrões de comportamento que seguem criando travas psicológicas profundas.',
+    en: "Book a strategic 1h20 session with Renata, mentor and creator of RenaSer. You'll leave the session with a posture and positioning calibration, an audit of your videos, and a clear map of the behavior patterns still creating deep psychological blocks.",
+    es: 'Agenda un encuentro estratégico de 1h20 con Renata, mentora y creadora de RenaSer. Saldrás de la sesión con una calibración de postura y posicionamiento, una auditoría de tus videos, y la identificación de los patrones de comportamiento que siguen creando bloqueos psicológicos profundos.'
   },
   ctaText: {
     pt: 'Agendar Sessão VIP de Mentoria',
@@ -191,7 +191,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs — acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '5';
+const ECOSYSTEM_CONFIG_VERSION = '6';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');

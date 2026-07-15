@@ -111,9 +111,8 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       joinBtn: 'Entrar na Comunidade Agora',
       platformLabel: 'Plataforma Hospedeira',
       mentoringTitle: 'Acelere sua Destrava Frente às Lentes',
-      mentoringBullet1: '45 minutos de Zoom particular com a criadora',
-      mentoringBullet2: 'Calibração profunda de postura na câmera',
-      mentoringBullet3: 'Auditoria da arquitetura dos seus ganchos',
+      mentoringBullet1: '1h20 Vídeo chamada Online - 1:1 Estratégica & Exclusiva',
+      mentoringBullet2: 'Investimento especial para quem faz parte do EcoSistema RenaSer',
       bookingCtaTitle: 'Agendar Sessão Particular',
       bookingCtaSub: 'Quer ir mais rápido? Agende um encontro VIP particular para refinar sua postura, auditar seus ganchos de vídeo e destravar medos invisíveis.',
       supportTitle: 'Dicas e Direcionamentos',
@@ -141,9 +140,8 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       joinBtn: 'Join the Community Now',
       platformLabel: 'Hosted Platform',
       mentoringTitle: 'Accelerate Your On-Camera Posture',
-      mentoringBullet1: '45 minutes Private Zoom with Creator',
-      mentoringBullet2: 'In-depth on-camera posture calibration',
-      mentoringBullet3: 'Hook-line content architecture audit',
+      mentoringBullet1: '1h20 Online Video Call - Strategic & Exclusive 1:1',
+      mentoringBullet2: 'Special investment for members of the RenaSer Ecosystem',
       bookingCtaTitle: 'Book a Private Session',
       bookingCtaSub: 'Want to go faster? Book a private VIP consultation to audit your content hooks, calibrate your camera posture, and dismantle invisible bottlenecks.',
       supportTitle: 'Tips & Guidance',
@@ -171,9 +169,8 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       joinBtn: 'Unirse a la Comunidad Ahora',
       platformLabel: 'Plataforma Hospedera',
       mentoringTitle: 'Acelera Tu Postura Frente a la Cámara',
-      mentoringBullet1: '45 minutos de Zoom privado con la creadora',
-      mentoringBullet2: 'Calibración profunda de postura en cámara',
-      mentoringBullet3: 'Auditoría de la arquitectura de tus ganchos',
+      mentoringBullet1: '1h20 Videollamada Online - Estratégica y Exclusiva 1:1',
+      mentoringBullet2: 'Inversión especial para quienes forman parte del EcoSistema RenaSer',
       bookingCtaTitle: 'Reservar Sesión Privada',
       bookingCtaSub: '¿Quieres ir más rápido? Agenda un encuentro VIP privado para refinar tu postura, auditar tus ganchos de video y destrabar miedos invisibles.',
       supportTitle: 'Consejos y Guías',
@@ -271,10 +268,6 @@ export default function CommunityView({ lang }: CommunityViewProps) {
               <div className="flex gap-2 items-center">
                 <div className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
                 <span>{trans.mentoringBullet2}</span>
-              </div>
-              <div className="flex gap-2 items-center">
-                <div className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
-                <span>{trans.mentoringBullet3}</span>
               </div>
             </div>
           </div>
