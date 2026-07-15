@@ -21,7 +21,7 @@ export const DEFAULT_COMMUNITY_CONFIG: CommunityConfig = {
     en: 'Access VIP Members Area',
     es: 'Acceder al Área de Miembros VIP'
   },
-  joinLink: 'https://dashboard.kiwify.com',
+  joinLink: 'https://pay.kiwify.com.br/7ViiKiH',
   buttonColor: '#A35D68',
   image: '',
   platform: 'Kiwify'
@@ -177,7 +177,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs — acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '2';
+const ECOSYSTEM_CONFIG_VERSION = '3';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');
