@@ -573,7 +573,7 @@ export default function DailyMissionView({
       tabOpenLabel: 'Abertura',
       tabDailyLabel: 'Hook do Dia',
       tabIdeaLabel: 'Minha Ideia',
-      openHookHeading: 'Hoje usaremos ganchos de ação',
+      openHookHeading: 'Use uma dessas variedades de ação pra começar o seu vídeo',
       dailyHookHeadingPrefix: 'Hoje usaremos ganchos de',
       noDailyHookFallback: 'Hoje não tem hook temático — use o hook de abertura ou escreva o seu na aba "Minha Ideia".',
       ideaHeading: 'Qual a sua ideia?',
