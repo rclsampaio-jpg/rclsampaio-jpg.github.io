@@ -6,7 +6,7 @@
 import { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  Play, Pause, Copy, Check, Star, ArrowRight, ArrowLeft, Heart, Sparkles,
+  Play, Pause, Copy, Check, Star, ArrowRight, ArrowLeft, Heart, Sparkles, ThumbsUp, ThumbsDown,
   Info, Compass, HelpCircle, X, BookOpen, Smile, Wind, Award,
   RotateCcw, Lock
 } from 'lucide-react';
@@ -321,7 +321,7 @@ export default function DailyMissionView({
   const [showSurpriseLetter, setShowSurpriseLetter] = useState(false);
 
   // Audio player card local UI state
-  const [audioLiked, setAudioLiked] = useState(false);
+  const [audioRating, setAudioRating] = useState<'loved' | 'liked' | 'disliked' | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -551,6 +551,9 @@ export default function DailyMissionView({
       lockedDesc: 'Este passo libera amanhã. Aproveite hoje pra descansar — você já cumpriu sua promessa.',
       backToHome: 'Voltar pro Início',
       audioTitle: 'Mensagem da Renata',
+      ratingLoved: 'Amei',
+      ratingLiked: 'Gostei',
+      ratingDisliked: 'Não gostei',
       audioSub: 'Sintonize seu estado emocional antes de agir',
       audioFinished: '✓ Sintonização Concluída',
       audioListen: 'Ouvir Renata',
@@ -627,6 +630,9 @@ export default function DailyMissionView({
       lockedDesc: 'This step unlocks tomorrow. Take today to rest — you already kept your promise.',
       backToHome: 'Back to Home',
       audioTitle: "Renata's Message",
+      ratingLoved: 'Loved it',
+      ratingLiked: 'Liked it',
+      ratingDisliked: "Didn't like it",
       audioSub: 'Tune into your emotional state before taking action',
       audioFinished: '✓ Calibration Complete',
       audioListen: 'Listen to Renata',
@@ -703,6 +709,9 @@ export default function DailyMissionView({
       lockedDesc: 'Este paso se libera mañana. Aprovecha hoy para descansar — ya cumpliste tu promesa.',
       backToHome: 'Volver al Inicio',
       audioTitle: 'Mensaje de Renata',
+      ratingLoved: 'Me encantó',
+      ratingLiked: 'Me gustó',
+      ratingDisliked: 'No me gustó',
       audioSub: 'Sintoniza tu estado emocional antes de actuar',
       audioFinished: '✓ Sintonización Completada',
       audioListen: 'Escuchar a Renata',
@@ -1073,12 +1082,29 @@ export default function DailyMissionView({
                   <span className="text-[9px] font-sans tracking-[0.2em] text-rosegold uppercase font-extrabold block">
                     {textDict.step01} • {textDict.audioTitle}
                   </span>
-                  <button
-                    onClick={() => setAudioLiked((v) => !v)}
-                    className="h-9 w-9 shrink-0 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
-                  >
-                    <Heart className={`h-4 w-4 transition-colors ${audioLiked ? 'text-rosegold fill-current' : 'text-slate-400'}`} />
-                  </button>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button
+                      onClick={() => setAudioRating((v) => (v === 'loved' ? null : 'loved'))}
+                      title={textDict.ratingLoved}
+                      className="h-9 w-9 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
+                    >
+                      <Heart className={`h-4 w-4 transition-colors ${audioRating === 'loved' ? 'text-rosegold fill-current' : 'text-slate-400'}`} />
+                    </button>
+                    <button
+                      onClick={() => setAudioRating((v) => (v === 'liked' ? null : 'liked'))}
+                      title={textDict.ratingLiked}
+                      className="h-9 w-9 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
+                    >
+                      <ThumbsUp className={`h-4 w-4 transition-colors ${audioRating === 'liked' ? 'text-emerald-500 fill-current' : 'text-slate-400'}`} />
+                    </button>
+                    <button
+                      onClick={() => setAudioRating((v) => (v === 'disliked' ? null : 'disliked'))}
+                      title={textDict.ratingDisliked}
+                      className="h-9 w-9 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
+                    >
+                      <ThumbsDown className={`h-4 w-4 transition-colors ${audioRating === 'disliked' ? 'text-slate-600 dark:text-slate-300 fill-current' : 'text-slate-400'}`} />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Title + duration */}
