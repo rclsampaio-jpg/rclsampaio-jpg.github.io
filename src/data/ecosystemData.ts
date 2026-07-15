@@ -34,10 +34,10 @@ export const DEFAULT_SUPPORT_CONFIG: SupportConfig = {
   websiteUrl: 'https://suporte.renaser.co',
   helpCenterUrl: 'https://ajuda.renaser.co',
   weeklyVideoUrl: 'https://www.youtube.com/watch?v=pFTyrgrGycA&t=5s',
-  emergencyMessage: {
-    pt: 'Se você estiver sentindo ansiedade intensa, paralisia total antes de gravar ou uma crise de autocrítica hoje, use nosso SOS Emocional abaixo para calibrar seu ritmo imediatamente, ou fale diretamente com um mentor pelo nosso WhatsApp de emergência.',
-    en: 'If you are experiencing intense anxiety, complete camera paralysis, or an acute self-criticism spike today, please trigger our Emotional SOS below to calibrate your breathing, or speak directly to a mentor via our emergency WhatsApp.',
-    es: 'Si estás sintiendo ansiedad intensa, parálisis total antes de grabar o una crisis de autocrítica aguda hoy, usa nuestro SOS Emocional a continuación para calibrar tu respiración, o habla directamente con un mentor por nuestro WhatsApp de emergencia.'
+  upliftMessage: {
+    pt: 'O que você alcançou hoje? Já compartilhou na comunidade? Vem celebrar seus pequenos avanços com a gente!',
+    en: 'What did you achieve today? Have you shared it with the community yet? Come celebrate your small wins with us!',
+    es: '¿Qué lograste hoy? ¿Ya lo compartiste en la comunidad? ¡Ven a celebrar tus pequeños avances con nosotros!'
   },
   faqs: [
     {
@@ -177,7 +177,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs — acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '3';
+const ECOSYSTEM_CONFIG_VERSION = '4';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');

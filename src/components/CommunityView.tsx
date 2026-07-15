@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Users, HelpCircle, Mail, Phone, ExternalLink, Calendar, Sparkles,
-  ArrowUpRight, ShieldAlert, CheckCircle2, MessageSquare, Play
+  ArrowUpRight, CheckCircle2, MessageSquare, Play
 } from 'lucide-react';
 import { Language, CommunityConfig, SupportConfig, MentoringConfig } from '../types';
 import { loadCommunityConfig, loadSupportConfig, loadMentoringConfig } from '../data/ecosystemData';
@@ -95,7 +95,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       bookingCtaSub: 'Quer ir mais rápido? Agende um encontro VIP particular para refinar sua postura, auditar seus ganchos de vídeo e destravar medos invisíveis.',
       supportTitle: 'Dicas e Direcionamentos',
       supportDesc: 'Se você estiver com alguma dúvida técnica, problema de acesso ou precisar de orientação extra, nosso time está pronto para te apoiar.',
-      emergencyMessageHeader: 'MENSAGEM DE EMERGÊNCIA',
+      upliftMessageHeader: 'VEM CELEBRAR',
       weeklyVideoTitle: 'Vídeo da Semana',
       weeklyVideoDesc: 'Um vídeo novo toda semana com dicas práticas para sua jornada de visibilidade.',
       weeklyVideoWatch: 'Assistir no YouTube',
@@ -123,7 +123,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       bookingCtaSub: 'Want to go faster? Book a private VIP consultation to audit your content hooks, calibrate your camera posture, and dismantle invisible bottlenecks.',
       supportTitle: 'Tips & Guidance',
       supportDesc: 'If you have any technical questions, access issues, or require custom guidance, our dedicated support crew is ready to assist you.',
-      emergencyMessageHeader: 'EMERGENCY STATEMENT',
+      upliftMessageHeader: 'COME CELEBRATE',
       weeklyVideoTitle: 'Video of the Week',
       weeklyVideoDesc: 'A new video every week with practical tips for your visibility journey.',
       weeklyVideoWatch: 'Watch on YouTube',
@@ -151,7 +151,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       bookingCtaSub: '¿Quieres ir más rápido? Agenda un encuentro VIP privado para refinar tu postura, auditar tus ganchos de video y destrabar miedos invisibles.',
       supportTitle: 'Consejos y Guías',
       supportDesc: 'Si tienes alguna duda técnica, problema de acceso o necesitas orientación adicional, nuestro equipo está listo para apoyarte.',
-      emergencyMessageHeader: 'MENSAJE DE EMERGENCIA',
+      upliftMessageHeader: 'VEN A CELEBRAR',
       weeklyVideoTitle: 'Video de la Semana',
       weeklyVideoDesc: 'Un video nuevo cada semana con consejos prácticos para tu camino de visibilidad.',
       weeklyVideoWatch: 'Ver en YouTube',
@@ -284,17 +284,17 @@ export default function CommunityView({ lang }: CommunityViewProps) {
           </p>
         </div>
 
-        {/* Support Emergency Board if active */}
-        {support.emergencyMessage && (
-          <div className="bg-rose-50/40 dark:bg-[#1E1715]/40 border border-rose-100/35 dark:border-rosegold/10 p-5 rounded-2xl flex gap-3.5 items-start relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-rose-500" />
-            <ShieldAlert className="h-5 w-5 text-rose-500 shrink-0 mt-0.5 animate-pulse" />
+        {/* Uplifting Celebration Board */}
+        {support.upliftMessage && (
+          <div className="bg-amber-50/50 dark:bg-[#1E1715]/40 border border-accentgold/25 dark:border-rosegold/10 p-5 rounded-2xl flex gap-3.5 items-start relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-accentgold" />
+            <Sparkles className="h-5 w-5 text-accentgold shrink-0 mt-0.5 animate-pulse" />
             <div className="space-y-1 text-xs">
-              <span className="font-sans font-bold uppercase tracking-widest text-rose-600 dark:text-rose-400">
-                {trans.emergencyMessageHeader}
+              <span className="font-sans font-bold uppercase tracking-widest text-amber-700 dark:text-accentgold">
+                {trans.upliftMessageHeader}
               </span>
               <p className="text-slate-600 dark:text-slate-300 italic font-medium leading-relaxed">
-                "{support.emergencyMessage[lang] || support.emergencyMessage['pt']}"
+                "{support.upliftMessage[lang] || support.upliftMessage['pt']}"
               </p>
             </div>
           </div>

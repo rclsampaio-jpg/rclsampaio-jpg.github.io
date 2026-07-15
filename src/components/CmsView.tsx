@@ -1535,7 +1535,7 @@ export default function CmsView({
                 <PhoneCall className="h-5 w-5 text-rosegold" /> Suporte & FAQs
               </h1>
               <p className="text-xs text-slate-400 dark:text-slate-500">
-                Configure canais diretos de emergência no WhatsApp e monte uma lista dinâmica de FAQs.
+                Configure canais diretos de suporte no WhatsApp e monte uma lista dinâmica de FAQs.
               </p>
             </div>
 
@@ -1560,11 +1560,11 @@ export default function CmsView({
               </div>
 
               <div className="space-y-1 sm:col-span-2">
-                <label className="text-[10px] font-bold uppercase text-slate-400">Mensagem Curta de SOS / Emergência (PT)</label>
+                <label className="text-[10px] font-bold uppercase text-slate-400">Mensagem de Celebração / Uplifting (PT)</label>
                 <textarea 
                   rows={2}
-                  value={support.emergencyMessage.pt}
-                  onChange={e => setSupport({ ...support, emergencyMessage: { ...support.emergencyMessage, pt: e.target.value } })}
+                  value={support.upliftMessage.pt}
+                  onChange={e => setSupport({ ...support, upliftMessage: { ...support.upliftMessage, pt: e.target.value } })}
                   className="w-full bg-slate-50 dark:bg-warmbrown border p-2.5 rounded-xl text-xs"
                 />
               </div>

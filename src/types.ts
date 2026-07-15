@@ -150,7 +150,7 @@ export interface SupportConfig {
   websiteUrl: string;
   helpCenterUrl: string;
   weeklyVideoUrl: string; // YouTube link, swapped out every week
-  emergencyMessage: Record<Language, string>;
+  upliftMessage: Record<Language, string>;
   faqs: Array<{
     id: string;
     question: Record<Language, string>;
