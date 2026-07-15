@@ -99,6 +99,283 @@ const titlesByWeekDay: Record<DayType, Record<Language, string>> = {
   }
 };
 
+// Weekly showcase of hook options, grouped by day-of-week theme (DayType).
+// Adapted for the Brazilian creator market (not a literal translation) —
+// tone, references and slang adjusted to what performs on IG/TikTok BR today.
+const HOOK_OPTIONS_BY_TYPE: Record<DayType, Record<Language, string[]>> = {
+  [DayType.RestartIntention]: {
+    pt: [
+      'Colocar o capuz na cabeça bem no início do vídeo',
+      '"Estragar" a maquiagem ou o delineado de propósito',
+      'Deixar o óculos escuro escorregar enquanto você fala',
+      'Pegar a bolsa como se fosse sair, mas parar pra falar',
+      'Prender o cabelo enquanto começa a falar',
+      'Enrolar uma mecha do cabelo enquanto fala com a câmera',
+      'Começar o vídeo dentro do carro',
+      'Segurar uma comida que você "tá quase" comendo, sem comer de fato',
+      'Um tremidinho de câmera bem no início, como se tivesse acabado de apoiar o celular',
+      'Passar um gloss enquanto fala',
+      'Mexer num café gelado enquanto fala',
+      'Usar green screen com um mood board estético atrás',
+      'Maquiagem pela metade, com a esponjinha ainda na mão',
+      'Passar perfume bem quando começa a falar'
+    ],
+    en: [
+      'Pulling a hoodie over your head as the video starts',
+      'Ruining your makeup / eyeliner on purpose',
+      'Dropping your sunglasses as you speak',
+      "Grabbing your bag like you're about to leave, then pausing to talk",
+      'Tying your hair up as you start talking',
+      'Curling one side of your hair while talking to the camera',
+      'Starting the video off in your car',
+      "Holding something you're *about* to eat while talking, but not actually eating it",
+      'Slight camera shake right when the video starts, as if you JUST set your phone down to film',
+      'Applying lipgloss while talking',
+      'Stirring an iced coffee while talking',
+      'Using a green screen with an aesthetic visual collage',
+      'Half-done makeup look with a beauty blender still in hand',
+      'Applying perfume right as you start talking'
+    ],
+    es: [
+      'Ponerte la capucha justo cuando empieza el video',
+      'Arruinar tu maquillaje / delineado a propósito',
+      'Dejar caer tus lentes de sol mientras hablas',
+      'Agarrar tu bolso como si fueras a salir, y pausar para hablar',
+      'Recogerte el pelo mientras empiezas a hablar',
+      'Enrular un mechón de pelo mientras le hablas a la cámara',
+      'Empezar el video dentro del auto',
+      'Sostener algo que estás "por" comer mientras hablas, sin comerlo realmente',
+      'Un pequeño temblor de cámara justo al inicio, como si acabaras de apoyar el celular',
+      'Aplicarte gloss mientras hablas',
+      'Revolver un café helado mientras hablas',
+      'Usar pantalla verde con un collage estético de fondo',
+      'Maquillaje a medio hacer, con la esponjita todavía en la mano',
+      'Ponerte perfume justo cuando empiezas a hablar'
+    ]
+  },
+  [DayType.Truth]: {
+    pt: [
+      'Aqui ninguém é pessoa da manhã!!! Chega de só reclamar, bora fazer alguma coisa sobre isso',
+      'Se você já é expert em maquiagem, pode rolar o vídeo, esse não é pra você',
+      'Não repara na pilha de roupa jogada na cadeira, é esse o look que a gente vai usar',
+      'Quem que fica bem de roxo mesmo? kkkk',
+      'Talvez você não queira assistir esse vídeo se ___',
+      'Isso só vai fazer sentido se você andou se sentindo travada ultimamente',
+      'Faça o que fizer, não salva esse vídeo a não ser que você queira ___',
+      'Se você não quer que sua vida fique mais fácil, pode pular esse',
+      'Esse vídeo NÃO é pra você se ___',
+      'Passa reto se você for ___ (tipo, uma garota nos seus 20 e poucos, viciada em reality show)',
+      'Se você quer continuar ___ (travada, sem grana, etc), continua rolando',
+      'NÃO VAI pra ___ a não ser que você realmente queira ser seguida de volta 24 horas',
+      'Não julga meu ___, mas eu precisava contar'
+    ],
+    en: [
+      "We are not morning people around here!!! Let's not even talk about it, let's just do something about it",
+      "If you're already a makeup guru, scroll away this is not for you",
+      "Do not look at the pile of clothes on my chair - this is the outfit we're going with",
+      'Who even looks good in the color purple???',
+      "You might not want to watch this if ___",
+      "This will only make sense if you've been feeling stuck",
+      "Whatever you do, don't save this unless you want ___",
+      "If you don't want your life to get easier, skip this",
+      "This is NOT for you if ___",
+      "Scroll past this video unless you're ___ (a girl in her 20s, obsessed with reality TV)",
+      'If you want to stay ___ (broke, stuck, etc) keep scrolling',
+      "DON'T GO to ___ unless you literally want to be followed back 24/7",
+      "Don't judge my ___ but I just had to tell you"
+    ],
+    es: [
+      '¡¡¡Acá nadie es persona de la mañana!!! Dejemos de hablar y hagamos algo al respecto',
+      'Si ya sos experta en maquillaje, seguí de largo, este no es para vos',
+      'No mires la pila de ropa en mi silla, ese es el outfit que vamos a usar',
+      '¿A quién le queda bien el color violeta? jaja',
+      'Tal vez no quieras ver este video si ___',
+      'Esto solo va a tener sentido si te has sentido estancada últimamente',
+      'Hagas lo que hagas, no guardes esto a menos que quieras ___',
+      'Si no querés que tu vida se te haga más fácil, saltá este video',
+      'Este video NO es para vos si ___',
+      'Pasá de largo si sos ___ (una chica en sus 20, obsesionada con los realities)',
+      'Si querés seguir ___ (estancada, sin plata, etc) seguí scrolleando',
+      'NO VAYAS a ___ a menos que realmente quieras que te sigan de vuelta 24/7',
+      'No juzgues mi ___, pero tenía que contarlo'
+    ]
+  },
+  [DayType.Storytelling]: {
+    pt: [
+      'Se eu pudesse sentar com uma versão mais nova de mim, eu diria ___',
+      'Hoje eu tinha [idade] anos quando percebi...',
+      'A parte de crescer que ninguém fala é ___',
+      'Isso não é fácil de dizer, mas ___',
+      'Deixa eu ser aquela vozinha na sua cabeça por um segundo e te contar ___',
+      'Isso é uma coisa que eu só diria pra alguém que eu realmente me importo',
+      'Se a gente fosse melhores amigas, eu diria bem na sua cara que ___',
+      'Se a gente tivesse num grupo só nosso, eu mandaria ___',
+      'Eu quase nunca compartilho coisas assim, mas ___',
+      'Eu não sou de mostrar só a parte boa da minha vida aqui, então, sendo bem real com vocês, ___',
+      'Eu queria compartilhar isso há um tempo porque eu tô tentando me abrir mais, mas ___',
+      'Isso provavelmente vai fazer eu parecer fraca, mas ___',
+      'Essa é uma parte da minha história que eu não costumo compartilhar, mas ___'
+    ],
+    en: [
+      "If I could sit down with a younger version of you, I'd say ___",
+      'I was today years old when I realized...',
+      'The part of growing up that no one talks about is ___',
+      "This isn't an easy thing to say but ___",
+      'Let me be the little voice in your head for a second and tell you ___',
+      "This is something I'd only say to someone I'd care about",
+      "If we were best friends I'd tell you right to your face that ___",
+      "If we were in a group chat together I'd send you ___",
+      'I almost never share things like this but ___',
+      "I'm not someone who wants to only show the good parts of my life on here so to be so real with you guys, ___",
+      "I've been wanting to share this because I'm trying to get better at opening up but ___",
+      'This is probably going to make me sound weak but ___',
+      "This is a part of my story I don't usually share but ___"
+    ],
+    es: [
+      'Si pudiera sentarme con una versión más joven de vos, te diría ___',
+      'Hoy tuve [edad] años cuando me di cuenta de...',
+      'La parte de crecer de la que nadie habla es ___',
+      'Esto no es fácil de decir, pero ___',
+      'Dejame ser esa vocecita en tu cabeza por un segundo y contarte ___',
+      'Esto es algo que solo le diría a alguien que realmente me importa',
+      'Si fuéramos mejores amigas, te diría en la cara que ___',
+      'Si estuviéramos en un grupo juntas, te mandaría ___',
+      'Casi nunca comparto cosas así, pero ___',
+      'No soy de las que solo muestran la parte linda de mi vida acá, así que siendo bien real con ustedes, ___',
+      'Hace tiempo quería compartir esto porque estoy tratando de abrirme más, pero ___',
+      'Esto probablemente me haga sonar débil, pero ___',
+      'Esta es una parte de mi historia que no suelo compartir, pero ___'
+    ]
+  },
+  [DayType.ContrarianThinking]: {
+    pt: [
+      'A gente tá aposentando a ideia de que ___',
+      'Quem foi que disse que ___ claramente não ___',
+      'Pouca gente tá questionando ___',
+      'A gente comprou a ideia de que ___, mas não é bem assim, então vamos ___',
+      'A maior mentira que a gente normalizou é ___',
+      'Podemos concordar em rejeitar a ideia de que ___?',
+      'Tem uma coisa sobre ___ que não me cai bem',
+      'O jeito que a gente pensa sobre ___ tá muito errado',
+      'Levanta a mão se você tá começando a repensar ___',
+      'Isso pode estragar ___ pra você, mas ___',
+      'Acorda! A gente tá reescrevendo a regra que diz ___',
+      'Você não tá cansada de ___?',
+      'A gente não assina mais em baixo dessa ideia de que ___'
+    ],
+    en: [
+      "We're retiring the idea that ___",
+      "Whoever said ___ clearly wasn't ___",
+      'Not enough people are questioning ___',
+      "We've been sold the idea that ___ but it's not so, let's ___",
+      "The biggest lie we've normalized is ___",
+      'Can we agree to reject the idea that ___',
+      "Something about ___ doesn't sit right with me",
+      'The way we think about ___ is so off',
+      "Raise your hand if you're starting to rethink ___",
+      "This might ruin ___ for you but ___",
+      "Wake up!! We're rewriting the rule that says ___",
+      "Aren't you tired of ___",
+      "We're no longer subscribing to the idea that ___"
+    ],
+    es: [
+      'Estamos jubilando la idea de que ___',
+      'Quien haya dicho que ___ claramente no ___',
+      'Muy poca gente está cuestionando ___',
+      'Nos vendieron la idea de que ___ pero no es así, así que ___',
+      'La mentira más grande que normalizamos es ___',
+      '¿Podemos ponernos de acuerdo en rechazar la idea de que ___?',
+      'Hay algo sobre ___ que no me cierra',
+      'La forma en que pensamos sobre ___ está muy mal',
+      'Levantá la mano si estás empezando a repensar ___',
+      'Esto puede arruinarte ___ pero ___',
+      '¡Despertá! Estamos reescribiendo la regla que dice ___',
+      '¿No estás cansada de ___?',
+      'Ya no suscribimos a la idea de que ___'
+    ]
+  },
+  [DayType.Rest]: { pt: [], en: [], es: [] },
+  [DayType.Presence]: {
+    pt: [
+      'Colocar o capuz na cabeça bem no início do vídeo',
+      '"Estragar" a maquiagem ou o delineado de propósito',
+      'Deixar o óculos escuro escorregar enquanto você fala',
+      'Prender o cabelo enquanto começa a falar',
+      'Começar o vídeo dentro do carro',
+      'Um tremidinho de câmera bem no início, como se tivesse acabado de apoiar o celular',
+      'Mexer num café gelado enquanto fala',
+      'Maquiagem pela metade, com a esponjinha ainda na mão',
+      'Passar perfume bem quando começa a falar',
+      'Tirar a maquiagem e se olhar no espelho enquanto fala'
+    ],
+    en: [
+      'Pulling a hoodie over your head as the video starts',
+      'Ruining your makeup / eyeliner on purpose',
+      'Dropping your sunglasses as you speak',
+      'Tying your hair up as you start talking',
+      'Starting the video off in your car',
+      'Slight camera shake right when the video starts, as if you JUST set your phone down to film',
+      'Stirring an iced coffee while talking',
+      'Half-done makeup look with a beauty blender still in hand',
+      'Applying perfume right as you start talking',
+      'Wiping off your makeup and looking into a mirror as you talk'
+    ],
+    es: [
+      'Ponerte la capucha justo cuando empieza el video',
+      'Arruinar tu maquillaje / delineado a propósito',
+      'Dejar caer tus lentes de sol mientras hablas',
+      'Recogerte el pelo mientras empiezas a hablar',
+      'Empezar el video dentro del auto',
+      'Un pequeño temblor de cámara justo al inicio, como si acabaras de apoyar el celular',
+      'Revolver un café helado mientras hablas',
+      'Maquillaje a medio hacer, con la esponjita todavía en la mano',
+      'Ponerte perfume justo cuando empiezas a hablar',
+      'Sacarte el maquillaje y mirarte al espejo mientras hablas'
+    ]
+  },
+  [DayType.Reflection]: {
+    pt: [
+      'Se eu pudesse sentar com uma versão mais nova de mim, eu diria ___',
+      'Hoje eu tinha [idade] anos quando percebi...',
+      'A parte de crescer que ninguém fala é ___',
+      'Deixa eu ser aquela vozinha na sua cabeça por um segundo e te contar ___',
+      'Se a gente fosse melhores amigas, eu diria bem na sua cara que ___',
+      'Eu quase nunca compartilho coisas assim, mas ___',
+      'Eu não sou de mostrar só a parte boa da minha vida aqui, então, sendo bem real com vocês, ___',
+      'Isso provavelmente vai fazer eu parecer fraca, mas ___',
+      'Essa é uma parte da minha história que eu não costumo compartilhar, mas ___'
+    ],
+    en: [
+      "If I could sit down with a younger version of you, I'd say ___",
+      'I was today years old when I realized...',
+      'The part of growing up that no one talks about is ___',
+      'Let me be the little voice in your head for a second and tell you ___',
+      "If we were best friends I'd tell you right to your face that ___",
+      'I almost never share things like this but ___',
+      "I'm not someone who wants to only show the good parts of my life on here so to be so real with you guys, ___",
+      'This is probably going to make me sound weak but ___',
+      "This is a part of my story I don't usually share but ___"
+    ],
+    es: [
+      'Si pudiera sentarme con una versión más joven de vos, te diría ___',
+      'Hoy tuve [edad] años cuando me di cuenta de...',
+      'La parte de crecer de la que nadie habla es ___',
+      'Dejame ser esa vocecita en tu cabeza por un segundo y contarte ___',
+      'Si fuéramos mejores amigas, te diría en la cara que ___',
+      'Casi nunca comparto cosas así, pero ___',
+      'No soy de las que solo muestran la parte linda de mi vida acá, así que siendo bien real con ustedes, ___',
+      'Esto probablemente me haga sonar débil, pero ___',
+      'Esta es una parte de mi historia que no suelo compartir, pero ___'
+    ]
+  }
+};
+
+export function getHookOptionsForDay(dayNumber: number, lang: Language): string[] {
+  const type = getDayType(dayNumber);
+  const set = HOOK_OPTIONS_BY_TYPE[type];
+  return set[lang] && set[lang].length > 0 ? set[lang] : set.pt;
+}
+
 // Real recorded daily audio, one file per day, added incrementally.
 // Days not listed here fall back to the placeholder ambience sound below.
 const DAILY_AUDIO_FILES: Record<number, string> = {
