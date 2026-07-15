@@ -566,7 +566,7 @@ export default function DailyMissionView({
       hookTitle: 'Mensagem do Dia',
       scriptsTitle: '3 Exemplos de Roteiro Prático',
       exposureTitle: 'Ação de Exposição Externa',
-      reflectionTitle: 'Sua Reflexão Honesta',
+      reflectionTitle: 'E aí, como você tá se sentindo agora? Escreve pra descarregar e acompanhar seu progresso mais pra frente.',
       reflectionPlaceholder: 'Como você se sentiu hoje? Escreva com verdade sobre o medo, julgamento ou vitória ao realizar esta missão...',
       reflectionWarning: 'Escreva pelo menos uma frase curta para validar seu progresso.',
       completeBtn: 'Concluir Missão do Dia',
@@ -607,7 +607,8 @@ export default function DailyMissionView({
       progressLockTitle: 'Requisitos de Conclusão',
       statusTitle: 'Status do Dia',
       listenItem: '1. Ouvir a Mensagem da Renata',
-      promisesItem: '2. As 3 Promessas de Hoje',
+      promisesItem: '2. Gravações de Hoje',
+      recordingsLinkInstruction: 'Cole aqui o link dos 3 posts de hoje',
       completedStatus: 'Concluído',
       pendingStatus: 'Pendente',
       reflectionMoment: 'Momento de Reflexão:',
@@ -633,7 +634,7 @@ export default function DailyMissionView({
       hookTitle: "Today's Message",
       scriptsTitle: '3 Practical Script Examples',
       exposureTitle: 'External Exposure Action',
-      reflectionTitle: 'Your Honest Reflection',
+      reflectionTitle: 'So, how are you feeling right now? Write it out to let go, and track your progress later on.',
       reflectionPlaceholder: 'How did you feel today? Write honestly about the fear, judgment, or victory during this mission...',
       reflectionWarning: 'Write at least a short sentence to validate your progress.',
       completeBtn: 'Complete Today\'s Mission',
@@ -674,7 +675,8 @@ export default function DailyMissionView({
       progressLockTitle: 'Completion Requirements',
       statusTitle: 'Day Status',
       listenItem: "1. Listen to Renata's Message",
-      promisesItem: "2. Today's 3 Promises",
+      promisesItem: "2. Today's Recordings",
+      recordingsLinkInstruction: "Paste the link to today's 3 posts here",
       completedStatus: 'Completed',
       pendingStatus: 'Pending',
       reflectionMoment: 'Reflection Moment:',
@@ -700,7 +702,7 @@ export default function DailyMissionView({
       hookTitle: 'Mensagem do Dia',
       scriptsTitle: '3 Ejemplos de Guiones Prácticos',
       exposureTitle: 'Acción de Exposición Externa',
-      reflectionTitle: 'Tu Reflexión Sincera',
+      reflectionTitle: '¿Y bueno, cómo te sientes ahora? Escribe para desahogarte y seguir tu progreso más adelante.',
       reflectionPlaceholder: '¿Cómo te sentiste hoy? Escribe con honestidad sobre el miedo, juicio o victoria al realizar esta misión...',
       reflectionWarning: 'Escribe al menos una frase corta para validar tu progreso.',
       completeBtn: 'Completar Misión del Día',
@@ -741,7 +743,8 @@ export default function DailyMissionView({
       progressLockTitle: 'Requisitos de Finalización',
       statusTitle: 'Estado del Día',
       listenItem: '1. Escuchar el Mensaje de Renata',
-      promisesItem: '2. Las 3 Promesas de Hoy',
+      promisesItem: '2. Grabaciones de Hoy',
+      recordingsLinkInstruction: 'Pega aquí el enlace de tus 3 publicaciones de hoy',
       completedStatus: 'Completado',
       pendingStatus: 'Pendiente',
       reflectionMoment: 'Momento de Reflexión:',
@@ -1314,32 +1317,25 @@ export default function DailyMissionView({
                     </span>
                   </div>
 
-                  {/* 3 mandatory proof-of-promise links */}
-                  <div className="space-y-3 pt-1">
+                  {/* 3 mandatory recording links */}
+                  <div className="space-y-2 pt-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-sans">
+                      {textDict.recordingsLinkInstruction}
+                    </p>
                     {([
-                      { key: 'inertia' as const, label: textDict.promise1Label },
-                      { key: 'confidence' as const, label: textDict.promise2Label },
-                      { key: 'evidence' as const, label: textDict.promise3Label }
-                    ]).map((item) => (
-                      <div key={item.key} className="bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 p-4 rounded-xl shadow-xs space-y-1.5">
-                        <label className="block text-[10px] font-sans text-rosegold font-bold uppercase tracking-wider">
-                          {item.label} — {textDict.linkRequiredTitle}
-                        </label>
-                        <input
-                          type="url"
-                          value={promiseLinks[item.key]}
-                          disabled={isCompleted}
-                          onChange={(e) => setPromiseLinks(p => ({ ...p, [item.key]: e.target.value }))}
-                          placeholder={textDict.linkRequiredPlaceholder}
-                          className="w-full text-xs bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3 text-slate-700 dark:text-slate-200 transition-all duration-300"
-                        />
-                        {!isCompleted && promiseLinks[item.key].trim().length === 0 && (
-                          <p className="text-[10px] text-[#D4AF37] flex items-center gap-1 font-sans font-medium">
-                            <Info className="h-3.5 w-3.5 shrink-0" />
-                            {textDict.linkRequiredWarning}
-                          </p>
-                        )}
-                      </div>
+                      { key: 'inertia' as const },
+                      { key: 'confidence' as const },
+                      { key: 'evidence' as const }
+                    ]).map((item, idx) => (
+                      <input
+                        key={item.key}
+                        type="url"
+                        value={promiseLinks[item.key]}
+                        disabled={isCompleted}
+                        onChange={(e) => setPromiseLinks(p => ({ ...p, [item.key]: e.target.value }))}
+                        placeholder={`${textDict.linkRequiredPlaceholder} (${idx + 1}/3)`}
+                        className="w-full text-xs bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-slate-200 transition-all duration-300 shadow-xs"
+                      />
                     ))}
                   </div>
                 </div>

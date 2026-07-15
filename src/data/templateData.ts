@@ -154,23 +154,33 @@ export function generateInitialDays(): MissionDay[] {
   return days;
 }
 
+// Bump this whenever generateInitialDays()'s template content changes, so
+// browsers with an already-cached renaser_days regenerate instead of showing
+// stale copy. NOTE: this also discards any day content hand-edited via
+// Creator Studio (CMS) — acceptable while content is still being tuned from
+// code, but worth knowing once the CMS is used for real day-by-day editing.
+const DAYS_CONTENT_VERSION = '2';
+
 export function loadDaysFromStorage(): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
-  if (stored) {
+  const storedVersion = localStorage.getItem('renaser_days_version');
+  if (stored && storedVersion === DAYS_CONTENT_VERSION) {
     try {
       return JSON.parse(stored);
     } catch (e) {
       console.error('Error parsing stored days, loading default', e);
     }
   }
-  
+
   const initial = generateInitialDays();
   localStorage.setItem('renaser_days', JSON.stringify(initial));
+  localStorage.setItem('renaser_days_version', DAYS_CONTENT_VERSION);
   return initial;
 }
 
 export function saveDaysToStorage(days: MissionDay[]): void {
   localStorage.setItem('renaser_days', JSON.stringify(days));
+  localStorage.setItem('renaser_days_version', DAYS_CONTENT_VERSION);
 }
 
 export function loadUserProgressFromStorage(): UserProgress {
