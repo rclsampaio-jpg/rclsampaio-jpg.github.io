@@ -987,6 +987,7 @@ export default function App() {
                 theme={theme}
                 onThemeChange={handleThemeChange}
                 onUpdateProgress={updateProgress}
+                isAdminUnlocked={isAdminUnlocked}
               />
             )}
 
