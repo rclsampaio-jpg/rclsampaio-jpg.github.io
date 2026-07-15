@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { MissionDay, Language, UserProgress, DayType } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
-import { adaptMessage } from '../utils/grammar';
+import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 
 // Chapter and Butterfly Imports
 import { getChapterForDay, getButterflyConfig } from '../data/chaptersData';
@@ -200,7 +200,7 @@ export default function HomeView({
     return !progress.completionHistory.includes(yesterday);
   })();
 
-  const prefGrammar = progress.grammarPreference || 'neutral';
+  const prefGrammar = resolveGrammarPreference(progress.grammarPreference);
 
   const rawContent = currentDay.content[lang] || currentDay.content['pt'] || {
     audioUrl: '',

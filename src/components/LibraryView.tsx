@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { Language, LibraryAsset, UserProgress } from '../types';
 import { loadLibraryAssets, saveLibraryAssets } from '../data/ecosystemData';
-import { adaptMessage } from '../utils/grammar';
+import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 
 interface LibraryViewProps {
   lang: Language;
@@ -21,7 +21,7 @@ interface LibraryViewProps {
 }
 
 export default function LibraryView({ lang, progress, onUpdateProgress }: LibraryViewProps) {
-  const prefGrammar = progress.grammarPreference || 'neutral';
+  const prefGrammar = resolveGrammarPreference(progress.grammarPreference);
   const [assets, setAssets] = useState<LibraryAsset[]>(() => loadLibraryAssets());
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');

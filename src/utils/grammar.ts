@@ -6,6 +6,18 @@
 import { Language } from '../types';
 
 /**
+ * The 'neutral' grammar forms (e.g. "pronte", "preparade") aren't standard
+ * Portuguese/Spanish words, so the Neutral option is hidden from Settings.
+ * This resolves any stored preference — including legacy 'neutral' values —
+ * down to a real word choice, defaulting to feminine.
+ */
+export function resolveGrammarPreference(
+  pref?: 'feminine' | 'masculine' | 'neutral'
+): 'feminine' | 'masculine' {
+  return pref === 'masculine' ? 'masculine' : 'feminine';
+}
+
+/**
  * Automatically adapts grammar in text based on user preference (feminine, masculine, neutral).
  * Supports the [feminine/masculine/neutral] bracket notation.
  * Example: "Você está [pronta/pronto/preparade] para voar."
@@ -15,7 +27,7 @@ import { Language } from '../types';
  */
 export function adaptMessage(
   text: string,
-  grammar: 'feminine' | 'masculine' | 'neutral' = 'neutral',
+  grammar: 'feminine' | 'masculine' | 'neutral' = 'feminine',
   lang: Language = 'pt'
 ): string {
   if (!text) return '';

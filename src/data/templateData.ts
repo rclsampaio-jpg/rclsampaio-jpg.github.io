@@ -380,6 +380,124 @@ function getAudioUrlForDay(dayNumber: number): string {
   return DAILY_AUDIO_FILES[dayNumber] || FALLBACK_AUDIO_URL;
 }
 
+// 30 distinct "Mensagem do Dia" motivational messages (one per day, no more
+// repeating the same templated line with just the day number swapped in).
+// Order below (index 0 = message #1, etc.) matches DAILY_MESSAGE_ORDER, which
+// front-loads the "getting started" messages into the first 10 days.
+const DAILY_MESSAGES: Record<Language, string[]> = {
+  pt: [
+    'O maior erro que você comete ao tentar gravar vídeos hoje é achar que precisa ser [perfeita/perfeito/perfeite]. Hoje, vamos quebrar isso.',
+    'Ninguém se conecta com quem é perfeito. As pessoas se conectam com quem é real. Grava assim mesmo.',
+    'Você não precisa estar [pronta/pronto/pronte] pra começar. Você só precisa começar pra ficar [pronta/pronto/pronte].',
+    'A vergonha da câmera não vai embora esperando. Ela vai embora gravando.',
+    'Quem te julga não paga suas contas. Grava o vídeo.',
+    'O algoritmo não lembra dos vídeos "perfeitos" que você nunca postou.',
+    'Sua voz trêmula no primeiro vídeo é só o preço de aparecer. Ninguém começa segura.',
+    'Você não está atrasada. Você só ainda não começou a se mostrar de verdade.',
+    'Ser vista dá medo porque importa. Isso é bom sinal, não motivo pra recuar.',
+    'O vídeo que você não posta hoje não vai existir amanhã do jeito que era hoje.',
+    'Parar de se esconder é o primeiro passo pra ser lembrada.',
+    'Você não precisa ser a melhor. Você só precisa ser a que apareceu.',
+    'Quem espera o momento perfeito pra gravar nunca grava.',
+    'A confiança não vem antes da ação. Ela vem depois, como consequência.',
+    'Cada vídeo que você grava com medo é uma prova de que você é mais forte que o medo.',
+    'As pessoas não estão prestando tanta atenção em você quanto você imagina. Solta.',
+    'Se você esperar se sentir [confiante/confiante/confiante] pra gravar, você nunca vai gravar.',
+    'Sua imperfeição na câmera é o que faz as pessoas confiarem em você.',
+    'O seu "eu não sei o que falar" também é conteúdo. Grava mesmo assim.',
+    'Toda pessoa visível hoje também gravou um vídeo horrível ontem.',
+    'Você não vai se sentir [pronta/pronto/pronte]. Você vai se sentir [pronta/pronto/pronte] depois de fazer.',
+    'O seu maior obstáculo não é a câmera. É a voz na sua cabeça dizendo que você precisa ser perfeita.',
+    'Publicar vale mais que polir. Poste.',
+    'Você já disse "depois eu grava" ontem. Hoje é o depois.',
+    'Ninguém vai te ver de verdade se você continuar se escondendo atrás da edição perfeita.',
+    'Sua história maltrapilha vale mais que a história editada de outra pessoa.',
+    'O medo de errar na frente da câmera é menor que o arrependimento de nunca ter tentado.',
+    'Você não precisa de mais um curso. Você precisa apertar o botão de gravar.',
+    'Toda vez que você aparece do jeito que é, você dá permissão pra outra pessoa fazer o mesmo.',
+    'Hoje não é sobre ser vista perfeitamente. É sobre ser vista de verdade.'
+  ],
+  en: [
+    "The biggest mistake you make trying to record videos today is thinking you need to be perfect. Today, we break that.",
+    "Nobody connects with perfect. People connect with real. Record it anyway.",
+    "You don't need to feel ready to start. You just need to start to feel ready.",
+    "Camera shyness doesn't go away by waiting. It goes away by recording.",
+    "The people who judge you don't pay your bills. Record the video.",
+    'The algorithm doesn\'t remember the "perfect" videos you never posted.',
+    "Your shaky voice in the first video is just the price of showing up. Nobody starts confident.",
+    "You're not behind. You just haven't started truly showing up yet.",
+    "Being seen feels scary because it matters. That's a good sign, not a reason to back off.",
+    "The video you don't post today won't exist tomorrow the way it does right now.",
+    "Stopping the hiding is the first step to being remembered.",
+    "You don't need to be the best. You just need to be the one who showed up.",
+    "Whoever waits for the perfect moment to record never records.",
+    "Confidence doesn't come before action. It comes after, as a result.",
+    "Every video you record afraid is proof you're stronger than the fear.",
+    "People aren't paying nearly as much attention to you as you think. Let go.",
+    "If you wait to feel confident to record, you'll never record.",
+    "Your imperfection on camera is exactly what makes people trust you.",
+    'Your "I don\'t know what to say" is content too. Record it anyway.',
+    "Every visible person today also recorded a terrible video yesterday.",
+    "You won't feel ready. You'll feel ready after doing it.",
+    "Your biggest obstacle isn't the camera. It's the voice in your head telling you to be perfect.",
+    "Posting beats polishing. Post it.",
+    'You already said "I\'ll record it later" yesterday. Today is later.',
+    "No one will truly see you if you keep hiding behind perfect editing.",
+    "Your messy story is worth more than someone else's edited one.",
+    "The fear of messing up on camera is smaller than the regret of never trying.",
+    "You don't need another course. You need to press record.",
+    "Every time you show up as you are, you give someone else permission to do the same.",
+    "Today isn't about being seen perfectly. It's about being truly seen."
+  ],
+  es: [
+    'El mayor error que cometes al intentar grabar videos hoy es pensar que necesitas ser [perfecta/perfecto/perfecte]. Hoy, vamos a romper eso.',
+    'Nadie se conecta con la perfección. La gente se conecta con lo real. Grábalo de todos modos.',
+    'No necesitas sentirte [lista/listo/liste] para empezar. Solo necesitas empezar para sentirte [lista/listo/liste].',
+    'La vergüenza de la cámara no se va esperando. Se va grabando.',
+    'Quien te juzga no paga tus cuentas. Graba el video.',
+    'El algoritmo no recuerda los videos "perfectos" que nunca publicaste.',
+    'Tu voz temblorosa en el primer video es solo el precio de aparecer. Nadie empieza segura.',
+    'No estás atrasada. Solo todavía no empezaste a mostrarte de verdad.',
+    'Que te vean da miedo porque importa. Es buena señal, no motivo para retroceder.',
+    'El video que no publicas hoy no existirá mañana tal como es hoy.',
+    'Dejar de esconderte es el primer paso para ser recordada.',
+    'No necesitas ser la mejor. Solo necesitas ser la que apareció.',
+    'Quien espera el momento perfecto para grabar nunca graba.',
+    'La confianza no llega antes de la acción. Llega después, como consecuencia.',
+    'Cada video que grabas con miedo es prueba de que eres más fuerte que el miedo.',
+    'La gente no te presta tanta atención como imaginas. Suéltalo.',
+    'Si esperas sentirte [segura/seguro/segure] para grabar, nunca vas a grabar.',
+    'Tu imperfección frente a la cámara es lo que hace que la gente confíe en ti.',
+    'Tu "no sé qué decir" también es contenido. Grábalo igual.',
+    'Toda persona visible hoy también grabó un video horrible ayer.',
+    'No te vas a sentir [lista/listo/liste]. Te vas a sentir [lista/listo/liste] después de hacerlo.',
+    'Tu mayor obstáculo no es la cámara. Es la voz en tu cabeza que dice que debes ser perfecta.',
+    'Publicar vale más que pulir. Publica.',
+    'Ayer ya dijiste "luego lo grabo". Hoy es ese luego.',
+    'Nadie te va a ver de verdad si sigues escondiéndote detrás de la edición perfecta.',
+    'Tu historia imperfecta vale más que la historia editada de otra persona.',
+    'El miedo a equivocarte frente a la cámara es menor que el arrepentimiento de nunca haberlo intentado.',
+    'No necesitas otro curso. Necesitas apretar el botón de grabar.',
+    'Cada vez que apareces tal como eres, le das permiso a otra persona para hacer lo mismo.',
+    'Hoy no se trata de que te vean perfecta. Se trata de que te vean de verdad.'
+  ]
+};
+
+// Assigns each of the 30 messages above (1-indexed) to a journey day, in a
+// shuffled (non-sequential) order — with the "getting started" messages
+// (1, 3, 4, 7, 8, 13, 17, 21, 24, 28) front-loaded into the first 10 days.
+const DAILY_MESSAGE_ORDER: number[] = [
+  1, 13, 4, 21, 8, 17, 3, 24, 28, 7,
+  9, 22, 2, 27, 11, 19, 5, 29, 14, 6,
+  25, 12, 16, 30, 10, 20, 18, 15, 26, 23
+];
+
+function getDailyMessage(dayNumber: number, lang: Language): string {
+  const messageNumber = DAILY_MESSAGE_ORDER[(dayNumber - 1) % DAILY_MESSAGE_ORDER.length];
+  const messages = DAILY_MESSAGES[lang] || DAILY_MESSAGES.pt;
+  return messages[messageNumber - 1];
+}
+
 // Generate initial 30 days structure based on the rhythm, anchored to the
 // real calendar date Day 1 was first opened (startDate) so the weekday theme
 // (and its hooks) match the actual day of the week.
@@ -400,7 +518,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
       content: {
         pt: {
           audioUrl, // Real recording if available for this day, otherwise placeholder
-          hook: `O maior erro que você comete ao tentar gravar vídeos hoje é achar que precisa ser [perfeita/perfeito/perfeite]. No Dia ${i}, vamos quebrar isso.`,
+          hook: getDailyMessage(i, 'pt'),
           scripts: [
             `Roteiro Opção 1 (Conexão Rápida):\n"Se você tem vergonha de gravar vídeos, deixa eu te contar um segredo... eu também tinha. Mas hoje eu decidi..."`,
             `Roteiro Opção 2 (Provocação):\n"Pare de tentar agradar a todo mundo nas redes sociais. A verdade é que quem te julga não paga seus boletos..."`,
@@ -411,7 +529,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
         },
         en: {
           audioUrl,
-          hook: `The biggest mistake you make when trying to record videos today is thinking you need to be perfect. On Day ${i}, we break this.`,
+          hook: getDailyMessage(i, 'en'),
           scripts: [
             `Script Option 1 (Quick Connection):\n"If you are afraid of recording videos, let me tell you a secret... I was too. But today I decided to..."`,
             `Script Option 2 (Provocation):\n"Stop trying to please everyone on social media. The truth is, those who judge you don't pay your bills..."`,
@@ -422,7 +540,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
         },
         es: {
           audioUrl,
-          hook: `El mayor error que cometes al intentar grabar videos hoy es pensar que necesitas ser [perfecta/perfecto/perfecte]. En el Día ${i}, romperemos esto.`,
+          hook: getDailyMessage(i, 'es'),
           scripts: [
             `Guión Opción 1 (Conexión Rápida):\n"Si tienes vergüenza de grabar videos, déjame contarte un secreto... yo también la tenía. Pero hoy decidí..."`,
             `Guión Opción 2 (Provocación):\n"Deja de intentar agradar a todos en las redes sociales. La verdad es que quien te juzga no paga tus cuentas..."`,
@@ -443,7 +561,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS) — acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '4';
+const DAYS_CONTENT_VERSION = '5';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');

@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { MissionDay, Language, DayType, UserProgress } from '../types';
 import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions } from '../data/templateData';
-import { adaptMessage } from '../utils/grammar';
+import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 
 // Joins the 3 required promise-proof links into the single stored video-link string
 const LINK_SEPARATOR = '|||';
@@ -534,7 +534,7 @@ export default function DailyMissionView({
   const canComplete = isRestDay || (audioCompleted && reflectionInput.trim().length > 3 && allPromisesKept);
   const combinedPromiseLinks = [promiseLinks.inertia, promiseLinks.confidence, promiseLinks.evidence].join(LINK_SEPARATOR);
 
-  const prefGrammar = progress.grammarPreference || 'neutral';
+  const prefGrammar = resolveGrammarPreference(progress.grammarPreference);
 
   const rawContent = currentDay.content[lang] || currentDay.content['pt'] || {
     audioUrl: '',

@@ -9,6 +9,7 @@ import {
   Sparkles, Play, Sun, Moon
 } from 'lucide-react';
 import { Language, UserProgress } from '../types';
+import { resolveGrammarPreference } from '../utils/grammar';
 
 interface SettingsViewProps {
   progress: UserProgress;
@@ -204,13 +205,12 @@ export default function SettingsView({
           <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             {lang === 'pt' ? 'Gênero Gramatical (Forma de Tratamento)' : lang === 'es' ? 'Preferencia de Tratamiento' : 'Grammar & Address'}
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {[
               { code: 'feminine', label: lang === 'pt' ? '🌸 Feminino (pronta)' : lang === 'es' ? '🌸 Femenino (lista)' : '🌸 Feminine' },
-              { code: 'masculine', label: lang === 'pt' ? '☀️ Masculino (pronto)' : lang === 'es' ? '☀️ Masculino (listo)' : '☀️ Masculine' },
-              { code: 'neutral', label: lang === 'pt' ? '🌱 Neutro (preparade)' : lang === 'es' ? '🌱 Neutro (preparade)' : '🌱 Neutral' }
+              { code: 'masculine', label: lang === 'pt' ? '☀️ Masculino (pronto)' : lang === 'es' ? '☀️ Masculino (listo)' : '☀️ Masculine' }
             ].map((grammarObj) => {
-              const isSelected = (progress.grammarPreference || 'neutral') === grammarObj.code;
+              const isSelected = resolveGrammarPreference(progress.grammarPreference) === grammarObj.code;
               return (
                 <button
                   key={grammarObj.code}

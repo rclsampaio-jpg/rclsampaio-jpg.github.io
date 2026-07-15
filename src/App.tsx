@@ -39,7 +39,7 @@ import BrandIdentityView from './components/BrandIdentityView';
 import RenaSerLogo from './components/RenaSerLogo';
 import RenataOSChat from './components/RenataOSChat';
 
-import { adaptMessage } from './utils/grammar';
+import { adaptMessage, resolveGrammarPreference } from './utils/grammar';
 import { useSystem } from './engines/SystemEngine';
 
 type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'transformation' | 'community' | 'library' | 'profile' | 'brand';
@@ -571,7 +571,7 @@ export default function App() {
           {/* Core Daily Intention Message */}
           <div className="space-y-8">
             <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-serif italic max-w-sm mx-auto leading-relaxed">
-              "{adaptMessage(gateText.promise, progress.grammarPreference || 'neutral', lang)}"
+              "{adaptMessage(gateText.promise, resolveGrammarPreference(progress.grammarPreference), lang)}"
             </p>
 
             <motion.button
@@ -1033,7 +1033,7 @@ export default function App() {
               chapter={chapters.find(c => c.id === chapterMilestone.chapterId) || chapters[0]}
               lang={lang}
               userReflection={chapterMilestone.userReflection}
-              grammarPreference={progress.grammarPreference || 'neutral'}
+              grammarPreference={resolveGrammarPreference(progress.grammarPreference)}
               onClose={handleCloseMilestone}
             />
           )}

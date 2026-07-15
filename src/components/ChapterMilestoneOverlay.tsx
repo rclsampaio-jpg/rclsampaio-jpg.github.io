@@ -25,7 +25,7 @@ export default function ChapterMilestoneOverlay({
   chapter,
   lang,
   userReflection = '',
-  grammarPreference = 'neutral',
+  grammarPreference = 'feminine',
   onClose,
   onSaveReflection
 }: ChapterMilestoneOverlayProps) {

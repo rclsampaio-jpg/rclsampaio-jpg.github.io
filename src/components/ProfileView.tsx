@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { Language, UserProgress, MissionDay } from '../types';
 import MyTransformationView from './MyTransformationView';
-import { adaptMessage } from '../utils/grammar';
+import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 
 interface ProfileViewProps {
   lang: Language;
@@ -25,13 +25,13 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
 
   // Load personalization presets or defaults
   const guideStyle = progress.guideStyle || 'gentle';
-  const grammarPreference = progress.grammarPreference || 'neutral';
+  const grammarPreference = resolveGrammarPreference(progress.grammarPreference);
 
   const handleUpdateGuideStyle = (style: 'gentle' | 'challenger' | 'strategic' | 'inspirational') => {
     onUpdateProgress({ ...progress, guideStyle: style });
   };
 
-  const handleUpdateGrammar = (pref: 'feminine' | 'masculine' | 'neutral') => {
+  const handleUpdateGrammar = (pref: 'feminine' | 'masculine') => {
     onUpdateProgress({ ...progress, grammarPreference: pref });
   };
 
@@ -75,7 +75,6 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
       inspirationalDesc: 'Provocações existenciais, metáforas profundas e conexão espiritual com o público.',
       grammarFem: 'Feminino (Amada, Destravada)',
       grammarMasc: 'Masculino (Amado, Destravado)',
-      grammarNeut: 'Neutro (Conexão Livre de Gênero)',
       userEmailLabel: 'E-mail Integrado',
       memberBadge: 'Nível de Evolução:'
     },
@@ -103,7 +102,6 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
       inspirationalDesc: 'Existential metaphors, deeper wisdom, and spiritual projection on camera.',
       grammarFem: 'Feminine Alignment',
       grammarMasc: 'Masculine Alignment',
-      grammarNeut: 'Neutral / Gender-free Alignment',
       userEmailLabel: 'Integrated Email',
       memberBadge: 'Evolution Stage:'
     },
@@ -131,7 +129,6 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
       inspirationalDesc: 'Metáforas profundas, sabiduría existencial y conexión espiritual.',
       grammarFem: 'Femenino Alignment',
       grammarMasc: 'Masculino Alignment',
-      grammarNeut: 'Neutro / Sin género específico',
       userEmailLabel: 'Email Integrado',
       memberBadge: 'Fase de Evolución:'
     }
@@ -405,23 +402,6 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
                       )}
                     </button>
 
-                    <button
-                      onClick={() => handleUpdateGrammar('neutral')}
-                      className={`w-full p-4 text-left border rounded-2xl flex justify-between items-center transition cursor-pointer ${
-                        grammarPreference === 'neutral'
-                          ? 'border-rosegold bg-rose-50/10 dark:bg-rosegold/10'
-                          : 'border-rose-100/20 dark:border-rosegold/5 hover:border-rose-150'
-                      }`}
-                    >
-                      <span className="text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200">
-                        {trans.grammarNeut}
-                      </span>
-                      {grammarPreference === 'neutral' && (
-                        <div className="p-1 bg-rosegold text-white rounded-full">
-                          <Check className="h-3.5 w-3.5" />
-                        </div>
-                      )}
-                    </button>
 
                   </div>
 

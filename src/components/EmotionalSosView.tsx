@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Heart, Wind, ArrowLeft, ShieldCheck, Sparkles, UserCheck, HelpCircle, AlertCircle, PhoneCall, RefreshCw, BookOpen } from 'lucide-react';
 import { Language, UserProgress } from '../types';
-import { adaptMessage } from '../utils/grammar';
+import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 
 interface EmotionalSosViewProps {
   lang: Language;
@@ -25,7 +25,7 @@ export default function EmotionalSosView({
   progress,
   onUpdateProgress
 }: EmotionalSosViewProps) {
-  const prefGrammar = progress?.grammarPreference || 'neutral';
+  const prefGrammar = resolveGrammarPreference(progress?.grammarPreference);
   const [stage, setStage] = useState<SosStage>('breathing');
   const [breathState, setBreathState] = useState<BreathingState>('idle');
   const [secondsLeft, setSecondsLeft] = useState(4);
