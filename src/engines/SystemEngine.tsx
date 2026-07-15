@@ -617,7 +617,8 @@ export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         videoLinks: {},
         reflections: {},
         lastActiveDate: null,
-        journeyStartDate: new Date().toISOString().slice(0, 10)
+        journeyStartDate: new Date().toISOString().slice(0, 10),
+        displayName: progress.displayName
       };
       updateProgressState(defaultProgress);
       setFocusedDayNumberState(1);

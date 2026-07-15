@@ -38,6 +38,7 @@ import ProfileView from './components/ProfileView';
 import BrandIdentityView from './components/BrandIdentityView';
 import RenaSerLogo from './components/RenaSerLogo';
 import RenataOSChat from './components/RenataOSChat';
+import DayCompletionOverlay from './components/DayCompletionOverlay';
 
 import { adaptMessage, resolveGrammarPreference } from './utils/grammar';
 import { useSystem } from './engines/SystemEngine';
@@ -93,6 +94,9 @@ export default function App() {
     chapterId: number;
     userReflection?: string;
   } | null>(null);
+
+  // Plain per-day completion celebration (non-milestone days)
+  const [dayCelebration, setDayCelebration] = useState<number | null>(null);
 
   // Session Opening Splash Screen State
   const [showOpeningSplash, setShowOpeningSplash] = useState(true);
@@ -274,9 +278,9 @@ export default function App() {
         chapterId,
         userReflection: reflectionText
       });
-    } else if (dayNum === 30) {
-      // Fallback redirect if overlay not active
-      setActiveTab('nextlevel');
+    } else {
+      // Regular day: a lighter congratulations screen
+      setDayCelebration(dayNum);
     }
   };
 
@@ -330,7 +334,8 @@ export default function App() {
       videoLinks: {},
       reflections: {},
       lastActiveDate: null,
-      journeyStartDate: todayISO
+      journeyStartDate: todayISO,
+      displayName: progress.displayName
     };
     updateProgress(defaultProgress);
     const restartedDays = generateInitialDays(todayISO);
@@ -936,6 +941,7 @@ export default function App() {
                 onToggleFavorite={handleToggleFavorite}
                 onCopyHook={handleCopyHook}
                 onTriggerSos={() => setActiveTab('sos')}
+                onBackToHome={() => setActiveTab('home')}
               />
             )}
 
@@ -1038,6 +1044,14 @@ export default function App() {
             />
           )}
         </AnimatePresence>
+
+        {dayCelebration !== null && (
+          <DayCompletionOverlay
+            dayNumber={dayCelebration}
+            lang={lang}
+            onClose={() => setDayCelebration(null)}
+          />
+        )}
 
         {/* Floating Renata OS Action Button (replaces the old floating SOS button) */}
         <RenataOSChat

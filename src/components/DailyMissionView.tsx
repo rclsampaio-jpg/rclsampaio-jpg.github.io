@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   Play, Pause, Copy, Check, Star, ArrowRight, ArrowLeft, Heart, Sparkles,
   Info, Compass, HelpCircle, X, BookOpen, Smile, Wind, Award,
-  RotateCcw, RotateCw
+  RotateCcw, Lock
 } from 'lucide-react';
 import { MissionDay, Language, DayType, UserProgress } from '../types';
 import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions, getHookCategoryLabel } from '../data/templateData';
@@ -25,6 +25,7 @@ interface DailyMissionViewProps {
   onToggleFavorite: (dayNum: number) => void;
   onCopyHook: (dayNum: number) => void;
   onTriggerSos: () => void;
+  onBackToHome: () => void;
 }
 
 // 4 Phases structure metadata for display
@@ -286,9 +287,11 @@ export default function DailyMissionView({
   onToggleFavorite,
   onCopyHook,
   onTriggerSos,
+  onBackToHome,
 }: DailyMissionViewProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
+  const [maxReachedProgress, setMaxReachedProgress] = useState(0);
   const [audioSpeed, setAudioSpeed] = useState(1);
   const [audioCompleted, setAudioCompleted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -418,6 +421,8 @@ export default function DailyMissionView({
       interval = setInterval(() => {
         setAudioProgress((prev) => {
           const next = prev + (2.5 * audioSpeed);
+          const clamped = Math.min(100, next);
+          setMaxReachedProgress((max) => Math.max(max, clamped));
           if (next >= 100) {
             setIsPlaying(false);
             setAudioCompleted(true);
@@ -437,7 +442,9 @@ export default function DailyMissionView({
       setCurrentTime(current);
       if (total > 0) {
         setDuration(total);
-        setAudioProgress((current / total) * 100);
+        const pct = (current / total) * 100;
+        setAudioProgress(pct);
+        setMaxReachedProgress((prev) => Math.max(prev, pct));
       }
     }
   };
@@ -455,8 +462,12 @@ export default function DailyMissionView({
     setAudioProgress(100);
   };
 
+  // Seeking is only allowed up to the furthest point actually listened to —
+  // rewinding to re-listen is free, but jumping ahead to "finish" without
+  // listening is blocked. The only way to complete the audio is to hear it.
   const handleSeekChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const val = parseFloat(e.target.value);
+    const requested = parseFloat(e.target.value);
+    const val = Math.min(requested, maxReachedProgress);
     setAudioProgress(val);
     if (audioRef.current && duration > 0) {
       audioRef.current.currentTime = (val / 100) * duration;
@@ -472,29 +483,6 @@ export default function DailyMissionView({
       setAudioProgress((newTime / duration) * 100);
     } else {
       setAudioProgress((prev) => Math.max(0, prev - 10));
-    }
-  };
-
-  const handleSkipForward15 = () => {
-    if (audioRef.current && duration > 0) {
-      const newTime = Math.min(duration, audioRef.current.currentTime + 15);
-      audioRef.current.currentTime = newTime;
-      setCurrentTime(newTime);
-      const nextProgress = (newTime / duration) * 100;
-      setAudioProgress(nextProgress);
-      if (nextProgress >= 100) {
-        setIsPlaying(false);
-        setAudioCompleted(true);
-      }
-    } else {
-      setAudioProgress((prev) => {
-        const next = Math.min(100, prev + 10);
-        if (next >= 100) {
-          setIsPlaying(false);
-          setAudioCompleted(true);
-        }
-        return next;
-      });
     }
   };
 
@@ -559,6 +547,9 @@ export default function DailyMissionView({
   const textDict = {
     pt: {
       dailyMission: 'Missão Diária',
+      lockedTitle: 'Dia Bloqueado',
+      lockedDesc: 'Este passo libera amanhã. Aproveite hoje pra descansar — você já cumpriu sua promessa.',
+      backToHome: 'Voltar pro Início',
       audioTitle: 'Mensagem da Renata',
       audioSub: 'Sintonize seu estado emocional antes de agir',
       audioFinished: '✓ Sintonização Concluída',
@@ -591,9 +582,9 @@ export default function DailyMissionView({
       sosTrigger: 'Acione o SOS Emocional',
       promisesTitle: 'As Três Promessas de Hoje',
       promisesSubtitle: 'Três pequenos passos físicos para quebrar a inércia e consolidar seu novo eu:',
-      promise1: 'Romper a Inércia (Gravei o primeiro rascunho de teste de 10 segundos)',
-      promise2: 'Construir Confiança (Falei olhando diretamente para a lente com presença)',
-      promise3: 'Criar Evidência (Publiquei o vídeo final ou salvei-o como prova de consistência)',
+      promise1: 'Gravei um vídeo de até 60 segundos pra postar no reels',
+      promise2: 'Gravei um vídeo de pelo menos 30 segundos sobre meu aprendizado de hoje (ou postei uma foto com legenda honesta)',
+      promise3: 'Gravei um vídeo de até 90 segundos usando um dos hooks disponíveis hoje',
       reflection7Title: 'Sua Reflexão Semanal de Crescimento',
       reflection7Q1: '1. O que mais te surpreendeu na sua capacidade de agir esta semana?',
       reflection7Q2: '2. O que se tornou visivelmente mais fácil em relação ao primeiro dia?',
@@ -611,9 +602,9 @@ export default function DailyMissionView({
       step04: 'Passo 04',
       copy: 'Copiar',
       copied: 'Copiado!',
-      promise1Label: 'Promessa 1: Romper a Inércia',
-      promise2Label: 'Promessa 2: Construir Confiança',
-      promise3Label: 'Promessa 3: Criar Evidência',
+      promise1Label: 'Promessa 1: Vídeo pro Reels',
+      promise2Label: 'Promessa 2: Vídeo ou Foto de Aprendizado',
+      promise3Label: 'Promessa 3: Vídeo com Hook',
       progressLockTitle: 'Requisitos de Conclusão',
       statusTitle: 'Status do Dia',
       listenItem: '1. Ouvir a Mensagem da Renata',
@@ -629,10 +620,12 @@ export default function DailyMissionView({
       linkRequiredWarning: 'Adicione o link para validar esta promessa.',
       audioSpeedTooltip: 'Velocidade de reprodução',
       skipBack: 'Voltar 15s',
-      skipForward: 'Avançar 15s'
     },
     en: {
       dailyMission: 'Daily Mission',
+      lockedTitle: 'Day Locked',
+      lockedDesc: 'This step unlocks tomorrow. Take today to rest — you already kept your promise.',
+      backToHome: 'Back to Home',
       audioTitle: "Renata's Message",
       audioSub: 'Tune into your emotional state before taking action',
       audioFinished: '✓ Calibration Complete',
@@ -665,9 +658,9 @@ export default function DailyMissionView({
       sosTrigger: 'Activate Emotional SOS',
       promisesTitle: "Today's Three Promises",
       promisesSubtitle: 'Three small physical actions to break inertia and consolidate your new identity:',
-      promise1: 'Break Inertia (Recorded my first 10-second test draft)',
-      promise2: 'Build Confidence (Spoke clearly, looking directly into the lens)',
-      promise3: 'Create Evidence (Published final video or saved it as proof of action)',
+      promise1: 'Recorded a video up to 60 seconds long to post on reels',
+      promise2: "Recorded a video at least 30 seconds long about today's biggest takeaway (or posted a photo with an honest caption)",
+      promise3: "Recorded a video up to 90 seconds long using one of today's available hooks",
       reflection7Title: 'Your Weekly Growth Reflection',
       reflection7Q1: '1. What surprised you the most about your capacity to act this week?',
       reflection7Q2: '2. What has become visibly easier compared to the first day?',
@@ -685,9 +678,9 @@ export default function DailyMissionView({
       step04: 'Step 04',
       copy: 'Copy',
       copied: 'Copied!',
-      promise1Label: 'Promise 1: Break Inertia',
-      promise2Label: 'Promise 2: Build Confidence',
-      promise3Label: 'Promise 3: Create Evidence',
+      promise1Label: 'Promise 1: Reels Video',
+      promise2Label: 'Promise 2: Learning Video or Photo',
+      promise3Label: 'Promise 3: Hook Video',
       progressLockTitle: 'Completion Requirements',
       statusTitle: 'Day Status',
       listenItem: "1. Listen to Renata's Message",
@@ -703,10 +696,12 @@ export default function DailyMissionView({
       linkRequiredWarning: 'Add the link to validate this promise.',
       audioSpeedTooltip: 'Playback speed',
       skipBack: 'Back 15s',
-      skipForward: 'Forward 15s'
     },
     es: {
       dailyMission: 'Misión Diaria',
+      lockedTitle: 'Día Bloqueado',
+      lockedDesc: 'Este paso se libera mañana. Aprovecha hoy para descansar — ya cumpliste tu promesa.',
+      backToHome: 'Volver al Inicio',
       audioTitle: 'Mensaje de Renata',
       audioSub: 'Sintoniza tu estado emocional antes de actuar',
       audioFinished: '✓ Sintonización Completada',
@@ -739,9 +734,9 @@ export default function DailyMissionView({
       sosTrigger: 'Activar SOS Emocional',
       promisesTitle: 'Las Tres Promesas de Hoy',
       promisesSubtitle: 'Tres pequeños pasos físicos para romper la inercia y consolidar tu nueva identidad:',
-      promise1: 'Romper la Inercia (Grabé mi primer borrador de prueba de 10 segundos)',
-      promise2: 'Construir Confianza (Hablé mirando directamente a la lente con presencia)',
-      promise3: 'Crear Evidencia (Publiqué mi video final o lo guardé como prueba de consistencia)',
+      promise1: 'Grabé un video de hasta 60 segundos para publicar en reels',
+      promise2: 'Grabé un video de al menos 30 segundos sobre mi aprendizaje de hoy (o publiqué una foto con una descripción honesta)',
+      promise3: 'Grabé un video de hasta 90 segundos usando uno de los hooks disponibles hoy',
       reflection7Title: 'Tu Reflexión Semanal de Crecimiento',
       reflection7Q1: '1. ¿Qué es lo que más te sorprendió de tu capacidad para actuar esta semana?',
       reflection7Q2: '2. ¿Qué se ha vuelto visiblemente más fácil en relación con el primer día?',
@@ -759,9 +754,9 @@ export default function DailyMissionView({
       step04: 'Paso 04',
       copy: 'Copiar',
       copied: '¡Copiado!',
-      promise1Label: 'Promesa 1: Romper la Inercia',
-      promise2Label: 'Promesa 2: Construir Confianza',
-      promise3Label: 'Promesa 3: Crear Evidencia',
+      promise1Label: 'Promesa 1: Video para Reels',
+      promise2Label: 'Promesa 2: Video o Foto de Aprendizaje',
+      promise3Label: 'Promesa 3: Video con Hook',
       progressLockTitle: 'Requisitos de Finalización',
       statusTitle: 'Estado del Día',
       listenItem: '1. Escuchar el Mensaje de Renata',
@@ -777,9 +772,38 @@ export default function DailyMissionView({
       linkRequiredWarning: 'Agrega el enlace para validar esta promesa.',
       audioSpeedTooltip: 'Velocidad de reproducción',
       skipBack: 'Retroceder 15s',
-      skipForward: 'Avanzar 15s'
     }
   }[lang];
+
+  // A newly-unlocked day still waits for the real calendar to turn over —
+  // finishing Day 1 today doesn't let you jump into Day 2 later the same day.
+  const todayISO = new Date().toISOString().split('T')[0];
+  const isWaitingForNewCalendarDay = currentDay.dayNumber === progress.currentDay
+    && currentDay.dayNumber > 1
+    && !isCompleted
+    && progress.lastActiveDate === todayISO;
+
+  if (isWaitingForNewCalendarDay) {
+    return (
+      <div className="max-w-md mx-auto text-center py-24 space-y-5">
+        <div className="h-14 w-14 rounded-2xl bg-rose-50 dark:bg-rosegold/10 text-rosegold flex items-center justify-center mx-auto">
+          <Lock className="h-6 w-6" />
+        </div>
+        <h2 className="text-lg font-serif font-bold text-slate-800 dark:text-white">
+          {textDict.lockedTitle}
+        </h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          {textDict.lockedDesc}
+        </p>
+        <button
+          onClick={onBackToHome}
+          className="px-8 py-3 rounded-xl bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
+        >
+          {textDict.backToHome}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 select-none relative">
@@ -1097,7 +1121,7 @@ export default function DailyMissionView({
                   <input
                     type="range"
                     min="0"
-                    max="100"
+                    max={Math.max(maxReachedProgress, audioProgress)}
                     step="0.1"
                     value={audioProgress}
                     onChange={handleSeekChange}
@@ -1125,14 +1149,6 @@ export default function DailyMissionView({
                     className="h-10 w-10 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex flex-col items-center justify-center text-rosegold transition-all duration-300 cursor-pointer hover:scale-105"
                   >
                     <RotateCcw className="h-4 w-4" />
-                  </button>
-
-                  <button
-                    onClick={handleSkipForward15}
-                    title={textDict.skipForward}
-                    className="h-10 w-10 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex flex-col items-center justify-center text-rosegold transition-all duration-300 cursor-pointer hover:scale-105"
-                  >
-                    <RotateCw className="h-4 w-4" />
                   </button>
                 </div>
               </motion.div>

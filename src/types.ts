@@ -93,6 +93,7 @@ export interface UserProgress {
   reflections: Record<number, string>; // Completed day -> submitted reflection text
   lastActiveDate: string | null; // Date string (YYYY-MM-DD) to calculate streaks
   journeyStartDate: string | null; // Date string (YYYY-MM-DD) Day 1 was first opened — anchors weekday theming to the real calendar
+  displayName: string | null; // Preferred name the user gave during onboarding, shown instead of their email
   theme?: 'light' | 'dark';
   settings?: UserSettings;
   

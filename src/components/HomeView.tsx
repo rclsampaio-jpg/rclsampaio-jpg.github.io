@@ -6,8 +6,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Sparkles, Flame, CheckCircle2, ArrowRight, BookOpen, Volume2, 
-  Settings, Award, Lock, HelpCircle, Check, Play, Compass
+  Sparkles, Flame, CheckCircle2, ArrowRight, BookOpen, Volume2,
+  Settings, Award, Lock, HelpCircle, Check, Play, Compass, User
 } from 'lucide-react';
 import { MissionDay, Language, UserProgress, DayType } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
@@ -38,9 +38,10 @@ export default function HomeView({
   onShowIntro,
   onUpdateProgress
 }: HomeViewProps) {
-  const [onboardState, setOnboardState] = useState<'splash' | 'lang' | 'guidestyle' | 'grammar' | 'welcome' | 'intro' | 'complete'>('complete');
+  const [onboardState, setOnboardState] = useState<'splash' | 'lang' | 'name' | 'guidestyle' | 'grammar' | 'welcome' | 'intro' | 'complete'>('complete');
   const [selectedStyle, setSelectedStyle] = useState<'gentle' | 'challenger' | 'strategic' | 'inspirational'>('gentle');
   const [selectedGrammar, setSelectedGrammar] = useState<'feminine' | 'masculine'>('feminine');
+  const [nameInput, setNameInput] = useState('');
   
   // Onboarding initialization check
   useEffect(() => {
@@ -52,7 +53,13 @@ export default function HomeView({
 
   const handleNextOnboard = () => {
     if (onboardState === 'splash') setOnboardState('lang');
-    else if (onboardState === 'lang') setOnboardState('guidestyle');
+    else if (onboardState === 'lang') setOnboardState('name');
+    else if (onboardState === 'name') {
+      if (onUpdateProgress) {
+        onUpdateProgress({ ...progress, displayName: nameInput.trim() || null });
+      }
+      setOnboardState('guidestyle');
+    }
     else if (onboardState === 'guidestyle') setOnboardState('grammar');
     else if (onboardState === 'grammar') {
       // Save style and grammar preference on transition
@@ -90,12 +97,14 @@ export default function HomeView({
       onboardingWelcome: "Seja [Bem-vinda/Bem-vindo/Bem-vinde] ao RenaSer",
       onboardingSub: "Uma experiência de visibilidade e coragem",
       languageTitle: "Configurações de Idioma",
+      nameStepTitle: "Como devemos te chamar?",
+      nameStepSubtitle: "Escolha o nome de preferência. É assim que vamos te chamar por aqui.",
+      namePlaceholder: "Seu nome de preferência...",
       selectLanguage: "Escolha seu idioma / Choose your language:",
       getStarted: "Começar Jornada",
       continue: "Continuar",
       introTitle: "Você está [pronta/pronto/pronte]?",
       introText: "Pelos próximos 30 dias, você receberá um gancho (hook) diário e um áudio prático de 10 minutos. Este é um espaço seguro para você lembrar quem você realmente é.",
-      greeting: "Olá, rcl.sampaio@gmail.com!",
       todayTheme: "Tema do Dia",
       progressTitle: "Sua Evolução",
       completedDays: "{completed} de {total} dias concluídos",
@@ -119,6 +128,7 @@ export default function HomeView({
       restDesc: "Hoje é dia de respirar, integrar e descansar. Nenhuma ação de exposição é requerida.",
       lockedTitle: "Dia Bloqueado",
       lockedDesc: "Complete o dia anterior para liberar este conteúdo.",
+      waitingForTomorrow: "Este passo libera amanhã. Aproveite hoje pra descansar — você já cumpriu sua promessa.",
       copyHook: "Copiar Gancho",
       copied: "Copiado!"
     },
@@ -126,12 +136,14 @@ export default function HomeView({
       onboardingWelcome: "Welcome to RenaSer",
       onboardingSub: "An experience of visibility and courage",
       languageTitle: "Language Settings",
+      nameStepTitle: "What should we call you?",
+      nameStepSubtitle: "Choose your preferred name. That's how we'll address you around here.",
+      namePlaceholder: "Your preferred name...",
       selectLanguage: "Choose your language / Escolha seu idioma:",
       getStarted: "Start Journey",
       continue: "Continue",
       introTitle: "Are you ready?",
       introText: "For the next 30 days, you will receive a daily hook and a practical 10-minute audio. This is a safe environment designed for you to remember who you truly are.",
-      greeting: "Hello, rcl.sampaio@gmail.com!",
       todayTheme: "Today's Theme",
       progressTitle: "Your Progress",
       completedDays: "{completed} of {total} days completed",
@@ -155,6 +167,7 @@ export default function HomeView({
       restDesc: "Today is for breathing, integration, and resting. No exposure action required.",
       lockedTitle: "Day Locked",
       lockedDesc: "Complete the previous day to unlock this content.",
+      waitingForTomorrow: "This step unlocks tomorrow. Take today to rest — you already kept your promise.",
       copyHook: "Copy Hook",
       copied: "Copied!"
     },
@@ -162,12 +175,14 @@ export default function HomeView({
       onboardingWelcome: "[Bienvenida/Bienvenido/Bienvenide] a RenaSer",
       onboardingSub: "Una experiencia de visibilidad y coraje",
       languageTitle: "Configuración de Idioma",
+      nameStepTitle: "¿Cómo debemos llamarte?",
+      nameStepSubtitle: "Elige tu nombre de preferencia. Así te llamaremos por aquí.",
+      namePlaceholder: "Tu nombre de preferencia...",
       selectLanguage: "Selecciona tu idioma / Choose your language:",
       getStarted: "Iniciar Viaje",
       continue: "Continuar",
       introTitle: "¿Estás [lista/listo/liste]?",
       introText: "Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de 10 minutos. Este es un espacio seguro diseñado para recordar quién eres realmente.",
-      greeting: "¡Hola, rcl.sampaio@gmail.com!",
       todayTheme: "Tema de Hoy",
       progressTitle: "Tu Progreso",
       completedDays: "{completed} de {total} días completados",
@@ -191,6 +206,7 @@ export default function HomeView({
       restDesc: "Hoy es un día para respirar, integrar y descansar. No se requiere acción de exposición.",
       lockedTitle: "Día Bloqueado",
       lockedDesc: "Completa el día anterior para desbloquear este contenido.",
+      waitingForTomorrow: "Este paso se libera mañana. Aprovecha hoy para descansar — ya cumpliste tu promesa.",
       copyHook: "Copiar Gancho",
       copied: "¡Copiado!"
     }
@@ -223,7 +239,15 @@ export default function HomeView({
 
   const isCompleted = progress.completionHistory.includes(currentDay.dayNumber);
   const isRestDay = currentDay.type === DayType.Rest;
-  const isLocked = currentDay.dayNumber > progress.currentDay;
+
+  // A newly-unlocked day still waits for the real calendar to turn over —
+  // finishing Day 1 today doesn't let you jump into Day 2 later the same day.
+  const todayISO = new Date().toISOString().split('T')[0];
+  const isWaitingForNewCalendarDay = currentDay.dayNumber === progress.currentDay
+    && currentDay.dayNumber > 1
+    && !isCompleted
+    && progress.lastActiveDate === todayISO;
+  const isLocked = currentDay.dayNumber > progress.currentDay || isWaitingForNewCalendarDay;
 
   const [copied, setCopied] = useState(false);
 
@@ -318,6 +342,48 @@ export default function HomeView({
               <button
                 onClick={handleNextOnboard}
                 className="w-full mt-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span>{trans.continue}</span>
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </motion.div>
+          )}
+
+          {onboardState === 'name' && (
+            <motion.div
+              key="name"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-8 max-w-md w-full relative z-10 p-8 glass-premium rounded-[2.5rem] shadow-rosegold"
+            >
+              <div className="p-3 bg-rosegold/10 text-rosegold rounded-2xl w-12 h-12 mx-auto flex items-center justify-center border border-rosegold/15">
+                <User className="h-5 w-5" />
+              </div>
+
+              <div className="space-y-2 text-center">
+                <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
+                  {trans.nameStepTitle}
+                </h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-sans tracking-wide">
+                  {trans.nameStepSubtitle}
+                </p>
+              </div>
+
+              <input
+                type="text"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleNextOnboard()}
+                placeholder={trans.namePlaceholder}
+                autoFocus
+                className="w-full text-center bg-white/60 dark:bg-warmbrown-light/40 border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-2xl p-4 text-sm font-sans text-slate-800 dark:text-slate-100 transition-all duration-300"
+              />
+
+              <button
+                onClick={handleNextOnboard}
+                className="w-full mt-2 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>{trans.continue}</span>
                 <ArrowRight className="h-4 w-4" />
@@ -527,11 +593,6 @@ export default function HomeView({
         bg: 'bg-radial from-[#FAF3E7] via-[#FAF8F5] to-[#FAF8F5] dark:from-[#2A1E1A] dark:via-[#1E1715] dark:to-[#1E1715]',
         glow1: 'bg-gradient-to-tr from-[#E6C594]/20 to-[#E8B4A0]/20',
         glow2: 'bg-gradient-to-br from-[#D4AF37]/10 to-transparent',
-        tagline: {
-          pt: 'luz dourada da manhã • esperança',
-          en: 'golden morning light • hope',
-          es: 'luz dorada de la mañana • esperanza'
-        }[lang],
         greeting: {
           pt: 'Um amanhecer de esperança,',
           en: 'A hopeful morning,',
@@ -544,11 +605,6 @@ export default function HomeView({
         bg: 'bg-radial from-[#FAF8F5] via-[#FAF8F5] to-[#FAF8F5] dark:from-[#221C1A] dark:via-[#1E1715] dark:to-[#1E1715]',
         glow1: 'bg-gradient-to-tr from-rose-500/5 to-slate-500/5',
         glow2: 'bg-gradient-to-br from-[#E6C594]/5 to-transparent',
-        tagline: {
-          pt: 'luz clara da tarde • clareza',
-          en: 'clear afternoon light • clarity',
-          es: 'luz clara de la tarde • claridad'
-        }[lang],
         greeting: {
           pt: 'Uma tarde serena,',
           en: 'A serene afternoon,',
@@ -561,11 +617,6 @@ export default function HomeView({
         bg: 'bg-radial from-[#FAF5F2] via-[#FAF8F5] to-[#FAF8F5] dark:from-[#251916] dark:via-[#1E1715] dark:to-[#1E1715]',
         glow1: 'bg-gradient-to-tr from-[#DE8E7B]/15 to-[#FAF5F2]/0',
         glow2: 'bg-gradient-to-br from-[#D4AF37]/15 to-transparent',
-        tagline: {
-          pt: 'luz quente do crepúsculo • acolhimento',
-          en: 'warm twilight glow • safe space',
-          es: 'luz cálida del crepúsculo • acogida'
-        }[lang],
         greeting: {
           pt: 'Uma noite de paz,',
           en: 'A peaceful night,',
@@ -617,14 +668,17 @@ export default function HomeView({
               : prefGrammar === 'masculine'
               ? (lang === 'pt' ? 'Bem-vindo de volta' : lang === 'es' ? 'Bienvenido de vuelta' : 'Welcome back')
               : (lang === 'pt' ? 'Bem-vinde de volta' : lang === 'es' ? 'Bienvenide de vuelta' : 'Welcome back')
-            }, <span className="font-mono text-xs font-normal opacity-85 text-rosegold dark:text-[#E8B4A0]">rcl.sampaio@gmail.com</span>
+            }, <span className="font-mono text-xs font-normal opacity-85 text-rosegold dark:text-[#E8B4A0]">
+              {progress.displayName || (
+                prefGrammar === 'masculine'
+                  ? (lang === 'pt' ? 'querido' : lang === 'es' ? 'querido' : 'friend')
+                  : (lang === 'pt' ? 'querida' : lang === 'es' ? 'querida' : 'friend')
+              )}
+            </span>
           </h3>
         </div>
 
         <div className="space-y-1 pt-1">
-          <span className="text-[9px] uppercase font-sans tracking-[0.3em] font-bold text-slate-400 dark:text-slate-500 block">
-            {lighting.tagline}
-          </span>
           <h2 className="text-sm font-sans tracking-[0.2em] font-semibold text-rosegold dark:text-rosegold-light uppercase">
             {trans.chapter} {chapter.id} • {adaptMessage(chapter.title[lang], prefGrammar, lang)}
           </h2>
@@ -677,21 +731,26 @@ export default function HomeView({
         {/* Primary Single CTA Button (ONE ACTION PRINCIPLE) */}
         <div className="flex flex-col items-center justify-center gap-4">
           <motion.button
-            whileHover={{ scale: 1.03, y: -1 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => onSelectTab('mission')}
-            className={`px-12 py-4.5 rounded-2xl text-xs font-sans font-bold uppercase tracking-[0.2em] cursor-pointer shadow-lg transition-all duration-300 ${
-              isCompleted 
-                ? 'bg-rose-50/60 dark:bg-rosegold/10 text-rosegold dark:text-rosegold-light hover:bg-rose-100/80 shadow-sm border border-rose-100/30 dark:border-rosegold/10'
-                : 'bg-rosegold hover:bg-[#A35D68] text-white shadow-rosegold hover:shadow-rosegold/40'
+            whileHover={isLocked ? undefined : { scale: 1.03, y: -1 }}
+            whileTap={isLocked ? undefined : { scale: 0.97 }}
+            onClick={() => !isLocked && onSelectTab('mission')}
+            disabled={isLocked}
+            className={`px-12 py-4.5 rounded-2xl text-xs font-sans font-bold uppercase tracking-[0.2em] shadow-lg transition-all duration-300 ${
+              isLocked
+                ? 'bg-slate-100 dark:bg-warmbrown text-slate-400 dark:text-slate-500 border border-rose-100/10 dark:border-rosegold/5 cursor-not-allowed shadow-none'
+                : isCompleted
+                ? 'bg-rose-50/60 dark:bg-rosegold/10 text-rosegold dark:text-rosegold-light hover:bg-rose-100/80 shadow-sm border border-rose-100/30 dark:border-rosegold/10 cursor-pointer'
+                : 'bg-rosegold hover:bg-[#A35D68] text-white shadow-rosegold hover:shadow-rosegold/40 cursor-pointer'
             }`}
           >
-            {isCompleted ? trans.reviewMission : trans.goMission}
+            {isLocked ? trans.lockedTitle : isCompleted ? trans.reviewMission : trans.goMission}
           </motion.button>
 
           {/* Quick, reassuring, pressure-free micro-copy */}
           <span className="text-[10px] text-slate-400 dark:text-slate-500 font-sans tracking-wide leading-relaxed max-w-xs sm:max-w-md">
-            {yesterdayIncomplete 
+            {isLocked
+              ? trans.waitingForTomorrow
+              : yesterdayIncomplete
               ? (lang === 'pt' ? 'Sua vaga ficou guardada. Retome com tranquilidade.' : lang === 'es' ? 'Tu lugar te estaba esperando. Retoma con tranquilidad.' : 'We kept your place ready. Resume at your own pace.')
               : (lang === 'pt' ? 'Um passo simples por dia, sem cobranças ou julgamento.' : lang === 'es' ? 'Un paso simple por día, sin culpas ni juicios.' : 'One simple daily step, free of judgment or guilt.')
             }

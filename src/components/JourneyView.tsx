@@ -83,10 +83,18 @@ export default function JourneyView({
   // Check if a day is unlocked in this active journey
   const isDayUnlocked = (day: Day) => {
     if (day.dayNumber === 1) return true;
-    
+
     // Unlocked if previous day of the same journey is completed
     const prevDayNumber = day.dayNumber - 1;
-    return progress.completionHistory.includes(prevDayNumber);
+    if (!progress.completionHistory.includes(prevDayNumber)) return false;
+
+    // Still waits for the real calendar to turn over — completing the
+    // previous day today doesn't unlock this one until tomorrow.
+    const todayISO = new Date().toISOString().split('T')[0];
+    if (day.dayNumber === progress.currentDay && progress.lastActiveDate === todayISO) {
+      return false;
+    }
+    return true;
   };
 
   const textDict = {

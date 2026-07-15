@@ -75,7 +75,6 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
       inspirationalDesc: 'Provocações existenciais, metáforas profundas e conexão espiritual com o público.',
       grammarFem: 'Feminino (Amada, Destravada)',
       grammarMasc: 'Masculino (Amado, Destravado)',
-      userEmailLabel: 'E-mail Integrado',
       memberBadge: 'Nível de Evolução:'
     },
     en: {
@@ -102,7 +101,6 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
       inspirationalDesc: 'Existential metaphors, deeper wisdom, and spiritual projection on camera.',
       grammarFem: 'Feminine Alignment',
       grammarMasc: 'Masculine Alignment',
-      userEmailLabel: 'Integrated Email',
       memberBadge: 'Evolution Stage:'
     },
     es: {
@@ -129,7 +127,6 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
       inspirationalDesc: 'Metáforas profundas, sabiduría existencial y conexión espiritual.',
       grammarFem: 'Femenino Alignment',
       grammarMasc: 'Masculino Alignment',
-      userEmailLabel: 'Email Integrado',
       memberBadge: 'Fase de Evolución:'
     }
   }[lang];
@@ -155,13 +152,10 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
 
           <div className="space-y-1">
             <h3 className="text-xl sm:text-2xl font-serif font-light text-amber-50">
-              Estudante RenaSer
+              {progress.displayName || (lang === 'pt' ? 'Estudante RenaSer' : lang === 'es' ? 'Estudiante RenaSer' : 'RenaSer Student')}
             </h3>
             <p className="text-[10px] uppercase font-mono tracking-widest text-[#D4AF37] font-bold">
               {trans.pioneiro}
-            </p>
-            <p className="text-xs text-slate-400 font-mono">
-              {trans.userEmailLabel}: <strong className="text-slate-300">rcl.sampaio@gmail.com</strong>
             </p>
           </div>
 

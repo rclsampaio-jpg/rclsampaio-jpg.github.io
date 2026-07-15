@@ -621,6 +621,10 @@ export function loadUserProgressFromStorage(): UserProgress {
         parsed.journeyStartDate = getTodayISO();
         localStorage.setItem('renaser_user_progress', JSON.stringify(parsed));
       }
+      if (parsed.displayName === undefined) {
+        parsed.displayName = null;
+        localStorage.setItem('renaser_user_progress', JSON.stringify(parsed));
+      }
       return parsed;
     } catch (e) {
       console.error('Error parsing user progress, loading default', e);
@@ -637,7 +641,8 @@ export function loadUserProgressFromStorage(): UserProgress {
     videoLinks: {},
     reflections: {},
     lastActiveDate: null,
-    journeyStartDate: getTodayISO()
+    journeyStartDate: getTodayISO(),
+    displayName: null
   };
 
   localStorage.setItem('renaser_user_progress', JSON.stringify(defaultProgress));
