@@ -99,23 +99,35 @@ const titlesByWeekDay: Record<DayType, Record<Language, string>> = {
   }
 };
 
+// Real recorded daily audio, one file per day, added incrementally.
+// Days not listed here fall back to the placeholder ambience sound below.
+const DAILY_AUDIO_FILES: Record<number, string> = {
+  1: '/assets/audio/dia-01.mp3'
+};
+const FALLBACK_AUDIO_URL = 'https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg';
+
+function getAudioUrlForDay(dayNumber: number): string {
+  return DAILY_AUDIO_FILES[dayNumber] || FALLBACK_AUDIO_URL;
+}
+
 // Generate initial 30 days structure based on the rhythm
 export function generateInitialDays(): MissionDay[] {
   const days: MissionDay[] = [];
-  
+
   for (let i = 1; i <= 30; i++) {
     const type = getDayType(i);
     const titlePt = `${titlesByWeekDay[type].pt} (Dia ${i})`;
     const titleEn = `${titlesByWeekDay[type].en} (Day ${i})`;
     const titleEs = `${titlesByWeekDay[type].es} (Día ${i})`;
-    
+    const audioUrl = getAudioUrlForDay(i);
+
     days.push({
       dayNumber: i,
       type,
       title: { pt: titlePt, en: titleEn, es: titleEs },
       content: {
         pt: {
-          audioUrl: 'https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg', // Premium placeholder audio
+          audioUrl, // Real recording if available for this day, otherwise placeholder
           hook: `O maior erro que você comete ao tentar gravar vídeos hoje é achar que precisa ser [perfeita/perfeito/perfeite]. No Dia ${i}, vamos quebrar isso.`,
           scripts: [
             `Roteiro Opção 1 (Conexão Rápida):\n"Se você tem vergonha de gravar vídeos, deixa eu te contar um segredo... eu também tinha. Mas hoje eu decidi..."`,
@@ -126,7 +138,7 @@ export function generateInitialDays(): MissionDay[] {
           reflectionQuestion: 'Como você se sentiu hoje ao encarar a possibilidade de ser [vista/visto/viste] de verdade pelas pessoas?'
         },
         en: {
-          audioUrl: 'https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg',
+          audioUrl,
           hook: `The biggest mistake you make when trying to record videos today is thinking you need to be perfect. On Day ${i}, we break this.`,
           scripts: [
             `Script Option 1 (Quick Connection):\n"If you are afraid of recording videos, let me tell you a secret... I was too. But today I decided to..."`,
@@ -137,7 +149,7 @@ export function generateInitialDays(): MissionDay[] {
           reflectionQuestion: 'How did you feel today confronting the possibility of being truly seen by people?'
         },
         es: {
-          audioUrl: 'https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg',
+          audioUrl,
           hook: `El mayor error que cometes al intentar grabar videos hoy es pensar que necesitas ser [perfecta/perfecto/perfecte]. En el Día ${i}, romperemos esto.`,
           scripts: [
             `Guión Opción 1 (Conexión Rápida):\n"Si tienes vergüenza de grabar videos, déjame contarte un secreto... yo también la tenía. Pero hoy decidí..."`,
@@ -159,7 +171,7 @@ export function generateInitialDays(): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS) — acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '2';
+const DAYS_CONTENT_VERSION = '3';
 
 export function loadDaysFromStorage(): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
