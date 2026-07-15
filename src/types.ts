@@ -140,7 +140,7 @@ export interface CommunityConfig {
   joinLink: string;
   buttonColor: string;
   image: string;
-  platform: 'WhatsApp' | 'Telegram' | 'Circle' | 'Skool' | 'Discord' | 'Facebook Groups' | 'Slack' | 'Custom URL';
+  platform: 'WhatsApp' | 'Telegram' | 'Circle' | 'Skool' | 'Discord' | 'Facebook Groups' | 'Slack' | 'Custom URL' | 'Kiwify';
 }
 
 export interface SupportConfig {
@@ -149,6 +149,7 @@ export interface SupportConfig {
   formUrl: string;
   websiteUrl: string;
   helpCenterUrl: string;
+  weeklyVideoUrl: string; // YouTube link, swapped out every week
   emergencyMessage: Record<Language, string>;
   faqs: Array<{
     id: string;
@@ -162,7 +163,7 @@ export interface MentoringConfig {
   title: Record<Language, string>;
   description: Record<Language, string>;
   ctaText: Record<Language, string>;
-  provider: 'Calendly' | 'Google Calendar' | 'Custom Booking System';
+  provider: 'Calendly' | 'Google Calendar' | 'Custom Booking System' | 'WhatsApp';
 }
 
 export interface LibraryAsset {

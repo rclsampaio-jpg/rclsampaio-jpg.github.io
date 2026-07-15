@@ -17,22 +17,23 @@ export const DEFAULT_COMMUNITY_CONFIG: CommunityConfig = {
     es: 'Nuestra comunidad exclusiva de estudiantes y creadores de contenido. El lugar perfecto para publicar tus ganchos diarios de video, recibir comentarios constructivos de mentores, generar conexiones de alto nivel y acelerar tu destrabe.'
   },
   buttonTitle: {
-    pt: 'Entrar no Telegram VIP',
-    en: 'Join VIP Telegram Group',
-    es: 'Entrar al Grupo VIP de Telegram'
+    pt: 'Acessar Área de Membros VIP',
+    en: 'Access VIP Members Area',
+    es: 'Acceder al Área de Miembros VIP'
   },
-  joinLink: 'https://telegram.org',
+  joinLink: 'https://dashboard.kiwify.com',
   buttonColor: '#A35D68',
-  image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
-  platform: 'Telegram'
+  image: '',
+  platform: 'Kiwify'
 };
 
 export const DEFAULT_SUPPORT_CONFIG: SupportConfig = {
-  email: 'suporte@renaser.co',
-  whatsapp: '+5511999999999',
+  email: 'manifestandomagicasuporte@gmail.com',
+  whatsapp: '+34634449155',
   formUrl: 'https://forms.gle/renaser_suporte',
   websiteUrl: 'https://suporte.renaser.co',
   helpCenterUrl: 'https://ajuda.renaser.co',
+  weeklyVideoUrl: 'https://www.youtube.com/watch?v=pFTyrgrGycA&t=5s',
   emergencyMessage: {
     pt: 'Se você estiver sentindo ansiedade intensa, paralisia total antes de gravar ou uma crise de autocrítica hoje, use nosso SOS Emocional abaixo para calibrar seu ritmo imediatamente, ou fale diretamente com um mentor pelo nosso WhatsApp de emergência.',
     en: 'If you are experiencing intense anxiety, complete camera paralysis, or an acute self-criticism spike today, please trigger our Emotional SOS below to calibrate your breathing, or speak directly to a mentor via our emergency WhatsApp.',
@@ -82,11 +83,11 @@ export const DEFAULT_SUPPORT_CONFIG: SupportConfig = {
 };
 
 export const DEFAULT_MENTORING_CONFIG: MentoringConfig = {
-  bookingUrl: 'https://calendly.com',
+  bookingUrl: 'https://wa.me/34634449155?text=Ol%C3%A1!%20Quero%20agendar%20minha%20sess%C3%A3o%20de%20mentoria%20RenaSer.',
   title: {
-    pt: 'Book a Private 1-on-1 Mastermind Session',
-    en: 'Book a Private 1-on-1 Mastermind Session',
-    es: 'Reservar Sesión Privada 1-a-1 de Mastermind'
+    pt: 'Agende uma Sessão Particular de Mentoria 1-a-1',
+    en: 'Book a Private 1-on-1 Mentoring Session',
+    es: 'Reserva una Sesión Privada de Mentoría 1 a 1'
   },
   description: {
     pt: 'Agende um encontro exclusivo de 45 minutos com o criador do RenaSer para realizar uma calibração postural na lente, auditar seus ganchos de vídeo, estruturar sua linha editorial única e vencer travas psicológicas profundas.',
@@ -98,7 +99,7 @@ export const DEFAULT_MENTORING_CONFIG: MentoringConfig = {
     en: 'Book VIP Session',
     es: 'Reservar Sesión VIP de Mentoría'
   },
-  provider: 'Calendly'
+  provider: 'WhatsApp'
 };
 
 export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
@@ -172,41 +173,55 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
   }
 ];
 
-// LocalStorage helpers
+// Bump whenever a DEFAULT_*_CONFIG constant above changes, so browsers with an
+// already-cached config regenerate instead of showing stale copy (same
+// mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
+// CMS hand-edits to these configs — acceptable while still being tuned from code.
+const ECOSYSTEM_CONFIG_VERSION = '2';
+
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');
-  if (stored) {
+  const storedVersion = localStorage.getItem('renaser_community_config_version');
+  if (stored && storedVersion === ECOSYSTEM_CONFIG_VERSION) {
     try { return JSON.parse(stored); } catch (e) { console.error(e); }
   }
+  saveCommunityConfig(DEFAULT_COMMUNITY_CONFIG);
   return DEFAULT_COMMUNITY_CONFIG;
 }
 
 export function saveCommunityConfig(config: CommunityConfig): void {
   localStorage.setItem('renaser_community_config', JSON.stringify(config));
+  localStorage.setItem('renaser_community_config_version', ECOSYSTEM_CONFIG_VERSION);
 }
 
 export function loadSupportConfig(): SupportConfig {
   const stored = localStorage.getItem('renaser_support_config');
-  if (stored) {
+  const storedVersion = localStorage.getItem('renaser_support_config_version');
+  if (stored && storedVersion === ECOSYSTEM_CONFIG_VERSION) {
     try { return JSON.parse(stored); } catch (e) { console.error(e); }
   }
+  saveSupportConfig(DEFAULT_SUPPORT_CONFIG);
   return DEFAULT_SUPPORT_CONFIG;
 }
 
 export function saveSupportConfig(config: SupportConfig): void {
   localStorage.setItem('renaser_support_config', JSON.stringify(config));
+  localStorage.setItem('renaser_support_config_version', ECOSYSTEM_CONFIG_VERSION);
 }
 
 export function loadMentoringConfig(): MentoringConfig {
   const stored = localStorage.getItem('renaser_mentoring_config');
-  if (stored) {
+  const storedVersion = localStorage.getItem('renaser_mentoring_config_version');
+  if (stored && storedVersion === ECOSYSTEM_CONFIG_VERSION) {
     try { return JSON.parse(stored); } catch (e) { console.error(e); }
   }
+  saveMentoringConfig(DEFAULT_MENTORING_CONFIG);
   return DEFAULT_MENTORING_CONFIG;
 }
 
 export function saveMentoringConfig(config: MentoringConfig): void {
   localStorage.setItem('renaser_mentoring_config', JSON.stringify(config));
+  localStorage.setItem('renaser_mentoring_config_version', ECOSYSTEM_CONFIG_VERSION);
 }
 
 export function loadLibraryAssets(): LibraryAsset[] {

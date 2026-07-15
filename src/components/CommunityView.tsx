@@ -4,11 +4,9 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Users, MessageCircle, HelpCircle, Mail, Phone, ExternalLink, 
-  ChevronDown, ChevronUp, AlertCircle, Heart, Calendar, Sparkles,
-  ArrowUpRight, ShieldAlert, CheckCircle2, MessageSquare
+import {
+  Users, HelpCircle, Mail, Phone, ExternalLink, Calendar, Sparkles,
+  ArrowUpRight, ShieldAlert, CheckCircle2, MessageSquare, Play
 } from 'lucide-react';
 import { Language, CommunityConfig, SupportConfig, MentoringConfig } from '../types';
 import { loadCommunityConfig, loadSupportConfig, loadMentoringConfig } from '../data/ecosystemData';
@@ -38,21 +36,27 @@ export default function CommunityView({ lang }: CommunityViewProps) {
     };
   }, []);
 
-  const [expandedFaqId, setExpandedFaqId] = useState<string | null>(null);
   const [supportMessage, setSupportMessage] = useState('');
   const [supportSent, setSupportSent] = useState(false);
-
-  const toggleFaq = (id: string) => {
-    setExpandedFaqId(expandedFaqId === id ? null : id);
-  };
 
   const handleSendForm = (e: React.FormEvent) => {
     e.preventDefault();
     if (!supportMessage.trim()) return;
+    const mailtoUrl = `mailto:${support.email}?subject=${encodeURIComponent('Suporte RenaSer')}&body=${encodeURIComponent(supportMessage)}`;
+    window.location.href = mailtoUrl;
     setSupportSent(true);
     setSupportMessage('');
     setTimeout(() => setSupportSent(false), 5000);
   };
+
+  // Derives a YouTube thumbnail straight from the share URL, so the weekly
+  // video cover updates automatically whenever the link changes — no manual
+  // cover upload needed.
+  const getYouTubeThumbnail = (url: string): string | null => {
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{11})/);
+    return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
+  };
+  const weeklyVideoThumbnail = getYouTubeThumbnail(support.weeklyVideoUrl);
 
   // Platform icon chooser
   const renderPlatformBadge = (platform: string) => {
@@ -78,77 +82,86 @@ export default function CommunityView({ lang }: CommunityViewProps) {
     pt: {
       communityTab: 'Comunidade Principal',
       mentoringTab: 'Mentoria & Masterclass',
-      supportTab: 'Suporte & Ajuda',
+      supportTab: 'Dicas & Direcionamentos',
       communityTitle: 'Seu Ecossistema de Pertencimento',
       communityDesc: 'No RenaSer, você não caminha [sozinha/sozinho/sozinhe]. Conecte-se com alunos do mundo inteiro para postar seus desafios diários, trocar críticas construtivas e criar laços eternos.',
       joinBtn: 'Entrar na Comunidade Agora',
       platformLabel: 'Plataforma Hospedeira',
       mentoringTitle: 'Acelere sua Destrava Frente às Lentes',
-      bookingCtaTitle: 'Book a Private Session',
+      mentoringBullet1: '45 minutos de Zoom particular com a criadora',
+      mentoringBullet2: 'Calibração profunda de postura na câmera',
+      mentoringBullet3: 'Auditoria da arquitetura dos seus ganchos',
+      bookingCtaTitle: 'Agendar Sessão Particular',
       bookingCtaSub: 'Quer ir mais rápido? Agende um encontro VIP particular para refinar sua postura, auditar seus ganchos de vídeo e destravar medos invisíveis.',
-      supportTitle: 'Suporte ao Aluno & FAQ',
+      supportTitle: 'Dicas e Direcionamentos',
       supportDesc: 'Se você estiver com alguma dúvida técnica, problema de acesso ou precisar de orientação extra, nosso time está pronto para te apoiar.',
       emergencyMessageHeader: 'MENSAGEM DE EMERGÊNCIA',
-      faqTitle: 'Perguntas Frequentes',
+      weeklyVideoTitle: 'Vídeo da Semana',
+      weeklyVideoDesc: 'Um vídeo novo toda semana com dicas práticas para sua jornada de visibilidade.',
+      weeklyVideoWatch: 'Assistir no YouTube',
       contactTitle: 'Fale Conosco Diretamente',
       emailLabel: 'Suporte por E-mail',
       whatsappLabel: 'WhatsApp Suporte',
-      websiteLabel: 'Portal de Ajuda',
-      helpCenterLabel: 'Central de Ajuda',
       formLabel: 'Enviar Mensagem Rápida',
       formPlaceholder: 'Escreva sua dúvida ou feedback...',
       formSubmit: 'Enviar Mensagem',
-      formSuccess: 'Sua mensagem de suporte foi enviada com sucesso! Responderemos em breve.'
+      formSuccess: 'Seu e-mail foi aberto com a mensagem pronta — é só enviar!'
     },
     en: {
       communityTab: 'Main Community',
       mentoringTab: 'Mentoring & Masterclass',
-      supportTab: 'Support & Help',
+      supportTab: 'Tips & Guidance',
       communityTitle: 'Your Ecosystem of Belonging',
       communityDesc: 'In RenaSer, you never walk alone. Connect with other students around the globe to share your daily challenges, trade constructive critiques, and build eternal bonds.',
       joinBtn: 'Join the Community Now',
       platformLabel: 'Hosted Platform',
       mentoringTitle: 'Accelerate Your On-Camera Posture',
+      mentoringBullet1: '45 minutes Private Zoom with Creator',
+      mentoringBullet2: 'In-depth on-camera posture calibration',
+      mentoringBullet3: 'Hook-line content architecture audit',
       bookingCtaTitle: 'Book a Private Session',
       bookingCtaSub: 'Want to go faster? Book a private VIP consultation to audit your content hooks, calibrate your camera posture, and dismantle invisible bottlenecks.',
-      supportTitle: 'Student Support & FAQ',
+      supportTitle: 'Tips & Guidance',
       supportDesc: 'If you have any technical questions, access issues, or require custom guidance, our dedicated support crew is ready to assist you.',
       emergencyMessageHeader: 'EMERGENCY STATEMENT',
-      faqTitle: 'Frequently Asked Questions',
+      weeklyVideoTitle: 'Video of the Week',
+      weeklyVideoDesc: 'A new video every week with practical tips for your visibility journey.',
+      weeklyVideoWatch: 'Watch on YouTube',
       contactTitle: 'Contact Our Team Directly',
       emailLabel: 'Email Support',
       whatsappLabel: 'WhatsApp Hotline',
-      websiteLabel: 'Support Portal',
-      helpCenterLabel: 'Help Center',
       formLabel: 'Send Quick Message',
       formPlaceholder: 'Type your question or feedback here...',
       formSubmit: 'Submit Request',
-      formSuccess: 'Your support request has been submitted! Our crew will reach out shortly.'
+      formSuccess: 'Your email app opened with the message ready — just hit send!'
     },
     es: {
       communityTab: 'Comunidad Principal',
       mentoringTab: 'Mentoría y Masterclass',
-      supportTab: 'Soporte y Ayuda',
+      supportTab: 'Consejos y Guías',
       communityTitle: 'Tu Ecosistema de Pertenencia',
       communityDesc: 'En RenaSer, nunca caminas [sola/solo/sole]. Conéctate con alumnos de todo el mundo para publicar tus desafíos diarios, intercambiar comentarios constructivos y crear lazos eternos.',
       joinBtn: 'Unirse a la Comunidad Ahora',
       platformLabel: 'Plataforma Hospedera',
       mentoringTitle: 'Acelera Tu Postura Frente a la Cámara',
+      mentoringBullet1: '45 minutos de Zoom privado con la creadora',
+      mentoringBullet2: 'Calibración profunda de postura en cámara',
+      mentoringBullet3: 'Auditoría de la arquitectura de tus ganchos',
       bookingCtaTitle: 'Reservar Sesión Privada',
       bookingCtaSub: '¿Quieres ir más rápido? Agenda un encuentro VIP privado para refinar tu postura, auditar tus ganchos de video y destrabar miedos invisibles.',
-      supportTitle: 'Soporte al Alumno y FAQ',
+      supportTitle: 'Consejos y Guías',
       supportDesc: 'Si tienes alguna duda técnica, problema de acceso o necesitas orientación adicional, nuestro equipo está listo para apoyarte.',
       emergencyMessageHeader: 'MENSAJE DE EMERGENCIA',
-      faqTitle: 'Preguntas Frecuentes',
+      weeklyVideoTitle: 'Video de la Semana',
+      weeklyVideoDesc: 'Un video nuevo cada semana con consejos prácticos para tu camino de visibilidad.',
+      weeklyVideoWatch: 'Ver en YouTube',
       contactTitle: 'Contáctanos Directamente',
       emailLabel: 'Soporte por E-mail',
       whatsappLabel: 'WhatsApp de Soporte',
-      websiteLabel: 'Portal de Soporte',
-      helpCenterLabel: 'Centro de Ayuda',
       formLabel: 'Enviar Mensaje Rápido',
       formPlaceholder: 'Escribe tu duda o comentarios aquí...',
       formSubmit: 'Enviar Mensaje',
-      formSuccess: '¡Tu mensaje de soporte ha sido enviado con éxito! Responderemos muy pronto.'
+      formSuccess: '¡Tu correo se abrió con el mensaje listo — solo falta enviarlo!'
     }
   }[lang];
 
@@ -161,25 +174,15 @@ export default function CommunityView({ lang }: CommunityViewProps) {
         {/* Left: Community Core Portal Card */}
         <div className="lg:col-span-7 bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-3xl overflow-hidden shadow-rosegold flex flex-col justify-between">
           
-          <div className="relative h-48 w-full overflow-hidden bg-warmbrown">
-            <img 
-              src={community.image || 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80'} 
-              alt={community.name[lang] || community.name['pt']}
-              className="w-full h-full object-cover opacity-85 hover:scale-105 transition duration-700"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#2C221E] via-transparent to-transparent" />
-            <div className="absolute top-4 left-4">
-              {renderPlatformBadge(community.platform)}
-            </div>
-          </div>
-
           <div className="p-6 sm:p-8 space-y-4 flex-1 flex flex-col justify-between">
             <div className="space-y-3">
-              <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#D4AF37] flex items-center gap-1.5">
-                <Users className="h-3.5 w-3.5" />
-                {trans.communityTab}
-              </span>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#D4AF37] flex items-center gap-1.5">
+                  <Users className="h-3.5 w-3.5" />
+                  {trans.communityTab}
+                </span>
+                {renderPlatformBadge(community.platform)}
+              </div>
               <h2 className="text-2xl font-serif font-light text-slate-900 dark:text-white leading-tight">
                 {community.name[lang] || community.name['pt']}
               </h2>
@@ -234,15 +237,15 @@ export default function CommunityView({ lang }: CommunityViewProps) {
             <div className="space-y-2 pt-2 text-xs font-sans text-slate-300">
               <div className="flex gap-2 items-center">
                 <div className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
-                <span>45 minutes Private Zoom with Creator</span>
+                <span>{trans.mentoringBullet1}</span>
               </div>
               <div className="flex gap-2 items-center">
                 <div className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
-                <span>In-depth on-camera posture calibration</span>
+                <span>{trans.mentoringBullet2}</span>
               </div>
               <div className="flex gap-2 items-center">
                 <div className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
-                <span>Hook-line content architecture audit</span>
+                <span>{trans.mentoringBullet3}</span>
               </div>
             </div>
           </div>
@@ -299,52 +302,41 @@ export default function CommunityView({ lang }: CommunityViewProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2">
           
-          {/* Support Columns Left: Accordion FAQ list */}
+          {/* Support Columns Left: Video of the Week */}
           <div className="space-y-4">
             <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-              {trans.faqTitle}
+              {trans.weeklyVideoTitle}
             </h4>
-            
-            <div className="space-y-2.5">
-              {support.faqs.map((faq) => {
-                const isExpanded = expandedFaqId === faq.id;
-                return (
-                  <div 
-                    key={faq.id} 
-                    className="border border-rose-100/30 dark:border-rosegold/5 rounded-xl overflow-hidden transition-colors"
-                  >
-                    <button
-                      onClick={() => toggleFaq(faq.id)}
-                      className="w-full p-4 text-left flex justify-between items-center gap-2 bg-[#FAF8F5]/40 dark:bg-warmbrown/10 hover:bg-[#FAF8F5]/80 dark:hover:bg-warmbrown/20 transition-colors cursor-pointer"
-                    >
-                      <span className="text-xs sm:text-sm font-sans font-medium text-slate-800 dark:text-slate-200">
-                        {faq.question[lang] || faq.question['pt']}
-                      </span>
-                      {isExpanded ? (
-                        <ChevronUp className="h-4 w-4 text-slate-400" />
-                      ) : (
-                        <ChevronDown className="h-4 w-4 text-slate-400" />
-                      )}
-                    </button>
-                    
-                    <AnimatePresence initial={false}>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="bg-white dark:bg-warmbrown-light"
-                        >
-                          <p className="p-4 text-xs leading-relaxed text-slate-500 dark:text-slate-400 border-t border-rose-100/10">
-                            {faq.answer[lang] || faq.answer['pt']}
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+
+            <a
+              href={support.weeklyVideoUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="block rounded-2xl overflow-hidden border border-rose-100/30 dark:border-rosegold/5 group"
+            >
+              <div className="relative aspect-video bg-warmbrown">
+                {weeklyVideoThumbnail && (
+                  <img
+                    src={weeklyVideoThumbnail}
+                    alt={trans.weeklyVideoTitle}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                    referrerPolicy="no-referrer"
+                  />
+                )}
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition flex items-center justify-center">
+                  <div className="h-14 w-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                    <Play className="h-6 w-6 text-rosegold ml-0.5" fill="currentColor" />
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              </div>
+              <div className="p-4 bg-[#FAF8F5]/40 dark:bg-warmbrown/10 space-y-1.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{trans.weeklyVideoDesc}</p>
+                <span className="text-xs font-sans font-bold text-rosegold flex items-center gap-1.5">
+                  {trans.weeklyVideoWatch}
+                  <ExternalLink className="h-3 w-3" />
+                </span>
+              </div>
+            </a>
           </div>
 
           {/* Support Columns Right: Direct Quick Actions and Email/WhatsApp links */}
@@ -381,36 +373,6 @@ export default function CommunityView({ lang }: CommunityViewProps) {
                 <div className="space-y-0.5">
                   <span className="text-xs font-sans font-semibold text-slate-800 dark:text-slate-200 block">{trans.whatsappLabel}</span>
                   <span className="text-[10px] text-slate-400 block font-mono truncate">{support.whatsapp}</span>
-                </div>
-              </a>
-
-              <a
-                href={support.websiteUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="p-4 border border-rose-100/30 dark:border-rosegold/5 hover:border-rosegold/30 rounded-2xl flex flex-col gap-2 bg-[#FAF8F5]/20 dark:bg-warmbrown/10 transition group"
-              >
-                <div className="p-2 bg-indigo-500/10 text-indigo-500 rounded-xl w-fit group-hover:scale-110 transition duration-300">
-                  <ExternalLink className="h-4 w-4" />
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-xs font-sans font-semibold text-slate-800 dark:text-slate-200 block">{trans.websiteLabel}</span>
-                  <span className="text-[10px] text-slate-400 block font-mono truncate">suporte.renaser.co</span>
-                </div>
-              </a>
-
-              <a
-                href={support.helpCenterUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="p-4 border border-rose-100/30 dark:border-rosegold/5 hover:border-rosegold/30 rounded-2xl flex flex-col gap-2 bg-[#FAF8F5]/20 dark:bg-warmbrown/10 transition group"
-              >
-                <div className="p-2 bg-[#D4AF37]/10 text-[#D4AF37] rounded-xl w-fit group-hover:scale-110 transition duration-300">
-                  <HelpCircle className="h-4 w-4" />
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-xs font-sans font-semibold text-slate-800 dark:text-slate-200 block">{trans.helpCenterLabel}</span>
-                  <span className="text-[10px] text-slate-400 block font-mono truncate">ajuda.renaser.co</span>
                 </div>
               </a>
 

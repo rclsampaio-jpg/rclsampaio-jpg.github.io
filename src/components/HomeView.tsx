@@ -40,7 +40,7 @@ export default function HomeView({
 }: HomeViewProps) {
   const [onboardState, setOnboardState] = useState<'splash' | 'lang' | 'guidestyle' | 'grammar' | 'welcome' | 'intro' | 'complete'>('complete');
   const [selectedStyle, setSelectedStyle] = useState<'gentle' | 'challenger' | 'strategic' | 'inspirational'>('gentle');
-  const [selectedGrammar, setSelectedGrammar] = useState<'feminine' | 'masculine' | 'neutral'>('neutral');
+  const [selectedGrammar, setSelectedGrammar] = useState<'feminine' | 'masculine'>('feminine');
   
   // Onboarding initialization check
   useEffect(() => {
@@ -88,12 +88,13 @@ export default function HomeView({
   const trans = {
     pt: {
       onboardingWelcome: "Seja [Bem-vinda/Bem-vindo/Bem-vinde] ao RenaSer",
-      onboardingSub: "Uma experiência de visibilidade e coragem offline-first",
+      onboardingSub: "Uma experiência de visibilidade e coragem",
+      languageTitle: "Configurações de Idioma",
       selectLanguage: "Escolha seu idioma / Choose your language:",
       getStarted: "Começar Jornada",
       continue: "Continuar",
       introTitle: "Você está [pronta/pronto/pronte]?",
-      introText: "Pelos próximos 30 dias, você receberá um gancho (hook) diário e um áudio prático de 10 minutos. Este é um espaço seguro e offline-first para você lembrar quem você realmente é.",
+      introText: "Pelos próximos 30 dias, você receberá um gancho (hook) diário e um áudio prático de 10 minutos. Este é um espaço seguro para você lembrar quem você realmente é.",
       greeting: "Olá, rcl.sampaio@gmail.com!",
       todayTheme: "Tema do Dia",
       progressTitle: "Sua Evolução",
@@ -123,12 +124,13 @@ export default function HomeView({
     },
     en: {
       onboardingWelcome: "Welcome to RenaSer",
-      onboardingSub: "An offline-first experience of visibility and courage",
+      onboardingSub: "An experience of visibility and courage",
+      languageTitle: "Language Settings",
       selectLanguage: "Choose your language / Escolha seu idioma:",
       getStarted: "Start Journey",
       continue: "Continue",
       introTitle: "Are you ready?",
-      introText: "For the next 30 days, you will receive a daily hook and a practical 10-minute audio. This is a safe, offline-first environment designed for you to remember who you truly are.",
+      introText: "For the next 30 days, you will receive a daily hook and a practical 10-minute audio. This is a safe environment designed for you to remember who you truly are.",
       greeting: "Hello, rcl.sampaio@gmail.com!",
       todayTheme: "Today's Theme",
       progressTitle: "Your Progress",
@@ -158,12 +160,13 @@ export default function HomeView({
     },
     es: {
       onboardingWelcome: "[Bienvenida/Bienvenido/Bienvenide] a RenaSer",
-      onboardingSub: "Una experiencia offline-first de visibilidad y coraje",
+      onboardingSub: "Una experiencia de visibilidad y coraje",
+      languageTitle: "Configuración de Idioma",
       selectLanguage: "Selecciona tu idioma / Choose your language:",
       getStarted: "Iniciar Viaje",
       continue: "Continuar",
       introTitle: "¿Estás [lista/listo/liste]?",
-      introText: "Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de 10 minutos. Este es un espacio seguro y offline-first diseñado para recordar quién eres realmente.",
+      introText: "Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de 10 minutos. Este es un espacio seguro diseñado para recordar quién eres realmente.",
       greeting: "¡Hola, rcl.sampaio@gmail.com!",
       todayTheme: "Tema de Hoy",
       progressTitle: "Tu Progreso",
@@ -281,7 +284,7 @@ export default function HomeView({
               
               <div className="space-y-2">
                 <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
-                  i18n Settings
+                  {trans.languageTitle}
                 </h2>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-sans tracking-wide">
                   {trans.selectLanguage}
@@ -422,18 +425,14 @@ export default function HomeView({
                     code: 'feminine', 
                     label: lang === 'pt' ? '🌸 Feminino (pronta, bem-vinda)' : lang === 'es' ? '🌸 Femenino (bienvenida, lista)' : '🌸 Feminine (ready, welcome)' 
                   },
-                  { 
-                    code: 'masculine', 
-                    label: lang === 'pt' ? '☀️ Masculino (pronto, bem-vindo)' : lang === 'es' ? '☀️ Masculino (bienvenido, listo)' : '☀️ Masculine (ready, welcome)' 
-                  },
-                  { 
-                    code: 'neutral', 
-                    label: lang === 'pt' ? '🌱 Neutro (preparade, bem-vinde)' : lang === 'es' ? '🌱 Neutro (bienvenide, preparade)' : '🌱 Neutral / Inclusive' 
+                  {
+                    code: 'masculine',
+                    label: lang === 'pt' ? '☀️ Masculino (pronto, bem-vindo)' : lang === 'es' ? '☀️ Masculino (bienvenido, listo)' : '☀️ Masculine (ready, welcome)'
                   }
                 ].map((item) => (
                   <button
                     key={item.code}
-                    onClick={() => setSelectedGrammar(item.code as any)}
+                    onClick={() => setSelectedGrammar(item.code as 'feminine' | 'masculine')}
                     className={`flex items-center justify-between p-4.5 rounded-2xl border text-sm font-semibold transition-all duration-300 cursor-pointer hover:scale-[1.01] ${
                       selectedGrammar === item.code
                         ? 'bg-rosegold border-rosegold text-white shadow-rosegold'
