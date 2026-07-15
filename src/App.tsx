@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Compass, BookOpen, Star, Settings, ShieldAlert,
+  Compass, Star, Settings, ShieldAlert,
   Sparkles, Award, Lock, Menu, X, ArrowUpRight, Home, Users, User
 } from 'lucide-react';
 
@@ -27,7 +27,6 @@ import ChapterMilestoneOverlay from './components/ChapterMilestoneOverlay';
 import HomeView from './components/HomeView';
 import DailyMissionView from './components/DailyMissionView';
 import JourneyView from './components/JourneyView';
-import HookBankView from './components/HookBankView';
 import EmotionalSosView from './components/EmotionalSosView';
 import CmsView from './components/CmsView';
 import SettingsView from './components/SettingsView';
@@ -43,7 +42,7 @@ import RenataOSChat from './components/RenataOSChat';
 import { adaptMessage } from './utils/grammar';
 import { useSystem } from './engines/SystemEngine';
 
-type TabId = 'home' | 'mission' | 'journey' | 'hooks' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'transformation' | 'community' | 'library' | 'profile' | 'brand';
+type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'transformation' | 'community' | 'library' | 'profile' | 'brand';
 
 export default function App() {
   const system = useSystem();
@@ -382,7 +381,6 @@ export default function App() {
       home: 'Início',
       mission: 'Missão Diária',
       journey: 'Jornada 30 Dias',
-      hooks: 'Banco de Ganchos',
       sos: 'SOS Emocional',
       nextlevel: 'Próximo Nível',
       cms: 'Creator Studio',
@@ -397,7 +395,6 @@ export default function App() {
       home: 'Home',
       mission: 'Daily Mission',
       journey: '30-Day Journey',
-      hooks: 'Hook Bank',
       sos: 'Emotional SOS',
       nextlevel: 'Next Level',
       cms: 'Creator Studio',
@@ -412,7 +409,6 @@ export default function App() {
       home: 'Inicio',
       mission: 'Misión Diaria',
       journey: 'Viaje 30 Días',
-      hooks: 'Banco de Ganchos',
       sos: 'SOS Emocional',
       nextlevel: 'Siguiente Nivel',
       cms: 'Creator Studio',
@@ -635,17 +631,6 @@ export default function App() {
             </button>
 
             <button
-              onClick={() => setActiveTab('hooks')}
-              className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
-                activeTab === 'hooks' 
-                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25' 
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
-              }`}
-            >
-              {labels.hooks}
-            </button>
-
-            <button
               onClick={() => setActiveTab('community')}
               className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
                 activeTab === 'community' 
@@ -654,17 +639,6 @@ export default function App() {
               }`}
             >
               {labels.community}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('library')}
-              className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
-                activeTab === 'library' 
-                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25' 
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
-              }`}
-            >
-              {labels.library}
             </button>
 
             <button
@@ -799,24 +773,10 @@ export default function App() {
               </button>
 
               <button
-                onClick={() => { setActiveTab('hooks'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'hooks' ? 'bg-rosegold text-white font-bold' : 'text-slate-700 dark:text-slate-300'}`}
-              >
-                {labels.hooks}
-              </button>
-
-              <button
                 onClick={() => { setActiveTab('community'); setMobileMenuOpen(false); }}
                 className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'community' ? 'bg-rosegold text-white font-bold' : 'text-slate-700 dark:text-slate-300'}`}
               >
                 {labels.community}
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('library'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'library' ? 'bg-rosegold text-white font-bold' : 'text-slate-700 dark:text-slate-300'}`}
-              >
-                {labels.library}
               </button>
 
               <button
@@ -991,16 +951,6 @@ export default function App() {
               />
             )}
 
-            {activeTab === 'hooks' && (
-              <HookBankView
-                days={days}
-                progress={progress}
-                lang={lang}
-                onToggleFavorite={handleToggleFavorite}
-                onCopyHook={handleCopyHook}
-              />
-            )}
-
             {activeTab === 'sos' && (
               <EmotionalSosView
                 lang={lang}
@@ -1134,21 +1084,6 @@ export default function App() {
             <Users className="h-4.5 w-4.5" />
             <span className="text-[9px] tracking-wider font-sans uppercase font-medium">{labels.community}</span>
             {activeTab === 'community' && (
-              <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
-            )}
-          </button>
-
-          <button
-            onClick={() => setActiveTab('library')}
-            className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
-              activeTab === 'library'
-                ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
-                : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
-            }`}
-          >
-            <BookOpen className="h-4.5 w-4.5" />
-            <span className="text-[9px] tracking-wider font-sans uppercase font-medium">{labels.library}</span>
-            {activeTab === 'library' && (
               <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
             )}
           </button>
