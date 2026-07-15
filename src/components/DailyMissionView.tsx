@@ -293,10 +293,10 @@ export default function DailyMissionView({
   const [audioCompleted, setAudioCompleted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [activeScriptTab, setActiveScriptTab] = useState<number>(0);
+  const [activeHookTab, setActiveHookTab] = useState<number>(0);
+  const [customHookIdea, setCustomHookIdea] = useState('');
   const [reflectionInput, setReflectionInput] = useState('');
   const [promiseLinks, setPromiseLinks] = useState({ inertia: '', confidence: '', evidence: '' });
-  const [copiedScriptIndex, setCopiedScriptIndex] = useState<number | null>(null);
   const [copiedHookOptionIndex, setCopiedHookOptionIndex] = useState<number | null>(null);
   const [copiedActionHookIndex, setCopiedActionHookIndex] = useState<number | null>(null);
   const [copiedHook, setCopiedHook] = useState(false);
@@ -363,7 +363,8 @@ export default function DailyMissionView({
     setCurrentTime(0);
     setDuration(0);
     setAudioCompleted(false);
-    setActiveScriptTab(0);
+    setActiveHookTab(0);
+    setCustomHookIdea('');
     setReflectionInput(progress.reflections[currentDay.dayNumber] || '');
     const [savedInertia = '', savedConfidence = '', savedEvidence = ''] = (progress.videoLinks[currentDay.dayNumber] || '').split(LINK_SEPARATOR);
     setPromiseLinks({ inertia: savedInertia, confidence: savedConfidence, evidence: savedEvidence });
@@ -508,16 +509,11 @@ export default function DailyMissionView({
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
-  const copyToClipboard = (text: string, isHook: boolean, index?: number) => {
+  const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    if (isHook) {
-      setCopiedHook(true);
-      onCopyHook(currentDay.dayNumber);
-      setTimeout(() => setCopiedHook(false), 2000);
-    } else if (index !== undefined) {
-      setCopiedScriptIndex(index);
-      setTimeout(() => setCopiedScriptIndex(null), 2000);
-    }
+    setCopiedHook(true);
+    onCopyHook(currentDay.dayNumber);
+    setTimeout(() => setCopiedHook(false), 2000);
   };
 
   const copyHookOption = (text: string, index: number) => {
@@ -551,7 +547,6 @@ export default function DailyMissionView({
   const localizedContent = {
     audioUrl: rawContent.audioUrl,
     hook: adaptMessage(rawContent.hook, prefGrammar, lang),
-    scripts: rawContent.scripts.map(s => adaptMessage(s, prefGrammar, lang)),
     exposureAction: adaptMessage(rawContent.exposureAction, prefGrammar, lang),
     reflectionQuestion: adaptMessage(rawContent.reflectionQuestion, prefGrammar, lang)
   };
@@ -570,14 +565,19 @@ export default function DailyMissionView({
       audioPause: 'Pausar',
       speed: 'Velocidade',
       hookTitle: 'Mensagem do Dia',
-      scriptsTitle: '3 Exemplos de Roteiro Prático',
+      hookShowcaseTitle: 'Vitrine de Hooks da Semana',
       exposureTitle: 'Ação de Exposição Externa',
-      hookOptionsTitle: 'Opções de Hooks',
-      hookOptionsSubtitle: 'Vitrine de hooks da semana — use um deles no seu vídeo de hoje.',
       copyHook: 'Copiar hook',
       copiedHookLabel: 'Copiado!',
-      actionHookOptionsTitle: 'Ganchos de Ação (sempre disponíveis)',
-      actionHookOptionsSubtitle: 'Um jeito de abrir a câmera e prender a atenção logo no início da gravação.',
+      tabOpenLabel: 'Abertura',
+      tabDailyLabel: 'Hook do Dia',
+      tabIdeaLabel: 'Minha Ideia',
+      openHookHeading: 'Hook de como abrir o vídeo',
+      dailyHookHeading: 'Hook de script do dia',
+      noDailyHookFallback: 'Hoje não tem hook temático — use o hook de abertura ou escreva o seu na aba "Minha Ideia".',
+      ideaHeading: 'Qual a sua ideia?',
+      ideaSubtitle: 'Se você decidiu por um gancho autoral, escreva abaixo:',
+      ideaPlaceholder: 'Escreva aqui a sua frase de gancho...',
       reflectionTitle: 'E aí, como você tá se sentindo agora? Escreve pra descarregar e acompanhar seu progresso mais pra frente.',
       reflectionPlaceholder: 'Como você se sentiu hoje? Escreva com verdade sobre o medo, julgamento ou vitória ao realizar esta missão...',
       reflectionWarning: 'Escreva pelo menos uma frase curta para validar seu progresso.',
@@ -610,9 +610,6 @@ export default function DailyMissionView({
       step04: 'Passo 04',
       copy: 'Copiar',
       copied: 'Copiado!',
-      option: 'Opção',
-      copiedOption: 'Opção Copiada',
-      copyScript: 'Copiar Roteiro',
       promise1Label: 'Promessa 1: Romper a Inércia',
       promise2Label: 'Promessa 2: Construir Confiança',
       promise3Label: 'Promessa 3: Criar Evidência',
@@ -642,13 +639,18 @@ export default function DailyMissionView({
       audioPause: 'Pause',
       speed: 'Speed',
       hookTitle: "Today's Message",
-      scriptsTitle: '3 Practical Script Examples',
-      hookOptionsTitle: 'Hook Options',
-      hookOptionsSubtitle: "This week's hook showcase — use one of these in today's video.",
+      hookShowcaseTitle: 'Weekly Hook Showcase',
       copyHook: 'Copy hook',
       copiedHookLabel: 'Copied!',
-      actionHookOptionsTitle: 'Action Hooks (always available)',
-      actionHookOptionsSubtitle: "A way to open the camera and grab attention right at the start of the recording.",
+      tabOpenLabel: 'Opening',
+      tabDailyLabel: "Today's Hook",
+      tabIdeaLabel: 'My Idea',
+      openHookHeading: 'Hook for how to open the video',
+      dailyHookHeading: "Today's script hook",
+      noDailyHookFallback: 'No themed hook today — use the opening hook, or write your own in the "My Idea" tab.',
+      ideaHeading: 'What is your idea?',
+      ideaSubtitle: "If you've decided on your own original hook, write it below:",
+      ideaPlaceholder: 'Write your hook line here...',
       exposureTitle: 'External Exposure Action',
       reflectionTitle: 'So, how are you feeling right now? Write it out to let go, and track your progress later on.',
       reflectionPlaceholder: 'How did you feel today? Write honestly about the fear, judgment, or victory during this mission...',
@@ -682,9 +684,6 @@ export default function DailyMissionView({
       step04: 'Step 04',
       copy: 'Copy',
       copied: 'Copied!',
-      option: 'Option',
-      copiedOption: 'Copied Option',
-      copyScript: 'Copy Script',
       promise1Label: 'Promise 1: Break Inertia',
       promise2Label: 'Promise 2: Build Confidence',
       promise3Label: 'Promise 3: Create Evidence',
@@ -714,13 +713,18 @@ export default function DailyMissionView({
       audioPause: 'Pausar',
       speed: 'Velocidad',
       hookTitle: 'Mensagem do Dia',
-      scriptsTitle: '3 Ejemplos de Guiones Prácticos',
-      hookOptionsTitle: 'Opciones de Hooks',
-      hookOptionsSubtitle: 'Vitrina de hooks de la semana — usa uno de ellos en tu video de hoy.',
+      hookShowcaseTitle: 'Vitrina de Hooks de la Semana',
       copyHook: 'Copiar hook',
       copiedHookLabel: '¡Copiado!',
-      actionHookOptionsTitle: 'Hooks de Acción (siempre disponibles)',
-      actionHookOptionsSubtitle: 'Una forma de abrir la cámara y captar la atención justo al inicio de la grabación.',
+      tabOpenLabel: 'Apertura',
+      tabDailyLabel: 'Hook del Día',
+      tabIdeaLabel: 'Mi Idea',
+      openHookHeading: 'Hook de cómo abrir el video',
+      dailyHookHeading: 'Hook de guión del día',
+      noDailyHookFallback: 'Hoy no hay hook temático — usa el hook de apertura o escribe el tuyo en la pestaña "Mi Idea".',
+      ideaHeading: '¿Cuál es tu idea?',
+      ideaSubtitle: 'Si decidiste usar un hook propio, escríbelo abajo:',
+      ideaPlaceholder: 'Escribe aquí tu frase de hook...',
       exposureTitle: 'Acción de Exposición Externa',
       reflectionTitle: '¿Y bueno, cómo te sientes ahora? Escribe para desahogarte y seguir tu progreso más adelante.',
       reflectionPlaceholder: '¿Cómo te sentiste hoy? Escribe con honestidad sobre el miedo, juicio o victoria al realizar esta misión...',
@@ -754,9 +758,6 @@ export default function DailyMissionView({
       step04: 'Paso 04',
       copy: 'Copiar',
       copied: '¡Copiado!',
-      option: 'Opción',
-      copiedOption: 'Opción Copiada',
-      copyScript: 'Copiar Guión',
       promise1Label: 'Promesa 1: Romper la Inercia',
       promise2Label: 'Promesa 2: Construir Confianza',
       promise3Label: 'Promesa 3: Crear Evidencia',
@@ -1002,7 +1003,7 @@ export default function DailyMissionView({
                   </span>
 
                   <button
-                    onClick={() => copyToClipboard(localizedContent.hook, true)}
+                    onClick={() => copyToClipboard(localizedContent.hook)}
                     className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-rosegold transition-colors duration-250 cursor-pointer hover:scale-105"
                   >
                     {copiedHook ? (
@@ -1135,8 +1136,8 @@ export default function DailyMissionView({
                 </div>
               </motion.div>
 
-              {/* STEP 3: 3 Practical Script Examples */}
-              <motion.div 
+              {/* STEP 2: Weekly Hook Showcase (opening hook / daily hook / own idea) */}
+              <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
@@ -1144,51 +1145,121 @@ export default function DailyMissionView({
               >
                 <div className="flex items-center justify-between pb-2 border-b border-rose-100/15 dark:border-rosegold/5">
                   <span className="text-[9px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
-                    {textDict.step02} • {textDict.scriptsTitle}
+                    {textDict.step02} • {textDict.hookShowcaseTitle}
                   </span>
                 </div>
 
-                {/* Custom layout scripts tabs */}
                 <div className="flex gap-1.5 bg-rose-50/30 dark:bg-rosegold/5 p-1.5 rounded-xl">
-                  {localizedContent.scripts.map((_, idx) => (
+                  {[textDict.tabOpenLabel, textDict.tabDailyLabel, textDict.tabIdeaLabel].map((label, idx) => (
                     <button
                       key={idx}
-                      onClick={() => setActiveScriptTab(idx)}
+                      onClick={() => setActiveHookTab(idx)}
                       className={`flex-1 py-2 rounded-lg text-xs font-sans font-semibold transition-all duration-300 cursor-pointer ${
-                        activeScriptTab === idx 
-                          ? 'bg-rosegold text-white shadow-sm' 
+                        activeHookTab === idx
+                          ? 'bg-rosegold text-white shadow-sm'
                           : 'text-slate-500 hover:text-rosegold hover:bg-rose-50/50'
                       }`}
                     >
-                      {textDict.option} {idx + 1}
+                      {label}
                     </button>
                   ))}
                 </div>
 
-                <div className="p-5 rounded-2xl bg-slate-50/50 dark:bg-[#130E0D] border border-rose-100/10 shadow-inner">
-                  <pre className="text-xs font-mono text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">
-                    {localizedContent.scripts[activeScriptTab]}
-                  </pre>
-                  
-                  <div className="flex justify-end mt-4 pt-3 border-t border-rose-100/5">
-                    <button
-                      onClick={() => copyToClipboard(localizedContent.scripts[activeScriptTab], false, activeScriptTab)}
-                      className="flex items-center gap-1.5 text-xs font-sans text-slate-500 hover:text-rosegold transition-colors duration-250 cursor-pointer font-bold"
-                    >
-                      {copiedScriptIndex === activeScriptTab ? (
-                        <>
-                          <Check className="h-3.5 w-3.5 text-emerald-500" />
-                          <span className="text-emerald-500">{textDict.copiedOption}</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="h-3.5 w-3.5" />
-                          <span>{textDict.copyScript}</span>
-                        </>
-                      )}
-                    </button>
+                {activeHookTab === 0 && (
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">
+                      {textDict.openHookHeading}
+                    </h4>
+                    <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                      {actionHookOptions.map((option, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start gap-3 p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-rosegold/10"
+                        >
+                          <span className="flex-1 text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
+                            {option}
+                          </span>
+                          <button
+                            onClick={() => copyActionHookOption(option, idx)}
+                            className="shrink-0 flex items-center gap-1.5 text-xs font-sans text-slate-500 hover:text-rosegold transition-colors duration-250 cursor-pointer font-bold"
+                          >
+                            {copiedActionHookIndex === idx ? (
+                              <>
+                                <Check className="h-3.5 w-3.5 text-emerald-500" />
+                                <span className="text-emerald-500">{textDict.copiedHookLabel}</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="h-3.5 w-3.5" />
+                                <span>{textDict.copyHook}</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
+
+                {activeHookTab === 1 && (
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">
+                      {textDict.dailyHookHeading}
+                    </h4>
+                    {hookOptions.length > 0 ? (
+                      <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                        {hookOptions.map((option, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start gap-3 p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-rosegold/10"
+                          >
+                            <span className="flex-1 text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
+                              {option}
+                            </span>
+                            <button
+                              onClick={() => copyHookOption(option, idx)}
+                              className="shrink-0 flex items-center gap-1.5 text-xs font-sans text-slate-500 hover:text-rosegold transition-colors duration-250 cursor-pointer font-bold"
+                            >
+                              {copiedHookOptionIndex === idx ? (
+                                <>
+                                  <Check className="h-3.5 w-3.5 text-emerald-500" />
+                                  <span className="text-emerald-500">{textDict.copiedHookLabel}</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="h-3.5 w-3.5" />
+                                  <span>{textDict.copyHook}</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-slate-500 dark:text-slate-400 italic font-sans p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-rosegold/10">
+                        {textDict.noDailyHookFallback}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {activeHookTab === 2 && (
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">
+                      {textDict.ideaHeading}
+                    </h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-sans">
+                      {textDict.ideaSubtitle}
+                    </p>
+                    <textarea
+                      value={customHookIdea}
+                      onChange={(e) => setCustomHookIdea(e.target.value)}
+                      placeholder={textDict.ideaPlaceholder}
+                      rows={3}
+                      className="w-full text-sm bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-slate-200 transition-all duration-300 shadow-xs resize-none"
+                    />
+                  </div>
+                )}
               </motion.div>
 
               {/* STEP 4: Exposure Action */}
@@ -1226,99 +1297,6 @@ export default function DailyMissionView({
                 </div>
               </motion.div>
 
-              {/* ACTION HOOK OPTIONS - always available, technique guide for opening the camera */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-[2rem] bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold space-y-4"
-              >
-                <div className="space-y-1">
-                  <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans tracking-wide">
-                    {textDict.actionHookOptionsTitle}
-                  </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-sans">
-                    {textDict.actionHookOptionsSubtitle}
-                  </p>
-                </div>
-
-                <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
-                  {actionHookOptions.map((option, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-start gap-3 p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-rosegold/10"
-                    >
-                      <span className="flex-1 text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
-                        {option}
-                      </span>
-                      <button
-                        onClick={() => copyActionHookOption(option, idx)}
-                        className="shrink-0 flex items-center gap-1.5 text-xs font-sans text-slate-500 hover:text-rosegold transition-colors duration-250 cursor-pointer font-bold"
-                      >
-                        {copiedActionHookIndex === idx ? (
-                          <>
-                            <Check className="h-3.5 w-3.5 text-emerald-500" />
-                            <span className="text-emerald-500">{textDict.copiedHookLabel}</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="h-3.5 w-3.5" />
-                            <span>{textDict.copyHook}</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* HOOK OPTIONS SHOWCASE - rotates by day-of-week theme */}
-              {hookOptions.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
-                  className="rounded-[2rem] bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold space-y-4"
-                >
-                  <div className="space-y-1">
-                    <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans tracking-wide">
-                      {textDict.hookOptionsTitle}
-                    </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-sans">
-                      {textDict.hookOptionsSubtitle}
-                    </p>
-                  </div>
-
-                  <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
-                    {hookOptions.map((option, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start gap-3 p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-rosegold/10"
-                      >
-                        <span className="flex-1 text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
-                          {option}
-                        </span>
-                        <button
-                          onClick={() => copyHookOption(option, idx)}
-                          className="shrink-0 flex items-center gap-1.5 text-xs font-sans text-slate-500 hover:text-rosegold transition-colors duration-250 cursor-pointer font-bold"
-                        >
-                          {copiedHookOptionIndex === idx ? (
-                            <>
-                              <Check className="h-3.5 w-3.5 text-emerald-500" />
-                              <span className="text-emerald-500">{textDict.copiedHookLabel}</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="h-3.5 w-3.5" />
-                              <span>{textDict.copyHook}</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
 
               {/* THE THREE VIDEO / PROMISES EXPERIENCE - Mandatory Checklist */}
               <motion.div 
