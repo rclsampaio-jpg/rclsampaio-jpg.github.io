@@ -8,8 +8,8 @@ import {
   Users, HelpCircle, Mail, Phone, ExternalLink, Calendar, Sparkles,
   ArrowUpRight, CheckCircle2, MessageSquare, Play
 } from 'lucide-react';
-import { Language, CommunityConfig, SupportConfig, MentoringConfig } from '../types';
-import { loadCommunityConfig, loadSupportConfig, loadMentoringConfig } from '../data/ecosystemData';
+import { Language, CommunityConfig, FreeCommunityConfig, SupportConfig, MentoringConfig } from '../types';
+import { loadCommunityConfig, loadFreeCommunityConfig, loadSupportConfig, loadMentoringConfig } from '../data/ecosystemData';
 
 interface CommunityViewProps {
   lang: Language;
@@ -17,13 +17,15 @@ interface CommunityViewProps {
 
 export default function CommunityView({ lang }: CommunityViewProps) {
   const [community, setCommunity] = useState<CommunityConfig>(() => loadCommunityConfig());
+  const [freeCommunity, setFreeCommunity] = useState<FreeCommunityConfig>(() => loadFreeCommunityConfig());
   const [support, setSupport] = useState<SupportConfig>(() => loadSupportConfig());
   const [mentoring, setMentoring] = useState<MentoringConfig>(() => loadMentoringConfig());
-  
+
   // Reload in case settings updated in CMS
   useEffect(() => {
     const handleStorageChange = () => {
       setCommunity(loadCommunityConfig());
+      setFreeCommunity(loadFreeCommunityConfig());
       setSupport(loadSupportConfig());
       setMentoring(loadMentoringConfig());
     };
@@ -263,6 +265,30 @@ export default function CommunityView({ lang }: CommunityViewProps) {
             </a>
           </div>
 
+        </div>
+
+        {/* Below VIP: Free Community Card */}
+        <div className="lg:col-span-7 bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 shadow-rosegold flex flex-col sm:flex-row sm:items-center gap-5 justify-between">
+          <div className="space-y-2">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+              <Users className="h-3.5 w-3.5" />
+              {freeCommunity.title[lang] || freeCommunity.title['pt']}
+            </span>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans max-w-md">
+              {freeCommunity.description[lang] || freeCommunity.description['pt']}
+            </p>
+          </div>
+
+          <a
+            href={freeCommunity.joinLink}
+            target="_blank"
+            rel="noreferrer"
+            className="shrink-0 py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-sans font-bold tracking-wider text-xs uppercase flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-lg shadow-emerald-600/15"
+          >
+            <MessageSquare className="h-4 w-4" />
+            <span>{trans.joinBtn}</span>
+            <ExternalLink className="h-3.5 w-3.5" />
+          </a>
         </div>
 
       </div>

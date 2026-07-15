@@ -143,6 +143,12 @@ export interface CommunityConfig {
   platform: 'WhatsApp' | 'Telegram' | 'Circle' | 'Skool' | 'Discord' | 'Facebook Groups' | 'Slack' | 'Custom URL' | 'Kiwify';
 }
 
+export interface FreeCommunityConfig {
+  title: Record<Language, string>;
+  description: Record<Language, string>;
+  joinLink: string;
+}
+
 export interface SupportConfig {
   email: string;
   whatsapp: string;

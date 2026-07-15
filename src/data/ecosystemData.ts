@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CommunityConfig, SupportConfig, MentoringConfig, LibraryAsset, Language } from '../types';
+import { CommunityConfig, FreeCommunityConfig, SupportConfig, MentoringConfig, LibraryAsset, Language } from '../types';
 
 export const DEFAULT_COMMUNITY_CONFIG: CommunityConfig = {
   name: {
@@ -12,9 +12,9 @@ export const DEFAULT_COMMUNITY_CONFIG: CommunityConfig = {
     es: 'Ecosistema de Miembros VIP RenaSer'
   },
   description: {
-    pt: 'Nossa comunidade exclusiva de alunos e criadores de conteúdo. O lugar perfeito para publicar seus ganchos de vídeo diários, receber feedbacks construtivos dos mentores, criar parcerias de alto nível e acelerar seu destrave de visibilidade.',
-    en: 'Our exclusive community of students and content creators. The perfect spot to share your daily hooks, receive constructive feedback from mentors, make high-level connections, and accelerate your visibility journey.',
-    es: 'Nuestra comunidad exclusiva de estudiantes y creadores de contenido. El lugar perfecto para publicar tus ganchos diarios de video, recibir comentarios constructivos de mentores, generar conexiones de alto nivel y acelerar tu destrabe.'
+    pt: 'Nossa comunidade exclusiva de alunos e criadores de conteúdo. O lugar perfeito para publicar seus ganchos de vídeo diários, receber feedbacks construtivos da mentora Renata, criar parcerias de alto nível e acelerar seu destrave de visibilidade.',
+    en: 'Our exclusive community of students and content creators. The perfect spot to share your daily hooks, receive constructive feedback from your mentor Renata, make high-level connections, and accelerate your visibility journey.',
+    es: 'Nuestra comunidad exclusiva de estudiantes y creadores de contenido. El lugar perfecto para publicar tus ganchos diarios de video, recibir comentarios constructivos de tu mentora Renata, generar conexiones de alto nivel y acelerar tu destrabe.'
   },
   buttonTitle: {
     pt: 'Acessar Área de Membros VIP',
@@ -25,6 +25,20 @@ export const DEFAULT_COMMUNITY_CONFIG: CommunityConfig = {
   buttonColor: '#A35D68',
   image: '',
   platform: 'Kiwify'
+};
+
+export const DEFAULT_FREE_COMMUNITY_CONFIG: FreeCommunityConfig = {
+  title: {
+    pt: 'Comunidade Gratuita',
+    en: 'Free Community',
+    es: 'Comunidad Gratuita'
+  },
+  description: {
+    pt: 'Aqui você compartilha seus avanços e troca suas ideias com outros membros no mesmo processo que você.',
+    en: 'Here you share your progress and exchange ideas with other members going through the same process as you.',
+    es: 'Aquí compartes tus avances e intercambias ideas con otros miembros en el mismo proceso que tú.'
+  },
+  joinLink: 'https://chat.whatsapp.com/JSfHx6KKY8sIFUozyQCkLr'
 };
 
 export const DEFAULT_SUPPORT_CONFIG: SupportConfig = {
@@ -177,7 +191,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs — acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '4';
+const ECOSYSTEM_CONFIG_VERSION = '5';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');
@@ -192,6 +206,21 @@ export function loadCommunityConfig(): CommunityConfig {
 export function saveCommunityConfig(config: CommunityConfig): void {
   localStorage.setItem('renaser_community_config', JSON.stringify(config));
   localStorage.setItem('renaser_community_config_version', ECOSYSTEM_CONFIG_VERSION);
+}
+
+export function loadFreeCommunityConfig(): FreeCommunityConfig {
+  const stored = localStorage.getItem('renaser_free_community_config');
+  const storedVersion = localStorage.getItem('renaser_free_community_config_version');
+  if (stored && storedVersion === ECOSYSTEM_CONFIG_VERSION) {
+    try { return JSON.parse(stored); } catch (e) { console.error(e); }
+  }
+  saveFreeCommunityConfig(DEFAULT_FREE_COMMUNITY_CONFIG);
+  return DEFAULT_FREE_COMMUNITY_CONFIG;
+}
+
+export function saveFreeCommunityConfig(config: FreeCommunityConfig): void {
+  localStorage.setItem('renaser_free_community_config', JSON.stringify(config));
+  localStorage.setItem('renaser_free_community_config_version', ECOSYSTEM_CONFIG_VERSION);
 }
 
 export function loadSupportConfig(): SupportConfig {
