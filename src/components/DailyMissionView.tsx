@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   Play, Pause, Copy, Check, Star, ArrowRight, ArrowLeft, Heart, Sparkles,
   Info, Compass, HelpCircle, X, BookOpen, Smile, Wind, Award,
-  RotateCcw, RotateCw, MoreHorizontal
+  RotateCcw, RotateCw
 } from 'lucide-react';
 import { MissionDay, Language, DayType, UserProgress } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
@@ -317,7 +317,6 @@ export default function DailyMissionView({
 
   // Audio player card local UI state
   const [audioLiked, setAudioLiked] = useState(false);
-  const [showAudioMoreMenu, setShowAudioMoreMenu] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -462,15 +461,6 @@ export default function DailyMissionView({
     }
   };
 
-  const handleFastForwardAudio = () => {
-    if (audioRef.current && duration > 0) {
-      audioRef.current.currentTime = duration;
-    }
-    setAudioProgress(100);
-    setIsPlaying(false);
-    setAudioCompleted(true);
-  };
-
   const handleSkipBack15 = () => {
     if (audioRef.current && duration > 0) {
       const newTime = Math.max(0, audioRef.current.currentTime - 15);
@@ -561,7 +551,6 @@ export default function DailyMissionView({
       audioFinished: '✓ Sintonização Concluída',
       audioListen: 'Ouvir Renata',
       audioPause: 'Pausar',
-      audioSkip: 'Marcar como ouvido',
       speed: 'Velocidade',
       hookTitle: 'Mensagem do Dia',
       scriptsTitle: '3 Exemplos de Roteiro Prático',
@@ -617,7 +606,6 @@ export default function DailyMissionView({
       linkRequiredTitle: 'Link de comprovação (obrigatório)',
       linkRequiredPlaceholder: 'Cole o link aqui...',
       linkRequiredWarning: 'Adicione o link para validar esta promessa.',
-      moreOptions: 'Mais opções',
       audioSpeedTooltip: 'Velocidade de reprodução',
       skipBack: 'Voltar 15s',
       skipForward: 'Avançar 15s'
@@ -629,7 +617,6 @@ export default function DailyMissionView({
       audioFinished: '✓ Calibration Complete',
       audioListen: 'Listen to Renata',
       audioPause: 'Pause',
-      audioSkip: 'Mark as listened',
       speed: 'Speed',
       hookTitle: "Today's Message",
       scriptsTitle: '3 Practical Script Examples',
@@ -685,7 +672,6 @@ export default function DailyMissionView({
       linkRequiredTitle: 'Proof link (required)',
       linkRequiredPlaceholder: 'Paste the link here...',
       linkRequiredWarning: 'Add the link to validate this promise.',
-      moreOptions: 'More options',
       audioSpeedTooltip: 'Playback speed',
       skipBack: 'Back 15s',
       skipForward: 'Forward 15s'
@@ -697,7 +683,6 @@ export default function DailyMissionView({
       audioFinished: '✓ Sintonización Completada',
       audioListen: 'Escuchar a Renata',
       audioPause: 'Pausar',
-      audioSkip: 'Marcar como escuchado',
       speed: 'Velocidad',
       hookTitle: 'Mensagem do Dia',
       scriptsTitle: '3 Ejemplos de Guiones Prácticos',
@@ -753,7 +738,6 @@ export default function DailyMissionView({
       linkRequiredTitle: 'Enlace de prueba (obligatorio)',
       linkRequiredPlaceholder: 'Pega el enlace aquí...',
       linkRequiredWarning: 'Agrega el enlace para validar esta promesa.',
-      moreOptions: 'Más opciones',
       audioSpeedTooltip: 'Velocidad de reproducción',
       skipBack: 'Retroceder 15s',
       skipForward: 'Avanzar 15s'
@@ -1113,30 +1097,6 @@ export default function DailyMissionView({
                   >
                     <RotateCw className="h-4 w-4" />
                   </button>
-
-                  <div className="relative">
-                    <button
-                      onClick={() => setShowAudioMoreMenu((v) => !v)}
-                      title={textDict.moreOptions}
-                      className="h-10 w-10 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 cursor-pointer hover:scale-105"
-                    >
-                      <MoreHorizontal className="h-4 w-4" />
-                    </button>
-
-                    {showAudioMoreMenu && !audioCompleted && (
-                      <div className="absolute bottom-12 right-0 z-20 bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 rounded-xl shadow-rosegold p-1.5 w-max">
-                        <button
-                          onClick={() => {
-                            handleFastForwardAudio();
-                            setShowAudioMoreMenu(false);
-                          }}
-                          className="text-xs font-sans text-slate-600 dark:text-slate-300 hover:text-rosegold transition-all cursor-pointer whitespace-nowrap px-3 py-2 rounded-lg hover:bg-rose-50/50 dark:hover:bg-rosegold/5"
-                        >
-                          {textDict.audioSkip}
-                        </button>
-                      </div>
-                    )}
-                  </div>
                 </div>
               </motion.div>
 
