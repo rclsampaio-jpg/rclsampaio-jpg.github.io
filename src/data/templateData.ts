@@ -99,60 +99,72 @@ const titlesByWeekDay: Record<DayType, Record<Language, string>> = {
   }
 };
 
-// Weekly showcase of hook options, grouped by day-of-week theme (DayType).
+// Action/transition hooks (how to open the camera and grab attention in the
+// first second of a recording) — these are a technique guide, not tied to any
+// single day's theme, so they're always shown regardless of day-of-week.
+const ACTION_HOOK_OPTIONS: Record<Language, string[]> = {
+  pt: [
+    'Colocar o capuz na cabeça bem no início do vídeo',
+    '"Estragar" a maquiagem ou o delineado de propósito',
+    'Deixar o óculos escuro escorregar enquanto você fala',
+    'Pegar a bolsa como se fosse sair, mas parar pra falar',
+    'Prender o cabelo enquanto começa a falar',
+    'Enrolar uma mecha do cabelo enquanto fala com a câmera',
+    'Começar o vídeo dentro do carro',
+    'Segurar uma comida que você "tá quase" comendo, sem comer de fato',
+    'Um tremidinho de câmera bem no início, como se tivesse acabado de apoiar o celular',
+    'Passar um gloss enquanto fala',
+    'Mexer num café gelado enquanto fala',
+    'Usar green screen com um mood board estético atrás',
+    'Maquiagem pela metade, com a esponjinha ainda na mão',
+    'Passar perfume bem quando começa a falar',
+    'Tirar a maquiagem e se olhar no espelho enquanto fala'
+  ],
+  en: [
+    'Pulling a hoodie over your head as the video starts',
+    'Ruining your makeup / eyeliner on purpose',
+    'Dropping your sunglasses as you speak',
+    "Grabbing your bag like you're about to leave, then pausing to talk",
+    'Tying your hair up as you start talking',
+    'Curling one side of your hair while talking to the camera',
+    'Starting the video off in your car',
+    "Holding something you're *about* to eat while talking, but not actually eating it",
+    'Slight camera shake right when the video starts, as if you JUST set your phone down to film',
+    'Applying lipgloss while talking',
+    'Stirring an iced coffee while talking',
+    'Using a green screen with an aesthetic visual collage',
+    'Half-done makeup look with a beauty blender still in hand',
+    'Applying perfume right as you start talking',
+    'Wiping off your makeup and looking into a mirror as you talk'
+  ],
+  es: [
+    'Ponerte la capucha justo cuando empieza el video',
+    'Arruinar tu maquillaje / delineado a propósito',
+    'Dejar caer tus lentes de sol mientras hablas',
+    'Agarrar tu bolso como si fueras a salir, y pausar para hablar',
+    'Recogerte el pelo mientras empiezas a hablar',
+    'Enrular un mechón de pelo mientras le hablas a la cámara',
+    'Empezar el video dentro del auto',
+    'Sostener algo que estás "por" comer mientras hablas, sin comerlo realmente',
+    'Un pequeño temblor de cámara justo al inicio, como si acabaras de apoyar el celular',
+    'Aplicarte gloss mientras hablas',
+    'Revolver un café helado mientras hablas',
+    'Usar pantalla verde con un collage estético de fondo',
+    'Maquillaje a medio hacer, con la esponjita todavía en la mano',
+    'Ponerte perfume justo cuando empiezas a hablar',
+    'Sacarte el maquillaje y mirarte al espejo mientras hablas'
+  ]
+};
+
+export function getActionHookOptions(lang: Language): string[] {
+  return ACTION_HOOK_OPTIONS[lang] || ACTION_HOOK_OPTIONS.pt;
+}
+
+// Weekly showcase of themed verbal hooks, grouped by day-of-week theme (DayType).
 // Adapted for the Brazilian creator market (not a literal translation) —
 // tone, references and slang adjusted to what performs on IG/TikTok BR today.
 const HOOK_OPTIONS_BY_TYPE: Record<DayType, Record<Language, string[]>> = {
-  [DayType.RestartIntention]: {
-    pt: [
-      'Colocar o capuz na cabeça bem no início do vídeo',
-      '"Estragar" a maquiagem ou o delineado de propósito',
-      'Deixar o óculos escuro escorregar enquanto você fala',
-      'Pegar a bolsa como se fosse sair, mas parar pra falar',
-      'Prender o cabelo enquanto começa a falar',
-      'Enrolar uma mecha do cabelo enquanto fala com a câmera',
-      'Começar o vídeo dentro do carro',
-      'Segurar uma comida que você "tá quase" comendo, sem comer de fato',
-      'Um tremidinho de câmera bem no início, como se tivesse acabado de apoiar o celular',
-      'Passar um gloss enquanto fala',
-      'Mexer num café gelado enquanto fala',
-      'Usar green screen com um mood board estético atrás',
-      'Maquiagem pela metade, com a esponjinha ainda na mão',
-      'Passar perfume bem quando começa a falar'
-    ],
-    en: [
-      'Pulling a hoodie over your head as the video starts',
-      'Ruining your makeup / eyeliner on purpose',
-      'Dropping your sunglasses as you speak',
-      "Grabbing your bag like you're about to leave, then pausing to talk",
-      'Tying your hair up as you start talking',
-      'Curling one side of your hair while talking to the camera',
-      'Starting the video off in your car',
-      "Holding something you're *about* to eat while talking, but not actually eating it",
-      'Slight camera shake right when the video starts, as if you JUST set your phone down to film',
-      'Applying lipgloss while talking',
-      'Stirring an iced coffee while talking',
-      'Using a green screen with an aesthetic visual collage',
-      'Half-done makeup look with a beauty blender still in hand',
-      'Applying perfume right as you start talking'
-    ],
-    es: [
-      'Ponerte la capucha justo cuando empieza el video',
-      'Arruinar tu maquillaje / delineado a propósito',
-      'Dejar caer tus lentes de sol mientras hablas',
-      'Agarrar tu bolso como si fueras a salir, y pausar para hablar',
-      'Recogerte el pelo mientras empiezas a hablar',
-      'Enrular un mechón de pelo mientras le hablas a la cámara',
-      'Empezar el video dentro del auto',
-      'Sostener algo que estás "por" comer mientras hablas, sin comerlo realmente',
-      'Un pequeño temblor de cámara justo al inicio, como si acabaras de apoyar el celular',
-      'Aplicarte gloss mientras hablas',
-      'Revolver un café helado mientras hablas',
-      'Usar pantalla verde con un collage estético de fondo',
-      'Maquillaje a medio hacer, con la esponjita todavía en la mano',
-      'Ponerte perfume justo cuando empiezas a hablar'
-    ]
-  },
+  [DayType.RestartIntention]: { pt: [], en: [], es: [] },
   [DayType.Truth]: {
     pt: [
       'Aqui ninguém é pessoa da manhã!!! Chega de só reclamar, bora fazer alguma coisa sobre isso',
@@ -295,44 +307,7 @@ const HOOK_OPTIONS_BY_TYPE: Record<DayType, Record<Language, string[]>> = {
     ]
   },
   [DayType.Rest]: { pt: [], en: [], es: [] },
-  [DayType.Presence]: {
-    pt: [
-      'Colocar o capuz na cabeça bem no início do vídeo',
-      '"Estragar" a maquiagem ou o delineado de propósito',
-      'Deixar o óculos escuro escorregar enquanto você fala',
-      'Prender o cabelo enquanto começa a falar',
-      'Começar o vídeo dentro do carro',
-      'Um tremidinho de câmera bem no início, como se tivesse acabado de apoiar o celular',
-      'Mexer num café gelado enquanto fala',
-      'Maquiagem pela metade, com a esponjinha ainda na mão',
-      'Passar perfume bem quando começa a falar',
-      'Tirar a maquiagem e se olhar no espelho enquanto fala'
-    ],
-    en: [
-      'Pulling a hoodie over your head as the video starts',
-      'Ruining your makeup / eyeliner on purpose',
-      'Dropping your sunglasses as you speak',
-      'Tying your hair up as you start talking',
-      'Starting the video off in your car',
-      'Slight camera shake right when the video starts, as if you JUST set your phone down to film',
-      'Stirring an iced coffee while talking',
-      'Half-done makeup look with a beauty blender still in hand',
-      'Applying perfume right as you start talking',
-      'Wiping off your makeup and looking into a mirror as you talk'
-    ],
-    es: [
-      'Ponerte la capucha justo cuando empieza el video',
-      'Arruinar tu maquillaje / delineado a propósito',
-      'Dejar caer tus lentes de sol mientras hablas',
-      'Recogerte el pelo mientras empiezas a hablar',
-      'Empezar el video dentro del auto',
-      'Un pequeño temblor de cámara justo al inicio, como si acabaras de apoyar el celular',
-      'Revolver un café helado mientras hablas',
-      'Maquillaje a medio hacer, con la esponjita todavía en la mano',
-      'Ponerte perfume justo cuando empiezas a hablar',
-      'Sacarte el maquillaje y mirarte al espejo mientras hablas'
-    ]
-  },
+  [DayType.Presence]: { pt: [], en: [], es: [] },
   [DayType.Reflection]: {
     pt: [
       'Se eu pudesse sentar com uma versão mais nova de mim, eu diria ___',

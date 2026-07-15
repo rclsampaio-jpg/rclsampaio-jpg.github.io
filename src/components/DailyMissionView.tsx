@@ -11,7 +11,7 @@ import {
   RotateCcw, RotateCw
 } from 'lucide-react';
 import { MissionDay, Language, DayType, UserProgress } from '../types';
-import { getDayTypeLabel, getHookOptionsForDay } from '../data/templateData';
+import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions } from '../data/templateData';
 import { adaptMessage } from '../utils/grammar';
 
 // Joins the 3 required promise-proof links into the single stored video-link string
@@ -298,6 +298,7 @@ export default function DailyMissionView({
   const [promiseLinks, setPromiseLinks] = useState({ inertia: '', confidence: '', evidence: '' });
   const [copiedScriptIndex, setCopiedScriptIndex] = useState<number | null>(null);
   const [copiedHookOptionIndex, setCopiedHookOptionIndex] = useState<number | null>(null);
+  const [copiedActionHookIndex, setCopiedActionHookIndex] = useState<number | null>(null);
   const [copiedHook, setCopiedHook] = useState(false);
   const [selectedMood, setSelectedMood] = useState<'calm' | 'hopeful' | 'neutral' | 'heavy' | 'emotional' | null>(null);
   const [activeStep, setActiveStep] = useState<number>(0);
@@ -525,6 +526,12 @@ export default function DailyMissionView({
     setTimeout(() => setCopiedHookOptionIndex(null), 2000);
   };
 
+  const copyActionHookOption = (text: string, index: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedActionHookIndex(index);
+    setTimeout(() => setCopiedActionHookIndex(null), 2000);
+  };
+
   // Validation checking for Three Promises + Audio + Reflection Text
   const allPromiseLinksFilled = promiseLinks.inertia.trim().length > 0 && promiseLinks.confidence.trim().length > 0 && promiseLinks.evidence.trim().length > 0;
   const allPromisesKept = promisesChecked.inertia && promisesChecked.confidence && promisesChecked.evidence && allPromiseLinksFilled;
@@ -550,6 +557,7 @@ export default function DailyMissionView({
   };
 
   const hookOptions = getHookOptionsForDay(currentDay.dayNumber, lang);
+  const actionHookOptions = getActionHookOptions(lang);
 
   // Translation Dictionary
   const textDict = {
@@ -568,6 +576,8 @@ export default function DailyMissionView({
       hookOptionsSubtitle: 'Vitrine de hooks da semana — use um deles no seu vídeo de hoje.',
       copyHook: 'Copiar hook',
       copiedHookLabel: 'Copiado!',
+      actionHookOptionsTitle: 'Ganchos de Ação (sempre disponíveis)',
+      actionHookOptionsSubtitle: 'Um jeito de abrir a câmera e prender a atenção logo no início da gravação.',
       reflectionTitle: 'E aí, como você tá se sentindo agora? Escreve pra descarregar e acompanhar seu progresso mais pra frente.',
       reflectionPlaceholder: 'Como você se sentiu hoje? Escreva com verdade sobre o medo, julgamento ou vitória ao realizar esta missão...',
       reflectionWarning: 'Escreva pelo menos uma frase curta para validar seu progresso.',
@@ -637,6 +647,8 @@ export default function DailyMissionView({
       hookOptionsSubtitle: "This week's hook showcase — use one of these in today's video.",
       copyHook: 'Copy hook',
       copiedHookLabel: 'Copied!',
+      actionHookOptionsTitle: 'Action Hooks (always available)',
+      actionHookOptionsSubtitle: "A way to open the camera and grab attention right at the start of the recording.",
       exposureTitle: 'External Exposure Action',
       reflectionTitle: 'So, how are you feeling right now? Write it out to let go, and track your progress later on.',
       reflectionPlaceholder: 'How did you feel today? Write honestly about the fear, judgment, or victory during this mission...',
@@ -707,6 +719,8 @@ export default function DailyMissionView({
       hookOptionsSubtitle: 'Vitrina de hooks de la semana — usa uno de ellos en tu video de hoy.',
       copyHook: 'Copiar hook',
       copiedHookLabel: '¡Copiado!',
+      actionHookOptionsTitle: 'Hooks de Acción (siempre disponibles)',
+      actionHookOptionsSubtitle: 'Una forma de abrir la cámara y captar la atención justo al inicio de la grabación.',
       exposureTitle: 'Acción de Exposición Externa',
       reflectionTitle: '¿Y bueno, cómo te sientes ahora? Escribe para desahogarte y seguir tu progreso más adelante.',
       reflectionPlaceholder: '¿Cómo te sentiste hoy? Escribe con honestidad sobre el miedo, juicio o victoria al realizar esta misión...',
@@ -1209,6 +1223,52 @@ export default function DailyMissionView({
                       </>
                     );
                   })()}
+                </div>
+              </motion.div>
+
+              {/* ACTION HOOK OPTIONS - always available, technique guide for opening the camera */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="rounded-[2rem] bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold space-y-4"
+              >
+                <div className="space-y-1">
+                  <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans tracking-wide">
+                    {textDict.actionHookOptionsTitle}
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-sans">
+                    {textDict.actionHookOptionsSubtitle}
+                  </p>
+                </div>
+
+                <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                  {actionHookOptions.map((option, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-start gap-3 p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-rosegold/10"
+                    >
+                      <span className="flex-1 text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
+                        {option}
+                      </span>
+                      <button
+                        onClick={() => copyActionHookOption(option, idx)}
+                        className="shrink-0 flex items-center gap-1.5 text-xs font-sans text-slate-500 hover:text-rosegold transition-colors duration-250 cursor-pointer font-bold"
+                      >
+                        {copiedActionHookIndex === idx ? (
+                          <>
+                            <Check className="h-3.5 w-3.5 text-emerald-500" />
+                            <span className="text-emerald-500">{textDict.copiedHookLabel}</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3.5 w-3.5" />
+                            <span>{textDict.copyHook}</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  ))}
                 </div>
               </motion.div>
 
