@@ -63,7 +63,7 @@ export const INITIAL_JOURNEYS: Journey[] = [
     languages: ['pt', 'en', 'es'],
     difficulty: 'intermediate',
     estimatedDuration: '5 dias',
-    author: 'Gabriel RenaSer',
+    author: 'Renata',
     status: 'published',
     tags: ['Storytelling', 'Conexão', 'Persuasão'],
     accessRules: 'premium',
@@ -90,15 +90,15 @@ export const INITIAL_JOURNEYS: Journey[] = [
       es: 'Domina la proyección vocal, el lenguaje corporal y el control del estrés en cámara.'
     },
     description: {
-      pt: 'Calibre suas cordas vocais, destrave a mandíbula e estabilize seu batimento cardíaco antes de apertar o botão de gravar. Exercícios práticos de oratória somática para se posicionar com autoridade.',
-      en: 'Calibrate your vocal cords, release jaw tension, and stabilize your heart rate before pressing record. Practical somatic speaking exercises to project authority.',
-      es: 'Calibra tus cuerdas vocales, libera la tensión de la mandíbula y estabiliza tu ritmo cardíaco antes de grabar. Ejercicios prácticos de oratoria somática.'
+      pt: 'Solte a mandíbula, estabilize a respiração e aqueça a voz antes de apertar o botão de gravar. Exercícios práticos pra você se posicionar com autoridade na câmera.',
+      en: 'Release jaw tension, steady your breath, and warm up your voice before pressing record. Practical exercises to help you show up with authority on camera.',
+      es: 'Suelta la mandíbula, estabiliza tu respiración y calienta la voz antes de grabar. Ejercicios prácticos para posicionarte con autoridad frente a la cámara.'
     },
     coverImage: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=800&q=80',
     languages: ['pt', 'en', 'es'],
     difficulty: 'advanced',
     estimatedDuration: '3 dias',
-    author: 'Clara Vocal Coach',
+    author: 'Renata',
     status: 'published',
     tags: ['Oratória', 'Voz', 'Presença'],
     accessRules: 'premium',
@@ -126,7 +126,7 @@ export const INITIAL_CHAPTERS: Chapter[] = [
     },
     description: {
       pt: 'Nesta primeira fase, vamos focar em desarmar o perfeccionismo e construir segurança.',
-      en: 'In this first phase, we focus on disarming perfectionism and building somatic safety.',
+      en: 'In this first phase, we focus on disarming perfectionism and building safety.',
       es: 'En esta primera fase, nos enfocaremos en desarmar el perfeccionismo y construir seguridad.'
     },
     coverImage: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=600&q=80',
@@ -333,27 +333,27 @@ export const INITIAL_CHAPTERS: Chapter[] = [
       es: 'Calibración y Proyección'
     },
     description: {
-      pt: 'Postura corporal correta, regulação vagal e posicionamento magnético.',
-      en: 'Correct skeletal posture, vagus nerve regulation, and magnetic vocal resonance.',
-      es: 'Postura corporal correcta, regulación vagal y posicionamiento magnético.'
+      pt: 'Postura correta, respiração que acalma e presença que prende a atenção na câmera.',
+      en: 'Correct posture, breathing that calms you down, and an on-camera presence that holds attention.',
+      es: 'Postura correcta, respiración que calma y presencia que capta la atención en cámara.'
     },
     coverImage: 'https://images.unsplash.com/photo-1516280440614-37939bbacd6a?auto=format&fit=crop&w=600&q=80',
     theme: {
-      pt: 'Soma • Ressonância • Poder',
-      en: 'Soma • Resonance • Power',
-      es: 'Soma • Resonancia • Poder'
+      pt: 'Respiração • Voz • Presença',
+      en: 'Breath • Voice • Presence',
+      es: 'Respiración • Voz • Presencia'
     },
     objectives: {
-      pt: ['Estabilizar a respiração diafragmática', 'Projetar a voz a partir do peito', 'Eliminar tiques nervosos corporais'],
-      en: ['Stabilize deep diaphragmatic breath', 'Project your voice from the chest, not throat', 'Eliminate physical nervous twitches on camera'],
-      es: ['Estabilizar la respiración diafragmática', 'Proyectar la voz desde el pecho', 'Eliminar tics nerviosos corporales']
+      pt: ['Estabilizar a respiração antes de gravar', 'Projetar a voz a partir do peito', 'Eliminar tiques nervosos corporais'],
+      en: ['Stabilize your breath before hitting record', 'Project your voice from the chest, not throat', 'Eliminate physical nervous twitches on camera'],
+      es: ['Estabilizar la respiración antes de grabar', 'Proyectar la voz desde el pecho', 'Eliminar tics nerviosos corporales']
     },
     colorTheme: 'text-amber-500 dark:text-amber-400',
     celebrationAnimation: 'sparkles',
     completionReflection: {
-      pt: 'Incrível! Sua voz soa mais quente, confiante e conectada ao seu centro nervoso.',
-      en: 'Incredible! Your voice sounds warmer, deeply confident, and safely grounded in your center.',
-      es: '¡Increíble! Tu voz suena más cálida, confiada y conectada a tu centro nervioso.'
+      pt: 'Incrível! Sua voz já soa mais quente, mais confiante e mais sua.',
+      en: 'Incredible! Your voice already sounds warmer, more confident, and more you.',
+      es: '¡Increíble! Tu voz ya suena más cálida, más confiada y más tuya.'
     },
     chapterBadge: 'Award',
     order: 1
@@ -698,13 +698,13 @@ export const VOCAL_DAYS: Day[] = [
     journeyId: 'gravacao_postura_voz',
     dayNumber: 1,
     title: {
-      pt: 'Regulação do Nervo Vago e Presença',
-      en: 'Vagus Nerve Regulation & Presence',
-      es: 'Regulación del Nervio Vago y Presencia'
+      pt: 'Respiração Antes da Câmera',
+      en: 'Breathing Before the Camera',
+      es: 'Respiración Antes de la Cámara'
     },
     type: DayType.Presence,
     weekday: 'Day 1',
-    theme: { pt: 'Soma', en: 'Somatic', es: 'Soma' },
+    theme: { pt: 'Respiração', en: 'Breath', es: 'Respiración' },
     audioUrl: 'https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg',
     videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
     videoType: 'native',

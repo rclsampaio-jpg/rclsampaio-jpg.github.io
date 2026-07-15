@@ -26,6 +26,7 @@ interface DailyMissionViewProps {
   onCopyHook: (dayNum: number) => void;
   onTriggerSos: () => void;
   onBackToHome: () => void;
+  onUpdateMood: (dayNum: number, mood: string) => void;
 }
 
 // 4 Phases structure metadata for display
@@ -288,6 +289,7 @@ export default function DailyMissionView({
   onCopyHook,
   onTriggerSos,
   onBackToHome,
+  onUpdateMood,
 }: DailyMissionViewProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
@@ -1506,17 +1508,21 @@ export default function DailyMissionView({
                       }[moodKey];
 
                       const isSelected = selectedMood === moodKey || (isCompleted && progress.journalMoods?.[currentDay.dayNumber] === moodKey);
-                      const isDisabled = isCompleted;
 
                       return (
                         <button
                           key={moodKey}
                           type="button"
-                          disabled={isDisabled}
-                          onClick={() => setSelectedMood(moodKey)}
+                          onClick={() => {
+                            if (isCompleted) {
+                              onUpdateMood(currentDay.dayNumber, moodKey);
+                            } else {
+                              setSelectedMood(moodKey);
+                            }
+                          }}
                           className={`flex-1 flex flex-col items-center gap-1.5 py-3 px-1 rounded-xl text-center border border-transparent transition-all duration-300 cursor-pointer select-none ${
                             isSelected ? info.active : `${info.color} text-slate-500`
-                          } ${isDisabled ? 'cursor-not-allowed opacity-80' : ''} hover:scale-105`}
+                          } hover:scale-105`}
                         >
                           <span className="text-2xl">{info.emoji}</span>
                           <span className="text-[9px] font-sans font-extrabold tracking-tight uppercase">{info.label}</span>

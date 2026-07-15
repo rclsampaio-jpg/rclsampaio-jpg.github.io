@@ -288,6 +288,17 @@ export default function App() {
     }
   };
 
+  // Correct the mood recorded for an already-completed day
+  const handleUpdateMood = (dayNum: number, mood: string) => {
+    updateProgress({
+      ...progress,
+      journalMoods: {
+        ...progress.journalMoods,
+        [dayNum]: mood
+      }
+    });
+  };
+
   // Toggle Favorite Status
   const handleToggleFavorite = (dayNum: number) => {
     const favorites = [...progress.favoriteHooks];
@@ -946,6 +957,7 @@ export default function App() {
                 onCopyHook={handleCopyHook}
                 onTriggerSos={() => setActiveTab('sos')}
                 onBackToHome={() => setActiveTab('home')}
+                onUpdateMood={handleUpdateMood}
               />
             )}
 
