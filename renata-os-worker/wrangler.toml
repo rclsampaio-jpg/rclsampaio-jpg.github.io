@@ -6,10 +6,13 @@ compatibility_date = "2024-11-01"
 # Update this if your GitHub Pages URL changes.
 [vars]
 ALLOWED_ORIGIN = "https://rclsampaio-jpg.github.io"
+SUPPORT_EMAIL = "manifestandomagicasuporte@gmail.com"
 
-# GEMINI_API_KEY is NOT set here — it must be added as a secret, so it never
-# ends up in this file or in git. Run this once, from this folder:
+# GEMINI_API_KEY and RESEND_API_KEY are NOT set here — they must be added as
+# secrets, so they never end up in this file or in git. Run these once, from
+# this folder:
 #
 #   npx wrangler secret put GEMINI_API_KEY
+#   npx wrangler secret put RESEND_API_KEY
 #
-# It will prompt you to paste the key directly in your terminal.
+# Each will prompt you to paste the key directly in your terminal.

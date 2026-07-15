@@ -22,10 +22,53 @@ function corsHeaders(origin, allowedOrigin) {
   };
 }
 
+// Relays a student's quick-support message to SUPPORT_EMAIL via Resend, so it
+// arrives as a real email without needing any mail client open on their device.
+async function handleSupportMessage(request, env, headers) {
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers });
+  }
+
+  const { message, replyTo } = body || {};
+  if (!message || typeof message !== 'string') {
+    return new Response(JSON.stringify({ error: 'Missing message' }), { status: 400, headers });
+  }
+
+  try {
+    const resendResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${env.RESEND_API_KEY}`
+      },
+      body: JSON.stringify({
+        from: 'RenaSer Suporte <onboarding@resend.dev>',
+        to: [env.SUPPORT_EMAIL],
+        reply_to: replyTo && typeof replyTo === 'string' ? replyTo : undefined,
+        subject: 'Nova mensagem de suporte — RenaSer',
+        text: message
+      })
+    });
+
+    if (!resendResponse.ok) {
+      const errText = await resendResponse.text();
+      return new Response(JSON.stringify({ error: 'Resend API error', detail: errText }), { status: 502, headers });
+    }
+
+    return new Response(JSON.stringify({ ok: true }), { headers });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: 'Unexpected error', detail: String(err) }), { status: 500, headers });
+  }
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
     const headers = corsHeaders(origin, env.ALLOWED_ORIGIN);
+    const { pathname } = new URL(request.url);
 
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers });
@@ -33,6 +76,10 @@ export default {
 
     if (request.method !== 'POST') {
       return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers });
+    }
+
+    if (pathname === '/support') {
+      return handleSupportMessage(request, env, headers);
     }
 
     let body;

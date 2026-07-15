@@ -30,6 +30,20 @@ sees the key.
    Paste the key when prompted. It's stored encrypted by Cloudflare, not in
    any file in this repo.
 
+4b. **Set up email relay for the Community "quick support message" form**
+   (skip this if you don't need that feature):
+   - Sign up at https://resend.com (free tier is generous for this volume).
+   - Create an API key on their dashboard.
+   - Set it as a secret, same as above:
+     ```
+     npx wrangler secret put RESEND_API_KEY
+     ```
+   - Note: on Resend's free/sandbox tier, the default sender
+     `onboarding@resend.dev` can only deliver to the email address you signed
+     up to Resend with. If `SUPPORT_EMAIL` in `wrangler.toml` is a different
+     address, verify a domain in Resend (or use that same signup address) so
+     delivery isn't silently blocked.
+
 5. **Deploy**:
    ```
    npm run deploy

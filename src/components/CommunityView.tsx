@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { Language, CommunityConfig, FreeCommunityConfig, SupportConfig, MentoringConfig } from '../types';
 import { loadCommunityConfig, loadFreeCommunityConfig, loadSupportConfig, loadMentoringConfig } from '../data/ecosystemData';
+import { RENATA_OS_ENDPOINT } from '../config';
 
 interface CommunityViewProps {
   lang: Language;
@@ -40,15 +41,35 @@ export default function CommunityView({ lang }: CommunityViewProps) {
 
   const [supportMessage, setSupportMessage] = useState('');
   const [supportSent, setSupportSent] = useState(false);
+  const [supportSending, setSupportSending] = useState(false);
+  const [supportError, setSupportError] = useState(false);
 
-  const handleSendForm = (e: React.FormEvent) => {
+  const handleSendForm = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!supportMessage.trim()) return;
-    const mailtoUrl = `mailto:${support.email}?subject=${encodeURIComponent('Suporte RenaSer')}&body=${encodeURIComponent(supportMessage)}`;
-    window.location.href = mailtoUrl;
-    setSupportSent(true);
-    setSupportMessage('');
-    setTimeout(() => setSupportSent(false), 5000);
+    if (!supportMessage.trim() || supportSending) return;
+
+    if (!RENATA_OS_ENDPOINT) {
+      setSupportError(true);
+      return;
+    }
+
+    setSupportSending(true);
+    setSupportError(false);
+    try {
+      const response = await fetch(`${RENATA_OS_ENDPOINT}/support`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: supportMessage })
+      });
+      if (!response.ok) throw new Error('Support message failed');
+      setSupportSent(true);
+      setSupportMessage('');
+      setTimeout(() => setSupportSent(false), 5000);
+    } catch {
+      setSupportError(true);
+    } finally {
+      setSupportSending(false);
+    }
   };
 
   // Derives a YouTube thumbnail straight from the share URL, so the weekly
@@ -107,7 +128,9 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       formLabel: 'Enviar Mensagem Rápida',
       formPlaceholder: 'Escreva sua dúvida ou feedback...',
       formSubmit: 'Enviar Mensagem',
-      formSuccess: 'Seu e-mail foi aberto com a mensagem pronta — é só enviar!'
+      formSending: 'Enviando...',
+      formSuccess: 'Sua mensagem foi enviada! Responderemos em breve.',
+      formError: 'Não foi possível enviar agora. Tente novamente ou fale por WhatsApp.'
     },
     en: {
       communityTab: 'Main Community',
@@ -135,7 +158,9 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       formLabel: 'Send Quick Message',
       formPlaceholder: 'Type your question or feedback here...',
       formSubmit: 'Submit Request',
-      formSuccess: 'Your email app opened with the message ready — just hit send!'
+      formSending: 'Sending...',
+      formSuccess: 'Your message has been sent! We will reply shortly.',
+      formError: "Couldn't send it right now. Please try again or reach us on WhatsApp."
     },
     es: {
       communityTab: 'Comunidad Principal',
@@ -163,7 +188,9 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       formLabel: 'Enviar Mensaje Rápido',
       formPlaceholder: 'Escribe tu duda o comentarios aquí...',
       formSubmit: 'Enviar Mensaje',
-      formSuccess: '¡Tu correo se abrió con el mensaje listo — solo falta enviarlo!'
+      formSending: 'Enviando...',
+      formSuccess: '¡Tu mensaje fue enviado! Te responderemos pronto.',
+      formError: 'No se pudo enviar ahora. Intenta de nuevo o escríbenos por WhatsApp.'
     }
   }[lang];
 
@@ -421,14 +448,14 @@ export default function CommunityView({ lang }: CommunityViewProps) {
                 
                 <button
                   type="submit"
-                  disabled={!supportMessage.trim()}
+                  disabled={!supportMessage.trim() || supportSending}
                   className={`w-full py-3.5 px-4 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition ${
-                    supportMessage.trim() 
-                      ? 'bg-rosegold hover:bg-[#A35D68] text-white cursor-pointer' 
+                    supportMessage.trim() && !supportSending
+                      ? 'bg-rosegold hover:bg-[#A35D68] text-white cursor-pointer'
                       : 'bg-slate-100 dark:bg-warmbrown text-slate-400 border border-rose-100/5 cursor-not-allowed'
                   }`}
                 >
-                  {trans.formSubmit}
+                  {supportSending ? trans.formSending : trans.formSubmit}
                 </button>
               </div>
 
@@ -436,6 +463,12 @@ export default function CommunityView({ lang }: CommunityViewProps) {
                 <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-medium text-emerald-700 flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 shrink-0" />
                   <span>{trans.formSuccess}</span>
+                </div>
+              )}
+
+              {supportError && (
+                <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs font-medium text-rose-700 flex items-center gap-2">
+                  <span>{trans.formError}</span>
                 </div>
               )}
             </form>
