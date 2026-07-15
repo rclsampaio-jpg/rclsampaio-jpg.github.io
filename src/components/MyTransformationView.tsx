@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { Language, UserProgress, MissionDay } from '../types';
 import { getChapterForDay, chapters } from '../data/chaptersData';
+import TreeOfRebirth from './TreeOfRebirth';
 
 interface MyTransformationViewProps {
   progress: UserProgress;
@@ -190,6 +191,41 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
   // Build list of Milestones/Achievements completed physically
   const milestonesList = [];
   const completedCount = progress.completionHistory.length;
+
+  // Progress insight: compares the user's own first written reflection against
+  // how far they've come since (videos posted, promises kept), so encouragement
+  // is grounded in their own words rather than a generic message.
+  const reflectionDays = Object.keys(progress.reflections || {})
+    .map(Number)
+    .filter((d) => (progress.reflections[d] || '').trim().length > 0)
+    .sort((a, b) => a - b);
+  const firstReflectionDay = reflectionDays[0] ?? null;
+  const firstReflectionText = firstReflectionDay !== null ? progress.reflections[firstReflectionDay] : null;
+
+  const videoCount = Object.values(progress.videoLinks || {}).reduce((count, combined) => {
+    if (!combined) return count;
+    const links = combined.split('|||').filter((l) => l && l.trim().length > 3);
+    return count + links.length;
+  }, 0);
+
+  const daysTracked = firstReflectionDay !== null
+    ? progress.completionHistory.filter((d) => d >= firstReflectionDay).length
+    : 0;
+  const spanSinceFirstReflection = firstReflectionDay !== null
+    ? Math.max(daysTracked, progress.currentDay - firstReflectionDay + 1)
+    : 0;
+  const keptAllPromises = daysTracked > 0 && daysTracked >= spanSinceFirstReflection;
+
+  const progressInsight = firstReflectionDay !== null ? {
+    day: firstReflectionDay,
+    quote: firstReflectionText,
+    intro: lang === 'pt' ? `No Dia ${firstReflectionDay} você disse:` : lang === 'es' ? `El Día ${firstReflectionDay} dijiste:` : `On Day ${firstReflectionDay} you said:`,
+    stats: lang === 'pt'
+      ? `Desde então, você já postou ${videoCount} ${videoCount === 1 ? 'vídeo' : 'vídeos'}${keptAllPromises ? ' e cumpriu com todos os seus compromissos com você até hoje' : ` e cumpriu ${daysTracked} de ${spanSinceFirstReflection} compromissos até hoje`}. Isso não é pouco. Parabéns!`
+      : lang === 'es'
+      ? `Desde entonces, ya publicaste ${videoCount} ${videoCount === 1 ? 'video' : 'videos'}${keptAllPromises ? ' y cumpliste con todos tus compromisos hasta hoy' : ` y cumpliste ${daysTracked} de ${spanSinceFirstReflection} compromisos hasta hoy`}. Eso no es poco. ¡Felicidades!`
+      : `Since then, you've posted ${videoCount} ${videoCount === 1 ? 'video' : 'videos'}${keptAllPromises ? ' and kept every single promise to yourself so far' : ` and kept ${daysTracked} of ${spanSinceFirstReflection} promises so far`}. That's not nothing. Congratulations!`
+  } : null;
 
   if (completedCount >= 1) {
     milestonesList.push({
@@ -406,6 +442,20 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                   {trans.milestonesHeader}
                 </h2>
               </div>
+
+              {progressInsight && (
+                <div className="p-5 rounded-2xl bg-gradient-to-br from-accentgold/10 to-rosegold/5 border border-accentgold/20 space-y-2.5">
+                  <span className="text-[10px] font-mono font-extrabold uppercase tracking-widest text-accentgold">
+                    {progressInsight.intro}
+                  </span>
+                  <p className="text-sm text-slate-700 dark:text-slate-200 italic leading-relaxed">
+                    "{progressInsight.quote}"
+                  </p>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans font-semibold">
+                    {progressInsight.stats}
+                  </p>
+                </div>
+              )}
 
               {milestonesList.length === 0 ? (
                 <div className="text-center py-12 text-slate-400 dark:text-slate-500 italic text-sm max-w-sm mx-auto space-y-3">
@@ -789,66 +839,28 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                
-                {/* Visual description column */}
-                <div className="md:col-span-2 space-y-4">
-                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
-                    {trans.treeDesc}
-                  </p>
+              <div className="space-y-6">
+                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
+                  {trans.treeDesc}
+                </p>
 
-                  <div className="p-4 rounded-2xl bg-[#FAF8F5]/80 dark:bg-[#1E1715] border border-rose-100/10 flex items-center gap-3">
-                    <div className="text-2xl shrink-0">
-                      {getVehicleEmoji(currentChapterId)}
-                    </div>
-                    <div className="space-y-0.5">
-                      <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block font-extrabold">
-                        {trans.vehicleStage}
-                      </span>
-                      <span className="text-xs font-bold text-slate-800 dark:text-[#FAF8F5]">
-                        {getVehicleDescription(currentChapterId)}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 pt-2">
-                    <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block font-bold">
-                      Tree Progression Rule
-                    </span>
-                    <ul className="text-xs text-slate-500 dark:text-slate-400 space-y-1.5 list-disc pl-4 font-sans">
-                      <li>Levels 1-2: Seed and Sprout (Days 1-5 completed)</li>
-                      <li>Levels 3-4: Emerging leaves and stems (Days 6-11 completed)</li>
-                      <li>Levels 5-6: Branches and First flower (Days 12-17 completed)</li>
-                      <li>Levels 7-8: Landing butterfly and Golden leaves (Days 18-24 completed)</li>
-                      <li>Levels 9-10: Complete unshakeable bloom with golden butterflies (Days 25-30 completed)</li>
-                    </ul>
-                  </div>
+                <div className="p-5 rounded-3xl bg-[#FAF8F5]/80 dark:bg-[#1E1715] border border-rose-100/10">
+                  <TreeOfRebirth completedCount={completedCount} lang={lang} />
                 </div>
 
-                {/* current stage card */}
-                <div className="p-5 rounded-3xl bg-radial from-rosegold/5 to-transparent border border-rosegold/10 text-center space-y-4 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 h-12 w-12 bg-accentgold/10 blur-xl rounded-full" />
-                  
-                  <div className="text-5xl animate-bounce" style={{ animationDuration: '3s' }}>
-                    🌳
+                <div className="p-4 rounded-2xl bg-[#FAF8F5]/80 dark:bg-[#1E1715] border border-rose-100/10 flex items-center gap-3">
+                  <div className="text-2xl shrink-0">
+                    {getVehicleEmoji(currentChapterId)}
                   </div>
-
                   <div className="space-y-0.5">
-                    <span className="text-[9px] font-mono font-bold text-slate-400 uppercase tracking-widest block">
-                      Active Tree Level
+                    <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block font-extrabold">
+                      {trans.vehicleStage}
                     </span>
-                    <span className="text-2xl font-serif font-black text-rosegold">
-                      {Math.min(10, Math.floor(progress.completionHistory.length / 3) + 1)} / 10
-                    </span>
-                  </div>
-
-                  <div className="px-3 py-1 bg-amber-500/10 border border-amber-500/15 rounded-xl inline-block">
-                    <span className="text-[10px] font-mono font-bold text-accentgold uppercase tracking-wider">
-                      {completedCount} Promises Kept
+                    <span className="text-xs font-bold text-slate-800 dark:text-[#FAF8F5]">
+                      {getVehicleDescription(currentChapterId)}
                     </span>
                   </div>
                 </div>
-
               </div>
             </motion.div>
           )}
