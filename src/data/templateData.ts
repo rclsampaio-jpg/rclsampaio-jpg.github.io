@@ -5,9 +5,27 @@
 
 import { MissionDay, DayType, Language, UserProgress } from '../types';
 
-// Helper to determine DayType based on day of 30-day cycle
-export function getDayType(dayNumber: number): DayType {
-  const position = (dayNumber - 1) % 7;
+// Maps a day number to its real-calendar weekday position (0=Monday..6=Sunday),
+// anchored to journeyStartDate (the real date Day 1 was first opened). Falls
+// back to the plain (dayNumber-1)%7 cycle when no start date is known yet.
+function getWeekdayPosition(dayNumber: number, startDate?: string | null): number {
+  if (startDate) {
+    const start = new Date(`${startDate}T00:00:00`);
+    if (!isNaN(start.getTime())) {
+      const target = new Date(start);
+      target.setDate(start.getDate() + (dayNumber - 1));
+      const jsDay = target.getDay(); // 0=Sunday..6=Saturday
+      return (jsDay + 6) % 7; // convert to 0=Monday..6=Sunday
+    }
+  }
+  return (dayNumber - 1) % 7;
+}
+
+// Helper to determine DayType based on the real calendar weekday of a given
+// journey day (anchored to startDate), so hooks/labels match the actual day
+// of the week rather than an arbitrary Day-1-is-always-Monday cycle.
+export function getDayType(dayNumber: number, startDate?: string | null): DayType {
+  const position = getWeekdayPosition(dayNumber, startDate);
   switch (position) {
     case 0: return DayType.RestartIntention; // Monday
     case 1: return DayType.Truth;            // Tuesday
@@ -345,8 +363,8 @@ const HOOK_OPTIONS_BY_TYPE: Record<DayType, Record<Language, string[]>> = {
   }
 };
 
-export function getHookOptionsForDay(dayNumber: number, lang: Language): string[] {
-  const type = getDayType(dayNumber);
+export function getHookOptionsForDay(dayNumber: number, lang: Language, startDate?: string | null): string[] {
+  const type = getDayType(dayNumber, startDate);
   const set = HOOK_OPTIONS_BY_TYPE[type];
   return set[lang] && set[lang].length > 0 ? set[lang] : set.pt;
 }
@@ -362,12 +380,14 @@ function getAudioUrlForDay(dayNumber: number): string {
   return DAILY_AUDIO_FILES[dayNumber] || FALLBACK_AUDIO_URL;
 }
 
-// Generate initial 30 days structure based on the rhythm
-export function generateInitialDays(): MissionDay[] {
+// Generate initial 30 days structure based on the rhythm, anchored to the
+// real calendar date Day 1 was first opened (startDate) so the weekday theme
+// (and its hooks) match the actual day of the week.
+export function generateInitialDays(startDate?: string | null): MissionDay[] {
   const days: MissionDay[] = [];
 
   for (let i = 1; i <= 30; i++) {
-    const type = getDayType(i);
+    const type = getDayType(i, startDate);
     const titlePt = `${titlesByWeekDay[type].pt} (Dia ${i})`;
     const titleEn = `${titlesByWeekDay[type].en} (Day ${i})`;
     const titleEs = `${titlesByWeekDay[type].es} (Día ${i})`;
@@ -423,9 +443,9 @@ export function generateInitialDays(): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS) — acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '3';
+const DAYS_CONTENT_VERSION = '4';
 
-export function loadDaysFromStorage(): MissionDay[] {
+export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
   const storedVersion = localStorage.getItem('renaser_days_version');
   if (stored && storedVersion === DAYS_CONTENT_VERSION) {
@@ -436,7 +456,7 @@ export function loadDaysFromStorage(): MissionDay[] {
     }
   }
 
-  const initial = generateInitialDays();
+  const initial = generateInitialDays(startDate);
   localStorage.setItem('renaser_days', JSON.stringify(initial));
   localStorage.setItem('renaser_days_version', DAYS_CONTENT_VERSION);
   return initial;
@@ -447,16 +467,28 @@ export function saveDaysToStorage(days: MissionDay[]): void {
   localStorage.setItem('renaser_days_version', DAYS_CONTENT_VERSION);
 }
 
+function getTodayISO(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
 export function loadUserProgressFromStorage(): UserProgress {
   const stored = localStorage.getItem('renaser_user_progress');
   if (stored) {
     try {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      // Backfill journeyStartDate for progress saved before this field existed,
+      // so weekday theming has a real anchor date instead of falling back to
+      // the old Day-1-is-always-Monday cycle.
+      if (!parsed.journeyStartDate) {
+        parsed.journeyStartDate = getTodayISO();
+        localStorage.setItem('renaser_user_progress', JSON.stringify(parsed));
+      }
+      return parsed;
     } catch (e) {
       console.error('Error parsing user progress, loading default', e);
     }
   }
-  
+
   const defaultProgress: UserProgress = {
     currentDay: 1,
     completionHistory: [],
@@ -466,9 +498,10 @@ export function loadUserProgressFromStorage(): UserProgress {
     copiedHooks: [],
     videoLinks: {},
     reflections: {},
-    lastActiveDate: null
+    lastActiveDate: null,
+    journeyStartDate: getTodayISO()
   };
-  
+
   localStorage.setItem('renaser_user_progress', JSON.stringify(defaultProgress));
   return defaultProgress;
 }

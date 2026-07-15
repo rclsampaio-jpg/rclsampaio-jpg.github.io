@@ -173,8 +173,8 @@ const SystemContext = createContext<SystemEngineState | undefined>(undefined);
 
 export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Load State from persistence adapters
-  const [days, setDaysState] = useState<MissionDay[]>(() => loadDaysFromStorage());
   const [progress, setProgressState] = useState<UserProgress>(() => loadUserProgressFromStorage());
+  const [days, setDaysState] = useState<MissionDay[]>(() => loadDaysFromStorage(progress.journeyStartDate));
   const [activeTab, setActiveTabState] = useState<string>('home');
   const [focusedDayNumber, setFocusedDayNumberState] = useState<number>(() => {
     const defaultProgress = loadUserProgressFromStorage();
@@ -320,7 +320,7 @@ export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setTimeout(() => setIsSaving(false), 800);
     },
     resetDays: () => {
-      const initial = generateInitialDays();
+      const initial = generateInitialDays(progress.journeyStartDate);
       setDaysState(initial);
       saveDaysToStorage(initial);
     },
@@ -616,7 +616,8 @@ export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         copiedHooks: [],
         videoLinks: {},
         reflections: {},
-        lastActiveDate: null
+        lastActiveDate: null,
+        journeyStartDate: new Date().toISOString().slice(0, 10)
       };
       updateProgressState(defaultProgress);
       setFocusedDayNumberState(1);

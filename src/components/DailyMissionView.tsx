@@ -551,7 +551,7 @@ export default function DailyMissionView({
     reflectionQuestion: adaptMessage(rawContent.reflectionQuestion, prefGrammar, lang)
   };
 
-  const hookOptions = getHookOptionsForDay(currentDay.dayNumber, lang);
+  const hookOptions = getHookOptionsForDay(currentDay.dayNumber, lang, progress.journeyStartDate);
   const actionHookOptions = getActionHookOptions(lang);
 
   // Translation Dictionary

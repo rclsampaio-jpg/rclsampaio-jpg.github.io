@@ -47,8 +47,8 @@ type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'set
 export default function App() {
   const system = useSystem();
 
-  const [days, setDays] = useState<MissionDay[]>(() => loadDaysFromStorage());
   const [progress, setProgress] = useState<UserProgress>(() => loadUserProgressFromStorage());
+  const [days, setDays] = useState<MissionDay[]>(() => loadDaysFromStorage(progress.journeyStartDate));
   const [lang, setLang] = useState<Language>('pt'); // Default language
   const [activeTab, setActiveTab] = useState<TabId>('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -309,7 +309,7 @@ export default function App() {
   };
 
   const handleResetDays = () => {
-    const initial = generateInitialDays();
+    const initial = generateInitialDays(progress.journeyStartDate);
     setDays(initial);
     saveDaysToStorage(initial);
     system.creatorSystem.resetDays();
@@ -319,6 +319,7 @@ export default function App() {
   const handleResetProgress = () => {
     localStorage.removeItem('renaser_onboarded');
     setHasDismissedDailyGate(true); // make sure onboarding isn't blocked by daily gate!
+    const todayISO = new Date().toISOString().slice(0, 10);
     const defaultProgress: UserProgress = {
       currentDay: 1,
       completionHistory: [],
@@ -328,9 +329,13 @@ export default function App() {
       copiedHooks: [],
       videoLinks: {},
       reflections: {},
-      lastActiveDate: null
+      lastActiveDate: null,
+      journeyStartDate: todayISO
     };
     updateProgress(defaultProgress);
+    const restartedDays = generateInitialDays(todayISO);
+    setDays(restartedDays);
+    saveDaysToStorage(restartedDays);
     setFocusedDayNumber(1);
     setActiveTab('home');
     system.progressSystem.resetProgress();
