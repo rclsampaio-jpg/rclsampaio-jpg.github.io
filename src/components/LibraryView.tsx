@@ -6,9 +6,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Search, Play, Heart, Download, BookOpen, Volume2, FileText, 
+  Search, Play, Heart, Download, BookOpen, Volume2, FileText,
   Sparkles, CheckCircle2, RotateCcw, Maximize, Clock, ListFilter,
-  Check, Pause, RefreshCw, Eye, Settings, HelpCircle, AlertCircle
+  Check, Pause, RefreshCw, Eye, Settings, HelpCircle, AlertCircle, Headphones
 } from 'lucide-react';
 import { Language, LibraryAsset, SupportConfig, UserProgress } from '../types';
 import { loadLibraryAssets, saveLibraryAssets, loadSupportConfig } from '../data/ecosystemData';
@@ -307,7 +307,8 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
       statsDesc: 'Quantos materiais adicionais você integrou ao seu repertório:',
       minutesLabel: 'assistido',
       favTab: 'Favoritos',
-      customTag: 'Material Criado'
+      customTag: 'Material Criado',
+      headphonesRequired: 'Importante! É obrigatório o uso de fones de ouvido para essa experiência.'
     },
     en: {
       title: 'RenaSer Expansion Library',
@@ -340,7 +341,8 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
       statsDesc: 'How many extra resources you have integrated so far:',
       minutesLabel: 'watched',
       favTab: 'Favorites',
-      customTag: 'Custom Resource'
+      customTag: 'Custom Resource',
+      headphonesRequired: 'Important! Wearing headphones is required for this experience.'
     },
     es: {
       title: 'Biblioteca de Expansión RenaSer',
@@ -373,7 +375,8 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
       statsDesc: 'Cuántos materiales adicionales has integrado en tu repertorio:',
       minutesLabel: 'visto',
       favTab: 'Favoritos',
-      customTag: 'Material Creado'
+      customTag: 'Material Creado',
+      headphonesRequired: '¡Importante! Es obligatorio el uso de audífonos para esta experiencia.'
     }
   }[lang];
 
@@ -487,6 +490,16 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
                 {trans.close}
               </button>
             </div>
+
+            {/* Headphones-required notice */}
+            {activeAsset.requiresHeadphones && (
+              <div className="flex items-center gap-3 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-2xl px-4 py-3 mb-6">
+                <Headphones className="h-5 w-5 text-[#D4AF37] shrink-0" />
+                <p className="text-xs sm:text-sm text-amber-100 font-sans font-medium leading-snug">
+                  {trans.headphonesRequired}
+                </p>
+              </div>
+            )}
 
             {/* Media Player Player */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">

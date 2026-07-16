@@ -184,6 +184,7 @@ export interface LibraryAsset {
   coverImage?: string;
   isCustom?: boolean;
   playbackProgress?: number; // Last watched percentage (0 to 100)
+  requiresHeadphones?: boolean; // Shows a headphones-required notice in the player (e.g. binaural/pineal audio)
 }
 
 // Reusable Journey Engine Core Entities
