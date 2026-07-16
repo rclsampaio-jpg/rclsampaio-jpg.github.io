@@ -31,7 +31,8 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
     const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{11})/);
     return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
   };
-  const weeklyVideoThumbnail = getYouTubeThumbnail(support.weeklyVideoUrl);
+  const currentWeeklyVideo = support.weeklyVideos[support.weeklyVideos.length - 1] || '';
+  const weeklyVideoThumbnail = getYouTubeThumbnail(currentWeeklyVideo);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   
@@ -382,27 +383,28 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
     }
   }[lang];
 
-  // The weekly video isn't a stored library asset (its link changes weekly via
-  // the Support config) — synthesize it here so it flows through the same
-  // grid, filtering, and category tab ("Vídeos") as everything else.
-  const weeklyVideoAsset: LibraryAsset = {
-    id: 'weekly_video',
+  // Weekly videos aren't stored as regular library assets (they come from the
+  // Support config, one link added per week) — synthesize one asset per past
+  // link here so every week's video stays browsable under "Vídeos" even after
+  // a newer one becomes the featured one.
+  const weeklyVideoAssets: LibraryAsset[] = support.weeklyVideos.map((url, idx) => ({
+    id: `weekly_video_${idx}`,
     title: {
-      pt: trans.weeklyVideoTitle,
-      en: trans.weeklyVideoTitle,
-      es: trans.weeklyVideoTitle
+      pt: `${trans.weeklyVideoTitle} ${idx + 1}`,
+      en: `${trans.weeklyVideoTitle} ${idx + 1}`,
+      es: `${trans.weeklyVideoTitle} ${idx + 1}`
     },
     description: {
       pt: trans.weeklyVideoDesc,
       en: trans.weeklyVideoDesc,
       es: trans.weeklyVideoDesc
     },
-    category: 'videos',
-    mediaUrl: support.weeklyVideoUrl,
+    category: 'videos' as const,
+    mediaUrl: url,
     durationOrSize: 'Vídeo',
-    coverImage: weeklyVideoThumbnail || undefined
-  };
-  const assetsWithWeeklyVideo = [...assets, weeklyVideoAsset];
+    coverImage: getYouTubeThumbnail(url) || undefined
+  }));
+  const assetsWithWeeklyVideo = [...assets, ...weeklyVideoAssets];
 
   // Filtering list
   const filteredAssets = assetsWithWeeklyVideo.filter(asset => {
@@ -430,6 +432,41 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
           {trans.subtitle}
         </p>
       </div>
+
+      {/* Video of the Week — featured standalone card. Also archived as a
+          normal browsable asset under the "Vídeos" tab below. */}
+      {currentWeeklyVideo && (
+        <div className="max-w-xl">
+          <h3 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">
+            {trans.weeklyVideoTitle}
+          </h3>
+          <a
+            href={currentWeeklyVideo}
+            target="_blank"
+            rel="noreferrer"
+            className="block rounded-2xl overflow-hidden border border-rose-100/30 dark:border-rosegold/5 group"
+          >
+            <div className="relative aspect-video bg-warmbrown">
+              {weeklyVideoThumbnail && (
+                <img
+                  src={weeklyVideoThumbnail}
+                  alt={trans.weeklyVideoTitle}
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  referrerPolicy="no-referrer"
+                />
+              )}
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition flex items-center justify-center">
+                <div className="h-14 w-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                  <Play className="h-6 w-6 text-rosegold ml-0.5" fill="currentColor" />
+                </div>
+              </div>
+            </div>
+            <div className="p-4 bg-[#FAF8F5]/40 dark:bg-warmbrown/10 space-y-1.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{trans.weeklyVideoDesc}</p>
+            </div>
+          </a>
+        </div>
+      )}
 
       {/* Inline Active Player Panel */}
       <AnimatePresence>

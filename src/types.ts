@@ -157,7 +157,7 @@ export interface SupportConfig {
   formUrl: string;
   websiteUrl: string;
   helpCenterUrl: string;
-  weeklyVideoUrl: string; // YouTube link, swapped out every week
+  weeklyVideos: string[]; // YouTube links, one added per week — last entry is the current/featured one, earlier ones stay archived in the Library
   upliftMessage: Record<Language, string>;
   faqs: Array<{
     id: string;

@@ -3,14 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
-  Users, HelpCircle, Mail, Phone, ExternalLink, Calendar, Sparkles,
-  ArrowUpRight, CheckCircle2, MessageSquare
+  Users, ExternalLink, Calendar, Sparkles,
+  ArrowUpRight, MessageSquare
 } from 'lucide-react';
 import { Language, CommunityConfig, FreeCommunityConfig, SupportConfig, MentoringConfig } from '../types';
 import { loadCommunityConfig, loadFreeCommunityConfig, loadSupportConfig, loadMentoringConfig } from '../data/ecosystemData';
-import { RENATA_OS_ENDPOINT } from '../config';
 
 interface CommunityViewProps {
   lang: Language;
@@ -39,39 +38,6 @@ export default function CommunityView({ lang }: CommunityViewProps) {
     };
   }, []);
 
-  const [supportMessage, setSupportMessage] = useState('');
-  const [supportSent, setSupportSent] = useState(false);
-  const [supportSending, setSupportSending] = useState(false);
-  const [supportError, setSupportError] = useState(false);
-
-  const handleSendForm = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!supportMessage.trim() || supportSending) return;
-
-    if (!RENATA_OS_ENDPOINT) {
-      setSupportError(true);
-      return;
-    }
-
-    setSupportSending(true);
-    setSupportError(false);
-    try {
-      const response = await fetch(`${RENATA_OS_ENDPOINT}/support`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: supportMessage })
-      });
-      if (!response.ok) throw new Error('Support message failed');
-      setSupportSent(true);
-      setSupportMessage('');
-      setTimeout(() => setSupportSent(false), 5000);
-    } catch {
-      setSupportError(true);
-    } finally {
-      setSupportSending(false);
-    }
-  };
-
   // Platform icon chooser
   const renderPlatformBadge = (platform: string) => {
     const badgeColors: Record<string, string> = {
@@ -96,7 +62,6 @@ export default function CommunityView({ lang }: CommunityViewProps) {
     pt: {
       communityTab: 'Comunidade Principal',
       mentoringTab: 'Mentoria & Masterclass',
-      supportTab: 'Dicas & Direcionamentos',
       communityTitle: 'Seu Ecossistema de Pertencimento',
       communityDesc: 'No RenaSer, você não caminha [sozinha/sozinho/sozinhe]. Conecte-se com alunos do mundo inteiro para postar seus desafios diários, trocar críticas construtivas e criar laços eternos.',
       joinBtn: 'Entrar na Comunidade Agora',
@@ -106,23 +71,11 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       mentoringBullet2: 'Investimento especial para quem faz parte do EcoSistema RenaSer',
       bookingCtaTitle: 'Agendar Sessão Particular',
       bookingCtaSub: 'Quer ir mais rápido? Agende um encontro VIP particular para refinar sua postura, auditar seus ganchos de vídeo e destravar medos invisíveis.',
-      supportTitle: 'Dicas e Direcionamentos',
-      supportDesc: 'Se você estiver com alguma dúvida técnica, problema de acesso ou precisar de orientação extra, nosso time está pronto para te apoiar.',
       upliftMessageHeader: 'VEM CELEBRAR',
-      contactTitle: 'Fale Conosco Diretamente',
-      emailLabel: 'Suporte por E-mail',
-      whatsappLabel: 'WhatsApp Suporte',
-      formLabel: 'Enviar Mensagem Rápida',
-      formPlaceholder: 'Escreva sua dúvida ou feedback...',
-      formSubmit: 'Enviar Mensagem',
-      formSending: 'Enviando...',
-      formSuccess: 'Sua mensagem foi enviada! Responderemos em breve.',
-      formError: 'Não foi possível enviar agora. Tente novamente ou fale por WhatsApp.'
     },
     en: {
       communityTab: 'Main Community',
       mentoringTab: 'Mentoring & Masterclass',
-      supportTab: 'Tips & Guidance',
       communityTitle: 'Your Ecosystem of Belonging',
       communityDesc: 'In RenaSer, you never walk alone. Connect with other students around the globe to share your daily challenges, trade constructive critiques, and build eternal bonds.',
       joinBtn: 'Join the Community Now',
@@ -132,23 +85,11 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       mentoringBullet2: 'Special investment for members of the RenaSer Ecosystem',
       bookingCtaTitle: 'Book a Private Session',
       bookingCtaSub: 'Want to go faster? Book a private VIP consultation to audit your content hooks, calibrate your camera posture, and dismantle invisible bottlenecks.',
-      supportTitle: 'Tips & Guidance',
-      supportDesc: 'If you have any technical questions, access issues, or require custom guidance, our dedicated support crew is ready to assist you.',
       upliftMessageHeader: 'COME CELEBRATE',
-      contactTitle: 'Contact Our Team Directly',
-      emailLabel: 'Email Support',
-      whatsappLabel: 'WhatsApp Hotline',
-      formLabel: 'Send Quick Message',
-      formPlaceholder: 'Type your question or feedback here...',
-      formSubmit: 'Submit Request',
-      formSending: 'Sending...',
-      formSuccess: 'Your message has been sent! We will reply shortly.',
-      formError: "Couldn't send it right now. Please try again or reach us on WhatsApp."
     },
     es: {
       communityTab: 'Comunidad Principal',
       mentoringTab: 'Mentoría y Masterclass',
-      supportTab: 'Consejos y Guías',
       communityTitle: 'Tu Ecosistema de Pertenencia',
       communityDesc: 'En RenaSer, nunca caminas [sola/solo/sole]. Conéctate con alumnos de todo el mundo para publicar tus desafíos diarios, intercambiar comentarios constructivos y crear lazos eternos.',
       joinBtn: 'Unirse a la Comunidad Ahora',
@@ -158,18 +99,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       mentoringBullet2: 'Inversión especial para quienes forman parte del EcoSistema RenaSer',
       bookingCtaTitle: 'Reservar Sesión Privada',
       bookingCtaSub: '¿Quieres ir más rápido? Agenda un encuentro VIP privado para refinar tu postura, auditar tus ganchos de video y destrabar miedos invisibles.',
-      supportTitle: 'Consejos y Guías',
-      supportDesc: 'Si tienes alguna duda técnica, problema de acceso o necesitas orientación adicional, nuestro equipo está listo para apoyarte.',
       upliftMessageHeader: 'VEN A CELEBRAR',
-      contactTitle: 'Contáctanos Directamente',
-      emailLabel: 'Soporte por E-mail',
-      whatsappLabel: 'WhatsApp de Soporte',
-      formLabel: 'Enviar Mensaje Rápido',
-      formPlaceholder: 'Escribe tu duda o comentarios aquí...',
-      formSubmit: 'Enviar Mensaje',
-      formSending: 'Enviando...',
-      formSuccess: '¡Tu mensaje fue enviado! Te responderemos pronto.',
-      formError: 'No se pudo enviar ahora. Intenta de nuevo o escríbenos por WhatsApp.'
     }
   }[lang];
 
@@ -270,149 +200,45 @@ export default function CommunityView({ lang }: CommunityViewProps) {
         </div>
 
         {/* Below VIP: Free Community Card */}
-        <div className="lg:col-span-7 bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 shadow-rosegold flex flex-col sm:flex-row sm:items-center gap-5 justify-between">
-          <div className="space-y-2">
-            <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-              <Users className="h-3.5 w-3.5" />
-              {freeCommunity.title[lang] || freeCommunity.title['pt']}
-            </span>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans max-w-md">
-              {freeCommunity.description[lang] || freeCommunity.description['pt']}
-            </p>
-          </div>
-
-          <a
-            href={freeCommunity.joinLink}
-            target="_blank"
-            rel="noreferrer"
-            className="shrink-0 py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-sans font-bold tracking-wider text-xs uppercase flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-lg shadow-emerald-600/15"
-          >
-            <MessageSquare className="h-4 w-4" />
-            <span>{trans.joinBtn}</span>
-            <ExternalLink className="h-3.5 w-3.5" />
-          </a>
-        </div>
-
-      </div>
-
-      {/* Support FAQ & Help Center Section */}
-      <div className="bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 space-y-8 shadow-rosegold">
-        
-        {/* Support Header */}
-        <div className="space-y-2">
-          <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#D4AF37] flex items-center gap-1.5">
-            <HelpCircle className="h-4 w-4" />
-            {trans.supportTab}
-          </span>
-          <h3 className="text-xl sm:text-2xl font-serif font-light text-slate-900 dark:text-white">
-            {trans.supportTitle}
-          </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xl leading-relaxed">
-            {trans.supportDesc}
-          </p>
-        </div>
-
-        {/* Uplifting Celebration Board */}
-        {support.upliftMessage && (
-          <div className="bg-amber-50/50 dark:bg-[#1E1715]/40 border border-accentgold/25 dark:border-rosegold/10 p-5 rounded-2xl flex gap-3.5 items-start relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-accentgold" />
-            <Sparkles className="h-5 w-5 text-accentgold shrink-0 mt-0.5 animate-pulse" />
-            <div className="space-y-1 text-xs">
-              <span className="font-sans font-bold uppercase tracking-widest text-amber-700 dark:text-accentgold">
-                {trans.upliftMessageHeader}
+        <div className="lg:col-span-7 bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 shadow-rosegold space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-5 justify-between">
+            <div className="space-y-2">
+              <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                <Users className="h-3.5 w-3.5" />
+                {freeCommunity.title[lang] || freeCommunity.title['pt']}
               </span>
-              <p className="text-slate-600 dark:text-slate-300 italic font-medium leading-relaxed">
-                "{support.upliftMessage[lang] || support.upliftMessage['pt']}"
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans max-w-md">
+                {freeCommunity.description[lang] || freeCommunity.description['pt']}
               </p>
             </div>
+
+            <a
+              href={freeCommunity.joinLink}
+              target="_blank"
+              rel="noreferrer"
+              className="shrink-0 py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-sans font-bold tracking-wider text-xs uppercase flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-lg shadow-emerald-600/15"
+            >
+              <MessageSquare className="h-4 w-4" />
+              <span>{trans.joinBtn}</span>
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
           </div>
-        )}
 
-        <div className="grid grid-cols-1 gap-8 pt-2 max-w-xl">
-
-          {/* Direct Quick Actions and Email/WhatsApp links */}
-          <div className="space-y-6">
-            <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-              {trans.contactTitle}
-            </h4>
-
-            {/* Support Form or Contact Links Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              
-              <a
-                href={`mailto:${support.email}`}
-                className="p-4 border border-rose-100/30 dark:border-rosegold/5 hover:border-rosegold/30 rounded-2xl flex flex-col gap-2 bg-[#FAF8F5]/20 dark:bg-warmbrown/10 transition group"
-              >
-                <div className="p-2 bg-rosegold/10 text-rosegold rounded-xl w-fit group-hover:scale-110 transition duration-300">
-                  <Mail className="h-4 w-4" />
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-xs font-sans font-semibold text-slate-800 dark:text-slate-200 block">{trans.emailLabel}</span>
-                  <span className="text-[10px] text-slate-400 block font-mono truncate">{support.email}</span>
-                </div>
-              </a>
-
-              <a
-                href={`https://wa.me/${support.whatsapp.replace(/\D/g, '')}`}
-                target="_blank"
-                rel="noreferrer"
-                className="p-4 border border-rose-100/30 dark:border-rosegold/5 hover:border-rosegold/30 rounded-2xl flex flex-col gap-2 bg-[#FAF8F5]/20 dark:bg-warmbrown/10 transition group"
-              >
-                <div className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl w-fit group-hover:scale-110 transition duration-300">
-                  <Phone className="h-4 w-4" />
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-xs font-sans font-semibold text-slate-800 dark:text-slate-200 block">{trans.whatsappLabel}</span>
-                  <span className="text-[10px] text-slate-400 block font-mono truncate">{support.whatsapp}</span>
-                </div>
-              </a>
-
-            </div>
-
-            {/* Direct quick support message form */}
-            <form onSubmit={handleSendForm} className="space-y-3.5 pt-2">
-              <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                {trans.formLabel}
-              </label>
-              
-              <div className="space-y-3">
-                <textarea
-                  value={supportMessage}
-                  onChange={(e) => setSupportMessage(e.target.value)}
-                  placeholder={trans.formPlaceholder}
-                  rows={3}
-                  className="w-full bg-[#FAF8F5] dark:bg-warmbrown border border-rose-100/30 dark:border-rosegold/10 rounded-2xl p-3.5 text-xs sm:text-sm focus:outline-none focus:border-rosegold text-slate-800 dark:text-slate-100"
-                />
-                
-                <button
-                  type="submit"
-                  disabled={!supportMessage.trim() || supportSending}
-                  className={`w-full py-3.5 px-4 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition ${
-                    supportMessage.trim() && !supportSending
-                      ? 'bg-rosegold hover:bg-[#A35D68] text-white cursor-pointer'
-                      : 'bg-slate-100 dark:bg-warmbrown text-slate-400 border border-rose-100/5 cursor-not-allowed'
-                  }`}
-                >
-                  {supportSending ? trans.formSending : trans.formSubmit}
-                </button>
+          {/* Uplifting Celebration Board */}
+          {support.upliftMessage && (
+            <div className="bg-amber-50/50 dark:bg-[#1E1715]/40 border border-accentgold/25 dark:border-rosegold/10 p-5 rounded-2xl flex gap-3.5 items-start relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-accentgold" />
+              <Sparkles className="h-5 w-5 text-accentgold shrink-0 mt-0.5 animate-pulse" />
+              <div className="space-y-1 text-xs">
+                <span className="font-sans font-bold uppercase tracking-widest text-amber-700 dark:text-accentgold">
+                  {trans.upliftMessageHeader}
+                </span>
+                <p className="text-slate-600 dark:text-slate-300 italic font-medium leading-relaxed">
+                  "{support.upliftMessage[lang] || support.upliftMessage['pt']}"
+                </p>
               </div>
-
-              {supportSent && (
-                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-medium text-emerald-700 flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 shrink-0" />
-                  <span>{trans.formSuccess}</span>
-                </div>
-              )}
-
-              {supportError && (
-                <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs font-medium text-rose-700 flex items-center gap-2">
-                  <span>{trans.formError}</span>
-                </div>
-              )}
-            </form>
-
-          </div>
-
+            </div>
+          )}
         </div>
 
       </div>

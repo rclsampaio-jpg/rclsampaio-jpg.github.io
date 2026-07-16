@@ -47,7 +47,7 @@ export const DEFAULT_SUPPORT_CONFIG: SupportConfig = {
   formUrl: 'https://forms.gle/renaser_suporte',
   websiteUrl: 'https://suporte.renaser.co',
   helpCenterUrl: 'https://ajuda.renaser.co',
-  weeklyVideoUrl: 'https://www.youtube.com/watch?v=pFTyrgrGycA&t=5s',
+  weeklyVideos: ['https://www.youtube.com/watch?v=pFTyrgrGycA&t=5s'],
   upliftMessage: {
     pt: 'O que você alcançou hoje? Já compartilhou na comunidade? Vem celebrar seus pequenos avanços com a gente!',
     en: 'What did you achieve today? Have you shared it with the community yet? Come celebrate your small wins with us!',
@@ -119,7 +119,8 @@ export const DEFAULT_MENTORING_CONFIG: MentoringConfig = {
 // Only real, sent-in content is shown for now — the demo masterclass/workbook/
 // meditation/challenge placeholders are hidden until real material replaces
 // them. (The weekly video isn't stored here — see LibraryView, it's
-// synthesized from SupportConfig.weeklyVideoUrl so it can update weekly.)
+// synthesized from SupportConfig.weeklyVideos so each week's link stays
+// browsable in the Library after a newer one is added.)
 export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
   {
     id: 'lib_5',
@@ -144,7 +145,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs — acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '8';
+const ECOSYSTEM_CONFIG_VERSION = '9';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');

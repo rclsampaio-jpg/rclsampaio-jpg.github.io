@@ -319,7 +319,7 @@ export default function EmotionalSosView({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[45] bg-[#16110F] text-[#FAF6F0] flex flex-col justify-between p-6 pb-28 lg:pb-6 overflow-y-auto select-none font-sans"
+      className="fixed inset-0 z-[45] bg-[#16110F] text-[#FAF6F0] flex flex-col justify-between p-4 sm:p-6 pb-24 lg:pb-6 overflow-y-auto select-none font-sans"
     >
       {/* Background Soft Serene Ambient Glow */}
       <div className="absolute top-1/4 left-1/4 h-80 w-80 bg-rosegold/5 blur-3xl rounded-full pointer-events-none" />
@@ -341,7 +341,7 @@ export default function EmotionalSosView({
       </div>
 
       {/* MAIN CONTAINER BODY */}
-      <div className="max-w-xl w-full mx-auto flex-1 flex flex-col justify-center py-6 relative z-10">
+      <div className="max-w-xl w-full mx-auto flex-1 flex flex-col justify-center py-3 sm:py-6 relative z-10">
         
         <AnimatePresence mode="wait">
           
@@ -353,13 +353,13 @@ export default function EmotionalSosView({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-8 text-center"
+              className="space-y-4 sm:space-y-8 text-center"
             >
-              <div className="space-y-2">
+              <div className="space-y-1.5 sm:space-y-2">
                 <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block">
                   Sintonização Respiratória
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-serif font-light text-white leading-tight lowercase">
+                <h2 className="text-xl sm:text-3xl font-serif font-light text-white leading-tight lowercase">
                   {localText.breathingTitle}
                 </h2>
                 <p className="text-xs sm:text-sm text-stone-400 max-w-sm mx-auto leading-relaxed">
@@ -368,14 +368,14 @@ export default function EmotionalSosView({
               </div>
 
               {/* Glowing Slow Breathing Circle */}
-              <div className="flex flex-col items-center justify-center space-y-6 py-4">
+              <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-6 py-1 sm:py-4">
                 <div className="relative flex items-center justify-center">
                   <motion.div
                     animate={{
-                      scale: 
-                        breathState === 'inhale' ? 1.45 : 
-                        breathState === 'hold1' ? 1.45 : 
-                        breathState === 'exhale' ? 1.0 : 
+                      scale:
+                        breathState === 'inhale' ? 1.45 :
+                        breathState === 'hold1' ? 1.45 :
+                        breathState === 'exhale' ? 1.0 :
                         breathState === 'hold2' ? 1.0 : 1.0,
                       opacity: breathState === 'idle' ? 0.35 : 1
                     }}
@@ -384,7 +384,7 @@ export default function EmotionalSosView({
                       ease: "easeInOut",
                       repeat: breathState === 'idle' ? Infinity : 0
                     }}
-                    className={`h-32 w-32 rounded-full flex flex-col items-center justify-center relative transition-colors duration-700 ${
+                    className={`h-24 w-24 sm:h-32 sm:w-32 rounded-full flex flex-col items-center justify-center relative transition-colors duration-700 ${
                       breathState === 'inhale' ? 'bg-rosegold/20 ring-4 ring-rosegold/10' :
                       breathState === 'hold1' ? 'bg-[#D4AF37]/15 ring-4 ring-[#D4AF37]/10' :
                       breathState === 'exhale' ? 'bg-amber-600/15 ring-4 ring-amber-600/10' :
@@ -394,7 +394,7 @@ export default function EmotionalSosView({
                   >
                     {breathState !== 'idle' ? (
                       <>
-                        <span className="text-3xl font-serif font-bold text-white mb-0.5">
+                        <span className="text-2xl sm:text-3xl font-serif font-bold text-white mb-0.5">
                           {secondsLeft}s
                         </span>
                         <span className="text-[9px] font-mono tracking-widest text-[#D4AF37] uppercase font-bold">
@@ -402,12 +402,12 @@ export default function EmotionalSosView({
                         </span>
                       </>
                     ) : (
-                      <Wind className="h-7 w-7 text-stone-400 animate-pulse" />
+                      <Wind className="h-6 w-6 sm:h-7 sm:w-7 text-stone-400 animate-pulse" />
                     )}
                   </motion.div>
 
                   {/* Gentle Ripple Bounds */}
-                  <div className="absolute h-44 w-44 border border-white/5 rounded-full pointer-events-none" />
+                  <div className="absolute h-32 w-32 sm:h-44 sm:w-44 border border-white/5 rounded-full pointer-events-none" />
                 </div>
 
                 {breathState !== 'idle' && (
@@ -418,25 +418,25 @@ export default function EmotionalSosView({
               </div>
 
               {/* Action Trigger Buttons */}
-              <div className="space-y-4 max-w-xs mx-auto">
+              <div className="space-y-2.5 sm:space-y-4 max-w-xs mx-auto">
                 {breathState === 'idle' ? (
                   <button
                     onClick={handleStartBreathing}
-                    className="w-full py-3 bg-rosegold hover:bg-rosegold/90 text-white rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all duration-300 shadow-lg shadow-rosegold/10 cursor-pointer"
+                    className="w-full py-2.5 sm:py-3 bg-rosegold hover:bg-rosegold/90 text-white rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all duration-300 shadow-lg shadow-rosegold/10 cursor-pointer"
                   >
                     {localText.breathingCta}
                   </button>
                 ) : (
                   <button
                     onClick={handleStopBreathing}
-                    className="w-full py-3 bg-stone-900 border border-stone-800 text-stone-300 rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all cursor-pointer"
+                    className="w-full py-2.5 sm:py-3 bg-stone-900 border border-stone-800 text-stone-300 rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all cursor-pointer"
                   >
                     {localText.breathingStop}
                   </button>
                 )}
 
                 {/* Transition Proceed button */}
-                <div className="pt-2">
+                <div className="pt-1 sm:pt-2">
                   <button
                     onClick={() => setStage('categorySelect')}
                     className={`w-full py-3 rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all duration-500 cursor-pointer ${
