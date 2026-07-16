@@ -392,7 +392,8 @@ export function getHookCategoryLabel(dayNumber: number, lang: Language, startDat
 // Real recorded daily audio, one file per day, added incrementally.
 // Days not listed here fall back to the placeholder ambience sound below.
 const DAILY_AUDIO_FILES: Record<number, string> = {
-  1: '/assets/audio/dia-01.mp3'
+  1: '/assets/audio/dia-01.mp3',
+  2: '/assets/audio/dia-02.mp3'
 };
 const FALLBACK_AUDIO_URL = 'https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg';
 
@@ -618,7 +619,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS) — acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '6';
+const DAYS_CONTENT_VERSION = '7';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
