@@ -1124,6 +1124,7 @@ export default function App() {
               lang={lang}
               userReflection={chapterMilestone.userReflection}
               grammarPreference={resolveGrammarPreference(progress.grammarPreference)}
+              guideStyle={progress.guideStyle}
               onClose={handleCloseMilestone}
             />
           )}

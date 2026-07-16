@@ -11,7 +11,114 @@ import {
 } from 'lucide-react';
 import { MissionDay, Language, UserProgress, DayType } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
-import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
+import { adaptMessage, resolveGrammarPreference, ToneVariants } from '../utils/grammar';
+
+// Onboarding/return-visit copy that varies by guideStyle. "inspirational"
+// preserves the original wording this content shipped with.
+const HOME_TONE: Record<Language, {
+  onboardingWelcome: ToneVariants;
+  onboardingSub: ToneVariants;
+  introTitle: ToneVariants;
+  introText: ToneVariants;
+  yesterdayReminder: ToneVariants;
+}> = {
+  pt: {
+    onboardingWelcome: {
+      gentle: 'Seja [bem-vinda/bem-vindo/bem-vinde], com carinho, ao RenaSer',
+      challenger: 'Chegou a hora. Seja [bem-vinda/bem-vindo/bem-vinde] ao RenaSer',
+      strategic: 'Seja [bem-vinda/bem-vindo/bem-vinde] ao RenaSer — seu novo método começa agora',
+      inspirational: 'Seja [Bem-vinda/Bem-vindo/Bem-vinde] ao RenaSer'
+    },
+    onboardingSub: {
+      gentle: 'Uma experiência gentil de visibilidade, no seu tempo',
+      challenger: 'Chega de se esconder. Aqui é onde você aparece',
+      strategic: 'Um método estruturado de 30 dias pra construir visibilidade consistente',
+      inspirational: 'Uma experiência de visibilidade e coragem'
+    },
+    introTitle: {
+      gentle: 'Vamos começar devagar?',
+      challenger: 'Bora começar de verdade?',
+      strategic: '[Pronta/Pronto/Pronte] pra seguir o plano?',
+      inspirational: 'Você está [pronta/pronto/pronte]?'
+    },
+    introText: {
+      gentle: 'Pelos próximos 30 dias, no seu ritmo, você vai receber um gancho diário e um áudio de até 10 minutos. Este espaço existe pra você se lembrar, com calma, de quem você realmente é.',
+      challenger: 'Pelos próximos 30 dias, sem desculpa: um gancho diário, um áudio de até 10 minutos, e a decisão de aparecer todo santo dia. Esse é o trato.',
+      strategic: 'Pelos próximos 30 dias, você recebe um gancho diário e um áudio prático de até 10 minutos — um sistema simples, repetível, desenhado pra gerar consistência mensurável.',
+      inspirational: 'Pelos próximos 30 dias, você receberá um gancho (hook) diário e um áudio prático de até 10 minutos. Este é um espaço seguro para você lembrar quem você realmente é.'
+    },
+    yesterdayReminder: {
+      gentle: '✨ Sem pressa nenhuma. Volte exatamente de onde parou, no seu tempo — não existe atraso aqui, só o seu próprio ritmo.',
+      challenger: '✨ A jornada não parou por sua causa. Volte agora e retome de onde parou — sem desculpa pra adiar mais um dia.',
+      strategic: '✨ Checkpoint: retome exatamente de onde parou. Consistência acumulada importa mais que qualquer pausa isolada.',
+      inspirational: '✨ A jornada estava à sua espera. Continue exatamente de onde parou — seu ritmo de crescimento é único e livre de julgamentos.'
+    }
+  },
+  en: {
+    onboardingWelcome: {
+      gentle: 'Welcome, gently, to RenaSer',
+      challenger: "It's time. Welcome to RenaSer",
+      strategic: 'Welcome to RenaSer — your new method starts now',
+      inspirational: 'Welcome to RenaSer'
+    },
+    onboardingSub: {
+      gentle: 'A gentle experience of visibility, at your own pace',
+      challenger: 'Enough hiding. This is where you show up',
+      strategic: 'A structured 30-day method to build consistent visibility',
+      inspirational: 'An experience of visibility and courage'
+    },
+    introTitle: {
+      gentle: 'Shall we start slowly?',
+      challenger: 'Ready to actually get started?',
+      strategic: 'Ready to follow the plan?',
+      inspirational: 'Are you ready?'
+    },
+    introText: {
+      gentle: "For the next 30 days, at your own pace, you'll receive a daily hook and an audio up to 10 minutes. This space exists for you to gently remember who you truly are.",
+      challenger: "For the next 30 days, no excuses: a daily hook, an audio up to 10 minutes, and the decision to show up every single day. That's the deal.",
+      strategic: "For the next 30 days, you'll receive a daily hook and a practical audio up to 10 minutes — a simple, repeatable system designed to generate measurable consistency.",
+      inspirational: 'For the next 30 days, you will receive a daily hook and a practical audio up to 10 minutes long. This is a safe environment designed for you to remember who you truly are.'
+    },
+    yesterdayReminder: {
+      gentle: "✨ No rush at all. Come back exactly where you left off, at your own pace — there's no such thing as being late here, just your own rhythm.",
+      challenger: "✨ The journey didn't stop because of you. Come back now and pick up where you left off — no excuse to delay another day.",
+      strategic: '✨ Checkpoint: resume exactly where you left off. Accumulated consistency matters more than any single pause.',
+      inspirational: '✨ The journey has been waiting for you. Continue exactly from where you stopped — your pace of growth is unique and free from guilt.'
+    }
+  },
+  es: {
+    onboardingWelcome: {
+      gentle: '[Bienvenida/Bienvenido/Bienvenide], con cariño, a RenaSer',
+      challenger: 'Llegó la hora. [Bienvenida/Bienvenido/Bienvenide] a RenaSer',
+      strategic: '[Bienvenida/Bienvenido/Bienvenide] a RenaSer — tu nuevo método empieza ahora',
+      inspirational: '[Bienvenida/Bienvenido/Bienvenide] a RenaSer'
+    },
+    onboardingSub: {
+      gentle: 'Una experiencia suave de visibilidad, a tu ritmo',
+      challenger: 'Basta de esconderte. Aquí es donde apareces',
+      strategic: 'Un método estructurado de 30 días para construir visibilidad consistente',
+      inspirational: 'Una experiencia de visibilidad y coraje'
+    },
+    introTitle: {
+      gentle: '¿Empezamos despacio?',
+      challenger: '¿[Lista/Listo/Liste] para empezar de verdad?',
+      strategic: '¿[Lista/Listo/Liste] para seguir el plan?',
+      inspirational: '¿Estás [lista/listo/liste]?'
+    },
+    introText: {
+      gentle: 'Durante los próximos 30 días, a tu ritmo, recibirás un gancho diario y un audio de hasta 10 minutos. Este espacio existe para que recuerdes, con calma, quién eres realmente.',
+      challenger: 'Durante los próximos 30 días, sin excusas: un gancho diario, un audio de hasta 10 minutos, y la decisión de aparecer todos los días. Ese es el trato.',
+      strategic: 'Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de hasta 10 minutos — un sistema simple y repetible, diseñado para generar consistencia medible.',
+      inspirational: 'Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de hasta 10 minutos. Este es un espacio seguro diseñado para recordar quién eres realmente.'
+    },
+    yesterdayReminder: {
+      gentle: '✨ Sin ninguna prisa. Vuelve exactamente donde lo dejaste, a tu ritmo — aquí no existe el atraso, solo tu propio ritmo.',
+      challenger: '✨ El viaje no se detuvo por tu culpa. Vuelve ahora y retoma donde lo dejaste — sin excusa para posponer otro día.',
+      strategic: '✨ Checkpoint: retoma exactamente donde lo dejaste. La consistencia acumulada importa más que cualquier pausa aislada.',
+      inspirational: '✨ El viaje te ha estado esperando. Continúa exactamente desde donde lo dejaste — tu ritmo de crecimiento es único y libre de culpas.'
+    }
+  }
+};
 
 // Chapter and Butterfly Imports
 import { getChapterForDay, getButterflyConfig } from '../data/chaptersData';
@@ -94,8 +201,6 @@ export default function HomeView({
   // Translations
   const trans = {
     pt: {
-      onboardingWelcome: "Seja [Bem-vinda/Bem-vindo/Bem-vinde] ao RenaSer",
-      onboardingSub: "Uma experiência de visibilidade e coragem",
       languageTitle: "Configurações de Idioma",
       nameStepTitle: "Como devemos te chamar?",
       nameStepSubtitle: "Escolha o nome de preferência. É assim que vamos te chamar por aqui.",
@@ -103,8 +208,6 @@ export default function HomeView({
       selectLanguage: "Escolha seu idioma / Choose your language:",
       getStarted: "Começar Jornada",
       continue: "Continuar",
-      introTitle: "Você está [pronta/pronto/pronte]?",
-      introText: "Pelos próximos 30 dias, você receberá um gancho (hook) diário e um áudio prático de até 10 minutos. Este é um espaço seguro para você lembrar quem você realmente é.",
       todayTheme: "Tema do Dia",
       progressTitle: "Sua Evolução",
       completedDays: "{completed} de {total} dias concluídos",
@@ -112,7 +215,6 @@ export default function HomeView({
       longestStreak: "Melhor Racha",
       streakDays: "{count} dias",
       longestDays: "Recorde: {count} dias",
-      yesterdayReminder: "✨ A jornada estava à sua espera. Continue exatamente de onde parou — seu ritmo de crescimento é único e livre de julgamentos.",
       viewIntro: "Reouvir Alinhamento do Capítulo",
       chapter: "Capítulo",
       chapterOf: "de",
@@ -133,8 +235,6 @@ export default function HomeView({
       copied: "Copiado!"
     },
     en: {
-      onboardingWelcome: "Welcome to RenaSer",
-      onboardingSub: "An experience of visibility and courage",
       languageTitle: "Language Settings",
       nameStepTitle: "What should we call you?",
       nameStepSubtitle: "Choose your preferred name. That's how we'll address you around here.",
@@ -142,8 +242,6 @@ export default function HomeView({
       selectLanguage: "Choose your language / Escolha seu idioma:",
       getStarted: "Start Journey",
       continue: "Continue",
-      introTitle: "Are you ready?",
-      introText: "For the next 30 days, you will receive a daily hook and a practical audio up to 10 minutes long. This is a safe environment designed for you to remember who you truly are.",
       todayTheme: "Today's Theme",
       progressTitle: "Your Progress",
       completedDays: "{completed} of {total} days completed",
@@ -151,7 +249,6 @@ export default function HomeView({
       longestStreak: "Best Streak",
       streakDays: "{count} days",
       longestDays: "Record: {count} days",
-      yesterdayReminder: "✨ The journey has been waiting for you. Continue exactly from where you stopped — your pace of growth is unique and free from guilt.",
       viewIntro: "Replay Chapter Alignment",
       chapter: "Chapter",
       chapterOf: "of",
@@ -172,8 +269,6 @@ export default function HomeView({
       copied: "Copied!"
     },
     es: {
-      onboardingWelcome: "[Bienvenida/Bienvenido/Bienvenide] a RenaSer",
-      onboardingSub: "Una experiencia de visibilidad y coraje",
       languageTitle: "Configuración de Idioma",
       nameStepTitle: "¿Cómo debemos llamarte?",
       nameStepSubtitle: "Elige tu nombre de preferencia. Así te llamaremos por aquí.",
@@ -181,8 +276,6 @@ export default function HomeView({
       selectLanguage: "Selecciona tu idioma / Choose your language:",
       getStarted: "Iniciar Viaje",
       continue: "Continuar",
-      introTitle: "¿Estás [lista/listo/liste]?",
-      introText: "Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de hasta 10 minutos. Este es un espacio seguro diseñado para recordar quién eres realmente.",
       todayTheme: "Tema de Hoy",
       progressTitle: "Tu Progreso",
       completedDays: "{completed} de {total} días completados",
@@ -190,7 +283,6 @@ export default function HomeView({
       longestStreak: "Mejor Racha",
       streakDays: "{count} días",
       longestDays: "Récord: {count} días",
-      yesterdayReminder: "✨ El viaje te ha estado esperando. Continúa exactamente desde donde lo dejaste — tu ritmo de crecimiento es único y libre de culpas.",
       viewIntro: "Reescutar Alineación del Capítulo",
       chapter: "Capítulo",
       chapterOf: "de",
@@ -535,10 +627,10 @@ export default function HomeView({
               </div>
               <div className="space-y-3">
                 <h1 className="text-3xl font-display font-light text-slate-900 dark:text-white leading-tight">
-                  {adaptMessage(trans.onboardingWelcome, prefGrammar, lang)}
+                  {adaptMessage(HOME_TONE[lang].onboardingWelcome[selectedStyle], selectedGrammar, lang)}
                 </h1>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-sans leading-relaxed max-w-xs mx-auto">
-                  {trans.onboardingSub}
+                  {HOME_TONE[lang].onboardingSub[selectedStyle]}
                 </p>
               </div>
               <button
@@ -564,10 +656,10 @@ export default function HomeView({
               </div>
               <div className="space-y-3">
                 <h2 className="text-2xl font-display font-light text-slate-900 dark:text-white leading-tight">
-                  {adaptMessage(trans.introTitle, prefGrammar, lang)}
+                  {adaptMessage(HOME_TONE[lang].introTitle[selectedStyle], selectedGrammar, lang)}
                 </h2>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-sans leading-relaxed max-w-sm mx-auto">
-                  {trans.introText}
+                  {HOME_TONE[lang].introText[selectedStyle]}
                 </p>
               </div>
               <button

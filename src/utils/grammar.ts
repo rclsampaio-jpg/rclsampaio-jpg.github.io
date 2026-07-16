@@ -5,6 +5,34 @@
 
 import { Language } from '../types';
 
+export type GuideStyle = 'gentle' | 'challenger' | 'strategic' | 'inspirational';
+
+/**
+ * Resolves any stored/undefined guideStyle preference down to a real value.
+ * Defaults to 'inspirational' since that's the tone the app opens with today.
+ */
+export function resolveGuideStyle(pref?: GuideStyle): GuideStyle {
+  return pref ?? 'inspirational';
+}
+
+export type ToneVariants = Record<GuideStyle, string>;
+
+/**
+ * Picks the right tone variant of a Renata-voice string (guidance, letters,
+ * SOS comfort text, milestone copy) for the user's guideStyle preference.
+ * This is a full-string swap (each style is a differently-written message),
+ * unlike adaptMessage's inline [bracket] word swap for grammar gender.
+ * The two compose: pickTone() first, then adaptMessage() on the result.
+ */
+export function pickTone(
+  content: Record<Language, ToneVariants>,
+  lang: Language,
+  style: GuideStyle
+): string {
+  const variants = content[lang] || content.pt;
+  return variants[style] ?? variants.inspirational;
+}
+
 /**
  * The 'neutral' grammar forms (e.g. "pronte", "preparade") aren't standard
  * Portuguese/Spanish words, so the Neutral option is hidden from Settings.

@@ -6,9 +6,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Play, Pause, Volume2, ArrowRight, Award, Flame, CheckCircle, RefreshCw } from 'lucide-react';
-import { Language } from '../types';
+import { Language, UserProgress } from '../types';
 import { Chapter, chapters } from '../data/chaptersData';
-import { adaptMessage } from '../utils/grammar';
+import { adaptMessage, pickTone, resolveGuideStyle, ToneVariants } from '../utils/grammar';
 
 interface ChapterMilestoneOverlayProps {
   type: 'intro' | 'completion';
@@ -16,9 +16,56 @@ interface ChapterMilestoneOverlayProps {
   lang: Language;
   userReflection?: string;
   grammarPreference?: 'feminine' | 'masculine' | 'neutral';
+  guideStyle?: UserProgress['guideStyle'];
   onClose: () => void;
   onSaveReflection?: (selectedFeeling: string, futureSelfNote: string, selectedSurprises?: string[]) => void;
 }
+
+// Milestone copy shown after completing a chapter — varied by guideStyle
+const MILESTONE_COPY: Record<Language, { enteredNewVersion: ToneVariants; anotherPromiseKept: ToneVariants }> = {
+  pt: {
+    enteredNewVersion: {
+      gentle: 'Você chegou em um novo lugar dentro de [si mesma/si mesmo/si mesme], com carinho.',
+      challenger: 'Você não é mais quem começou. Aja como a nova versão que você já provou ser.',
+      strategic: 'Checkpoint alcançado: você validou uma nova versão de [si mesma/si mesmo/si mesme].',
+      inspirational: 'Você entrou em uma nova versão de [si mesma/si mesmo/si mesme].'
+    },
+    anotherPromiseKept: {
+      gentle: 'Mais uma promessa gentil cumprida com você mesma.',
+      challenger: 'Mais uma promessa cumprida. Prova que você não precisa de motivação pra agir — só de decisão.',
+      strategic: 'Registro: mais uma promessa cumprida. O padrão está se consolidando.',
+      inspirational: 'Mais uma promessa cumprida.'
+    }
+  },
+  en: {
+    enteredNewVersion: {
+      gentle: "You've gently arrived at a new place within yourself.",
+      challenger: "You're not who you started as anymore. Act like the new version you've already proven to be.",
+      strategic: "Checkpoint reached: you've validated a new version of yourself.",
+      inspirational: "You've entered a new version of yourself."
+    },
+    anotherPromiseKept: {
+      gentle: 'One more gentle promise kept with yourself.',
+      challenger: "Another promise kept. Proof you don't need motivation to act — just a decision.",
+      strategic: 'Logged: another promise kept. The pattern is consolidating.',
+      inspirational: 'Another promise kept.'
+    }
+  },
+  es: {
+    enteredNewVersion: {
+      gentle: 'Llegaste con cariño a un nuevo lugar dentro de [ti misma/ti mismo/ti misme].',
+      challenger: 'Ya no eres quien empezó. Actúa como la nueva versión que ya demostraste ser.',
+      strategic: 'Checkpoint alcanzado: validaste una nueva versión de [ti misma/ti mismo/ti misme].',
+      inspirational: 'Has entrado en una nueva versión de [ti misma/ti mismo/ti misme].'
+    },
+    anotherPromiseKept: {
+      gentle: 'Una promesa más cumplida contigo misma, con cariño.',
+      challenger: 'Otra promesa cumplida. Prueba de que no necesitas motivación para actuar — solo una decisión.',
+      strategic: 'Registro: otra promesa cumplida. El patrón se está consolidando.',
+      inspirational: 'Otra promesa cumplida.'
+    }
+  }
+};
 
 export default function ChapterMilestoneOverlay({
   type,
@@ -26,9 +73,11 @@ export default function ChapterMilestoneOverlay({
   lang,
   userReflection = '',
   grammarPreference = 'feminine',
+  guideStyle,
   onClose,
   onSaveReflection
 }: ChapterMilestoneOverlayProps) {
+  const resolvedGuideStyle = resolveGuideStyle(guideStyle);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
   const speechUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
@@ -63,7 +112,7 @@ export default function ChapterMilestoneOverlay({
 
     // Optional Speech Synthesis for true offline audio narrative!
     if ('speechSynthesis' in window) {
-      const textToSpeak = adaptMessage(chapter.audioNarrative[lang], grammarPreference, lang);
+      const textToSpeak = adaptMessage(pickTone(chapter.audioNarrative, lang, resolvedGuideStyle), grammarPreference, lang);
       const utterance = new SpeechSynthesisUtterance(textToSpeak);
       utterance.lang = lang === 'pt' ? 'pt-BR' : lang === 'es' ? 'es-ES' : 'en-US';
       utterance.rate = 0.95; // slightly slower, calming voice
@@ -146,8 +195,6 @@ export default function ChapterMilestoneOverlay({
   const trans = {
     pt: {
       chapter: 'Capítulo',
-      enteredNewVersion: 'Você entrou em uma nova versão de [si mesma/si mesmo/si mesme].',
-      anotherPromiseKept: 'Mais uma promessa cumprida.',
       continue: 'Entrar na nova fase',
       completeAndClose: 'Selar Aprendizado',
       expectationTitle: 'Expectativa para esta fase',
@@ -169,8 +216,6 @@ export default function ChapterMilestoneOverlay({
     },
     en: {
       chapter: 'Chapter',
-      enteredNewVersion: "You've entered a new version of yourself.",
-      anotherPromiseKept: 'Another promise kept.',
       continue: 'Enter new phase',
       completeAndClose: 'Seal Learning',
       expectationTitle: 'Expectations for this phase',
@@ -192,8 +237,6 @@ export default function ChapterMilestoneOverlay({
     },
     es: {
       chapter: 'Capítulo',
-      enteredNewVersion: 'Has entrado en una nueva versión de [ti misma/ti mismo/ti misme].',
-      anotherPromiseKept: 'Otra promesa cumplida.',
       continue: 'Entrar a la nueva fase',
       completeAndClose: 'Sellar Aprendizaje',
       expectationTitle: 'Expectativa para esta fase',
@@ -265,7 +308,7 @@ export default function ChapterMilestoneOverlay({
               <div className="text-center py-4 bg-gradient-to-r from-rose-50/20 to-rose-100/5 dark:from-[#261D1A] dark:to-[#1E1715]/40 rounded-2xl border border-rose-100/10 dark:border-rosegold/5 px-6">
                 <span className="text-3xl text-rosegold/30 font-serif block select-none">“</span>
                 <p className="text-lg font-serif italic text-slate-800 dark:text-[#E2C2BA] tracking-wide leading-relaxed -mt-3">
-                  {adaptMessage(chapter.message[lang], grammarPreference, lang)}
+                  {adaptMessage(pickTone(chapter.message, lang, resolvedGuideStyle), grammarPreference, lang)}
                 </p>
               </div>
 
@@ -275,7 +318,7 @@ export default function ChapterMilestoneOverlay({
                   {trans.reflectionTitle}
                 </h3>
                 <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed italic font-serif">
-                  {adaptMessage(chapter.reflection[lang], grammarPreference, lang)}
+                  {adaptMessage(pickTone(chapter.reflection, lang, resolvedGuideStyle), grammarPreference, lang)}
                 </p>
               </div>
 
@@ -334,7 +377,7 @@ export default function ChapterMilestoneOverlay({
                   {trans.expectationTitle}
                 </h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
-                  {adaptMessage(chapter.expectation[lang], grammarPreference, lang)}
+                  {adaptMessage(pickTone(chapter.expectation, lang, resolvedGuideStyle), grammarPreference, lang)}
                 </p>
               </div>
 
@@ -364,7 +407,11 @@ export default function ChapterMilestoneOverlay({
                   Identity Shift
                 </span>
                 <p className="text-sm font-sans font-bold text-[#D4AF37] animate-pulse">
-                  {adaptMessage(chapter.id === 4 ? trans.enteredNewVersion : trans.anotherPromiseKept, grammarPreference, lang)}
+                  {adaptMessage(
+                    (chapter.id === 4 ? MILESTONE_COPY[lang].enteredNewVersion : MILESTONE_COPY[lang].anotherPromiseKept)[resolvedGuideStyle],
+                    grammarPreference,
+                    lang
+                  )}
                 </p>
               </div>
 
