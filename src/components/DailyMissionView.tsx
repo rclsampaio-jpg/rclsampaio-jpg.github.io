@@ -1309,7 +1309,7 @@ export default function DailyMissionView({
                   <input
                     type="range"
                     min="0"
-                    max={Math.max(maxReachedProgress, audioProgress)}
+                    max="100"
                     step="0.1"
                     value={audioProgress}
                     onChange={handleSeekChange}
