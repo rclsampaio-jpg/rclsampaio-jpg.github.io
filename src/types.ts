@@ -185,6 +185,7 @@ export interface LibraryAsset {
   isCustom?: boolean;
   playbackProgress?: number; // Last watched percentage (0 to 100)
   requiresHeadphones?: boolean; // Shows a headphones-required notice in the player (e.g. binaural/pineal audio)
+  isArchivedWeekly?: boolean; // Synthesized from a past (no-longer-current) Video of the Week link — rendered as a title-only row, not a thumbnail card
 }
 
 // Reusable Journey Engine Core Entities

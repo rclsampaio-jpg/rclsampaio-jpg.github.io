@@ -382,13 +382,27 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
 
   // Config/behavior note for future weekly-video updates: only the CURRENT
   // week's video (last entry of support.weeklyVideos) gets the full featured
-  // standalone card. Once a newer one replaces it, it drops out of the card
-  // grid entirely and shows up only as a plain title in the archive list
-  // below — it's never duplicated as a second thumbnail card.
+  // standalone card. Once a newer one replaces it, it's synthesized below as
+  // a real entry inside the Videos section of the library grid (title-only
+  // row, not a thumbnail card) — it's never duplicated as a second thumbnail.
   const pastWeeklyVideos = support.weeklyVideos.slice(0, -1);
+  const weeklyArchiveAssets: LibraryAsset[] = pastWeeklyVideos.map((url, idx) => ({
+    id: `weekly-archive-${idx}`,
+    title: {
+      pt: `${trans.weeklyVideoTitle} ${idx + 1}`,
+      en: `${trans.weeklyVideoTitle} ${idx + 1}`,
+      es: `${trans.weeklyVideoTitle} ${idx + 1}`
+    },
+    description: { pt: '', en: '', es: '' },
+    category: 'videos',
+    mediaUrl: url,
+    durationOrSize: '',
+    isArchivedWeekly: true
+  }));
 
-  // Filtering list
-  const filteredAssets = assets.filter(asset => {
+  // Filtering list — real library assets plus the archived weekly videos,
+  // so both live inside the same searchable/filterable Videos section.
+  const filteredAssets = [...assets, ...weeklyArchiveAssets].filter(asset => {
     const matchesSearch =
       (asset.title[lang]?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
       (asset.description[lang]?.toLowerCase() || '').includes(searchQuery.toLowerCase());
@@ -448,25 +462,6 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{trans.weeklyVideoDesc}</p>
             </div>
           </a>
-
-          {/* Once a video stops being "the" video of the week, it's no longer
-              shown as a full card — just a plain title link, kept for later access. */}
-          {pastWeeklyVideos.length > 0 && (
-            <div className="mt-3 space-y-1">
-              {pastWeeklyVideos.map((url, idx) => (
-                <a
-                  key={idx}
-                  href={url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 hover:text-rosegold transition-colors py-1"
-                >
-                  <Play className="h-3 w-3 shrink-0" />
-                  <span>{trans.weeklyVideoTitle} {idx + 1}</span>
-                </a>
-              ))}
-            </div>
-          )}
         </div>
       )}
 
@@ -787,6 +782,26 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
             filteredAssets.map((asset) => {
               const isFavorited = favoriteIds.includes(asset.id);
               const isCompleted = completedIds.includes(asset.id);
+
+              // Past (no-longer-current) weekly videos: a slim title-only
+              // row instead of a thumbnail card, spanning the full grid width.
+              if (asset.isArchivedWeekly) {
+                return (
+                  <motion.div
+                    key={asset.id}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => handlePlayAsset(asset)}
+                    className="col-span-full flex items-center gap-2.5 px-4 py-3 bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-2xl cursor-pointer hover:border-rosegold/40 transition text-slate-600 dark:text-slate-300 hover:text-rosegold"
+                  >
+                    <Play className="h-3.5 w-3.5 shrink-0" />
+                    <span className="text-xs font-sans font-medium">{asset.title[lang] || asset.title['pt']}</span>
+                  </motion.div>
+                );
+              }
+
               return (
                 <motion.div
                   key={asset.id}
@@ -797,7 +812,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
                   onClick={() => handlePlayAsset(asset)}
                   className="bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between group"
                 >
-                  
+
                   {/* Thumbnail Cover Area */}
                   <div className="relative aspect-video w-full overflow-hidden bg-warmbrown">
                     <img
