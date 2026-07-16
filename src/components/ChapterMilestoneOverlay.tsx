@@ -523,7 +523,7 @@ export default function ChapterMilestoneOverlay({
                       placeholder={trans.notePlaceholder}
                       className="w-full text-xs bg-white dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-xl p-2.5 text-slate-700 dark:text-slate-200 transition font-sans leading-relaxed"
                     />
-                    <div className="text-right text-[9px] text-slate-400 font-mono">
+                    <div className="text-right text-[11px] text-slate-400 font-mono">
                       {futureSelfNote.length}/300
                     </div>
                   </motion.div>

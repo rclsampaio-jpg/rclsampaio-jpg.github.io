@@ -158,7 +158,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
                 <Sparkles className="h-3.5 w-3.5" />
                 {trans.mentoringTab}
               </span>
-              <span className="text-[9px] bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-0.5 rounded font-mono font-bold uppercase tracking-widest border border-[#D4AF37]/15">
+              <span className="text-[11px] bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-0.5 rounded font-mono font-bold uppercase tracking-widest border border-[#D4AF37]/15">
                 {mentoring.provider}
               </span>
             </div>

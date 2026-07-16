@@ -640,7 +640,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
 
                   {/* Playback speed controller dropdown */}
                   <div className="flex items-center gap-1 border border-white/15 bg-white/5 px-2 py-1 rounded-xl">
-                    <span className="text-[9px] text-slate-400 font-mono uppercase tracking-wider pr-1 border-r border-white/10">Speed</span>
+                    <span className="text-[11px] text-slate-400 font-mono uppercase tracking-wider pr-1 border-r border-white/10">Speed</span>
                     {[1, 1.25, 1.5, 2].map((sp) => (
                       <button
                         key={sp}
@@ -667,7 +667,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
                       }`}
                     >
                       <span>CC</span>
-                      <span className="text-[9px] font-mono">({showCaptions ? 'ON' : 'OFF'})</span>
+                      <span className="text-[11px] font-mono">({showCaptions ? 'ON' : 'OFF'})</span>
                     </button>
                   )}
 
@@ -827,11 +827,11 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
 
                     {/* Tags block top */}
                     <div className="absolute top-3 left-3 flex gap-1.5">
-                      <span className="bg-black/60 text-white text-[9px] font-sans font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-white/10 backdrop-blur-sm">
+                      <span className="bg-black/60 text-white text-[11px] font-sans font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-white/10 backdrop-blur-sm">
                         {trans[asset.category as keyof typeof trans] || asset.category}
                       </span>
                       {asset.isCustom && (
-                        <span className="bg-[#D4AF37]/80 text-slate-950 text-[9px] font-sans font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#D4AF37]/35 backdrop-blur-sm">
+                        <span className="bg-[#D4AF37]/80 text-slate-950 text-[11px] font-sans font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#D4AF37]/35 backdrop-blur-sm">
                           {trans.customTag}
                         </span>
                       )}

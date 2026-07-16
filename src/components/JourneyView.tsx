@@ -178,7 +178,7 @@ export default function JourneyView({
               >
                 <div>
                   <div className="flex justify-between items-start">
-                    <span className="text-[9px] font-mono font-bold text-slate-400 uppercase">
+                    <span className="text-[11px] font-mono font-bold text-slate-400 uppercase">
                       {j.estimatedDuration}
                     </span>
                     {isSelected && (
@@ -194,7 +194,7 @@ export default function JourneyView({
                 </div>
 
                 <div className="w-full mt-3">
-                  <div className="flex justify-between items-center text-[9px] text-slate-400 mb-1 font-mono">
+                  <div className="flex justify-between items-center text-[11px] text-slate-400 mb-1 font-mono">
                     <span>{jPct}% concluído</span>
                     <span>{jCompletedCount}/{jDays.length} dias</span>
                   </div>
@@ -309,7 +309,7 @@ export default function JourneyView({
                 >
                   <div className="flex justify-between items-start gap-4">
                     <div>
-                      <span className="text-[9px] font-mono font-black uppercase text-rosegold tracking-wider">
+                      <span className="text-[11px] font-mono font-black uppercase text-rosegold tracking-wider">
                         Capítulo {index + 1} • {chapter.theme[lang] || chapter.theme.pt}
                       </span>
                       <h4 className="text-base font-serif font-black uppercase text-slate-800 dark:text-white mt-0.5">
@@ -327,7 +327,7 @@ export default function JourneyView({
                         speedMultiplier={getButterflyConfig(index + 1).speedMultiplier} 
                         className="h-10 w-10 text-rosegold" 
                       />
-                      <span className="text-[8px] font-mono font-bold uppercase text-slate-400">
+                      <span className="text-[10px] font-mono font-bold uppercase text-slate-400">
                         {completedCount}/{chDays.length} dias
                       </span>
                     </div>
@@ -367,7 +367,7 @@ export default function JourneyView({
                           </div>
 
                           <div className="flex-1 min-w-0">
-                            <span className="text-[8px] uppercase tracking-wider font-bold block text-rosegold mb-0.5">
+                            <span className="text-[10px] uppercase tracking-wider font-bold block text-rosegold mb-0.5">
                               {day.theme?.[lang] || day.theme?.pt || 'LIÇÃO'}
                             </span>
                             <h5 className="text-xs font-bold text-slate-800 dark:text-white truncate">

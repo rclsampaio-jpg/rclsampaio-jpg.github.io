@@ -481,7 +481,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                         <span className="text-[10px] font-mono font-extrabold uppercase tracking-wider text-rosegold">
                           {trans.day} {m.day}
                         </span>
-                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-rose-50 dark:bg-rosegold/10 text-slate-500 font-bold border border-rose-100/10 uppercase">
+                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-rose-50 dark:bg-rosegold/10 text-slate-500 font-bold border border-rose-100/10 uppercase">
                           {m.dateStr}
                         </span>
                       </div>
@@ -607,7 +607,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                         
                         {/* Selected Mood Badge */}
                         {progress.journalMoods?.[selectedDayMood] && (
-                          <span className={`px-2 py-0.5 rounded-full text-[9px] uppercase font-sans font-bold border ${getMoodEmojiAndLabel(progress.journalMoods[selectedDayMood]).color}`}>
+                          <span className={`px-2 py-0.5 rounded-full text-[11px] uppercase font-sans font-bold border ${getMoodEmojiAndLabel(progress.journalMoods[selectedDayMood]).color}`}>
                             {getMoodEmojiAndLabel(progress.journalMoods[selectedDayMood]).emoji} {getMoodEmojiAndLabel(progress.journalMoods[selectedDayMood]).label}
                           </span>
                         )}
@@ -626,7 +626,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
 
                         {/* Reflection Quote */}
                         <div className="space-y-1 bg-[#FAF8F5]/80 dark:bg-[#1C1513] p-4 rounded-xl border border-rose-100/10">
-                          <span className="text-[9px] font-sans text-slate-400 uppercase font-extrabold tracking-widest block">
+                          <span className="text-[11px] font-sans text-slate-400 uppercase font-extrabold tracking-widest block">
                             {trans.polaroidReflection}
                           </span>
                           <p className="text-xs font-serif text-slate-700 dark:text-slate-300 italic leading-relaxed">
@@ -636,7 +636,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
 
                         {/* Video link */}
                         <div className="space-y-1">
-                          <span className="text-[9px] font-sans text-slate-400 uppercase font-extrabold tracking-widest block">
+                          <span className="text-[11px] font-sans text-slate-400 uppercase font-extrabold tracking-widest block">
                             {trans.polaroidVideo}
                           </span>
                           {progress.videoLinks[selectedDayMood] ? (
@@ -710,7 +710,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                         
                         {/* Chapter ID and Title */}
                         <div className="border-b border-rose-100/10 pb-2">
-                          <span className="text-[9px] font-mono font-extrabold uppercase tracking-widest text-[#D4AF37]">
+                          <span className="text-[11px] font-mono font-extrabold uppercase tracking-widest text-[#D4AF37]">
                             Chapter {chapterId} • Completed
                           </span>
                           <h3 className="text-base font-serif font-black uppercase text-slate-800 dark:text-white">
@@ -722,7 +722,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                           {/* Surprises list */}
                           {r.selectedSurprises && r.selectedSurprises.length > 0 && (
                             <div className="space-y-1">
-                              <span className="font-bold text-slate-400 uppercase text-[9px] block">
+                              <span className="font-bold text-slate-400 uppercase text-[11px] block">
                                 {trans.chapterCardSurprised}
                               </span>
                               <div className="flex flex-wrap gap-1.5 pt-0.5">
@@ -737,7 +737,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
 
                           {/* Feeling */}
                           <div className="space-y-0.5">
-                            <span className="font-bold text-slate-400 uppercase text-[9px] block">
+                            <span className="font-bold text-slate-400 uppercase text-[11px] block">
                               {trans.chapterCardFeeling}
                             </span>
                             <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
@@ -748,7 +748,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                           {/* Private Note Card */}
                           {r.futureSelfNote && (
                             <div className="space-y-1 bg-white dark:bg-[#1C1513] border border-rose-100/10 rounded-xl p-3 font-serif italic text-slate-600 dark:text-slate-300 leading-relaxed">
-                              <span className="font-sans not-italic font-bold text-slate-400 uppercase text-[9px] block mb-1">
+                              <span className="font-sans not-italic font-bold text-slate-400 uppercase text-[11px] block mb-1">
                                 {trans.chapterCardNote}
                               </span>
                               "{r.futureSelfNote}"

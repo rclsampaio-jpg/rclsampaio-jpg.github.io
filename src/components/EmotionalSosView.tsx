@@ -565,7 +565,7 @@ export default function EmotionalSosView({
                         <span className="text-2xl sm:text-3xl font-serif font-bold text-white mb-0.5">
                           {secondsLeft}s
                         </span>
-                        <span className="text-[9px] font-mono tracking-widest text-[#D4AF37] uppercase font-bold">
+                        <span className="text-[11px] font-mono tracking-widest text-[#D4AF37] uppercase font-bold">
                           {localText[breathState]}
                         </span>
                       </>
@@ -616,7 +616,7 @@ export default function EmotionalSosView({
                     {localText.breathingProceed}
                   </button>
                   {cyclesCompleted < 1 && (
-                    <p className="text-[9px] text-stone-500 mt-2 italic">
+                    <p className="text-[11px] text-stone-500 mt-2 italic">
                       {localText.breathingProceedHint}
                     </p>
                   )}
@@ -894,7 +894,7 @@ export default function EmotionalSosView({
       </div>
 
       {/* Warm bottom bar credit */}
-      <div className="max-w-md w-full mx-auto text-center text-[9px] font-mono text-stone-600 uppercase tracking-widest py-2 border-t border-white/5 relative z-10">
+      <div className="max-w-md w-full mx-auto text-center text-[11px] font-mono text-stone-600 uppercase tracking-widest py-2 border-t border-white/5 relative z-10">
         {adaptMessage('você é [dona/dono/done] do seu ritmo • renaser os', prefGrammar, 'pt')}
       </div>
 

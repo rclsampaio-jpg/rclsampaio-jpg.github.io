@@ -1016,7 +1016,7 @@ export default function DailyMissionView({
               className="h-7 w-auto"
               style={{ transformOrigin: 'center 70%' }}
             />
-            <span className="text-[9px] text-[#D4AF37] opacity-60 block font-serif tracking-widest mt-1">✨</span>
+            <span className="text-[11px] text-[#D4AF37] opacity-60 block font-serif tracking-widest mt-1">✨</span>
           </motion.div>
         </div>
       )}
@@ -1075,14 +1075,14 @@ export default function DailyMissionView({
       >
         <div className="space-y-3">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="px-3 py-1 bg-gradient-to-r from-rosegold to-rosegold-light text-[9px] uppercase font-sans tracking-[0.2em] rounded-full font-bold text-white shadow-rosegold">
+            <span className="px-3 py-1 bg-gradient-to-r from-rosegold to-rosegold-light text-[11px] uppercase font-sans tracking-[0.2em] rounded-full font-bold text-white shadow-rosegold">
               {textDict.dailyMission} • {currentDay.dayNumber}/30
             </span>
-            <span className="px-2.5 py-1 bg-rosegold/10 text-[9px] uppercase font-mono tracking-[0.25em] rounded-full border border-rosegold/15 font-semibold text-rosegold">
+            <span className="px-2.5 py-1 bg-rosegold/10 text-[11px] uppercase font-mono tracking-[0.25em] rounded-full border border-rosegold/15 font-semibold text-rosegold">
               {localizedPhase.title}
             </span>
             {isCompleted && (
-              <span className="px-3 py-1 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-[9px] uppercase font-sans tracking-[0.2em] rounded-full border border-emerald-500/20 font-bold">
+              <span className="px-3 py-1 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-[11px] uppercase font-sans tracking-[0.2em] rounded-full border border-emerald-500/20 font-bold">
                 {textDict.completedBadge}
               </span>
             )}
@@ -1138,7 +1138,7 @@ export default function DailyMissionView({
               <div className="absolute top-0 left-1/2 -translate-x-1/2 h-44 w-44 bg-emerald-500/5 blur-3xl rounded-full" />
               
               <div className="mx-auto max-w-md space-y-6 relative z-10">
-                <span className="text-[9px] uppercase font-sans tracking-[0.25em] text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1.5 rounded-full">
+                <span className="text-[11px] uppercase font-sans tracking-[0.25em] text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1.5 rounded-full">
                   {textDict.sanctuaryTitle}
                 </span>
 
@@ -1194,7 +1194,7 @@ export default function DailyMissionView({
                 className="rounded-[2rem] bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold space-y-5"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[9px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
+                  <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
                     {textDict.hookTitle}
                   </span>
 
@@ -1241,7 +1241,7 @@ export default function DailyMissionView({
 
                 {/* Top row: label + favorite */}
                 <div className="flex items-start justify-between relative z-10">
-                  <span className="text-[9px] font-sans tracking-[0.2em] text-rosegold uppercase font-extrabold block">
+                  <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-extrabold block">
                     {textDict.step01} • {textDict.audioTitle}
                   </span>
                   <div className="flex items-center gap-1.5 shrink-0">
@@ -1350,7 +1350,7 @@ export default function DailyMissionView({
                 className="rounded-[2rem] bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold space-y-5"
               >
                 <div className="flex items-center justify-between pb-2 border-b border-rose-100/15 dark:border-rosegold/5">
-                  <span className="text-[9px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
+                  <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
                     {textDict.step02} • {textDict.hookShowcaseTitle}
                   </span>
                 </div>
@@ -1478,7 +1478,7 @@ export default function DailyMissionView({
                 className="rounded-[2rem] bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold space-y-4"
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-[9px] font-sans tracking-[0.2em] text-rosegold bg-rose-50/50 dark:bg-rosegold/10 px-3 py-1 rounded-full uppercase font-extrabold">
+                  <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold bg-rose-50/50 dark:bg-rosegold/10 px-3 py-1 rounded-full uppercase font-extrabold">
                     {textDict.step03} • {textDict.exposureTitle}
                   </span>
                 </div>
@@ -1572,7 +1572,7 @@ export default function DailyMissionView({
                   {/* Validation checkmark widgets */}
                   <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 p-4 rounded-xl shadow-xs">
                     <span className="text-slate-600 dark:text-slate-300 font-semibold font-sans">{textDict.listenItem}</span>
-                    <span className={`px-3 py-1 rounded-full text-[9px] font-sans font-bold uppercase tracking-wider ${
+                    <span className={`px-3 py-1 rounded-full text-[11px] font-sans font-bold uppercase tracking-wider ${
                       audioCompleted
                         ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
                         : 'bg-rose-50 dark:bg-rosegold/15 text-rosegold'
@@ -1583,7 +1583,7 @@ export default function DailyMissionView({
 
                   <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 p-4 rounded-xl shadow-xs">
                     <span className="text-slate-600 dark:text-slate-300 font-semibold font-sans">{textDict.promisesItem}</span>
-                    <span className={`px-3 py-1 rounded-full text-[9px] font-sans font-bold uppercase tracking-wider ${
+                    <span className={`px-3 py-1 rounded-full text-[11px] font-sans font-bold uppercase tracking-wider ${
                       allPromisesKept
                         ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
                         : 'bg-amber-500/15 text-accentgold'
@@ -1626,7 +1626,7 @@ export default function DailyMissionView({
                 
                 {isSeventhDayReflection ? (
                   <div className="text-xs text-slate-500 dark:text-slate-400 space-y-2 p-4 rounded-2xl bg-amber-500/5 border border-accentgold/20 font-sans italic">
-                    <p className="font-bold text-accentgold not-italic uppercase tracking-widest text-[9px]">{localizedPhase.title} {textDict.reflectionMoment}</p>
+                    <p className="font-bold text-accentgold not-italic uppercase tracking-widest text-[11px]">{localizedPhase.title} {textDict.reflectionMoment}</p>
                     <p>{textDict.reflection7Q1}</p>
                     <p>{textDict.reflection7Q2}</p>
                     <p>{textDict.reflection7Q3}</p>
@@ -1686,7 +1686,7 @@ export default function DailyMissionView({
                           } hover:scale-105`}
                         >
                           <span className="text-2xl">{info.emoji}</span>
-                          <span className="text-[9px] font-sans font-extrabold tracking-tight uppercase">{info.label}</span>
+                          <span className="text-[11px] font-sans font-extrabold tracking-tight uppercase">{info.label}</span>
                         </button>
                       );
                     })}
@@ -1706,7 +1706,7 @@ export default function DailyMissionView({
                 
                 {/* 3. The Identity Loop Statement */}
                 <div className="border-t border-b border-rose-100/10 py-4 text-left space-y-1.5">
-                  <span className="text-[9px] font-extrabold uppercase text-slate-400 tracking-[0.15em] block">
+                  <span className="text-[11px] font-extrabold uppercase text-slate-400 tracking-[0.15em] block">
                     {textDict.identityHeader}
                   </span>
                   <p className="text-sm text-slate-700 dark:text-slate-200 font-medium italic font-display leading-relaxed">
@@ -1716,14 +1716,14 @@ export default function DailyMissionView({
 
                 {/* Progress Feedback Dashboard */}
                 <div className="space-y-4">
-                  <span className="text-[9px] font-sans font-extrabold uppercase tracking-[0.2em] text-slate-400 block">
+                  <span className="text-[11px] font-sans font-extrabold uppercase tracking-[0.2em] text-slate-400 block">
                     {lang === 'pt' ? 'Métricas de Evolução' : lang === 'es' ? 'Métricas de Evolución' : 'Evolution Metrics'}
                   </span>
                   
                   <div className="grid grid-cols-2 gap-3.5 text-[11px] leading-tight">
                     {/* Current Chapter */}
                     <div className="bg-white dark:bg-[#1E1715] p-3 rounded-2xl border border-rose-100/10 shadow-xs">
-                      <span className="block text-[8px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
+                      <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Capítulo' : lang === 'es' ? 'Capítulo' : 'Chapter'}
                       </span>
                       <span className="font-bold text-slate-800 dark:text-slate-200 font-sans">
@@ -1738,7 +1738,7 @@ export default function DailyMissionView({
 
                     {/* Current Day */}
                     <div className="bg-white dark:bg-[#1E1715] p-3 rounded-2xl border border-rose-100/10 shadow-xs">
-                      <span className="block text-[8px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
+                      <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Dia / Racha' : lang === 'es' ? 'Día / Racha' : 'Day / Streak'}
                       </span>
                       <span className="font-bold text-slate-800 dark:text-slate-200 font-sans">
@@ -1748,7 +1748,7 @@ export default function DailyMissionView({
 
                     {/* Journey Percentage */}
                     <div className="bg-white dark:bg-[#1E1715] p-3 rounded-2xl border border-rose-100/10 shadow-xs">
-                      <span className="block text-[8px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
+                      <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Conclusão' : lang === 'es' ? 'Completado' : 'Completion'}
                       </span>
                       <span className="font-bold text-slate-800 dark:text-slate-200 font-sans">
@@ -1758,7 +1758,7 @@ export default function DailyMissionView({
 
                     {/* Chapter Percentage */}
                     <div className="bg-white dark:bg-[#1E1715] p-3 rounded-2xl border border-rose-100/10 shadow-xs">
-                      <span className="block text-[8px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
+                      <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Fase Atual' : lang === 'es' ? 'Fase Actual' : 'Current Phase'}
                       </span>
                       <span className="font-bold text-slate-800 dark:text-slate-200 font-sans">
@@ -1775,7 +1775,7 @@ export default function DailyMissionView({
 
                   {/* Checklist of proof points */}
                   <div className="space-y-2 pt-3 border-t border-rose-100/5">
-                    <span className="block text-[9px] text-slate-400 uppercase font-sans font-extrabold tracking-wider">
+                    <span className="block text-[11px] text-slate-400 uppercase font-sans font-extrabold tracking-wider">
                       {lang === 'pt' ? 'Evidências de Identidade' : lang === 'es' ? 'Evidencias de Identidad' : 'Identity Evidence'}
                     </span>
                     

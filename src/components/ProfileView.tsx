@@ -196,7 +196,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
               <Camera className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
-            <div className="absolute -bottom-1 -right-1 bg-[#D4AF37] text-slate-950 p-1 rounded-full text-[9px] font-bold">
+            <div className="absolute -bottom-1 -right-1 bg-[#D4AF37] text-slate-950 p-1 rounded-full text-[11px] font-bold">
               VIP
             </div>
           </button>
