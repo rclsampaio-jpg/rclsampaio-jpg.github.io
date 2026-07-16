@@ -33,7 +33,30 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
-      onUpdateProgress({ ...progress, avatarUrl: reader.result as string });
+      const rawDataUrl = reader.result as string;
+      // Photos straight from a phone camera can be several MB as a data URL,
+      // which silently blows past the localStorage quota (~5-10MB per
+      // origin, shared with the rest of the app's saved data) and fails to
+      // persist on reload even though it looks fine for the rest of the
+      // session. Downscale to a small square avatar before storing.
+      const img = new Image();
+      img.onload = () => {
+        const size = 256;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          onUpdateProgress({ ...progress, avatarUrl: rawDataUrl });
+          return;
+        }
+        const scale = Math.max(size / img.width, size / img.height);
+        const drawWidth = img.width * scale;
+        const drawHeight = img.height * scale;
+        ctx.drawImage(img, (size - drawWidth) / 2, (size - drawHeight) / 2, drawWidth, drawHeight);
+        onUpdateProgress({ ...progress, avatarUrl: canvas.toDataURL('image/jpeg', 0.85) });
+      };
+      img.src = rawDataUrl;
     };
     reader.readAsDataURL(file);
   };

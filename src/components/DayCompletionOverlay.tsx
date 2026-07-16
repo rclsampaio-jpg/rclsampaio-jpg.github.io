@@ -17,17 +17,17 @@ export default function DayCompletionOverlay({ dayNumber, lang, onClose }: DayCo
   const trans = {
     pt: {
       heading: 'PARABÉNS!!',
-      message: `Você concluiu o Dia ${dayNumber}. Que super passo! Estou orgulhosa, e você também deveria estar!`,
+      message: `Woohoo! 🎉 Você já cumpriu sua promessa pra si mesma hoje (Dia ${dayNumber}). Pra acompanhar seu progresso diário, visite a aba Meu Ser.`,
       cta: 'Continuar'
     },
     en: {
       heading: 'CONGRATULATIONS!!',
-      message: `You completed Day ${dayNumber}. What a huge step! I'm proud of you, and you should be too!`,
+      message: `Woohoo! 🎉 You already kept your promise to yourself today (Day ${dayNumber}). To check your daily progress, visit the My Portal tab.`,
       cta: 'Continue'
     },
     es: {
       heading: '¡¡FELICIDADES!!',
-      message: `Completaste el Día ${dayNumber}. ¡Qué gran paso! Estoy orgullosa de ti, y tú también deberías estarlo!`,
+      message: `¡Woohoo! 🎉 Ya cumpliste tu promesa contigo misma hoy (Día ${dayNumber}). Para ver tu progreso diario, visita la pestaña Mi Portal.`,
       cta: 'Continuar'
     }
   }[lang];

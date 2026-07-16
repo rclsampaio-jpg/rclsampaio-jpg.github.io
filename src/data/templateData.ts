@@ -687,5 +687,9 @@ export function loadUserProgressFromStorage(): UserProgress {
 }
 
 export function saveUserProgressToStorage(progress: UserProgress): void {
-  localStorage.setItem('renaser_user_progress', JSON.stringify(progress));
+  try {
+    localStorage.setItem('renaser_user_progress', JSON.stringify(progress));
+  } catch (e) {
+    console.error('Error saving user progress (storage quota likely exceeded)', e);
+  }
 }

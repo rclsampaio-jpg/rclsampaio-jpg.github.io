@@ -59,7 +59,14 @@ export default function App() {
   // deterrent against casual link sharing, not real per-user access control
   // (anyone with the passcode can still share passcode + link together).
   // Real enforcement would require server-side auth tied to a purchase record.
-  const [isAccessUnlocked, setIsAccessUnlocked] = useState(() => localStorage.getItem('renaser_access_unlocked') === 'true');
+  // The unlock expires after ACCESS_REASK_INTERVAL_MS so the passcode is
+  // re-asked periodically instead of staying unlocked forever on a device.
+  const ACCESS_REASK_INTERVAL_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
+  const isAccessStillValid = () => {
+    const unlockedAt = Number(localStorage.getItem('renaser_access_unlocked_at') || '0');
+    return unlockedAt > 0 && (Date.now() - unlockedAt) < ACCESS_REASK_INTERVAL_MS;
+  };
+  const [isAccessUnlocked, setIsAccessUnlocked] = useState(() => isAccessStillValid());
   const [accessPassInput, setAccessPassInput] = useState('');
   const [accessPassError, setAccessPassError] = useState(false);
   const ACCESS_PASSPHRASE = 'renasci2026';
@@ -67,7 +74,7 @@ export default function App() {
   const handleAccessUnlock = () => {
     if (accessPassInput.trim().toLowerCase() === ACCESS_PASSPHRASE.toLowerCase()) {
       setIsAccessUnlocked(true);
-      localStorage.setItem('renaser_access_unlocked', 'true');
+      localStorage.setItem('renaser_access_unlocked_at', String(Date.now()));
       setAccessPassError(false);
     } else {
       setAccessPassError(true);

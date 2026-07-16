@@ -214,20 +214,14 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
     }
   };
 
-  // Progress Bar click
-  const handleProgressBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!duration) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const percent = clickX / rect.width;
-    const targetTime = percent * duration;
-
-    if (activeAsset?.category === 'audios' || activeAsset?.category === 'meditations') {
-      if (audioRef.current) audioRef.current.currentTime = targetTime;
-    } else {
-      if (videoRef.current) videoRef.current.currentTime = targetTime;
+  // Skip back 10 seconds
+  const handleSkipBack10 = () => {
+    const target = activeAsset?.category === 'audios' || activeAsset?.category === 'meditations'
+      ? audioRef.current
+      : videoRef.current;
+    if (target) {
+      target.currentTime = Math.max(0, target.currentTime - 10);
     }
-    setCurrentTime(targetTime);
   };
 
   // Format times (e.g. 05:22)
@@ -576,9 +570,8 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
 
                 {/* Progress bar controller */}
                 <div className="space-y-1.5 pt-2">
-                  <div 
-                    onClick={handleProgressBarClick}
-                    className="h-2 w-full bg-white/10 rounded-full overflow-hidden cursor-pointer relative"
+                  <div
+                    className="h-2 w-full bg-white/10 rounded-full overflow-hidden relative"
                   >
                     <div 
                       className="h-full bg-rosegold" 
@@ -623,6 +616,16 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
                   >
                     {isPlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5 fill-current" />}
                     <span>{isPlaying ? 'Pause' : 'Play'}</span>
+                  </button>
+
+                  {/* Skip back 10 seconds */}
+                  <button
+                    onClick={handleSkipBack10}
+                    title="-10s"
+                    className="px-3 py-2.5 bg-white/5 hover:bg-white/10 border border-white/15 text-slate-300 hover:text-white text-xs rounded-xl font-bold uppercase tracking-wider flex items-center gap-1.5 transition cursor-pointer"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" />
+                    <span>10s</span>
                   </button>
 
                   {/* Playback speed controller dropdown */}
