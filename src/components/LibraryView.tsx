@@ -10,8 +10,8 @@ import {
   Sparkles, CheckCircle2, RotateCcw, Maximize, Clock, ListFilter,
   Check, Pause, RefreshCw, Eye, Settings, HelpCircle, AlertCircle
 } from 'lucide-react';
-import { Language, LibraryAsset, UserProgress } from '../types';
-import { loadLibraryAssets, saveLibraryAssets } from '../data/ecosystemData';
+import { Language, LibraryAsset, SupportConfig, UserProgress } from '../types';
+import { loadLibraryAssets, saveLibraryAssets, loadSupportConfig } from '../data/ecosystemData';
 import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 
 interface LibraryViewProps {
@@ -23,6 +23,15 @@ interface LibraryViewProps {
 export default function LibraryView({ lang, progress, onUpdateProgress }: LibraryViewProps) {
   const prefGrammar = resolveGrammarPreference(progress.grammarPreference);
   const [assets, setAssets] = useState<LibraryAsset[]>(() => loadLibraryAssets());
+  const [support, setSupport] = useState<SupportConfig>(() => loadSupportConfig());
+
+  // Derives a YouTube thumbnail straight from the share URL, so the weekly
+  // video cover updates automatically whenever the link changes.
+  const getYouTubeThumbnail = (url: string): string | null => {
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{11})/);
+    return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
+  };
+  const weeklyVideoThumbnail = getYouTubeThumbnail(support.weeklyVideoUrl);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   
@@ -59,6 +68,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
   useEffect(() => {
     const handleStorageChange = () => {
       setAssets(loadLibraryAssets());
+      setSupport(loadSupportConfig());
     };
     window.addEventListener('storage', handleStorageChange);
     const interval = setInterval(handleStorageChange, 1200);
@@ -280,6 +290,9 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
     pt: {
       title: 'Biblioteca de Expansão RenaSer',
       subtitle: 'Seu acervo vitalício de evolução. Masterclasses, meditações de calibração, desafios rápidos e materiais didáticos adicionais.',
+      weeklyVideoTitle: 'Vídeo da Semana',
+      weeklyVideoDesc: 'Um vídeo novo toda semana com dicas práticas para sua jornada de visibilidade.',
+      weeklyVideoWatch: 'Assistir no YouTube',
       searchPlaceholder: 'Buscar vídeos, meditações, PDFs...',
       all: 'Todos',
       videos: 'Vídeos',
@@ -311,6 +324,9 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
     en: {
       title: 'RenaSer Expansion Library',
       subtitle: 'Your lifetime repository of growth. Masterclasses, calibration meditations, fast challenges, and worksheets.',
+      weeklyVideoTitle: 'Video of the Week',
+      weeklyVideoDesc: 'A new video every week with practical tips for your visibility journey.',
+      weeklyVideoWatch: 'Watch on YouTube',
       searchPlaceholder: 'Search videos, audios, PDFs...',
       all: 'All',
       videos: 'Videos',
@@ -342,6 +358,9 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
     es: {
       title: 'Biblioteca de Expansión RenaSer',
       subtitle: 'Tu archivo vitalicio de evolución. Clases maestras, meditaciones, desafíos prácticos y folletos didácticos.',
+      weeklyVideoTitle: 'Video de la Semana',
+      weeklyVideoDesc: 'Un video nuevo cada semana con consejos prácticos para tu camino de visibilidad.',
+      weeklyVideoWatch: 'Ver en YouTube',
       searchPlaceholder: 'Buscar videos, audios, PDFs...',
       all: 'Todos',
       videos: 'Videos',
@@ -387,6 +406,41 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
         <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed mx-auto md:mx-0">
           {trans.subtitle}
         </p>
+      </div>
+
+      {/* Video of the Week */}
+      <div className="max-w-xl">
+        <h3 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">
+          {trans.weeklyVideoTitle}
+        </h3>
+        <a
+          href={support.weeklyVideoUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="block rounded-2xl overflow-hidden border border-rose-100/30 dark:border-rosegold/5 group"
+        >
+          <div className="relative aspect-video bg-warmbrown">
+            {weeklyVideoThumbnail && (
+              <img
+                src={weeklyVideoThumbnail}
+                alt={trans.weeklyVideoTitle}
+                className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                referrerPolicy="no-referrer"
+              />
+            )}
+            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition flex items-center justify-center">
+              <div className="h-14 w-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                <Play className="h-6 w-6 text-rosegold ml-0.5" fill="currentColor" />
+              </div>
+            </div>
+          </div>
+          <div className="p-4 bg-[#FAF8F5]/40 dark:bg-warmbrown/10 space-y-1.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{trans.weeklyVideoDesc}</p>
+            <span className="text-xs font-sans font-bold text-rosegold flex items-center gap-1.5">
+              {trans.weeklyVideoWatch}
+            </span>
+          </div>
+        </a>
       </div>
 
       {/* Inline Active Player Panel */}

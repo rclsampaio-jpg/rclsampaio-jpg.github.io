@@ -503,18 +503,55 @@ const DAILY_MESSAGES: Record<Language, string[]> = {
   ]
 };
 
-// Assigns each of the 30 messages above (1-indexed) to a journey day, in a
-// shuffled (non-sequential) order — with the "getting started" messages
-// (1, 3, 4, 7, 8, 13, 17, 21, 24, 28) front-loaded into the first 10 days.
+// Provocative "remember who you are" messages, mixed into the pool below —
+// more Purple-Cow / contrarian in tone than the getting-started set above.
+const PROVOCATIVE_MESSAGES: Record<Language, string[]> = {
+  pt: [
+    'O Efeito Vaca Roxa: o mundo não lembra do que é comum. Ele lembra do que fez as pessoas pararem, olharem e pensarem.',
+    'Às vezes, a maior oportunidade está escondida dentro da ideia que todo mundo tem medo de tentar.',
+    'Os maiores avanços raramente vêm de seguir a manada. Vêm da coragem de construir algo que a manada ainda não entende.',
+    'Ninguém lembra do vídeo igual a todos os outros. Lembre-se de quem você é e grave o que só você diria.',
+    'O comum passa despercebido. O verdadeiro para o feed.',
+    'Se todo mundo concorda com o que você postou, você provavelmente não disse nada de novo.',
+    'A ideia que te dá mais medo de postar é, quase sempre, a que mais precisa ser vista.',
+    'Parar de ser esquecível começa no momento em que você para de se esconder atrás do que todo mundo já fez.'
+  ],
+  en: [
+    "The Purple Cow Effect: the world doesn't remember what's ordinary. It remembers what made people stop, look, and think.",
+    'Sometimes, the greatest opportunity is hiding inside the idea everyone else is afraid to try.',
+    "The biggest breakthroughs rarely come from following the crowd. They come from the courage to build something the crowd doesn't understand yet.",
+    "No one remembers the video that looked like everyone else's. Remember who you are and record what only you would say.",
+    'The ordinary goes unnoticed. The real one makes the feed.',
+    "If everyone agrees with what you posted, you probably didn't say anything new.",
+    'The idea that scares you most to post is almost always the one that most needs to be seen.',
+    'You stop being forgettable the moment you stop hiding behind what everyone else already did.'
+  ],
+  es: [
+    'El Efecto Vaca Púrpura: el mundo no recuerda lo ordinario. Recuerda lo que hizo que la gente se detuviera, mirara y pensara.',
+    'A veces, la mayor oportunidad está escondida dentro de la idea que todos los demás temen intentar.',
+    'Los mayores avances rara vez vienen de seguir a la multitud. Vienen del coraje de construir algo que la multitud todavía no entiende.',
+    'Nadie recuerda el video igual a todos los demás. Recuerda quién eres y graba lo que solo tú dirías.',
+    'Lo ordinario pasa desapercibido. Lo real llega al feed.',
+    'Si todos están de acuerdo con lo que publicaste, probablemente no dijiste nada nuevo.',
+    'La idea que más miedo te da publicar es, casi siempre, la que más necesita ser vista.',
+    'Dejas de ser olvidable en el momento en que dejas de esconderte detrás de lo que todos los demás ya hicieron.'
+  ]
+};
+
+// Assigns each message (1-indexed into DAILY_MESSAGES + PROVOCATIVE_MESSAGES
+// concatenated, so 1-30 = getting-started/general pool, 31-38 = provocative
+// pool) to a journey day, in a shuffled (non-sequential) order — with the
+// "getting started" messages (1, 3, 4, 7, 8, 13, 17, 21, 24, 28) front-loaded
+// into the first 10 days, and the provocative set woven into days 11-30.
 const DAILY_MESSAGE_ORDER: number[] = [
   1, 13, 4, 21, 8, 17, 3, 24, 28, 7,
-  9, 22, 2, 27, 11, 19, 5, 29, 14, 6,
-  25, 12, 16, 30, 10, 20, 18, 15, 26, 23
+  9, 31, 2, 27, 32, 19, 5, 33, 14, 6,
+  34, 12, 16, 35, 10, 36, 18, 37, 26, 38
 ];
 
 function getDailyMessage(dayNumber: number, lang: Language): string {
   const messageNumber = DAILY_MESSAGE_ORDER[(dayNumber - 1) % DAILY_MESSAGE_ORDER.length];
-  const messages = DAILY_MESSAGES[lang] || DAILY_MESSAGES.pt;
+  const messages = [...(DAILY_MESSAGES[lang] || DAILY_MESSAGES.pt), ...(PROVOCATIVE_MESSAGES[lang] || PROVOCATIVE_MESSAGES.pt)];
   return messages[messageNumber - 1];
 }
 
@@ -581,7 +618,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS) — acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '5';
+const DAYS_CONTENT_VERSION = '6';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');

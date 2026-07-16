@@ -184,6 +184,23 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
     mediaUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
     durationOrSize: '7 Days',
     coverImage: 'https://images.unsplash.com/photo-1552581230-c01591d3c99a?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'lib_5',
+    title: {
+      pt: 'Descalcifique a sua Glândula Pineal',
+      en: 'Decalcify Your Pineal Gland',
+      es: 'Descalcifica tu Glándula Pineal'
+    },
+    description: {
+      pt: 'Um áudio guiado para relaxar profundamente e reconectar com sua intuição antes de gravar ou dormir.',
+      en: 'A guided audio to relax deeply and reconnect with your intuition before recording or sleeping.',
+      es: 'Un audio guiado para relajarte profundamente y reconectar con tu intuición antes de grabar o dormir.'
+    },
+    category: 'meditations',
+    mediaUrl: '/assets/audio/descalcificacao.mp3',
+    durationOrSize: 'Audio',
+    coverImage: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80'
   }
 ];
 
@@ -191,7 +208,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs — acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '6';
+const ECOSYSTEM_CONFIG_VERSION = '7';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');
@@ -255,12 +272,15 @@ export function saveMentoringConfig(config: MentoringConfig): void {
 
 export function loadLibraryAssets(): LibraryAsset[] {
   const stored = localStorage.getItem('renaser_library_assets');
-  if (stored) {
+  const storedVersion = localStorage.getItem('renaser_library_assets_version');
+  if (stored && storedVersion === ECOSYSTEM_CONFIG_VERSION) {
     try { return JSON.parse(stored); } catch (e) { console.error(e); }
   }
+  saveLibraryAssets(INITIAL_LIBRARY_ASSETS);
   return INITIAL_LIBRARY_ASSETS;
 }
 
 export function saveLibraryAssets(assets: LibraryAsset[]): void {
   localStorage.setItem('renaser_library_assets', JSON.stringify(assets));
+  localStorage.setItem('renaser_library_assets_version', ECOSYSTEM_CONFIG_VERSION);
 }

@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Users, HelpCircle, Mail, Phone, ExternalLink, Calendar, Sparkles,
-  ArrowUpRight, CheckCircle2, MessageSquare, Play
+  ArrowUpRight, CheckCircle2, MessageSquare
 } from 'lucide-react';
 import { Language, CommunityConfig, FreeCommunityConfig, SupportConfig, MentoringConfig } from '../types';
 import { loadCommunityConfig, loadFreeCommunityConfig, loadSupportConfig, loadMentoringConfig } from '../data/ecosystemData';
@@ -72,15 +72,6 @@ export default function CommunityView({ lang }: CommunityViewProps) {
     }
   };
 
-  // Derives a YouTube thumbnail straight from the share URL, so the weekly
-  // video cover updates automatically whenever the link changes — no manual
-  // cover upload needed.
-  const getYouTubeThumbnail = (url: string): string | null => {
-    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{11})/);
-    return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
-  };
-  const weeklyVideoThumbnail = getYouTubeThumbnail(support.weeklyVideoUrl);
-
   // Platform icon chooser
   const renderPlatformBadge = (platform: string) => {
     const badgeColors: Record<string, string> = {
@@ -118,9 +109,6 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       supportTitle: 'Dicas e Direcionamentos',
       supportDesc: 'Se você estiver com alguma dúvida técnica, problema de acesso ou precisar de orientação extra, nosso time está pronto para te apoiar.',
       upliftMessageHeader: 'VEM CELEBRAR',
-      weeklyVideoTitle: 'Vídeo da Semana',
-      weeklyVideoDesc: 'Um vídeo novo toda semana com dicas práticas para sua jornada de visibilidade.',
-      weeklyVideoWatch: 'Assistir no YouTube',
       contactTitle: 'Fale Conosco Diretamente',
       emailLabel: 'Suporte por E-mail',
       whatsappLabel: 'WhatsApp Suporte',
@@ -147,9 +135,6 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       supportTitle: 'Tips & Guidance',
       supportDesc: 'If you have any technical questions, access issues, or require custom guidance, our dedicated support crew is ready to assist you.',
       upliftMessageHeader: 'COME CELEBRATE',
-      weeklyVideoTitle: 'Video of the Week',
-      weeklyVideoDesc: 'A new video every week with practical tips for your visibility journey.',
-      weeklyVideoWatch: 'Watch on YouTube',
       contactTitle: 'Contact Our Team Directly',
       emailLabel: 'Email Support',
       whatsappLabel: 'WhatsApp Hotline',
@@ -176,9 +161,6 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       supportTitle: 'Consejos y Guías',
       supportDesc: 'Si tienes alguna duda técnica, problema de acceso o necesitas orientación adicional, nuestro equipo está listo para apoyarte.',
       upliftMessageHeader: 'VEN A CELEBRAR',
-      weeklyVideoTitle: 'Video de la Semana',
-      weeklyVideoDesc: 'Un video nuevo cada semana con consejos prácticos para tu camino de visibilidad.',
-      weeklyVideoWatch: 'Ver en YouTube',
       contactTitle: 'Contáctanos Directamente',
       emailLabel: 'Soporte por E-mail',
       whatsappLabel: 'WhatsApp de Soporte',
@@ -346,46 +328,9 @@ export default function CommunityView({ lang }: CommunityViewProps) {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2">
-          
-          {/* Support Columns Left: Video of the Week */}
-          <div className="space-y-4">
-            <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-              {trans.weeklyVideoTitle}
-            </h4>
+        <div className="grid grid-cols-1 gap-8 pt-2 max-w-xl">
 
-            <a
-              href={support.weeklyVideoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="block rounded-2xl overflow-hidden border border-rose-100/30 dark:border-rosegold/5 group"
-            >
-              <div className="relative aspect-video bg-warmbrown">
-                {weeklyVideoThumbnail && (
-                  <img
-                    src={weeklyVideoThumbnail}
-                    alt={trans.weeklyVideoTitle}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                    referrerPolicy="no-referrer"
-                  />
-                )}
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition flex items-center justify-center">
-                  <div className="h-14 w-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition">
-                    <Play className="h-6 w-6 text-rosegold ml-0.5" fill="currentColor" />
-                  </div>
-                </div>
-              </div>
-              <div className="p-4 bg-[#FAF8F5]/40 dark:bg-warmbrown/10 space-y-1.5">
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{trans.weeklyVideoDesc}</p>
-                <span className="text-xs font-sans font-bold text-rosegold flex items-center gap-1.5">
-                  {trans.weeklyVideoWatch}
-                  <ExternalLink className="h-3 w-3" />
-                </span>
-              </div>
-            </a>
-          </div>
-
-          {/* Support Columns Right: Direct Quick Actions and Email/WhatsApp links */}
+          {/* Direct Quick Actions and Email/WhatsApp links */}
           <div className="space-y-6">
             <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
               {trans.contactTitle}

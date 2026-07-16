@@ -1056,7 +1056,7 @@ export default function DailyMissionView({
                   </button>
                 </div>
 
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-rose-50/10 via-[#FAF8F5] to-rose-50/5 dark:from-[#2C221E]/10 dark:to-rosegold/5 border border-rose-100/15 dark:border-rosegold/10 shadow-sm">
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-rose-50/10 via-[#FAF8F5] to-rose-50/5 dark:from-[#2C221E]/10 dark:via-[#241C1A] dark:to-rosegold/5 border border-rose-100/15 dark:border-rosegold/10 shadow-sm">
                   <p className="text-slate-800 dark:text-slate-100 font-display text-lg sm:text-xl italic leading-relaxed">
                     "{localizedContent.hook}"
                   </p>

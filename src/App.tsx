@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Compass, Star, Settings, ShieldAlert,
-  Sparkles, Award, Lock, Menu, X, ArrowUpRight, Home, Users, User
+  Sparkles, Award, Lock, Menu, X, ArrowUpRight, Home, Users, User, BookOpen
 } from 'lucide-react';
 
 import { MissionDay, Language, UserProgress } from './types';
@@ -53,6 +53,26 @@ export default function App() {
   const [lang, setLang] = useState<Language>('pt'); // Default language
   const [activeTab, setActiveTab] = useState<TabId>('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Shared-passcode gate for the whole ecosystem, so the link alone isn't
+  // enough to get in. NOTE: same caveat as the admin gate below — this is a
+  // deterrent against casual link sharing, not real per-user access control
+  // (anyone with the passcode can still share passcode + link together).
+  // Real enforcement would require server-side auth tied to a purchase record.
+  const [isAccessUnlocked, setIsAccessUnlocked] = useState(() => localStorage.getItem('renaser_access_unlocked') === 'true');
+  const [accessPassInput, setAccessPassInput] = useState('');
+  const [accessPassError, setAccessPassError] = useState(false);
+  const ACCESS_PASSPHRASE = 'renaser-2026';
+
+  const handleAccessUnlock = () => {
+    if (accessPassInput.trim().toLowerCase() === ACCESS_PASSPHRASE.toLowerCase()) {
+      setIsAccessUnlocked(true);
+      localStorage.setItem('renaser_access_unlocked', 'true');
+      setAccessPassError(false);
+    } else {
+      setAccessPassError(true);
+    }
+  };
 
   // Admin-only gate for Brand Identity & Creator Studio (CMS).
   // NOTE: this is a client-side deterrent, not real security — anyone who reads
@@ -448,6 +468,46 @@ export default function App() {
 
   const isNextLevelUnlocked = progress.completionHistory.includes(30);
 
+  if (!isAccessUnlocked) {
+    return (
+      <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-[#1E1715] flex flex-col justify-center items-center p-6 text-center select-none">
+        <div className="max-w-sm w-full space-y-6 p-8 rounded-3xl border border-rosegold/20 bg-white dark:bg-[#251E1C] shadow-rosegold">
+          <div className="mx-auto h-12 w-12 rounded-2xl bg-rosegold/10 text-rosegold flex items-center justify-center">
+            <Lock className="h-5 w-5" />
+          </div>
+          <div className="space-y-1.5">
+            <h2 className="text-lg font-serif font-medium text-slate-900 dark:text-white">
+              {lang === 'pt' ? 'Acesso Exclusivo RenaSer' : lang === 'es' ? 'Acceso Exclusivo RenaSer' : 'Exclusive RenaSer Access'}
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {lang === 'pt' ? 'Digite o código que você recebeu para entrar.' : lang === 'es' ? 'Ingresa el código que recibiste para entrar.' : 'Enter the code you received to continue.'}
+            </p>
+          </div>
+          <input
+            type="password"
+            value={accessPassInput}
+            onChange={(e) => { setAccessPassInput(e.target.value); setAccessPassError(false); }}
+            onKeyDown={(e) => e.key === 'Enter' && handleAccessUnlock()}
+            placeholder={lang === 'pt' ? 'Código de acesso' : lang === 'es' ? 'Código de acceso' : 'Access code'}
+            className="w-full text-center bg-[#FAF8F5] dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-2xl p-3.5 text-sm text-slate-800 dark:text-slate-100"
+            autoFocus
+          />
+          {accessPassError && (
+            <p className="text-xs text-rose-500 font-medium">
+              {lang === 'pt' ? 'Código incorreto. Tente novamente.' : lang === 'es' ? 'Código incorrecto. Intenta de nuevo.' : 'Incorrect code. Please try again.'}
+            </p>
+          )}
+          <button
+            onClick={handleAccessUnlock}
+            className="w-full py-3.5 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer"
+          >
+            {lang === 'pt' ? 'Entrar' : lang === 'es' ? 'Entrar' : 'Enter'}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (showOpeningSplash) {
     return (
       <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-[#1E1715] flex flex-col justify-center items-center p-6 text-center select-none overflow-hidden transition-colors duration-500">
@@ -667,10 +727,21 @@ export default function App() {
             </button>
 
             <button
+              onClick={() => setActiveTab('library')}
+              className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
+                activeTab === 'library'
+                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
+              }`}
+            >
+              {labels.library}
+            </button>
+
+            <button
               onClick={() => setActiveTab('profile')}
               className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
-                activeTab === 'profile' 
-                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25' 
+                activeTab === 'profile'
+                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25'
                   : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
               }`}
             >
@@ -802,6 +873,13 @@ export default function App() {
                 className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'community' ? 'bg-rosegold text-white font-bold' : 'text-slate-700 dark:text-slate-300'}`}
               >
                 {labels.community}
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('library'); setMobileMenuOpen(false); }}
+                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'library' ? 'bg-rosegold text-white font-bold' : 'text-slate-700 dark:text-slate-300'}`}
+              >
+                {labels.library}
               </button>
 
               <button
@@ -1120,6 +1198,21 @@ export default function App() {
             <Users className="h-4.5 w-4.5" />
             <span className="text-[9px] tracking-wider font-sans uppercase font-medium">{labels.community}</span>
             {activeTab === 'community' && (
+              <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
+            )}
+          </button>
+
+          <button
+            onClick={() => setActiveTab('library')}
+            className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
+              activeTab === 'library'
+                ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
+                : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+            }`}
+          >
+            <BookOpen className="h-4.5 w-4.5" />
+            <span className="text-[9px] tracking-wider font-sans uppercase font-medium">{labels.library}</span>
+            {activeTab === 'library' && (
               <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
             )}
           </button>
