@@ -137,7 +137,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
     category: 'audios',
     mediaUrl: '/assets/audio/descalcificacao.mp3',
     durationOrSize: 'Audio',
-    coverImage: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80'
+    coverImage: '/assets/images/descalcificacao.png'
   }
 ];
 
@@ -145,7 +145,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs — acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '9';
+const ECOSYSTEM_CONFIG_VERSION = '10';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');

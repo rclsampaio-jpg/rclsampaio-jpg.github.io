@@ -647,9 +647,9 @@ export default function DailyMissionView({
     }
   };
 
-  const handleSkipBack15 = () => {
+  const handleSkipBack10 = () => {
     if (audioRef.current && duration > 0) {
-      const newTime = Math.max(0, audioRef.current.currentTime - 15);
+      const newTime = Math.max(0, audioRef.current.currentTime - 10);
       audioRef.current.currentTime = newTime;
       setCurrentTime(newTime);
       setAudioProgress((newTime / duration) * 100);
@@ -795,7 +795,7 @@ export default function DailyMissionView({
       linkRequiredPlaceholder: 'Cole o link aqui...',
       linkRequiredWarning: 'Adicione o link para validar esta promessa.',
       audioSpeedTooltip: 'Velocidade de reprodução',
-      skipBack: 'Voltar 15s',
+      skipBack: 'Voltar 10s',
     },
     en: {
       dailyMission: 'Daily Mission',
@@ -874,7 +874,7 @@ export default function DailyMissionView({
       linkRequiredPlaceholder: 'Paste the link here...',
       linkRequiredWarning: 'Add the link to validate this promise.',
       audioSpeedTooltip: 'Playback speed',
-      skipBack: 'Back 15s',
+      skipBack: 'Back 10s',
     },
     es: {
       dailyMission: 'Misión Diaria',
@@ -953,7 +953,7 @@ export default function DailyMissionView({
       linkRequiredPlaceholder: 'Pega el enlace aquí...',
       linkRequiredWarning: 'Agrega el enlace para validar esta promesa.',
       audioSpeedTooltip: 'Velocidad de reproducción',
-      skipBack: 'Retroceder 15s',
+      skipBack: 'Retroceder 10s',
     }
   }[lang];
 
@@ -1332,11 +1332,12 @@ export default function DailyMissionView({
                   </button>
 
                   <button
-                    onClick={handleSkipBack15}
+                    onClick={handleSkipBack10}
                     title={textDict.skipBack}
-                    className="h-10 w-10 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex flex-col items-center justify-center text-rosegold transition-all duration-300 cursor-pointer hover:scale-105"
+                    className="h-10 px-3 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center gap-1 text-rosegold transition-all duration-300 cursor-pointer hover:scale-105"
                   >
                     <RotateCcw className="h-4 w-4" />
+                    <span className="text-[10px] font-sans font-bold">10s</span>
                   </button>
                 </div>
               </motion.div>
