@@ -185,19 +185,11 @@ export default function App() {
 
   const activeMissionDay = days.find(d => d.dayNumber === focusedDayNumber) || days[0];
 
-  // Auto-trigger Chapter Introduction overlay for new chapters
-  useEffect(() => {
-    if (chapterMilestone) return; // Prevent double overlays
-    if (focusedDayNumber === 1 || focusedDayNumber === 8 || focusedDayNumber === 15 || focusedDayNumber === 22) {
-      const chapterId = focusedDayNumber === 1 ? 1 : focusedDayNumber === 8 ? 2 : focusedDayNumber === 15 ? 3 : 4;
-      const seenKey = `renaser_intro_chapter_${chapterId}`;
-      const hasSeen = localStorage.getItem(seenKey) === 'true';
-      if (!hasSeen) {
-        setChapterMilestone({ type: 'intro', chapterId });
-        localStorage.setItem(seenKey, 'true');
-      }
-    }
-  }, [focusedDayNumber]);
+  // Chapter Introduction overlay used to auto-trigger for new chapters
+  // (e.g. showing "DESPERTAR" the moment someone opened the link for the
+  // first time), which interrupted people before they reached the actual
+  // app. Removed the auto-trigger — it's still available on demand via the
+  // "Reouvir Alinhamento do Capítulo" button (handleShowIntro below).
 
   const handleShowIntro = (chapterId: number) => {
     setChapterMilestone({ type: 'intro', chapterId });
