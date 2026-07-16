@@ -414,9 +414,11 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
         </p>
       </div>
 
-      {/* Video of the Week — featured standalone card. Also archived as a
-          normal browsable asset under the "Vídeos" tab below. */}
-      {currentWeeklyVideo && (
+      {/* Video of the Week — featured standalone card, plus the archive of
+          past weekly videos as title-only links. Both live inside the
+          "Vídeos" section of the Library: shown under "Todos" and "Vídeos",
+          hidden under every other category tab. */}
+      {currentWeeklyVideo && (selectedCategory === 'all' || selectedCategory === 'videos') && (
         <div className="max-w-xl">
           <h3 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">
             {trans.weeklyVideoTitle}
