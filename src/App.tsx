@@ -62,7 +62,7 @@ export default function App() {
   const [isAccessUnlocked, setIsAccessUnlocked] = useState(() => localStorage.getItem('renaser_access_unlocked') === 'true');
   const [accessPassInput, setAccessPassInput] = useState('');
   const [accessPassError, setAccessPassError] = useState(false);
-  const ACCESS_PASSPHRASE = 'renaser-2026';
+  const ACCESS_PASSPHRASE = 'renasci2026';
 
   const handleAccessUnlock = () => {
     if (accessPassInput.trim().toLowerCase() === ACCESS_PASSPHRASE.toLowerCase()) {
@@ -602,24 +602,14 @@ export default function App() {
             }}
             className="absolute"
           >
-            <div className="flex gap-0.5">
-              <motion.svg 
-                animate={{ rotateY: [0, 75, 0] }}
-                transition={{ duration: 0.22, repeat: Infinity, ease: "easeInOut" }}
-                className="h-7 w-7 text-rosegold fill-current origin-right"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </motion.svg>
-              <motion.svg 
-                animate={{ rotateY: [0, -75, 0] }}
-                transition={{ duration: 0.22, repeat: Infinity, ease: "easeInOut" }}
-                className="h-7 w-7 text-rosegold fill-current origin-left scale-x-[-1]"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </motion.svg>
-            </div>
+            <motion.img
+              src="/assets/images/butterfly.png"
+              alt=""
+              animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
+              transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut" }}
+              className="h-8 w-auto"
+              style={{ transformOrigin: 'center 70%' }}
+            />
           </motion.div>
         </div>
 

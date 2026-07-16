@@ -116,75 +116,11 @@ export const DEFAULT_MENTORING_CONFIG: MentoringConfig = {
   provider: 'WhatsApp'
 };
 
+// Only real, sent-in content is shown for now — the demo masterclass/workbook/
+// meditation/challenge placeholders are hidden until real material replaces
+// them. (The weekly video isn't stored here — see LibraryView, it's
+// synthesized from SupportConfig.weeklyVideoUrl so it can update weekly.)
 export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
-  {
-    id: 'lib_1',
-    title: {
-      pt: 'Masterclass: A Ciência dos Ganchos Magnéticos',
-      en: 'Masterclass: The Science of Magnetic Hooks',
-      es: 'Clase Maestra: La Ciencia de los Ganchos Magnéticos'
-    },
-    description: {
-      pt: 'Aprenda as fórmulas neuro-cognitivas secretas usadas por grandes marcas e criadores para travar a atenção do usuário nos primeiros 3 segundos do vídeo.',
-      en: 'Learn the secret neuro-cognitive formulas used by big brands and creators to lock user attention within the first 3 seconds of a video.',
-      es: 'Aprende las fórmulas neuro-cognitivas secretas utilizadas por grandes marcas y creadores para capturar la atención del usuario en los primeros 3 segundos.'
-    },
-    category: 'masterclasses',
-    mediaUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
-    durationOrSize: '42 mins',
-    coverImage: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'lib_2',
-    title: {
-      pt: 'Apostila Completa de Roteirização em Stories',
-      en: 'Stories Scripting Ultimate Workbook',
-      es: 'Cuaderno Completo de Guiones para Stories'
-    },
-    description: {
-      pt: 'Um guia prático em formato PDF com mais de 50 estruturas prontas de narrativas persuasivas diárias que transformam visualizações frias em clientes quentes.',
-      en: 'A practical PDF workbook with over 50 ready-to-use persuasive narrative models that convert cold views into warm, paying clients.',
-      es: 'Una guía práctica en PDF con más de 50 estructuras de narrativas persuasivas que transforman visualizaciones en clientes de inmediato.'
-    },
-    category: 'workbooks',
-    mediaUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-    durationOrSize: '4.2 MB',
-    coverImage: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'lib_3',
-    title: {
-      pt: 'Áudio de Calibração: Respiração da Clareza',
-      en: 'Calibration Audio: Breath of Clarity',
-      es: 'Audio de Calibración: Respiración de Claridad'
-    },
-    description: {
-      pt: 'Uma meditação guiada curta de 5 minutos projetada especificamente para liberar tensões nas cordas vocais, estabilizar a voz e desinflamar a ansiedade.',
-      en: 'A short 5-minute guided meditation designed specifically to release throat tension, stabilize vocal projection, and deflate nervous anxiety.',
-      es: 'Una meditación guiada corta de 5 minutos diseñada para liberar tensiones en las cuerdas vocales, estabilizar la voz y calmar la ansiedad.'
-    },
-    category: 'meditations',
-    mediaUrl: 'https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg',
-    durationOrSize: '5 mins',
-    coverImage: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'lib_4',
-    title: {
-      pt: 'Desafio Extra: 7 Dias de Stories Autênticos',
-      en: 'Bonus Challenge: 7 Days of Authentic Stories',
-      es: 'Desafío Extra: 7 Días de Stories Auténticos'
-    },
-    description: {
-      pt: 'Uma mini-jornada rápida e divertida focada em criar narrativas em tempo real sem qualquer edição, treinando o improviso e a leveza ao falar.',
-      en: 'A fast, fun mini-journey focused on real-time stories without edits, training improvisation skills and natural conversation on screen.',
-      es: 'Un mini-viaje rápido enfocado en crear narraciones en tiempo real sin edición, entrenando el libre fluir y la soltura al hablar.'
-    },
-    category: 'challenges',
-    mediaUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
-    durationOrSize: '7 Days',
-    coverImage: 'https://images.unsplash.com/photo-1552581230-c01591d3c99a?auto=format&fit=crop&w=800&q=80'
-  },
   {
     id: 'lib_5',
     title: {
@@ -197,7 +133,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
       en: 'A guided audio to relax deeply and reconnect with your intuition before recording or sleeping.',
       es: 'Un audio guiado para relajarte profundamente y reconectar con tu intuición antes de grabar o dormir.'
     },
-    category: 'meditations',
+    category: 'audios',
     mediaUrl: '/assets/audio/descalcificacao.mp3',
     durationOrSize: 'Audio',
     coverImage: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80'
@@ -208,7 +144,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs — acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '7';
+const ECOSYSTEM_CONFIG_VERSION = '8';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');

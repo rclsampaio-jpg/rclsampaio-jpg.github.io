@@ -93,6 +93,12 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
 
   // Handle active asset play trigger
   const handlePlayAsset = (asset: LibraryAsset) => {
+    // YouTube links (e.g. the weekly video) can't play in the native
+    // <video>/<audio> tags the inline player uses — open them externally instead.
+    if (/youtu\.?be/.test(asset.mediaUrl)) {
+      window.open(asset.mediaUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
     setActiveAsset(asset);
     setIsPlaying(true);
     setCurrentTime(0);
@@ -237,23 +243,11 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
     { key: 'videos', icon: Play },
     { key: 'audios', icon: Volume2 },
     { key: 'articles', icon: BookOpen },
-    { key: 'downloads', icon: Download },
     { key: 'pdfs', icon: FileText },
-    { key: 'workbooks', icon: FileText },
     { key: 'meditations', icon: Heart },
     { key: 'challenges', icon: Sparkles },
     { key: 'masterclasses', icon: Sparkles }
   ];
-
-  // Filtering list
-  const filteredAssets = assets.filter(asset => {
-    const matchesSearch = 
-      (asset.title[lang]?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
-      (asset.description[lang]?.toLowerCase() || '').includes(searchQuery.toLowerCase());
-    
-    if (selectedCategory === 'all') return matchesSearch;
-    return asset.category === selectedCategory && matchesSearch;
-  });
 
   // Mock captions track for mock/real videos
   const getSubtitles = () => {
@@ -292,7 +286,6 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
       subtitle: 'Seu acervo vitalício de evolução. Masterclasses, meditações de calibração, desafios rápidos e materiais didáticos adicionais.',
       weeklyVideoTitle: 'Vídeo da Semana',
       weeklyVideoDesc: 'Um vídeo novo toda semana com dicas práticas para sua jornada de visibilidade.',
-      weeklyVideoWatch: 'Assistir no YouTube',
       searchPlaceholder: 'Buscar vídeos, meditações, PDFs...',
       all: 'Todos',
       videos: 'Vídeos',
@@ -326,7 +319,6 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
       subtitle: 'Your lifetime repository of growth. Masterclasses, calibration meditations, fast challenges, and worksheets.',
       weeklyVideoTitle: 'Video of the Week',
       weeklyVideoDesc: 'A new video every week with practical tips for your visibility journey.',
-      weeklyVideoWatch: 'Watch on YouTube',
       searchPlaceholder: 'Search videos, audios, PDFs...',
       all: 'All',
       videos: 'Videos',
@@ -360,7 +352,6 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
       subtitle: 'Tu archivo vitalicio de evolución. Clases maestras, meditaciones, desafíos prácticos y folletos didácticos.',
       weeklyVideoTitle: 'Video de la Semana',
       weeklyVideoDesc: 'Un video nuevo cada semana con consejos prácticos para tu camino de visibilidad.',
-      weeklyVideoWatch: 'Ver en YouTube',
       searchPlaceholder: 'Buscar videos, audios, PDFs...',
       all: 'Todos',
       videos: 'Videos',
@@ -391,6 +382,38 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
     }
   }[lang];
 
+  // The weekly video isn't a stored library asset (its link changes weekly via
+  // the Support config) — synthesize it here so it flows through the same
+  // grid, filtering, and category tab ("Vídeos") as everything else.
+  const weeklyVideoAsset: LibraryAsset = {
+    id: 'weekly_video',
+    title: {
+      pt: trans.weeklyVideoTitle,
+      en: trans.weeklyVideoTitle,
+      es: trans.weeklyVideoTitle
+    },
+    description: {
+      pt: trans.weeklyVideoDesc,
+      en: trans.weeklyVideoDesc,
+      es: trans.weeklyVideoDesc
+    },
+    category: 'videos',
+    mediaUrl: support.weeklyVideoUrl,
+    durationOrSize: 'Vídeo',
+    coverImage: weeklyVideoThumbnail || undefined
+  };
+  const assetsWithWeeklyVideo = [...assets, weeklyVideoAsset];
+
+  // Filtering list
+  const filteredAssets = assetsWithWeeklyVideo.filter(asset => {
+    const matchesSearch =
+      (asset.title[lang]?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+      (asset.description[lang]?.toLowerCase() || '').includes(searchQuery.toLowerCase());
+
+    if (selectedCategory === 'all') return matchesSearch;
+    return asset.category === selectedCategory && matchesSearch;
+  });
+
   return (
     <div className="space-y-8 max-w-6xl mx-auto">
       
@@ -406,41 +429,6 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
         <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed mx-auto md:mx-0">
           {trans.subtitle}
         </p>
-      </div>
-
-      {/* Video of the Week */}
-      <div className="max-w-xl">
-        <h3 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">
-          {trans.weeklyVideoTitle}
-        </h3>
-        <a
-          href={support.weeklyVideoUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="block rounded-2xl overflow-hidden border border-rose-100/30 dark:border-rosegold/5 group"
-        >
-          <div className="relative aspect-video bg-warmbrown">
-            {weeklyVideoThumbnail && (
-              <img
-                src={weeklyVideoThumbnail}
-                alt={trans.weeklyVideoTitle}
-                className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                referrerPolicy="no-referrer"
-              />
-            )}
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition flex items-center justify-center">
-              <div className="h-14 w-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition">
-                <Play className="h-6 w-6 text-rosegold ml-0.5" fill="currentColor" />
-              </div>
-            </div>
-          </div>
-          <div className="p-4 bg-[#FAF8F5]/40 dark:bg-warmbrown/10 space-y-1.5">
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{trans.weeklyVideoDesc}</p>
-            <span className="text-xs font-sans font-bold text-rosegold flex items-center gap-1.5">
-              {trans.weeklyVideoWatch}
-            </span>
-          </div>
-        </a>
       </div>
 
       {/* Inline Active Player Panel */}
