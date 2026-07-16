@@ -383,31 +383,15 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
     }
   }[lang];
 
-  // Weekly videos aren't stored as regular library assets (they come from the
-  // Support config, one link added per week) — synthesize one asset per past
-  // link here so every week's video stays browsable under "Vídeos" even after
-  // a newer one becomes the featured one.
-  const weeklyVideoAssets: LibraryAsset[] = support.weeklyVideos.map((url, idx) => ({
-    id: `weekly_video_${idx}`,
-    title: {
-      pt: `${trans.weeklyVideoTitle} ${idx + 1}`,
-      en: `${trans.weeklyVideoTitle} ${idx + 1}`,
-      es: `${trans.weeklyVideoTitle} ${idx + 1}`
-    },
-    description: {
-      pt: trans.weeklyVideoDesc,
-      en: trans.weeklyVideoDesc,
-      es: trans.weeklyVideoDesc
-    },
-    category: 'videos' as const,
-    mediaUrl: url,
-    durationOrSize: 'Vídeo',
-    coverImage: getYouTubeThumbnail(url) || undefined
-  }));
-  const assetsWithWeeklyVideo = [...assets, ...weeklyVideoAssets];
+  // Config/behavior note for future weekly-video updates: only the CURRENT
+  // week's video (last entry of support.weeklyVideos) gets the full featured
+  // standalone card. Once a newer one replaces it, it drops out of the card
+  // grid entirely and shows up only as a plain title in the archive list
+  // below — it's never duplicated as a second thumbnail card.
+  const pastWeeklyVideos = support.weeklyVideos.slice(0, -1);
 
   // Filtering list
-  const filteredAssets = assetsWithWeeklyVideo.filter(asset => {
+  const filteredAssets = assets.filter(asset => {
     const matchesSearch =
       (asset.title[lang]?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
       (asset.description[lang]?.toLowerCase() || '').includes(searchQuery.toLowerCase());
@@ -465,6 +449,25 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{trans.weeklyVideoDesc}</p>
             </div>
           </a>
+
+          {/* Once a video stops being "the" video of the week, it's no longer
+              shown as a full card — just a plain title link, kept for later access. */}
+          {pastWeeklyVideos.length > 0 && (
+            <div className="mt-3 space-y-1">
+              {pastWeeklyVideos.map((url, idx) => (
+                <a
+                  key={idx}
+                  href={url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 hover:text-rosegold transition-colors py-1"
+                >
+                  <Play className="h-3 w-3 shrink-0" />
+                  <span>{trans.weeklyVideoTitle} {idx + 1}</span>
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
