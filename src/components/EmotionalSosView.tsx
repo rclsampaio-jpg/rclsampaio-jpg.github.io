@@ -319,7 +319,7 @@ export default function EmotionalSosView({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-40 bg-[#16110F] text-[#FAF6F0] flex flex-col justify-between p-6 overflow-y-auto select-none font-sans"
+      className="fixed inset-0 z-[45] bg-[#16110F] text-[#FAF6F0] flex flex-col justify-between p-6 pb-28 lg:pb-6 overflow-y-auto select-none font-sans"
     >
       {/* Background Soft Serene Ambient Glow */}
       <div className="absolute top-1/4 left-1/4 h-80 w-80 bg-rosegold/5 blur-3xl rounded-full pointer-events-none" />

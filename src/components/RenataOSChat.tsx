@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, X, Send, HeartHandshake } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { RENATA_OS_ENDPOINT } from '../config';
+import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 
 interface RenataOSChatProps {
   lang: Language;
@@ -31,7 +32,7 @@ const trans = {
     sosButton: 'Abrir SOS Emocional',
     notConfigured: 'A Renata OS ainda não está conectada a nenhum modelo de IA. Peça para configurarem o endpoint em src/config.ts assim que o backend estiver no ar.',
     error: 'Não consegui responder agora. Tente de novo em instantes.',
-    greeting: 'Oi, eu sou a Renata OS. Estou aqui pra te ajudar em qualquer parte da sua jornada de 30 dias. Pode perguntar o que quiser.'
+    greeting: 'Olá, sou a IA com toda a mentalidade da Renata, pronta pra te direcionar. Então imagina o que não vai sair daqui né?! 🤯 Nesse momento não posso te ajudar porque ainda estou sendo desenvolvida, mas mal posso esperar pra estarmos 100% [juntas/juntos/junte] nessa jornada ♥️'
   },
   en: {
     title: 'Renata OS',
@@ -42,7 +43,7 @@ const trans = {
     sosButton: 'Open Emotional SOS',
     notConfigured: "Renata OS isn't connected to an AI model yet. Ask for the endpoint in src/config.ts to be configured once the backend is live.",
     error: "I couldn't respond right now. Please try again in a moment.",
-    greeting: "Hi, I'm Renata OS. I'm here to help you through any part of your 30-day journey. Ask me anything."
+    greeting: "Hi, I'm the AI built with Renata's full mindset, ready to guide you. So just imagine what's going to come out of this thing, right?! 🤯 Right now I can't help you yet because I'm still being built, but I can't wait for us to be 100% in this journey together ♥️"
   },
   es: {
     title: 'Renata OS',
@@ -53,7 +54,7 @@ const trans = {
     sosButton: 'Abrir SOS Emocional',
     notConfigured: 'Renata OS todavía no está conectada a ningún modelo de IA. Pide que configuren el endpoint en src/config.ts en cuanto el backend esté activo.',
     error: 'No pude responder ahora. Intenta de nuevo en un momento.',
-    greeting: 'Hola, soy Renata OS. Estoy aquí para ayudarte en cualquier parte de tu viaje de 30 días. Pregúntame lo que quieras.'
+    greeting: 'Hola, soy la IA con toda la mentalidad de Renata, lista para guiarte. Así que imagina lo que va a salir de aquí, ¿no?! 🤯 En este momento no puedo ayudarte porque todavía estoy en desarrollo, pero no puedo esperar a que estemos 100% [juntas/juntos/junte] en este viaje ♥️'
   }
 };
 
@@ -65,10 +66,11 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const t = trans[lang];
+  const prefGrammar = resolveGrammarPreference(progress.grammarPreference);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      setMessages([{ role: 'assistant', text: t.greeting }]);
+      setMessages([{ role: 'assistant', text: adaptMessage(t.greeting, prefGrammar, lang) }]);
     }
   }, [isOpen]);
 

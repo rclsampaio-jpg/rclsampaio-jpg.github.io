@@ -1659,21 +1659,21 @@ export default function DailyMissionView({
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
-            className="rounded-[1.5rem] border border-rose-150/40 dark:border-rosegold/15 bg-[#251E1C]/5 dark:bg-[#1C1513]/30 p-5 flex items-center justify-between gap-4"
+            className="rounded-[1.5rem] border border-rose-150/40 dark:border-rosegold/15 bg-[#251E1C]/5 dark:bg-[#1C1513]/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
           >
             <div className="flex items-center gap-3 min-w-0">
               <div className="p-2.5 rounded-xl bg-rosegold/10 text-rosegold shrink-0">
                 <Heart className="h-4.5 w-4.5 fill-current text-rosegold animate-pulse" />
               </div>
-              <div className="min-w-0">
-                <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate font-sans tracking-wide">
+              <div className="min-w-0 flex-1">
+                <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100 font-sans tracking-wide leading-relaxed">
                   {textDict.sosHeading}
                 </h4>
               </div>
             </div>
             <button
               onClick={onTriggerSos}
-              className="shrink-0 px-4 py-2 rounded-xl bg-rosegold hover:bg-[#A35D68] text-[10px] font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 cursor-pointer shadow-rosegold animate-pulse"
+              className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-rosegold hover:bg-[#A35D68] text-[10px] font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 cursor-pointer shadow-rosegold animate-pulse"
             >
               {textDict.sosTrigger}
             </button>
