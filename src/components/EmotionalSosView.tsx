@@ -5,13 +5,14 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Heart, Wind, ArrowLeft, ShieldCheck, Sparkles, UserCheck, HelpCircle, AlertCircle, PhoneCall, RefreshCw, BookOpen } from 'lucide-react';
+import { Heart, Wind, ArrowLeft, ShieldCheck, Sparkles, UserCheck, HelpCircle, AlertCircle, Headphones, RefreshCw, BookOpen } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, ToneVariants } from '../utils/grammar';
 
 interface EmotionalSosViewProps {
   lang: Language;
   onBackToMission: () => void;
+  onGoToLibrary?: () => void;
   progress?: UserProgress;
   onUpdateProgress?: (updated: UserProgress) => void;
 }
@@ -19,9 +20,10 @@ interface EmotionalSosViewProps {
 type BreathingState = 'idle' | 'inhale' | 'hold1' | 'exhale' | 'hold2';
 type SosStage = 'breathing' | 'categorySelect' | 'messageReveal' | 'feedback' | 'alternative';
 
-export default function EmotionalSosView({ 
-  lang, 
+export default function EmotionalSosView({
+  lang,
   onBackToMission,
+  onGoToLibrary,
   progress,
   onUpdateProgress
 }: EmotionalSosViewProps) {
@@ -33,7 +35,7 @@ export default function EmotionalSosView({
   const [cyclesCompleted, setCyclesCompleted] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [feedbackResult, setFeedbackResult] = useState<'yes' | 'not_yet' | null>(null);
-  const [chosenAltResource, setChosenAltResource] = useState<'letter' | 'breathing' | 'support' | null>(null);
+  const [chosenAltResource, setChosenAltResource] = useState<'letter' | 'breathing' | null>(null);
 
   // Box Breathing cycle: 4 seconds each phase (extremely slow, calming pacing)
   useEffect(() => {
@@ -98,12 +100,9 @@ export default function EmotionalSosView({
       feedbackNo: 'Ainda não',
       altOptionBreathing: 'Realizar mais uma rodada de respiração',
       altOptionLetter: 'Ler Carta de Acolhimento da Renata',
-      altOptionSupport: 'Contatar Suporte de Coragem',
+      altOptionPineal: 'Ouvir Áudio de Alinhamento (Descalcificação da Glândula Pineal)',
       letterTitle: 'Uma Carta para Você',
       letterClose: 'Concluir Sintonização',
-      supportTitle: 'Suporte de Coragem',
-      supportDesc: 'Se precisar de um toque extra, sinta-se à vontade para nos enviar um e-mail ou agendar uma mentoria rápida. Estamos aqui com você.',
-      supportEmail: 'E-mail de Apoio: renaser@apoio.com',
       inhale: 'Inspire...',
       hold1: 'Prenda o Ar...',
       exhale: 'Expire devagar...',
@@ -126,12 +125,9 @@ export default function EmotionalSosView({
       feedbackNo: 'Not yet',
       altOptionBreathing: 'Do another round of breathing',
       altOptionLetter: "Read Renata's Letter of Comfort",
-      altOptionSupport: 'Access Courage Support',
+      altOptionPineal: 'Listen to the Alignment Audio (Pineal Gland Decalcification)',
       letterTitle: 'A Letter for You',
       letterClose: 'Complete Tuning',
-      supportTitle: 'Courage Support',
-      supportDesc: 'If you need extra care, feel free to write to us or schedule a quick 1-on-1. We are with you.',
-      supportEmail: 'Support Email: support@renaser.com',
       inhale: 'Inhale...',
       hold1: 'Hold Breath...',
       exhale: 'Exhale slowly...',
@@ -154,12 +150,9 @@ export default function EmotionalSosView({
       feedbackNo: 'Aún no',
       altOptionBreathing: 'Hacer otra ronda de respiración',
       altOptionLetter: 'Leer Carta de Apoyo de Renata',
-      altOptionSupport: 'Contactar Soporte de Coraje',
+      altOptionPineal: 'Escuchar Audio de Alineación (Descalcificación de la Glándula Pineal)',
       letterTitle: 'Una Carta para Ti',
       letterClose: 'Concluir Sintonización',
-      supportTitle: 'Soporte de Coraje',
-      supportDesc: 'Si necesitas un toque extra, no dudes en escribirnos un correo electrónico. Estamos aquí contigo.',
-      supportEmail: 'E-mail de Apoyo: soporte@renaser.com',
       inhale: 'Inhala...',
       hold1: 'Retén el Aire...',
       exhale: 'Exhala despacio...',
@@ -471,7 +464,7 @@ export default function EmotionalSosView({
     }
   };
 
-  const handleAlternative = (alt: 'breathing' | 'letter' | 'support') => {
+  const handleAlternative = (alt: 'breathing' | 'letter') => {
     setChosenAltResource(alt);
     if (alt === 'breathing') {
       // restart breathing stage
@@ -800,18 +793,18 @@ export default function EmotionalSosView({
                     </button>
 
                     <button
-                      onClick={() => handleAlternative('support')}
+                      onClick={onGoToLibrary}
                       className="w-full p-4 bg-white/[0.02] border border-white/5 hover:bg-[#D4AF37]/5 hover:border-[#D4AF37]/20 rounded-2xl text-left text-xs font-sans font-bold tracking-wide text-stone-200 transition cursor-pointer flex items-center justify-between group"
                     >
                       <span className="flex items-center gap-2">
-                        <PhoneCall className="h-4 w-4 text-[#D4AF37]" />
-                        <span>{localText.altOptionSupport}</span>
+                        <Headphones className="h-4 w-4 text-[#D4AF37]" />
+                        <span>{localText.altOptionPineal}</span>
                       </span>
                       <span>→</span>
                     </button>
                   </div>
                 </>
-              ) : chosenAltResource === 'letter' ? (
+              ) : (
                 /* LETTER OPTION VIEW */
                 <motion.div
                   key="alt-letter"
@@ -839,48 +832,6 @@ export default function EmotionalSosView({
                       className="px-6 py-2.5 bg-rosegold hover:bg-rosegold/90 text-white rounded-xl text-xs font-sans font-bold tracking-widest uppercase transition cursor-pointer shadow-md"
                     >
                       {localText.letterClose}
-                    </button>
-                  </div>
-                </motion.div>
-              ) : (
-                /* COURAGE SUPPORT OPTION VIEW */
-                <motion.div
-                  key="alt-support"
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="space-y-6 text-center"
-                >
-                  <div className="w-12 h-12 bg-[#D4AF37]/10 text-[#D4AF37] rounded-2xl mx-auto flex items-center justify-center border border-[#D4AF37]/10">
-                    <PhoneCall className="h-5 w-5" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-serif text-[#FAF6F0] uppercase font-light tracking-wide">
-                      {localText.supportTitle}
-                    </h3>
-                    <p className="text-xs text-stone-300 max-w-xs mx-auto leading-relaxed">
-                      {localText.supportDesc}
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 max-w-xs mx-auto font-mono text-[11px] text-[#D4AF37]">
-                    {localText.supportEmail}
-                  </div>
-
-                  <div className="pt-4 flex justify-center gap-3">
-                    <button
-                      onClick={() => {
-                        setChosenAltResource(null);
-                      }}
-                      className="px-4 py-2 bg-white/5 hover:bg-white/10 text-stone-300 text-xs font-sans font-bold uppercase rounded-xl transition cursor-pointer"
-                    >
-                      Voltar Opções
-                    </button>
-                    <button
-                      onClick={onBackToMission}
-                      className="px-5 py-2 bg-rosegold hover:bg-rosegold/90 text-white text-xs font-sans font-bold uppercase rounded-xl transition cursor-pointer shadow-md"
-                    >
-                      Entendido
                     </button>
                   </div>
                 </motion.div>

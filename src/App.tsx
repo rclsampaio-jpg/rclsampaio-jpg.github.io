@@ -1049,6 +1049,7 @@ export default function App() {
               <EmotionalSosView
                 lang={lang}
                 onBackToMission={() => setActiveTab('home')}
+                onGoToLibrary={() => setActiveTab('library')}
                 progress={progress}
                 onUpdateProgress={updateProgress}
               />
