@@ -689,8 +689,9 @@ export default function DailyMissionView({
   };
 
   // Validation checking for Three Promises + Audio + Reflection Text
-  const allPromiseLinksFilled = promiseLinks.inertia.trim().length > 0 && promiseLinks.confidence.trim().length > 0 && promiseLinks.evidence.trim().length > 0;
-  const allPromisesKept = promisesChecked.inertia && promisesChecked.confidence && promisesChecked.evidence && allPromiseLinksFilled;
+  // Posting the 3 proof links is optional — completion only depends on the
+  // promise checkboxes, not on whether a link was pasted in for each.
+  const allPromisesKept = promisesChecked.inertia && promisesChecked.confidence && promisesChecked.evidence;
   const canComplete = isRestDay || (audioCompleted && reflectionInput.trim().length > 3 && allPromisesKept);
   const combinedPromiseLinks = [promiseLinks.inertia, promiseLinks.confidence, promiseLinks.evidence].join(LINK_SEPARATOR);
 
