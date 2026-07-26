@@ -13,6 +13,7 @@ import {
 import { Language, DayType, UserProgress, Journey, Chapter, Day } from '../types';
 import { getButterflyConfig } from '../data/chaptersData';
 import ButterflyIcon from './ButterflyIcon';
+import { getLocalDateISO } from '../utils/date';
 
 import { 
   loadJourneysFromStorage, 
@@ -90,7 +91,7 @@ export default function JourneyView({
 
     // Still waits for the real calendar to turn over — completing the
     // previous day today doesn't unlock this one until tomorrow.
-    const todayISO = new Date().toISOString().split('T')[0];
+    const todayISO = getLocalDateISO();
     if (day.dayNumber === progress.currentDay && progress.lastActiveDate === todayISO) {
       return false;
     }

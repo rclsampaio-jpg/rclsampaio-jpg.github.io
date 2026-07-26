@@ -4,6 +4,7 @@
  */
 
 import { MissionDay, DayType, Language, UserProgress } from '../types';
+import { getLocalDateISO } from '../utils/date';
 
 // Maps a day number to its real-calendar weekday position (0=Monday..6=Sunday),
 // anchored to journeyStartDate (the real date Day 1 was first opened). Falls
@@ -645,7 +646,7 @@ export function saveDaysToStorage(days: MissionDay[]): void {
 }
 
 function getTodayISO(): string {
-  return new Date().toISOString().slice(0, 10);
+  return getLocalDateISO();
 }
 
 export function loadUserProgressFromStorage(): UserProgress {

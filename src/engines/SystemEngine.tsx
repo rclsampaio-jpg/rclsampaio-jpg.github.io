@@ -15,6 +15,7 @@ import {
 } from '../data/templateData';
 import { getChapterForDay } from '../data/chaptersData';
 import { adaptMessage } from '../utils/grammar';
+import { getLocalDateISO } from '../utils/date';
 
 // ==========================================
 // 14 Core Systems Engine Definitions
@@ -429,7 +430,7 @@ export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     emergencyCheckins: progress.sosCheckins || [],
     logCheckin: (emotion, breathingHelpful) => {
       const logItem = {
-        date: new Date().toISOString().split('T')[0],
+        date: getLocalDateISO(),
         emotion,
         breathingHelpful
       };
@@ -539,8 +540,8 @@ export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       if ((progress.completionHistory || []).includes(dayNum)) return;
 
       const history = [...(progress.completionHistory || []), dayNum];
-      const todayStr = new Date().toISOString().split('T')[0];
-      
+      const todayStr = getLocalDateISO();
+
       let streak = progress.currentStreak || 0;
       let longest = progress.longestStreak || 0;
 
@@ -617,7 +618,7 @@ export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         videoLinks: {},
         reflections: {},
         lastActiveDate: null,
-        journeyStartDate: new Date().toISOString().slice(0, 10),
+        journeyStartDate: getLocalDateISO(),
         displayName: progress.displayName
       };
       updateProgressState(defaultProgress);

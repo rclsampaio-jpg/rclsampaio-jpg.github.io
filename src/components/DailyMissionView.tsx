@@ -13,6 +13,7 @@ import {
 import { MissionDay, Language, DayType, UserProgress } from '../types';
 import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions, getHookCategoryLabel } from '../data/templateData';
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, GuideStyle } from '../utils/grammar';
+import { getLocalDateISO } from '../utils/date';
 
 // Joins the 3 required promise-proof links into the single stored video-link string
 const LINK_SEPARATOR = '|||';
@@ -960,7 +961,7 @@ export default function DailyMissionView({
 
   // A newly-unlocked day still waits for the real calendar to turn over —
   // finishing Day 1 today doesn't let you jump into Day 2 later the same day.
-  const todayISO = new Date().toISOString().split('T')[0];
+  const todayISO = getLocalDateISO();
   const isWaitingForNewCalendarDay = currentDay.dayNumber === progress.currentDay
     && currentDay.dayNumber > 1
     && !isCompleted

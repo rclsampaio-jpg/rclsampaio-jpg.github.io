@@ -41,6 +41,7 @@ import RenataOSChat from './components/RenataOSChat';
 import DayCompletionOverlay from './components/DayCompletionOverlay';
 
 import { adaptMessage, resolveGrammarPreference } from './utils/grammar';
+import { getLocalDateISO } from './utils/date';
 import { useSystem } from './engines/SystemEngine';
 
 type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'transformation' | 'community' | 'library' | 'profile' | 'brand';
@@ -88,7 +89,7 @@ export default function App() {
   const [showAdminPrompt, setShowAdminPrompt] = useState(false);
   const [adminPassInput, setAdminPassInput] = useState('');
   const [adminPassError, setAdminPassError] = useState(false);
-  const ADMIN_PASSPHRASE = 'renaser-admin-2026';
+  const ADMIN_PASSPHRASE = 'Tofly3254$$';
 
   const handleAdminUnlock = () => {
     if (adminPassInput === ADMIN_PASSPHRASE) {
@@ -233,7 +234,7 @@ export default function App() {
     const history = [...progress.completionHistory, dayNum];
     
     // Streaks logic
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = getLocalDateISO();
     let currentStreak = progress.currentStreak;
     let longestStreak = progress.longestStreak;
 
@@ -357,7 +358,7 @@ export default function App() {
   const handleResetProgress = () => {
     localStorage.removeItem('renaser_onboarded');
     setHasDismissedDailyGate(true); // make sure onboarding isn't blocked by daily gate!
-    const todayISO = new Date().toISOString().slice(0, 10);
+    const todayISO = getLocalDateISO();
     const defaultProgress: UserProgress = {
       currentDay: 1,
       completionHistory: [],
@@ -390,7 +391,7 @@ export default function App() {
       completionHistory: simulatedHistory,
       currentStreak: 29,
       longestStreak: 29,
-      lastActiveDate: new Date().toISOString().split('T')[0]
+      lastActiveDate: getLocalDateISO()
     };
     updateProgress(updated);
     setFocusedDayNumber(30);
@@ -406,7 +407,7 @@ export default function App() {
       completionHistory: simulatedHistory,
       currentStreak: 30,
       longestStreak: 30,
-      lastActiveDate: new Date().toISOString().split('T')[0]
+      lastActiveDate: getLocalDateISO()
     };
     updateProgress(updated);
     setFocusedDayNumber(30);

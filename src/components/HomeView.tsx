@@ -12,6 +12,7 @@ import {
 import { MissionDay, Language, UserProgress, DayType } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
 import { adaptMessage, resolveGrammarPreference, ToneVariants } from '../utils/grammar';
+import { getLocalDateISO } from '../utils/date';
 
 // Onboarding/return-visit copy that varies by guideStyle. "inspirational"
 // preserves the original wording this content shipped with.
@@ -334,7 +335,7 @@ export default function HomeView({
 
   // A newly-unlocked day still waits for the real calendar to turn over —
   // finishing Day 1 today doesn't let you jump into Day 2 later the same day.
-  const todayISO = new Date().toISOString().split('T')[0];
+  const todayISO = getLocalDateISO();
   const isWaitingForNewCalendarDay = currentDay.dayNumber === progress.currentDay
     && currentDay.dayNumber > 1
     && !isCompleted
