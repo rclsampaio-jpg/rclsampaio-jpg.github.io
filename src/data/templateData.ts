@@ -629,7 +629,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS) — acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '9';
+const DAYS_CONTENT_VERSION = '10';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
@@ -668,6 +668,24 @@ export function loadUserProgressFromStorage(): UserProgress {
       if (!parsed.journeyStartDate) {
         parsed.journeyStartDate = getTodayISO();
         localStorage.setItem('renaser_user_progress', JSON.stringify(parsed));
+      }
+      // Re-anchor journeyStartDate to today as long as nothing has actually
+      // been completed yet. Without this, a stale start date captured days
+      // ago (e.g. from before the UTC/local date fix, or from someone who
+      // opened the link once and came back later without finishing Day 1)
+      // permanently freezes the weekday theme shown for Day 1 to whatever
+      // it was on that first visit, instead of matching the real day the
+      // person is actually starting. Once a day is completed, this stops —
+      // the weekly rhythm then proceeds normally from that real anchor.
+      if ((parsed.completionHistory || []).length === 0 && parsed.journeyStartDate !== getTodayISO()) {
+        parsed.journeyStartDate = getTodayISO();
+        localStorage.setItem('renaser_user_progress', JSON.stringify(parsed));
+        // The 30-day array is pre-generated once and cached — it won't
+        // regenerate just because journeyStartDate changed, so it would
+        // keep showing the stale weekday themes. Clear it so it rebuilds
+        // from the corrected anchor on this same load.
+        localStorage.removeItem('renaser_days');
+        localStorage.removeItem('renaser_days_version');
       }
       if (parsed.displayName === undefined) {
         parsed.displayName = null;
