@@ -508,6 +508,11 @@ export default function DailyMissionView({
   // Check if reflection is a seventh-day moment
   const isSeventhDayReflection = currentDay.dayNumber % 7 === 0;
 
+  // Every 3rd day, Step 3 / Promise 3 swaps from a single hook video to a
+  // Stories story-arc sequence (dor → ponte → resultado) — must match the
+  // same i % 3 === 0 cadence used to generate exposureAction in templateData.ts.
+  const isStorySequenceDay = currentDay.dayNumber % 3 === 0;
+
   // Friday Sanctuary Breathing Loop
   useEffect(() => {
     if (!isRestDay) return;
@@ -761,8 +766,9 @@ export default function DailyMissionView({
       promisesTitle: 'As Três Promessas de Hoje',
       promisesSubtitle: 'Três pequenos passos físicos para quebrar a inércia e consolidar seu novo eu:',
       promise1: 'Gravei um vídeo de até 60 segundos pra postar no reels',
-      promise2: 'Gravei um vídeo de pelo menos 30 segundos sobre meu aprendizado de hoje (ou postei uma foto com legenda honesta)',
+      promise2: 'Gravei um vídeo de pelo menos 30 segundos nos stories sobre meu aprendizado de hoje (ou postei uma foto com legenda honesta)',
       promise3: 'Gravei um vídeo de até 90 segundos usando um dos hooks disponíveis hoje',
+      promise3StorySequence: 'Gravei uma sequência de pelo menos 3 vídeos nos stories contando minha dor, a ponte que me tirou dela, e o resultado que alcancei',
       reflection7Title: 'Sua Reflexão Semanal de Crescimento',
       reflection7Q1: '1. O que mais te surpreendeu na sua capacidade de agir esta semana?',
       reflection7Q2: '2. O que se tornou visivelmente mais fácil em relação ao primeiro dia?',
@@ -781,8 +787,9 @@ export default function DailyMissionView({
       copy: 'Copiar',
       copied: 'Copiado!',
       promise1Label: 'Promessa 1: Vídeo pro Reels',
-      promise2Label: 'Promessa 2: Vídeo ou Foto de Aprendizado',
+      promise2Label: 'Promessa 2: Vídeo ou Foto de Aprendizado nos Stories',
       promise3Label: 'Promessa 3: Vídeo com Hook',
+      promise3LabelStorySequence: 'Promessa 3: Sequência de Stories',
       progressLockTitle: 'Requisitos de Conclusão',
       statusTitle: 'Status do Dia',
       listenItem: '1. Ouvir a Mensagem da Renata',
@@ -840,8 +847,9 @@ export default function DailyMissionView({
       promisesTitle: "Today's Three Promises",
       promisesSubtitle: 'Three small physical actions to break inertia and consolidate your new identity:',
       promise1: 'Recorded a video up to 60 seconds long to post on reels',
-      promise2: "Recorded a video at least 30 seconds long about today's biggest takeaway (or posted a photo with an honest caption)",
+      promise2: "Recorded a video at least 30 seconds long on my Stories about today's biggest takeaway (or posted a photo with an honest caption)",
       promise3: "Recorded a video up to 90 seconds long using one of today's available hooks",
+      promise3StorySequence: 'Recorded a sequence of at least 3 Stories telling my pain, the bridge that got me past it, and the result I reached',
       reflection7Title: 'Your Weekly Growth Reflection',
       reflection7Q1: '1. What surprised you the most about your capacity to act this week?',
       reflection7Q2: '2. What has become visibly easier compared to the first day?',
@@ -860,8 +868,9 @@ export default function DailyMissionView({
       copy: 'Copy',
       copied: 'Copied!',
       promise1Label: 'Promise 1: Reels Video',
-      promise2Label: 'Promise 2: Learning Video or Photo',
+      promise2Label: 'Promise 2: Learning Video or Photo on Stories',
       promise3Label: 'Promise 3: Hook Video',
+      promise3LabelStorySequence: 'Promise 3: Stories Sequence',
       progressLockTitle: 'Completion Requirements',
       statusTitle: 'Day Status',
       listenItem: "1. Listen to Renata's Message",
@@ -919,8 +928,9 @@ export default function DailyMissionView({
       promisesTitle: 'Las Tres Promesas de Hoy',
       promisesSubtitle: 'Tres pequeños pasos físicos para romper la inercia y consolidar tu nueva identidad:',
       promise1: 'Grabé un video de hasta 60 segundos para publicar en reels',
-      promise2: 'Grabé un video de al menos 30 segundos sobre mi aprendizaje de hoy (o publiqué una foto con una descripción honesta)',
+      promise2: 'Grabé un video de al menos 30 segundos en mis stories sobre mi aprendizaje de hoy (o publiqué una foto con una descripción honesta)',
       promise3: 'Grabé un video de hasta 90 segundos usando uno de los hooks disponibles hoy',
+      promise3StorySequence: 'Grabé una secuencia de al menos 3 stories contando mi dolor, el puente que me sacó de ahí, y el resultado que logré',
       reflection7Title: 'Tu Reflexión Semanal de Crecimiento',
       reflection7Q1: '1. ¿Qué es lo que más te sorprendió de tu capacidad para actuar esta semana?',
       reflection7Q2: '2. ¿Qué se ha vuelto visiblemente más fácil en relación con el primer día?',
@@ -939,8 +949,9 @@ export default function DailyMissionView({
       copy: 'Copiar',
       copied: '¡Copiado!',
       promise1Label: 'Promesa 1: Video para Reels',
-      promise2Label: 'Promesa 2: Video o Foto de Aprendizaje',
+      promise2Label: 'Promesa 2: Video o Foto de Aprendizaje en Stories',
       promise3Label: 'Promesa 3: Video con Hook',
+      promise3LabelStorySequence: 'Promesa 3: Secuencia de Stories',
       progressLockTitle: 'Requisitos de Finalización',
       statusTitle: 'Estado del Día',
       listenItem: '1. Escuchar el Mensaje de Renata',
@@ -1529,7 +1540,11 @@ export default function DailyMissionView({
                   {([
                     { key: 'inertia' as const, label: textDict.promise1Label, desc: textDict.promise1 },
                     { key: 'confidence' as const, label: textDict.promise2Label, desc: textDict.promise2 },
-                    { key: 'evidence' as const, label: textDict.promise3Label, desc: textDict.promise3 }
+                    {
+                      key: 'evidence' as const,
+                      label: isStorySequenceDay ? textDict.promise3LabelStorySequence : textDict.promise3Label,
+                      desc: isStorySequenceDay ? textDict.promise3StorySequence : textDict.promise3
+                    }
                   ]).map((item) => (
                     <label
                       key={item.key}

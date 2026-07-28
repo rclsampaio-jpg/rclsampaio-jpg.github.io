@@ -579,6 +579,20 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
     const titleEs = `${titlesByWeekDay[type].es} (Día ${i})`;
     const audioUrl = getAudioUrlForDay(i);
 
+    // Every 3rd day, Step 3 (hook video) swaps for a Stories story-arc
+    // sequence instead — same cadence the "3 promises" checklist mirrors
+    // in DailyMissionView (isStorySequenceDay there).
+    const isStorySequenceDay = i % 3 === 0;
+    const exposureActionPt = isStorySequenceDay
+      ? `Hoje você vai fazer 3 práticas de gravação\n• Grave um vídeo de até 60 segundos para postar no reels\n• Grave um vídeo de pelo menos 30 segundos nos stories sobre o seu maior aprendizado do Dia ${i} ou poste uma foto com uma legenda honesta\n• Grave uma sequência de pelo menos 3 vídeos nos stories contando: a dor que você viveu, a ponte que te tirou dela, e o resultado que você alcançou — mesmo que você ainda não tenha muitos seguidores, o hábito de contar é o que constrói o alcance`
+      : `Hoje você vai fazer 3 práticas de gravação\n• Grave um vídeo de até 60 segundos para postar no reels\n• Grave um vídeo de pelo menos 30 segundos nos stories sobre o seu maior aprendizado do Dia ${i} ou poste uma foto com uma legenda honesta\n• Grave um vídeo de até 90 segundos, com um dos hooks disponíveis pro dia de hoje`;
+    const exposureActionEn = isStorySequenceDay
+      ? `Today you'll do 3 recording practices\n• Record a video up to 60 seconds long to post on reels\n• Record a video at least 30 seconds long on your Stories about your biggest takeaway from Day ${i}, or post a photo with an honest caption\n• Record a sequence of at least 3 Stories telling: the pain you went through, the bridge that got you past it, and the result you reached — even if you don't have many followers yet, the habit of telling it is what builds the reach`
+      : `Today you'll do 3 recording practices\n• Record a video up to 60 seconds long to post on reels\n• Record a video at least 30 seconds long on your Stories about your biggest takeaway from Day ${i}, or post a photo with an honest caption\n• Record a video up to 90 seconds long, using one of today's available hooks`;
+    const exposureActionEs = isStorySequenceDay
+      ? `Hoy vas a hacer 3 prácticas de grabación\n• Graba un video de hasta 60 segundos para publicar en reels\n• Graba un video de al menos 30 segundos en tus stories sobre tu mayor aprendizaje del Día ${i} o publica una foto con una descripción honesta\n• Graba una secuencia de al menos 3 stories contando: el dolor que viviste, el puente que te sacó de ahí, y el resultado que lograste — aunque todavía no tengas muchos seguidores, el hábito de contarlo es lo que construye el alcance`
+      : `Hoy vas a hacer 3 prácticas de grabación\n• Graba un video de hasta 60 segundos para publicar en reels\n• Graba un video de al menos 30 segundos en tus stories sobre tu mayor aprendizaje del Día ${i} o publica una foto con una descripción honesta\n• Graba un video de hasta 90 segundos, con uno de los hooks disponibles para hoy`;
+
     days.push({
       dayNumber: i,
       type,
@@ -592,7 +606,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
             `Roteiro Opção 2 (Provocação):\n"Pare de tentar agradar a todo mundo nas redes sociais. A verdade é que quem te julga não paga seus boletos..."`,
             `Roteiro Opção 3 (Educativo):\n"3 coisas simples que me ajudaram a vencer a vergonha da câmera: 1. Falar com a lente como se fosse um amigo; 2..."`
           ],
-          exposureAction: `Hoje você vai fazer 3 práticas de gravação\n• Grave um vídeo de até 60 segundos para postar no reels\n• Grave um vídeo de pelo menos 30 segundos sobre o seu maior aprendizado do Dia ${i} ou poste uma foto com uma legenda honesta\n• Grave um vídeo de até 90 segundos, com um dos hooks disponíveis pro dia de hoje`,
+          exposureAction: exposureActionPt,
           reflectionQuestion: 'Como você se sentiu hoje ao encarar a possibilidade de ser [vista/visto/viste] de verdade pelas pessoas?'
         },
         en: {
@@ -603,7 +617,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
             `Script Option 2 (Provocation):\n"Stop trying to please everyone on social media. The truth is, those who judge you don't pay your bills..."`,
             `Script Option 3 (Educational):\n"3 simple things that helped me overcome camera shyness: 1. Talk to the lens as if it were a close friend; 2..."`
           ],
-          exposureAction: `Today you'll do 3 recording practices\n• Record a video up to 60 seconds long to post on reels\n• Record a video at least 30 seconds long about your biggest takeaway from Day ${i}, or post a photo with an honest caption\n• Record a video up to 90 seconds long, using one of today's available hooks`,
+          exposureAction: exposureActionEn,
           reflectionQuestion: 'How did you feel today confronting the possibility of being truly seen by people?'
         },
         es: {
@@ -614,7 +628,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
             `Guión Opción 2 (Provocación):\n"Deja de intentar agradar a todos en las redes sociales. La verdad es que quien te juzga no paga tus cuentas..."`,
             `Guión Opción 3 (Educativo):\n"3 cosas simples que me ayudaron a vencer la vergüenza de la cámara: 1. Hablarle a la lente como si fuera un amigo; 2..."`
           ],
-          exposureAction: `Hoy vas a hacer 3 prácticas de grabación\n• Graba un video de hasta 60 segundos para publicar en reels\n• Graba un video de al menos 30 segundos sobre tu mayor aprendizaje del Día ${i} o publica una foto con una descripción honesta\n• Graba un video de hasta 90 segundos, con uno de los hooks disponibles para hoy`,
+          exposureAction: exposureActionEs,
           reflectionQuestion: '¿Cómo te sentiste hoy al enfrentar la posibilidad de ser [vista/visto/viste] realmente por la gente?'
         }
       }
@@ -629,7 +643,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS) — acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '10';
+const DAYS_CONTENT_VERSION = '11';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
