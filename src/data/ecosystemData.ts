@@ -139,6 +139,22 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
     durationOrSize: 'Audio',
     coverImage: '/assets/images/descalcificacao.png',
     requiresHeadphones: true
+  },
+  {
+    id: 'lib_6',
+    title: {
+      pt: 'Como Crescer no Instagram Começando do Zero',
+      en: 'How to Grow on Instagram Starting From Zero',
+      es: 'Cómo Crecer en Instagram Empezando de Cero'
+    },
+    description: {
+      pt: 'Guia de hooks e anti-hooks, gatilhos de conexão e nomeação de ofertas — use junto ao Passo 2 (Vitrine de Hooks) na hora de postar.',
+      en: 'A guide to hooks and anti-hooks, connection triggers, and offer naming — use it alongside Step 2 (Hook Showcase) whenever you post.',
+      es: 'Guía de hooks y anti-hooks, gatillos de conexión y nombramiento de ofertas — úsala junto al Paso 2 (Vitrina de Hooks) al publicar.'
+    },
+    category: 'pdfs',
+    mediaUrl: '/assets/docs/como-crescer-no-instagram-do-zero.docx',
+    durationOrSize: 'Documento'
   }
 ];
 
@@ -146,7 +162,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs — acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '12';
+const ECOSYSTEM_CONFIG_VERSION = '13';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');

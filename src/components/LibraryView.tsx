@@ -100,6 +100,14 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
       window.open(asset.mediaUrl, '_blank', 'noopener,noreferrer');
       return;
     }
+    // Downloadable documents (PDFs, worksheets) aren't playable media — the
+    // inline player only knows how to render <audio>/<video>, so trying to
+    // "play" a .pdf/.docx there would just show a broken black box. Download
+    // or open them directly instead.
+    if (asset.category === 'pdfs' || asset.category === 'workbooks' || /\.(pdf|docx?|pptx?|xlsx?)$/i.test(asset.mediaUrl)) {
+      window.open(asset.mediaUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
     setActiveAsset(asset);
     setIsPlaying(true);
     setCurrentTime(0);
