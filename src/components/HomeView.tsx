@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, Flame, CheckCircle2, ArrowRight, BookOpen, Volume2,
-  Settings, Award, Lock, HelpCircle, Check, Play, Compass, User
+  Settings, Award, Lock, HelpCircle, Check, Play, Compass, User, Heart
 } from 'lucide-react';
 import { MissionDay, Language, UserProgress, DayType } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
@@ -135,6 +135,7 @@ interface HomeViewProps {
   onLanguageChange: (lang: Language) => void;
   onShowIntro?: (chapterId: number) => void;
   onUpdateProgress?: (updated: UserProgress) => void;
+  onTriggerSos?: () => void;
 }
 
 export default function HomeView({
@@ -144,7 +145,8 @@ export default function HomeView({
   onSelectTab,
   onLanguageChange,
   onShowIntro,
-  onUpdateProgress
+  onUpdateProgress,
+  onTriggerSos
 }: HomeViewProps) {
   const [onboardState, setOnboardState] = useState<'splash' | 'lang' | 'name' | 'guidestyle' | 'grammar' | 'welcome' | 'intro' | 'complete'>('complete');
   const [selectedStyle, setSelectedStyle] = useState<'gentle' | 'challenger' | 'strategic' | 'inspirational'>('gentle');
@@ -233,7 +235,9 @@ export default function HomeView({
       lockedDesc: "Complete o dia anterior para liberar este conteúdo.",
       waitingForTomorrow: "Este passo libera amanhã. Aproveite hoje pra descansar — você já cumpriu sua promessa.",
       copyHook: "Copiar Gancho",
-      copied: "Copiado!"
+      copied: "Copiado!",
+      sosHeading: "Precisando de apoio agora? O SOS Emocional está sempre disponível, mesmo com o dia bloqueado.",
+      sosTrigger: "Acione o SOS Emocional"
     },
     en: {
       languageTitle: "Language Settings",
@@ -267,7 +271,9 @@ export default function HomeView({
       lockedDesc: "Complete the previous day to unlock this content.",
       waitingForTomorrow: "This step unlocks tomorrow. Take today to rest — you already kept your promise.",
       copyHook: "Copy Hook",
-      copied: "Copied!"
+      copied: "Copied!",
+      sosHeading: "Need support right now? The Emotional SOS is always available, even with the day locked.",
+      sosTrigger: "Activate Emotional SOS"
     },
     es: {
       languageTitle: "Configuración de Idioma",
@@ -301,7 +307,9 @@ export default function HomeView({
       lockedDesc: "Completa el día anterior para desbloquear este contenido.",
       waitingForTomorrow: "Este paso se libera mañana. Aprovecha hoy para descansar — ya cumpliste tu promesa.",
       copyHook: "Copiar Gancho",
-      copied: "¡Copiado!"
+      copied: "¡Copiado!",
+      sosHeading: "¿Necesitas apoyo ahora? El SOS Emocional siempre está disponible, incluso con el día bloqueado.",
+      sosTrigger: "Activar SOS Emocional"
     }
   }[lang];
 
@@ -881,6 +889,30 @@ export default function HomeView({
             }
           </span>
         </div>
+
+        {/* SOS must stay reachable even when the day is locked — the "Go to
+            Daily Mission" button above is disabled in that state, so this is
+            the only way to reach emotional support without it. */}
+        {isLocked && onTriggerSos && (
+          <div className="rounded-[1.5rem] border border-rose-150/40 dark:border-rosegold/15 bg-[#251E1C]/5 dark:bg-[#1C1513]/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-left">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="p-2.5 rounded-xl bg-rosegold/10 text-rosegold shrink-0">
+                <Heart className="h-4.5 w-4.5 fill-current text-rosegold animate-pulse" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100 font-sans tracking-wide leading-relaxed">
+                  {trans.sosHeading}
+                </h4>
+              </div>
+            </div>
+            <button
+              onClick={onTriggerSos}
+              className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-rosegold hover:bg-[#A35D68] text-[10px] font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 cursor-pointer shadow-rosegold animate-pulse"
+            >
+              {trans.sosTrigger}
+            </button>
+          </div>
+        )}
       </motion.div>
     </div>
   );

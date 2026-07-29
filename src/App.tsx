@@ -1006,6 +1006,7 @@ export default function App() {
                 onLanguageChange={handleLanguageChange}
                 onShowIntro={handleShowIntro}
                 onUpdateProgress={updateProgress}
+                onTriggerSos={() => setActiveTab('sos')}
               />
             )}
 
@@ -1099,6 +1100,7 @@ export default function App() {
                 lang={lang}
                 progress={progress}
                 onUpdateProgress={updateProgress}
+                onTriggerSos={() => setActiveTab('sos')}
               />
             )}
 

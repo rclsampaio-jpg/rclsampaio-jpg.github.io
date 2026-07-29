@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, Play, Heart, Download, BookOpen, Volume2, FileText,
   Sparkles, CheckCircle2, RotateCcw, Maximize, Clock, ListFilter,
-  Check, Pause, RefreshCw, Eye, Settings, HelpCircle, AlertCircle, Headphones
+  Check, Pause, RefreshCw, Eye, Settings, HelpCircle, AlertCircle, Headphones, Wind
 } from 'lucide-react';
 import { Language, LibraryAsset, SupportConfig, UserProgress } from '../types';
 import { loadLibraryAssets, saveLibraryAssets, loadSupportConfig } from '../data/ecosystemData';
@@ -18,9 +18,10 @@ interface LibraryViewProps {
   lang: Language;
   progress: UserProgress;
   onUpdateProgress: (newProgress: UserProgress) => void;
+  onTriggerSos?: () => void;
 }
 
-export default function LibraryView({ lang, progress, onUpdateProgress }: LibraryViewProps) {
+export default function LibraryView({ lang, progress, onUpdateProgress, onTriggerSos }: LibraryViewProps) {
   const prefGrammar = resolveGrammarPreference(progress.grammarPreference);
   const [assets, setAssets] = useState<LibraryAsset[]>(() => loadLibraryAssets());
   const [support, setSupport] = useState<SupportConfig>(() => loadSupportConfig());
@@ -243,6 +244,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
   // Categories translation/icon maps
   const categories = [
     { key: 'all', icon: null },
+    { key: 'wellness', icon: Wind },
     { key: 'videos', icon: Play },
     { key: 'audios', icon: Volume2 },
     { key: 'articles', icon: BookOpen },
@@ -291,6 +293,11 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
       weeklyVideoDesc: 'Um vídeo novo toda semana com dicas práticas para sua jornada de visibilidade.',
       searchPlaceholder: 'Buscar vídeos, meditações, PDFs...',
       all: 'Todos',
+      wellness: 'Bem-Estar',
+      wellnessTitle: 'Por que estar centrada importa na hora de postar',
+      wellnessExplanation: 'Quando você grava ou publica a partir de um lugar de ansiedade, pressa ou autocobrança, isso transparece na sua voz e na sua energia — e a pessoa do outro lado sente. Seu sistema nervoso regulado é o que permite que sua presença seja verdadeira, sua voz saia estável e sua mensagem chegue com a força que ela merece. Antes de gravar, vale mais 2 minutos se centrando do que 20 tentativas gravando ansiosa.',
+      regulateSelf: 'Regule-se',
+      sosTrigger: 'Acione o SOS Emocional',
       videos: 'Vídeos',
       audios: 'Áudios',
       articles: 'Artigos',
@@ -325,6 +332,11 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
       weeklyVideoDesc: 'A new video every week with practical tips for your visibility journey.',
       searchPlaceholder: 'Search videos, audios, PDFs...',
       all: 'All',
+      wellness: 'Wellness',
+      wellnessTitle: 'Why being centered matters before you post',
+      wellnessExplanation: "When you record or post from a place of anxiety, rush, or self-pressure, it shows in your voice and your energy — and the person on the other side feels it. A regulated nervous system is what lets your presence be true, your voice come out steady, and your message land with the strength it deserves. Before recording, 2 minutes of centering yourself is worth more than 20 anxious takes.",
+      regulateSelf: 'Regulate Yourself',
+      sosTrigger: 'Activate Emotional SOS',
       videos: 'Videos',
       audios: 'Audios',
       articles: 'Articles',
@@ -359,6 +371,11 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
       weeklyVideoDesc: 'Un video nuevo cada semana con consejos prácticos para tu camino de visibilidad.',
       searchPlaceholder: 'Buscar videos, audios, PDFs...',
       all: 'Todos',
+      wellness: 'Bienestar',
+      wellnessTitle: 'Por qué estar centrada importa al momento de publicar',
+      wellnessExplanation: 'Cuando grabas o publicas desde un lugar de ansiedad, prisa o autoexigencia, eso se nota en tu voz y en tu energía — y la persona del otro lado lo siente. Tu sistema nervioso regulado es lo que permite que tu presencia sea verdadera, tu voz salga estable y tu mensaje llegue con la fuerza que merece. Antes de grabar, vale más 2 minutos centrándote que 20 intentos grabando ansiosa.',
+      regulateSelf: 'Regúlate',
+      sosTrigger: 'Activar SOS Emocional',
       videos: 'Videos',
       audios: 'Audios',
       articles: 'Artículos',
@@ -783,7 +800,38 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
 
       </div>
 
-      {/* Library Grid list of resources */}
+      {/* Wellness tab: not a media category — a short explanation of why a
+          regulated nervous system matters before posting, plus a direct
+          path into the Emotional SOS. */}
+      {selectedCategory === 'wellness' ? (
+        <div className="max-w-2xl mx-auto text-center space-y-7 py-10">
+          <div className="h-14 w-14 rounded-2xl bg-rose-50 dark:bg-rosegold/10 text-rosegold flex items-center justify-center mx-auto">
+            <Wind className="h-6 w-6" />
+          </div>
+          <div className="space-y-3">
+            <h3 className="text-lg font-serif font-bold text-slate-800 dark:text-white">
+              {trans.wellnessTitle}
+            </h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+              {trans.wellnessExplanation}
+            </p>
+          </div>
+          <div className="pt-2 space-y-4">
+            <h4 className="text-xs font-sans font-bold uppercase tracking-widest text-rosegold">
+              {trans.regulateSelf}
+            </h4>
+            {onTriggerSos && (
+              <button
+                onClick={onTriggerSos}
+                className="px-8 py-3.5 rounded-2xl bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer shadow-rosegold hover:shadow-rosegold/40 inline-flex items-center gap-2"
+              >
+                <Heart className="h-4 w-4 fill-current" />
+                {trans.sosTrigger}
+              </button>
+            )}
+          </div>
+        </div>
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <AnimatePresence mode="popLayout">
           {filteredAssets.length > 0 ? (
@@ -917,6 +965,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress }: Librar
           )}
         </AnimatePresence>
       </div>
+      )}
 
     </div>
   );
