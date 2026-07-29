@@ -154,7 +154,8 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
     },
     category: 'pdfs',
     mediaUrl: '/assets/docs/como-crescer-no-instagram-do-zero.docx',
-    durationOrSize: 'Documento'
+    durationOrSize: 'Documento',
+    coverImage: '/assets/images/como-crescer-no-instagram-cover.jpg'
   }
 ];
 
@@ -162,7 +163,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs — acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '13';
+const ECOSYSTEM_CONFIG_VERSION = '14';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');

@@ -989,22 +989,45 @@ export default function DailyMissionView({
 
   if (isWaitingForNewCalendarDay) {
     return (
-      <div className="max-w-md mx-auto text-center py-24 space-y-5">
-        <div className="h-14 w-14 rounded-2xl bg-rose-50 dark:bg-rosegold/10 text-rosegold flex items-center justify-center mx-auto">
-          <Lock className="h-6 w-6" />
+      <div className="max-w-md mx-auto space-y-10 py-16">
+        <div className="text-center space-y-5">
+          <div className="h-14 w-14 rounded-2xl bg-rose-50 dark:bg-rosegold/10 text-rosegold flex items-center justify-center mx-auto">
+            <Lock className="h-6 w-6" />
+          </div>
+          <h2 className="text-lg font-serif font-bold text-slate-800 dark:text-white">
+            {textDict.lockedTitle}
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            {textDict.lockedDesc}
+          </p>
+          <button
+            onClick={onBackToHome}
+            className="px-8 py-3 rounded-xl bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
+          >
+            {textDict.backToHome}
+          </button>
         </div>
-        <h2 className="text-lg font-serif font-bold text-slate-800 dark:text-white">
-          {textDict.lockedTitle}
-        </h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-          {textDict.lockedDesc}
-        </p>
-        <button
-          onClick={onBackToHome}
-          className="px-8 py-3 rounded-xl bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
-        >
-          {textDict.backToHome}
-        </button>
+
+        {/* The SOS trigger must stay reachable even on a locked day —
+            emotional support shouldn't depend on the next day being open. */}
+        <div className="rounded-[1.5rem] border border-rose-150/40 dark:border-rosegold/15 bg-[#251E1C]/5 dark:bg-[#1C1513]/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="p-2.5 rounded-xl bg-rosegold/10 text-rosegold shrink-0">
+              <Heart className="h-4.5 w-4.5 fill-current text-rosegold animate-pulse" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100 font-sans tracking-wide leading-relaxed">
+                {textDict.sosHeading}
+              </h4>
+            </div>
+          </div>
+          <button
+            onClick={onTriggerSos}
+            className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-rosegold hover:bg-[#A35D68] text-[10px] font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 cursor-pointer shadow-rosegold animate-pulse"
+          >
+            {textDict.sosTrigger}
+          </button>
+        </div>
       </div>
     );
   }
