@@ -17,21 +17,24 @@ export function getLocalDateISO(date: Date = new Date()): string {
   return `${year}-${month}-${day}`;
 }
 
-// The next day unlocks a fixed number of hours after the previous one was
-// completed, rather than waiting for the calendar date string to change.
-// Calendar-date comparison breaks for anyone who finishes a day right after
-// midnight: their lastActiveDate gets stamped with the new date, so they'd
-// have to wait for ANOTHER midnight — up to ~48h — before the next day
-// opens, even though barely any time has passed. A fixed cooldown avoids
-// that trap while still preventing someone from binge-completing every day
-// back-to-back in one sitting.
-export const DAY_UNLOCK_COOLDOWN_HOURS = 20;
+// Late-night hours (00:00 up to this hour, exclusive) count as still being
+// "yesterday" for day-unlock purposes. Someone who finishes a day at 00h15
+// is clearly still in that day's late-night session, not starting a brand
+// new one — so the next day should already be open. Someone who finishes at
+// a normal hour (e.g. 14h or 22h) is genuinely done for the day and should
+// wait for the real next calendar day, so binge-completing every day back
+// to back in one sitting is still prevented.
+export const LATE_NIGHT_UNLOCK_CUTOFF_HOUR = 6;
 
-export function isUnlockCooldownActive(
-  lastCompletionTimestamp: number | null | undefined,
-  cooldownHours: number = DAY_UNLOCK_COOLDOWN_HOURS
-): boolean {
-  if (!lastCompletionTimestamp) return false;
-  const elapsedMs = Date.now() - lastCompletionTimestamp;
-  return elapsedMs < cooldownHours * 60 * 60 * 1000;
+// The calendar date to compare against for day-unlock purposes: the real
+// local date, unless it's still late night, in which case it's backdated to
+// the previous day so the unlock check (`anchorDate === today`) already
+// reads as false and the next day opens immediately.
+export function getUnlockAnchorDateISO(date: Date = new Date()): string {
+  if (date.getHours() < LATE_NIGHT_UNLOCK_CUTOFF_HOUR) {
+    const prevDay = new Date(date);
+    prevDay.setDate(prevDay.getDate() - 1);
+    return getLocalDateISO(prevDay);
+  }
+  return getLocalDateISO(date);
 }

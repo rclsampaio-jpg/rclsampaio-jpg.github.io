@@ -92,7 +92,7 @@ export interface UserProgress {
   videoLinks: Record<number, string>; // Completed day -> optional submitted video link
   reflections: Record<number, string>; // Completed day -> submitted reflection text
   lastActiveDate: string | null; // Date string (YYYY-MM-DD) to calculate streaks
-  lastCompletionTimestamp?: number | null; // Date.now() when the current day was completed — the next day unlocks DAY_UNLOCK_COOLDOWN_HOURS after this, not at the next calendar date
+  dayUnlockAnchorDate?: string | null; // getUnlockAnchorDateISO() at the moment the current day was completed — late-night completions backdate to the previous day so the next day opens immediately instead of waiting for a second midnight
   journeyStartDate: string | null; // Date string (YYYY-MM-DD) Day 1 was first opened — anchors weekday theming to the real calendar
   displayName: string | null; // Preferred name the user gave during onboarding, shown instead of their email
   avatarUrl?: string | null; // Data URL of a user-uploaded profile photo

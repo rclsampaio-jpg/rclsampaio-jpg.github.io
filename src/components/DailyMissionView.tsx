@@ -13,7 +13,7 @@ import {
 import { MissionDay, Language, DayType, UserProgress } from '../types';
 import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions, getHookCategoryLabel } from '../data/templateData';
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, GuideStyle } from '../utils/grammar';
-import { isUnlockCooldownActive } from '../utils/date';
+import { getLocalDateISO } from '../utils/date';
 
 // Joins the 3 required promise-proof links into the single stored video-link string
 const LINK_SEPARATOR = '|||';
@@ -979,14 +979,15 @@ export default function DailyMissionView({
     }
   }[lang];
 
-  // A newly-unlocked day waits DAY_UNLOCK_COOLDOWN_HOURS after the previous
-  // one was completed — not for the calendar date to change, which used to
-  // trap anyone who finished a day right after midnight into waiting for a
-  // second midnight (up to ~48h) before the next day opened.
+  // A newly-unlocked day waits for the real next calendar day — except a
+  // completion late at night (before LATE_NIGHT_UNLOCK_CUTOFF_HOUR) is
+  // backdated to "yesterday" via dayUnlockAnchorDate, so finishing right
+  // after midnight opens the next day immediately instead of trapping the
+  // person into waiting for a second midnight.
   const isWaitingForNewCalendarDay = currentDay.dayNumber === progress.currentDay
     && currentDay.dayNumber > 1
     && !isCompleted
-    && isUnlockCooldownActive(progress.lastCompletionTimestamp);
+    && progress.dayUnlockAnchorDate === getLocalDateISO();
 
   if (isWaitingForNewCalendarDay) {
     return (
@@ -1743,8 +1744,8 @@ export default function DailyMissionView({
                   <div className="flex justify-between gap-1.5 p-1.5 bg-[#FAF8F5] dark:bg-[#130E0D] rounded-2xl border border-rose-100/10 dark:border-rosegold/5 shadow-inner">
                     {(['calm', 'hopeful', 'neutral', 'heavy', 'emotional'] as const).map((moodKey) => {
                       const info = {
-                        calm: { emoji: '😊', label: lang === 'pt' ? 'Calma' : lang === 'es' ? 'Calma' : 'Calm', color: 'hover:bg-emerald-500/10 text-emerald-600', active: 'bg-emerald-500/10 border-emerald-500/35 text-emerald-600 shadow-xs' },
-                        hopeful: { emoji: '🙂', label: lang === 'pt' ? 'Esperança' : lang === 'es' ? 'Esperanza' : 'Hope', color: 'hover:bg-rose-500/10 text-rosegold', active: 'bg-rose-500/15 border-rose-500/35 text-rosegold shadow-xs' },
+                        calm: { emoji: '😎', label: lang === 'pt' ? 'Plena' : lang === 'es' ? 'Plena' : 'Fulfilled', color: 'hover:bg-emerald-500/10 text-emerald-600', active: 'bg-emerald-500/10 border-emerald-500/35 text-emerald-600 shadow-xs' },
+                        hopeful: { emoji: '🤗', label: lang === 'pt' ? 'Esperançosa' : lang === 'es' ? 'Esperanzada' : 'Hopeful', color: 'hover:bg-rose-500/10 text-rosegold', active: 'bg-rose-500/15 border-rose-500/35 text-rosegold shadow-xs' },
                         neutral: { emoji: '😐', label: lang === 'pt' ? 'Neutro' : lang === 'es' ? 'Neutro' : 'Neutral', color: 'hover:bg-slate-500/10 text-slate-600', active: 'bg-slate-500/10 border-slate-500/35 text-slate-600 shadow-xs' },
                         heavy: { emoji: '😔', label: lang === 'pt' ? 'Pesado' : lang === 'es' ? 'Pesado' : 'Heavy', color: 'hover:bg-indigo-500/10 text-indigo-600', active: 'bg-indigo-500/10 border-indigo-500/35 text-indigo-600 shadow-xs' },
                         emotional: { emoji: '😭', label: lang === 'pt' ? 'Sensível' : lang === 'es' ? 'Sensible' : 'Sensitive', color: 'hover:bg-amber-500/10 text-amber-600', active: 'bg-amber-500/10 border-amber-500/35 text-amber-600 shadow-xs' }

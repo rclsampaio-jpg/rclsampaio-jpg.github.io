@@ -59,7 +59,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
       treeEvolutionTitle: 'O Crescimento Permanente da Sua Árvore',
       treeDesc: 'Sua Árvore do Renascimento não cresce apenas com o passar dos dias. Ela se nutre de coragem física, honestidade e consistência espiritual.',
       backHome: 'Voltar ao Início',
-      moodCalm: 'Calma',
+      moodCalm: 'Plena',
       moodHopeful: 'Esperançosa',
       moodNeutral: 'Neutro',
       moodHeavy: 'Coração Pesado',
@@ -106,7 +106,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
       treeEvolutionTitle: 'The Permanent Growth of Your Tree',
       treeDesc: 'Your Tree of Rebirth doesn\'t grow simply by completing days. It feeds on active courage, physical honesty, and spiritual consistency.',
       backHome: 'Back to Home',
-      moodCalm: 'Calm',
+      moodCalm: 'Fulfilled',
       moodHopeful: 'Hopeful',
       moodNeutral: 'Neutral',
       moodHeavy: 'Heavy Heart',
@@ -153,7 +153,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
       treeEvolutionTitle: 'El Crecimiento Permanente de Tu Árbol',
       treeDesc: 'Tu Árbol del Renacimiento no crece solo con el paso de los días. Se nutre de coraje físico, honestidad y consistencia espiritual.',
       backHome: 'Volver al Inicio',
-      moodCalm: 'Calma',
+      moodCalm: 'Plena',
       moodHopeful: 'Esperanzada',
       moodNeutral: 'Neutro',
       moodHeavy: 'Corazón Pesado',
@@ -174,9 +174,9 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
   const getMoodEmojiAndLabel = (moodKey: string) => {
     switch (moodKey) {
       case 'calm':
-        return { emoji: '😊', label: trans.moodCalm, color: 'from-emerald-400 to-teal-500 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' };
+        return { emoji: '😎', label: trans.moodCalm, color: 'from-emerald-400 to-teal-500 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' };
       case 'hopeful':
-        return { emoji: '🙂', label: trans.moodHopeful, color: 'from-pink-400 to-rose-500 bg-rose-500/20 text-rosegold dark:text-rosegold-light border-rose-500/20' };
+        return { emoji: '🤗', label: trans.moodHopeful, color: 'from-pink-400 to-rose-500 bg-rose-500/20 text-rosegold dark:text-rosegold-light border-rose-500/20' };
       case 'neutral':
         return { emoji: '😐', label: trans.moodNeutral, color: 'from-slate-400 to-slate-500 bg-slate-500/20 text-slate-600 dark:text-slate-400 border-slate-500/20' };
       case 'heavy':

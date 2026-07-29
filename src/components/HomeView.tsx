@@ -12,7 +12,7 @@ import {
 import { MissionDay, Language, UserProgress, DayType } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
 import { adaptMessage, resolveGrammarPreference, ToneVariants } from '../utils/grammar';
-import { isUnlockCooldownActive } from '../utils/date';
+import { getLocalDateISO } from '../utils/date';
 
 // Onboarding/return-visit copy that varies by guideStyle. "inspirational"
 // preserves the original wording this content shipped with.
@@ -333,14 +333,15 @@ export default function HomeView({
   const isCompleted = progress.completionHistory.includes(currentDay.dayNumber);
   const isRestDay = currentDay.type === DayType.Rest;
 
-  // A newly-unlocked day waits DAY_UNLOCK_COOLDOWN_HOURS after the previous
-  // one was completed — not for the calendar date to change, which used to
-  // trap anyone who finished a day right after midnight into waiting for a
-  // second midnight (up to ~48h) before the next day opened.
+  // A newly-unlocked day waits for the real next calendar day — except a
+  // completion late at night (before LATE_NIGHT_UNLOCK_CUTOFF_HOUR) is
+  // backdated to "yesterday" via dayUnlockAnchorDate, so finishing right
+  // after midnight opens the next day immediately instead of trapping the
+  // person into waiting for a second midnight.
   const isWaitingForNewCalendarDay = currentDay.dayNumber === progress.currentDay
     && currentDay.dayNumber > 1
     && !isCompleted
-    && isUnlockCooldownActive(progress.lastCompletionTimestamp);
+    && progress.dayUnlockAnchorDate === getLocalDateISO();
   const isLocked = currentDay.dayNumber > progress.currentDay || isWaitingForNewCalendarDay;
 
   const [copied, setCopied] = useState(false);

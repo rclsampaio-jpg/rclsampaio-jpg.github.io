@@ -41,7 +41,7 @@ import RenataOSChat from './components/RenataOSChat';
 import DayCompletionOverlay from './components/DayCompletionOverlay';
 
 import { adaptMessage, resolveGrammarPreference } from './utils/grammar';
-import { getLocalDateISO } from './utils/date';
+import { getLocalDateISO, getUnlockAnchorDateISO } from './utils/date';
 import { useSystem } from './engines/SystemEngine';
 
 type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'transformation' | 'community' | 'library' | 'profile' | 'brand';
@@ -276,7 +276,7 @@ export default function App() {
       currentStreak,
       longestStreak,
       lastActiveDate: todayStr,
-      lastCompletionTimestamp: Date.now(),
+      dayUnlockAnchorDate: getUnlockAnchorDateISO(),
       reflections: {
         ...progress.reflections,
         [dayNum]: reflectionText
@@ -393,7 +393,7 @@ export default function App() {
       currentStreak: 29,
       longestStreak: 29,
       lastActiveDate: getLocalDateISO(),
-      lastCompletionTimestamp: Date.now()
+      dayUnlockAnchorDate: getUnlockAnchorDateISO()
     };
     updateProgress(updated);
     setFocusedDayNumber(30);
@@ -410,7 +410,7 @@ export default function App() {
       currentStreak: 30,
       longestStreak: 30,
       lastActiveDate: getLocalDateISO(),
-      lastCompletionTimestamp: Date.now()
+      dayUnlockAnchorDate: getUnlockAnchorDateISO()
     };
     updateProgress(updated);
     setFocusedDayNumber(30);
