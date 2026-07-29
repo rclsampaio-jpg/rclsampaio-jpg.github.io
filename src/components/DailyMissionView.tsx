@@ -1412,7 +1412,8 @@ export default function DailyMissionView({
                   </p>
                   <a
                     href="/assets/docs/como-crescer-no-instagram-do-zero.docx"
-                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-5 py-3 bg-accentgold hover:brightness-105 text-slate-950 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer shadow-gold-accent"
                   >
                     <Download className="h-4 w-4" />
@@ -1741,7 +1742,7 @@ export default function DailyMissionView({
                   <label className="block text-xs font-sans text-rosegold uppercase font-extrabold tracking-widest">
                     {lang === 'pt' ? 'Como você se sente agora?' : lang === 'es' ? '¿Cómo te sientes ahora?' : 'How do you feel now?'}
                   </label>
-                  <div className="flex justify-between gap-1.5 p-1.5 bg-[#FAF8F5] dark:bg-[#130E0D] rounded-2xl border border-rose-100/10 dark:border-rosegold/5 shadow-inner">
+                  <div className="grid grid-cols-5 gap-1 p-1.5 bg-[#FAF8F5] dark:bg-[#130E0D] rounded-2xl border border-rose-100/10 dark:border-rosegold/5 shadow-inner">
                     {(['calm', 'hopeful', 'neutral', 'heavy', 'emotional'] as const).map((moodKey) => {
                       const info = {
                         calm: { emoji: '😎', label: lang === 'pt' ? 'Plena' : lang === 'es' ? 'Plena' : 'Fulfilled', color: 'hover:bg-emerald-500/10 text-emerald-600', active: 'bg-emerald-500/10 border-emerald-500/35 text-emerald-600 shadow-xs' },
@@ -1764,12 +1765,12 @@ export default function DailyMissionView({
                               setSelectedMood(moodKey);
                             }
                           }}
-                          className={`flex-1 flex flex-col items-center gap-1.5 py-3 px-1 rounded-xl text-center border border-transparent transition-all duration-300 cursor-pointer select-none ${
+                          className={`min-w-0 flex flex-col items-center justify-center gap-1 py-2.5 px-0.5 rounded-xl text-center border border-transparent transition-all duration-300 cursor-pointer select-none ${
                             isSelected ? info.active : `${info.color} text-slate-500`
                           } hover:scale-105`}
                         >
-                          <span className="text-2xl">{info.emoji}</span>
-                          <span className="text-[11px] font-sans font-extrabold tracking-tight uppercase">{info.label}</span>
+                          <span className="text-xl leading-none">{info.emoji}</span>
+                          <span className="text-[8px] sm:text-[9px] font-sans font-extrabold tracking-tight uppercase leading-tight break-words w-full">{info.label}</span>
                         </button>
                       );
                     })}

@@ -374,35 +374,10 @@ export default function HomeView({
         {/* Ambient atmospheric backdrop light */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-rosegold/10 dark:bg-rosegold/5 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDuration: '6s' }} />
 
-        {/* Gentle fluttering butterfly, present throughout the whole first-time
-            setup flow — previously only App.tsx's post-onboarding screens had
-            it, so brand new users never saw it during setup. */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
-          <motion.div
-            initial={{ x: '-15vw', y: '70vh', rotate: 20 }}
-            animate={{
-              x: '115vw',
-              y: ['70vh', '50vh', '60vh', '35vh', '45vh', '20vh'],
-              rotate: [20, 0, 15, -10, 5, -20]
-            }}
-            transition={{
-              duration: 14,
-              ease: "easeInOut",
-              repeat: Infinity,
-              repeatDelay: 2
-            }}
-            className="absolute"
-          >
-            <motion.img
-              src="/assets/images/butterfly.png"
-              alt=""
-              animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
-              transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut" }}
-              className="h-8 w-auto"
-              style={{ transformOrigin: 'center 70%' }}
-            />
-          </motion.div>
-        </div>
+        {/* No butterfly here — it already plays once on App.tsx's "Começar
+            Jornada" gate screen right before this onboarding flow starts.
+            Adding a second one here just made new users sit through the
+            same animation twice before reaching the app. */}
 
         <AnimatePresence mode="wait">
           
@@ -892,26 +867,17 @@ export default function HomeView({
 
         {/* SOS must stay reachable even when the day is locked — the "Go to
             Daily Mission" button above is disabled in that state, so this is
-            the only way to reach emotional support without it. */}
+            the only way to reach emotional support without it. No extra
+            explanatory copy here — that instructional context lives only in
+            the Library's Bem-Estar tab. */}
         {isLocked && onTriggerSos && (
-          <div className="rounded-[1.5rem] border border-rose-150/40 dark:border-rosegold/15 bg-[#251E1C]/5 dark:bg-[#1C1513]/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-left">
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="p-2.5 rounded-xl bg-rosegold/10 text-rosegold shrink-0">
-                <Heart className="h-4.5 w-4.5 fill-current text-rosegold animate-pulse" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100 font-sans tracking-wide leading-relaxed">
-                  {trans.sosHeading}
-                </h4>
-              </div>
-            </div>
-            <button
-              onClick={onTriggerSos}
-              className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-rosegold hover:bg-[#A35D68] text-[10px] font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 cursor-pointer shadow-rosegold animate-pulse"
-            >
-              {trans.sosTrigger}
-            </button>
-          </div>
+          <button
+            onClick={onTriggerSos}
+            className="mx-auto flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rosegold hover:bg-[#A35D68] text-[10px] font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 cursor-pointer shadow-rosegold animate-pulse"
+          >
+            <Heart className="h-3.5 w-3.5 fill-current" />
+            {trans.sosTrigger}
+          </button>
         )}
       </motion.div>
     </div>
