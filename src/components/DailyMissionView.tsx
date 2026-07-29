@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   Play, Pause, Copy, Check, Star, ArrowRight, ArrowLeft, Heart, Sparkles, ThumbsUp, ThumbsDown,
   Info, Compass, HelpCircle, X, BookOpen, Smile, Wind, Award,
-  RotateCcw, Lock
+  RotateCcw, Lock, Download
 } from 'lucide-react';
 import { MissionDay, Language, DayType, UserProgress } from '../types';
 import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions, getHookCategoryLabel } from '../data/templateData';
@@ -747,6 +747,9 @@ export default function DailyMissionView({
       tabOpenLabel: 'Abertura',
       tabDailyLabel: 'Hook do Dia',
       tabIdeaLabel: 'Minha Ideia',
+      importantNoticeTitle: 'Aviso Importante',
+      importantNoticeBody: 'Já pensou poder postar reels e stories todos os dias, sem ter que pensar no que fazer? Se pensou, realizou! haha\n\nBaixe esse documento agora e use-o TODOS OS DIAS na hora de postar, junto ao passo 2 "Vitrine de Hooks" até você ficar craque [sozinha/sozinho/sozinhe]!',
+      importantNoticeDownload: 'Baixar Documento',
       openHookHeading: 'Use uma dessas variedades de ação pra começar o seu vídeo',
       dailyHookHeadingPrefix: 'Hoje usaremos ganchos de',
       noDailyHookFallback: 'Hoje não tem hook temático — use o hook de abertura ou escreva o seu na aba "Minha Ideia".',
@@ -827,6 +830,9 @@ export default function DailyMissionView({
       tabOpenLabel: 'Opening',
       tabDailyLabel: "Today's Hook",
       tabIdeaLabel: 'My Idea',
+      importantNoticeTitle: 'Important Notice',
+      importantNoticeBody: "Ever wished you could post reels and stories every day without having to think about what to post? Well, wish granted! haha\n\nDownload this document now and use it EVERY DAY when posting, alongside Step 2 \"Hook Showcase\", until you become a pro on your own!",
+      importantNoticeDownload: 'Download Document',
       openHookHeading: "Today we'll use action hooks",
       dailyHookHeadingPrefix: "Today's hook theme:",
       noDailyHookFallback: 'No themed hook today — use the opening hook, or write your own in the "My Idea" tab.',
@@ -908,6 +914,9 @@ export default function DailyMissionView({
       tabOpenLabel: 'Apertura',
       tabDailyLabel: 'Hook del Día',
       tabIdeaLabel: 'Mi Idea',
+      importantNoticeTitle: 'Aviso Importante',
+      importantNoticeBody: '¿Ya pensaste en poder publicar reels y stories todos los días sin tener que pensar en qué hacer? ¡Si lo pensaste, se hizo realidad! jaja\n\nDescarga este documento ahora y úsalo TODOS LOS DÍAS a la hora de publicar, junto al paso 2 "Vitrina de Hooks", hasta que te vuelvas una experta [sola/solo/sole]!',
+      importantNoticeDownload: 'Descargar Documento',
       openHookHeading: 'Hoy usaremos ganchos de acción',
       dailyHookHeadingPrefix: 'Hoy usaremos ganchos de',
       noDailyHookFallback: 'Hoy no hay hook temático — usa el hook de apertura o escribe el tuyo en la pestaña "Mi Idea".',
@@ -1354,6 +1363,38 @@ export default function DailyMissionView({
                   </button>
                 </div>
               </motion.div>
+
+              {/* Day 1 only: important-notice callout for the hook/anti-hook
+                  reference document, positioned right before Step 2 since
+                  it's meant to be used alongside the Hook Showcase. */}
+              {currentDay.dayNumber === 1 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  className="rounded-[2rem] bg-amber-50/60 dark:bg-accentgold/5 border border-accentgold/30 dark:border-accentgold/20 p-6 sm:p-8 shadow-xs space-y-4"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className="h-9 w-9 rounded-xl bg-accentgold/15 text-accentgold flex items-center justify-center shrink-0">
+                      <Info className="h-4.5 w-4.5" />
+                    </div>
+                    <span className="text-xs font-sans font-extrabold uppercase tracking-wider text-accentgold">
+                      {textDict.importantNoticeTitle}
+                    </span>
+                  </div>
+                  <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-sans whitespace-pre-line">
+                    {adaptMessage(textDict.importantNoticeBody, prefGrammar, lang)}
+                  </p>
+                  <a
+                    href="/assets/docs/como-crescer-no-instagram-do-zero.docx"
+                    download
+                    className="inline-flex items-center gap-2 px-5 py-3 bg-accentgold hover:brightness-105 text-slate-950 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer shadow-gold-accent"
+                  >
+                    <Download className="h-4 w-4" />
+                    {textDict.importantNoticeDownload}
+                  </a>
+                </motion.div>
+              )}
 
               {/* STEP 2: Weekly Hook Showcase (opening hook / daily hook / own idea) */}
               <motion.div
