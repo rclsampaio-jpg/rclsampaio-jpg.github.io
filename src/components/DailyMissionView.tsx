@@ -13,7 +13,7 @@ import {
 import { MissionDay, Language, DayType, UserProgress } from '../types';
 import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions, getHookCategoryLabel } from '../data/templateData';
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, GuideStyle } from '../utils/grammar';
-import { getLocalDateISO } from '../utils/date';
+import { isUnlockCooldownActive } from '../utils/date';
 
 // Joins the 3 required promise-proof links into the single stored video-link string
 const LINK_SEPARATOR = '|||';
@@ -979,13 +979,14 @@ export default function DailyMissionView({
     }
   }[lang];
 
-  // A newly-unlocked day still waits for the real calendar to turn over —
-  // finishing Day 1 today doesn't let you jump into Day 2 later the same day.
-  const todayISO = getLocalDateISO();
+  // A newly-unlocked day waits DAY_UNLOCK_COOLDOWN_HOURS after the previous
+  // one was completed — not for the calendar date to change, which used to
+  // trap anyone who finished a day right after midnight into waiting for a
+  // second midnight (up to ~48h) before the next day opened.
   const isWaitingForNewCalendarDay = currentDay.dayNumber === progress.currentDay
     && currentDay.dayNumber > 1
     && !isCompleted
-    && progress.lastActiveDate === todayISO;
+    && isUnlockCooldownActive(progress.lastCompletionTimestamp);
 
   if (isWaitingForNewCalendarDay) {
     return (

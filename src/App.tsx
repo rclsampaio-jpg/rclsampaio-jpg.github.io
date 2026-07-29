@@ -276,6 +276,7 @@ export default function App() {
       currentStreak,
       longestStreak,
       lastActiveDate: todayStr,
+      lastCompletionTimestamp: Date.now(),
       reflections: {
         ...progress.reflections,
         [dayNum]: reflectionText
@@ -391,7 +392,8 @@ export default function App() {
       completionHistory: simulatedHistory,
       currentStreak: 29,
       longestStreak: 29,
-      lastActiveDate: getLocalDateISO()
+      lastActiveDate: getLocalDateISO(),
+      lastCompletionTimestamp: Date.now()
     };
     updateProgress(updated);
     setFocusedDayNumber(30);
@@ -407,7 +409,8 @@ export default function App() {
       completionHistory: simulatedHistory,
       currentStreak: 30,
       longestStreak: 30,
-      lastActiveDate: getLocalDateISO()
+      lastActiveDate: getLocalDateISO(),
+      lastCompletionTimestamp: Date.now()
     };
     updateProgress(updated);
     setFocusedDayNumber(30);

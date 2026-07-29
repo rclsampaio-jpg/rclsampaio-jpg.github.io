@@ -16,3 +16,22 @@ export function getLocalDateISO(date: Date = new Date()): string {
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
+
+// The next day unlocks a fixed number of hours after the previous one was
+// completed, rather than waiting for the calendar date string to change.
+// Calendar-date comparison breaks for anyone who finishes a day right after
+// midnight: their lastActiveDate gets stamped with the new date, so they'd
+// have to wait for ANOTHER midnight — up to ~48h — before the next day
+// opens, even though barely any time has passed. A fixed cooldown avoids
+// that trap while still preventing someone from binge-completing every day
+// back-to-back in one sitting.
+export const DAY_UNLOCK_COOLDOWN_HOURS = 20;
+
+export function isUnlockCooldownActive(
+  lastCompletionTimestamp: number | null | undefined,
+  cooldownHours: number = DAY_UNLOCK_COOLDOWN_HOURS
+): boolean {
+  if (!lastCompletionTimestamp) return false;
+  const elapsedMs = Date.now() - lastCompletionTimestamp;
+  return elapsedMs < cooldownHours * 60 * 60 * 1000;
+}

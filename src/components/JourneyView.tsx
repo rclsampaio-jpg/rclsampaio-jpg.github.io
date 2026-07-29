@@ -13,7 +13,7 @@ import {
 import { Language, DayType, UserProgress, Journey, Chapter, Day } from '../types';
 import { getButterflyConfig } from '../data/chaptersData';
 import ButterflyIcon from './ButterflyIcon';
-import { getLocalDateISO } from '../utils/date';
+import { isUnlockCooldownActive } from '../utils/date';
 
 import { 
   loadJourneysFromStorage, 
@@ -89,10 +89,9 @@ export default function JourneyView({
     const prevDayNumber = day.dayNumber - 1;
     if (!progress.completionHistory.includes(prevDayNumber)) return false;
 
-    // Still waits for the real calendar to turn over — completing the
-    // previous day today doesn't unlock this one until tomorrow.
-    const todayISO = getLocalDateISO();
-    if (day.dayNumber === progress.currentDay && progress.lastActiveDate === todayISO) {
+    // Still waits DAY_UNLOCK_COOLDOWN_HOURS after the previous day was
+    // completed, not for the calendar date to change (see utils/date.ts).
+    if (day.dayNumber === progress.currentDay && isUnlockCooldownActive(progress.lastCompletionTimestamp)) {
       return false;
     }
     return true;
