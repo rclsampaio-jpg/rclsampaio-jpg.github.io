@@ -374,13 +374,41 @@ export default function HomeView({
         {/* Ambient atmospheric backdrop light */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-rosegold/10 dark:bg-rosegold/5 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDuration: '6s' }} />
 
-        {/* No butterfly here — it already plays once on App.tsx's "Começar
-            Jornada" gate screen right before this onboarding flow starts.
-            Adding a second one here just made new users sit through the
-            same animation twice before reaching the app. */}
+        {/* Butterfly only on this first "Começar Jornada" screen — not
+            repeated across the later onboarding steps (lang/name/etc), so
+            new users only see the animation once, not on a loop through
+            the whole setup flow. */}
+        {onboardState === 'splash' && (
+          <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
+            <motion.div
+              initial={{ x: '-15vw', y: '70vh', rotate: 20 }}
+              animate={{
+                x: '115vw',
+                y: ['70vh', '50vh', '60vh', '35vh', '45vh', '20vh'],
+                rotate: [20, 0, 15, -10, 5, -20]
+              }}
+              transition={{
+                duration: 14,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatDelay: 2
+              }}
+              className="absolute"
+            >
+              <motion.img
+                src="/assets/images/butterfly.png"
+                alt=""
+                animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
+                transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut" }}
+                className="h-8 w-auto"
+                style={{ transformOrigin: 'center 70%' }}
+              />
+            </motion.div>
+          </div>
+        )}
 
         <AnimatePresence mode="wait">
-          
+
           {onboardState === 'splash' && (
             <motion.div
               key="splash"

@@ -1411,7 +1411,7 @@ export default function DailyMissionView({
                     {adaptMessage(textDict.importantNoticeBody, prefGrammar, lang)}
                   </p>
                   <a
-                    href="/assets/docs/como-crescer-no-instagram-do-zero.docx"
+                    href="/assets/docs/como-crescer-no-instagram-do-zero.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-5 py-3 bg-accentgold hover:brightness-105 text-slate-950 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer shadow-gold-accent"

@@ -153,7 +153,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
       es: 'Guía de hooks y anti-hooks, gatillos de conexión y nombramiento de ofertas — úsala junto al Paso 2 (Vitrina de Hooks) al publicar.'
     },
     category: 'pdfs',
-    mediaUrl: '/assets/docs/como-crescer-no-instagram-do-zero.docx',
+    mediaUrl: '/assets/docs/como-crescer-no-instagram-do-zero.pdf',
     durationOrSize: 'Documento',
     coverImage: '/assets/images/como-crescer-no-instagram-cover.jpg'
   }
@@ -163,7 +163,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs — acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '14';
+const ECOSYSTEM_CONFIG_VERSION = '15';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');
