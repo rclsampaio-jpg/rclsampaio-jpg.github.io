@@ -434,8 +434,10 @@ export default function HomeView({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 2, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={handleNextOnboard}
-                className="mt-4 px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold hover:shadow-rosegold/40 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                className="mt-4 px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-[background-color,box-shadow] duration-300 shadow-rosegold hover:shadow-rosegold/40 cursor-pointer"
               >
                 {trans.getStarted}
               </motion.button>
