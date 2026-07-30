@@ -15,6 +15,12 @@
 html, body {
   overflow-x: hidden;
   max-width: 100vw;
+  /* iOS sometimes auto-inflates font sizes on standalone/home-screen apps
+     specifically (not regular Safari tabs), which reads as the whole page
+     being "zoomed in" — this locks text rendering to the size the CSS
+     actually specifies. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 @theme {
