@@ -14,7 +14,7 @@ import { MissionDay, Language, DayType, UserProgress } from '../types';
 import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions, getHookCategoryLabel } from '../data/templateData';
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, GuideStyle } from '../utils/grammar';
 import { getLocalDateISO } from '../utils/date';
-import DocumentPreviewModal from './DocumentPreviewModal';
+import { forceDownload } from '../utils/download';
 
 // Joins the 3 required promise-proof links into the single stored video-link string
 const LINK_SEPARATOR = '|||';
@@ -478,7 +478,6 @@ export default function DailyMissionView({
   const [copiedActionHookIndex, setCopiedActionHookIndex] = useState<number | null>(null);
   const [copiedHook, setCopiedHook] = useState(false);
   const [selectedMood, setSelectedMood] = useState<'calm' | 'hopeful' | 'neutral' | 'heavy' | 'emotional' | null>(null);
-  const [showGuideDocPreview, setShowGuideDocPreview] = useState(false);
   const [activeStep, setActiveStep] = useState<number>(0);
 
   // Friday Breathing Cycle state
@@ -752,7 +751,6 @@ export default function DailyMissionView({
       importantNoticeTitle: 'Aviso Importante',
       importantNoticeBody: 'Já pensou poder postar reels e stories todos os dias, sem ter que pensar no que fazer? Se pensou, realizou! haha\n\nBaixe esse documento agora e use-o TODOS OS DIAS na hora de postar, junto ao passo 2 "Vitrine de Hooks" até você ficar craque [sozinha/sozinho/sozinhe]!',
       importantNoticeDownload: 'Baixar Documento',
-      close: 'Fechar',
       openHookHeading: 'Use uma dessas variedades de ação pra começar o seu vídeo',
       dailyHookHeadingPrefix: 'Hoje usaremos ganchos de',
       noDailyHookFallback: 'Hoje não tem hook temático — use o hook de abertura ou escreva o seu na aba "Minha Ideia".',
@@ -836,7 +834,6 @@ export default function DailyMissionView({
       importantNoticeTitle: 'Important Notice',
       importantNoticeBody: "Ever wished you could post reels and stories every day without having to think about what to post? Well, wish granted! haha\n\nDownload this document now and use it EVERY DAY when posting, alongside Step 2 \"Hook Showcase\", until you become a pro on your own!",
       importantNoticeDownload: 'Download Document',
-      close: 'Close',
       openHookHeading: "Today we'll use action hooks",
       dailyHookHeadingPrefix: "Today's hook theme:",
       noDailyHookFallback: 'No themed hook today — use the opening hook, or write your own in the "My Idea" tab.',
@@ -921,7 +918,6 @@ export default function DailyMissionView({
       importantNoticeTitle: 'Aviso Importante',
       importantNoticeBody: '¿Ya pensaste en poder publicar reels y stories todos los días sin tener que pensar en qué hacer? ¡Si lo pensaste, se hizo realidad! jaja\n\nDescarga este documento ahora y úsalo TODOS LOS DÍAS a la hora de publicar, junto al paso 2 "Vitrina de Hooks", hasta que te vuelvas una experta [sola/solo/sole]!',
       importantNoticeDownload: 'Descargar Documento',
-      close: 'Cerrar',
       openHookHeading: 'Hoy usaremos ganchos de acción',
       dailyHookHeadingPrefix: 'Hoy usaremos ganchos de',
       noDailyHookFallback: 'Hoy no hay hook temático — usa el hook de apertura o escribe el tuyo en la pestaña "Mi Idea".',
@@ -1416,23 +1412,13 @@ export default function DailyMissionView({
                     {adaptMessage(textDict.importantNoticeBody, prefGrammar, lang)}
                   </p>
                   <button
-                    onClick={() => setShowGuideDocPreview(true)}
+                    onClick={() => forceDownload('/assets/docs/como-crescer-no-instagram-do-zero.pdf', 'como-crescer-no-instagram-do-zero.pdf')}
                     className="inline-flex items-center gap-2 px-5 py-3 bg-accentgold hover:brightness-105 text-slate-950 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer shadow-gold-accent"
                   >
                     <Download className="h-4 w-4" />
                     {textDict.importantNoticeDownload}
                   </button>
                 </motion.div>
-              )}
-
-              {showGuideDocPreview && (
-                <DocumentPreviewModal
-                  url="/assets/docs/como-crescer-no-instagram-do-zero.pdf"
-                  title={textDict.importantNoticeTitle}
-                  downloadLabel={textDict.importantNoticeDownload}
-                  closeLabel={textDict.close}
-                  onClose={() => setShowGuideDocPreview(false)}
-                />
               )}
 
               {/* STEP 2: Weekly Hook Showcase (opening hook / daily hook / own idea) */}
