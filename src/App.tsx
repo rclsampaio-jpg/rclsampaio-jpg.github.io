@@ -539,7 +539,7 @@ export default function App() {
               opacity: [0, 1, 1, 1, 1, 0]
             }}
             transition={{
-              duration: 2.3,
+              duration: 6.5,
               ease: "easeInOut"
             }}
             className="absolute"
