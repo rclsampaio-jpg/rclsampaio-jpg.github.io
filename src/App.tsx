@@ -126,10 +126,17 @@ export default function App() {
   // Plain per-day completion celebration (non-milestone days)
   const [dayCelebration, setDayCelebration] = useState<number | null>(null);
 
-  // Session Opening Splash Screen State
-  const [showOpeningSplash, setShowOpeningSplash] = useState(true);
+  // Session Opening Splash Screen State — skipped entirely for first-time
+  // setup (not onboarded yet), since HomeView's own "Começar Jornada" step
+  // already opens the flow with its own logo + flying butterfly. Showing
+  // this screen too just added ~6.5s of waiting before setup could start.
+  // Returning users (already onboarded) still see it on every fresh login.
+  const [showOpeningSplash, setShowOpeningSplash] = useState(() => {
+    return localStorage.getItem('renaser_onboarded') === 'true';
+  });
 
   useEffect(() => {
+    if (!showOpeningSplash) return;
     const timer = setTimeout(() => {
       setShowOpeningSplash(false);
     }, 6500);
