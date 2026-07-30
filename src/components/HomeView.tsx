@@ -381,17 +381,16 @@ export default function HomeView({
         {onboardState === 'splash' && (
           <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
             <motion.div
-              initial={{ x: '-15vw', y: '70vh', rotate: 20 }}
+              initial={{ x: '-15vw', y: '65vh', rotate: 15, opacity: 0 }}
               animate={{
                 x: '115vw',
-                y: ['70vh', '50vh', '60vh', '35vh', '45vh', '20vh'],
-                rotate: [20, 0, 15, -10, 5, -20]
+                y: ['65vh', '48vh', '55vh', '32vh', '40vh', '15vh'],
+                rotate: [15, 18, 20, 19, 22, 25],
+                opacity: [0, 1, 1, 1, 1, 0]
               }}
               transition={{
-                duration: 14,
-                ease: "easeInOut",
-                repeat: Infinity,
-                repeatDelay: 2
+                duration: 6.5,
+                ease: "easeInOut"
               }}
               className="absolute"
             >
