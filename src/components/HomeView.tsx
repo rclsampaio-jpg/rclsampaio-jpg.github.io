@@ -148,18 +148,18 @@ export default function HomeView({
   onUpdateProgress,
   onTriggerSos
 }: HomeViewProps) {
-  const [onboardState, setOnboardState] = useState<'splash' | 'lang' | 'name' | 'guidestyle' | 'grammar' | 'welcome' | 'intro' | 'complete'>('complete');
+  // Computed lazily (not via useEffect) so the very first render already
+  // knows whether onboarding is needed — otherwise this defaulted to
+  // 'complete' for one frame, briefly flashing the normal Home screen
+  // (header + bottom nav) underneath before switching to the onboarding
+  // overlay on the next render.
+  const [onboardState, setOnboardState] = useState<'splash' | 'lang' | 'name' | 'guidestyle' | 'grammar' | 'welcome' | 'intro' | 'complete'>(() => {
+    const isCompleted = localStorage.getItem('renaser_onboarded') === 'true';
+    return isCompleted ? 'complete' : 'splash';
+  });
   const [selectedStyle, setSelectedStyle] = useState<'gentle' | 'challenger' | 'strategic' | 'inspirational'>('gentle');
   const [selectedGrammar, setSelectedGrammar] = useState<'feminine' | 'masculine'>('feminine');
   const [nameInput, setNameInput] = useState('');
-  
-  // Onboarding initialization check
-  useEffect(() => {
-    const isCompleted = localStorage.getItem('renaser_onboarded') === 'true';
-    if (!isCompleted) {
-      setOnboardState('splash');
-    }
-  }, []);
 
   const handleNextOnboard = () => {
     if (onboardState === 'splash') setOnboardState('lang');
@@ -418,13 +418,19 @@ export default function HomeView({
               className="space-y-10 max-w-md flex flex-col items-center relative z-10"
             >
               <RenaSerLogo variant="vertical" size={96} lang={lang} />
-              
-              <button
+
+              {/* Delayed so the butterfly actually gets seen crossing the
+                  screen before the button steals attention and gets tapped
+                  right away. */}
+              <motion.button
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 2, ease: [0.16, 1, 0.3, 1] }}
                 onClick={handleNextOnboard}
                 className="mt-4 px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold hover:shadow-rosegold/40 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 {trans.getStarted}
-              </button>
+              </motion.button>
             </motion.div>
           )}
 
