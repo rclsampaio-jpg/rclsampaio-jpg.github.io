@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, Flame, CheckCircle2, ArrowRight, BookOpen, Volume2,
@@ -369,7 +370,14 @@ export default function HomeView({
 
   // Splash Screen & Onboarding Layout
   if (onboardState !== 'complete') {
-    return (
+    // Rendered via a portal straight to <body> — this component is mounted
+    // inside App.tsx's tab-content `motion.div` (which animates `y`), and a
+    // `transform` on any ancestor turns `position: fixed` into "fixed
+    // relative to that ancestor" instead of the real viewport. That broke
+    // this overlay so it only covered the <main> content area, leaving the
+    // header and bottom nav visibly showing around it. A portal escapes
+    // that ancestor entirely, so `fixed inset-0` covers the true viewport.
+    return createPortal(
       <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-[#1E1715] text-slate-900 dark:text-[#FAF8F5] flex flex-col justify-center items-center p-8 sm:p-12 text-center select-none transition-colors duration-500 paper-ivory">
         {/* Ambient atmospheric backdrop light */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-rosegold/10 dark:bg-rosegold/5 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDuration: '6s' }} />
@@ -721,7 +729,8 @@ export default function HomeView({
           )}
 
         </AnimatePresence>
-      </div>
+      </div>,
+      document.body
     );
   }
 
