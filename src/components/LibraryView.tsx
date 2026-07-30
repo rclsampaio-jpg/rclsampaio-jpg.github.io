@@ -13,6 +13,7 @@ import {
 import { Language, LibraryAsset, SupportConfig, UserProgress } from '../types';
 import { loadLibraryAssets, saveLibraryAssets, loadSupportConfig } from '../data/ecosystemData';
 import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
+import DocumentPreviewModal from './DocumentPreviewModal';
 
 interface LibraryViewProps {
   lang: Language;
@@ -39,6 +40,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   
   // Media Player states
   const [activeAsset, setActiveAsset] = useState<LibraryAsset | null>(null);
+  const [previewDoc, setPreviewDoc] = useState<LibraryAsset | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [showCaptions, setShowCaptions] = useState(true);
@@ -103,10 +105,12 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
     }
     // Downloadable documents (PDFs, worksheets) aren't playable media — the
     // inline player only knows how to render <audio>/<video>, so trying to
-    // "play" a .pdf/.docx there would just show a broken black box. Download
-    // or open them directly instead.
+    // "play" a .pdf/.docx there would just show a broken black box. Show the
+    // in-app document viewer instead, which has its own explicit download
+    // button (native PDF viewer chrome isn't reliably available, especially
+    // in the iOS "Add to Home Screen" standalone app).
     if (asset.category === 'pdfs' || asset.category === 'workbooks' || /\.(pdf|docx?|pptx?|xlsx?)$/i.test(asset.mediaUrl)) {
-      window.open(asset.mediaUrl, '_blank', 'noopener,noreferrer');
+      setPreviewDoc(asset);
       return;
     }
     setActiveAsset(asset);
@@ -313,6 +317,8 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
       completed: 'Concluído',
       markCompleted: 'Marcar como Concluído',
       downloadBtn: 'Download de Recurso',
+      downloadDoc: 'Baixar',
+      closeDoc: 'Fechar',
       speed: 'Velocidade',
       captions: 'Legendas',
       pip: 'Mini Player',
@@ -352,6 +358,8 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
       completed: 'Completed',
       markCompleted: 'Mark as Completed',
       downloadBtn: 'Download Resource',
+      downloadDoc: 'Download',
+      closeDoc: 'Close',
       speed: 'Playback Speed',
       captions: 'Captions',
       pip: 'Picture in Picture',
@@ -391,6 +399,8 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
       completed: 'Completado',
       markCompleted: 'Marcar como Completado',
       downloadBtn: 'Descargar Recurso',
+      downloadDoc: 'Descargar',
+      closeDoc: 'Cerrar',
       speed: 'Velocidad',
       captions: 'Subtítulos',
       pip: 'Mini Reproductor',
@@ -965,6 +975,16 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
           )}
         </AnimatePresence>
       </div>
+      )}
+
+      {previewDoc && (
+        <DocumentPreviewModal
+          url={previewDoc.mediaUrl}
+          title={previewDoc.title[lang] || previewDoc.title['pt']}
+          downloadLabel={trans.downloadDoc}
+          closeLabel={trans.closeDoc}
+          onClose={() => setPreviewDoc(null)}
+        />
       )}
 
     </div>

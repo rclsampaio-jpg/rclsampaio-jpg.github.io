@@ -137,9 +137,12 @@ export default function App() {
 
   useEffect(() => {
     if (!showOpeningSplash) return;
+    // 2.5s, not 6.5s — returning users hit this screen on every login before
+    // even reaching the "Começar Jornada de Hoje" gate, so a long wait here
+    // is pure friction, not a first-impression moment.
     const timer = setTimeout(() => {
       setShowOpeningSplash(false);
-    }, 6500);
+    }, 2500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -536,7 +539,7 @@ export default function App() {
               opacity: [0, 1, 1, 1, 1, 0]
             }}
             transition={{
-              duration: 6.5,
+              duration: 2.3,
               ease: "easeInOut"
             }}
             className="absolute"
@@ -556,7 +559,7 @@ export default function App() {
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-md w-full relative z-20"
         >
           <RenaSerLogo variant="vertical" size={92} lang={lang} />
