@@ -468,7 +468,7 @@ export default function CmsView({
               }`}
             >
               <FileText className="h-4 w-4" />
-              <span>Alunos & Diários</span>
+              <span>Usuários & Convites</span>
             </button>
           </nav>
         </div>

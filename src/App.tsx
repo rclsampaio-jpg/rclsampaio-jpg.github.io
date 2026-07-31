@@ -49,7 +49,6 @@ const MyTransformationView = lazy(() => import('./components/MyTransformationVie
 const CommunityView = lazy(() => import('./components/CommunityView'));
 const LibraryView = lazy(() => import('./components/LibraryView'));
 const BrandIdentityView = lazy(() => import('./components/BrandIdentityView'));
-const InviteAdminPanel = lazy(() => import('./components/auth/InviteAdminPanel'));
 
 import { adaptMessage, resolveGrammarPreference } from './utils/grammar';
 import { getLocalDateISO, getUnlockAnchorDateISO } from './utils/date';
@@ -1158,12 +1157,9 @@ function AppContent() {
             )}
 
             {activeTab === 'brand' && isAdminUnlocked && (
-              <>
-                <BrandIdentityView
-                  lang={lang}
-                />
-                <InviteAdminPanel />
-              </>
+              <BrandIdentityView
+                lang={lang}
+              />
             )}
           </Suspense>
           </motion.div>
