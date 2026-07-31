@@ -1,9 +1,11 @@
 // src/components/auth/InviteAdminPanel.tsx
 import { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 
 const SITE_URL = 'https://rclsampaio-jpg.github.io';
 
 export default function InviteAdminPanel() {
+  const { session } = useAuth();
   const [generating, setGenerating] = useState(false);
   const [lastCode, setLastCode] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +22,10 @@ export default function InviteAdminPanel() {
         headers: {
           'Content-Type': 'application/json',
           'apikey': supabaseAnonKey,
-          'Authorization': `Bearer ${supabaseAnonKey}`,
+          // Must be the caller's own session JWT, not the public anon key —
+          // the Edge Function now verifies this token and checks
+          // profiles.is_admin server-side (see supabase/functions/_shared/authAdmin.ts).
+          'Authorization': `Bearer ${session?.access_token ?? ''}`,
         },
       });
       const json = await res.json();

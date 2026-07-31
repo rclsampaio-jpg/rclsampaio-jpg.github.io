@@ -31,6 +31,7 @@ import {
   loadMentoringConfig, saveMentoringConfig,
   loadLibraryAssets, saveLibraryAssets
 } from '../data/ecosystemData';
+import AdminUsersPanel from './AdminUsersPanel';
 
 interface CmsViewProps {
   days: any[];
@@ -1707,44 +1708,7 @@ export default function CmsView({
         )}
 
         {/* Users list MODULE */}
-        {activeModule === 'users' && (
-          <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
-            <div className="border-b border-rose-100/10 pb-4">
-              <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
-                <Users className="h-5 w-5 text-rosegold" /> Alunos & Diários de bordo
-              </h1>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
-                Audite diários, feedbacks e certificados emitidos para os alunos ativos no portal.
-              </p>
-            </div>
-
-            <div className="divide-y divide-rose-100/15">
-              <div className="py-4 flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-rosegold/10 text-rosegold flex items-center justify-center font-bold">
-                    RS
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-slate-800 dark:text-white">rcl.sampaio@gmail.com</h4>
-                    <span className="text-[10px] text-slate-400">Aluno Primordial • Ativo hoje</span>
-                  </div>
-                </div>
-
-                <div className="text-right">
-                  <span className="text-xs font-bold text-rosegold block">Dia 30 / 30 Concluído</span>
-                  <span className="text-[9px] text-emerald-500 font-extrabold uppercase">Certificado Disponível</span>
-                </div>
-              </div>
-
-              <div className="py-4">
-                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Reflexões e Scrapbook Emocional Recente:</h4>
-                <div className="border border-rose-100/10 bg-[#FAF8F5]/30 p-3 rounded-xl text-xs leading-relaxed text-slate-600 italic">
-                  "Sinto que o portal de visibilidade me provou que errar é seguro. Gravar de forma imperfeita me libertou da autocrítica crônica. Minha voz agora pertence ao mundo."
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {activeModule === 'users' && <AdminUsersPanel />}
       </section>
     </div>
   );

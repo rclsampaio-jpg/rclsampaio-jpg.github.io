@@ -1,9 +1,6 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { requireAdmin, makeAdminClient } from '../_shared/authAdmin.ts';
 
-const supabaseAdmin = createClient(
-  Deno.env.get('SUPABASE_URL')!,
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
-);
+const supabaseAdmin = makeAdminClient();
 
 function randomCode(length = 8): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sem O/0/I/1, evita confusão visual
@@ -20,6 +17,9 @@ Deno.serve(async (req: Request) => {
     'Access-Control-Allow-Headers': 'authorization, apikey, content-type',
   };
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+
+  const auth = await requireAdmin(req, supabaseAdmin);
+  if (!auth.ok) return auth.response;
 
   const code = randomCode();
   const { error } = await supabaseAdmin.from('invite_codes').insert({ code });

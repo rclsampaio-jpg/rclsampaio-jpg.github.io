@@ -7,3 +7,4 @@ dist/
 .claude/
 .wrangler/
 .superpowers/
+supabase/.temp/
