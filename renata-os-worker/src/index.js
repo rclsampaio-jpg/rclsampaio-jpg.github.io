@@ -89,8 +89,10 @@ const OPENROUTER_MODELS = {
 
 const CHAT_HISTORY_LIMIT = 20;
 
-function corsHeaders(origin, allowedOrigin) {
-  const allowOrigin = origin === allowedOrigin ? origin : allowedOrigin;
+const ALLOWED_ORIGINS = ['https://renaser.renatacaroline.com.br', 'https://rclsampaio-jpg.github.io'];
+
+function corsHeaders(origin) {
+  const allowOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
     'Access-Control-Allow-Origin': allowOrigin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -212,6 +214,14 @@ async function saveExchange(supabase, userId, userText, assistantText) {
   }
 }
 
+// Free-pool models on OpenRouter occasionally queue up and hang far longer
+// than a chat UI should ever wait. Without a timeout, a slow primary model
+// blocks the whole request before the fallback even gets a chance, so a
+// single stuck call could cost the user a minute or more. Bounding each
+// attempt keeps the worst case (primary times out, then fallback also
+// times out) predictable instead of open-ended.
+const OPENROUTER_TIMEOUT_MS = 15_000;
+
 async function callOpenRouter(model, systemPrompt, history, userMessage, env) {
   const messages = [
     { role: 'system', content: systemPrompt },
@@ -219,16 +229,28 @@ async function callOpenRouter(model, systemPrompt, history, userMessage, env) {
     { role: 'user', content: userMessage }
   ];
 
-  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
-      'HTTP-Referer': 'https://rclsampaio-jpg.github.io',
-      'X-Title': 'RenaSer - Renata OS'
-    },
-    body: JSON.stringify({ model, messages })
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), OPENROUTER_TIMEOUT_MS);
+
+  let response;
+  try {
+    response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
+        'HTTP-Referer': 'https://rclsampaio-jpg.github.io',
+        'X-Title': 'RenaSer - Renata OS'
+      },
+      body: JSON.stringify({ model, messages }),
+      signal: controller.signal
+    });
+  } catch (err) {
+    if (err.name === 'AbortError') throw new Error(`OpenRouter timeout (${model})`);
+    throw err;
+  } finally {
+    clearTimeout(timeout);
+  }
 
   if (!response.ok) {
     throw new Error(`OpenRouter error (${model}): ${await response.text()}`);
@@ -260,7 +282,7 @@ async function getAIReply(systemPrompt, history, userMessage, env) {
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
-    const headers = corsHeaders(origin, env.ALLOWED_ORIGIN);
+    const headers = corsHeaders(origin);
     const { pathname } = new URL(request.url);
 
     if (request.method === 'OPTIONS') {

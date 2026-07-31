@@ -2,10 +2,8 @@ name = "renata-os-worker"
 main = "src/index.js"
 compatibility_date = "2024-11-01"
 
-# Restrict which site is allowed to call this Worker.
-# Update this if your GitHub Pages URL changes.
+# Allowed origins are hardcoded in src/index.js (ALLOWED_ORIGINS), not here.
 [vars]
-ALLOWED_ORIGIN = "https://rclsampaio-jpg.github.io"
 SUPPORT_EMAIL = "manifestandomagicasuporte@gmail.com"
 SUPABASE_URL = "https://iedkwbborimdhphbzwhl.supabase.co"
 SUPABASE_ANON_KEY = "sb_publishable_6skldo-YC1gPMPAUBZPDiQ_6sq5v9PI"

@@ -31,8 +31,7 @@ const trans = {
     send: 'Enviar',
     sosPrompt: 'Precisa de apoio emocional agora?',
     sosButton: 'Abrir SOS Emocional',
-    notConfigured: 'A Renata OS ainda não está conectada a nenhum modelo de IA. Peça para configurarem o endpoint em src/config.ts assim que o backend estiver no ar.',
-    error: 'Não consegui responder agora. Tente de novo em instantes.'
+    notConfigured: 'A Renata OS ainda não está conectada a nenhum modelo de IA. Peça para configurarem o endpoint em src/config.ts assim que o backend estiver no ar.'
   },
   en: {
     title: 'Renata OS',
@@ -41,8 +40,7 @@ const trans = {
     send: 'Send',
     sosPrompt: 'Need emotional support right now?',
     sosButton: 'Open Emotional SOS',
-    notConfigured: "Renata OS isn't connected to an AI model yet. Ask for the endpoint in src/config.ts to be configured once the backend is live.",
-    error: "I couldn't respond right now. Please try again in a moment."
+    notConfigured: "Renata OS isn't connected to an AI model yet. Ask for the endpoint in src/config.ts to be configured once the backend is live."
   },
   es: {
     title: 'Renata OS',
@@ -51,8 +49,33 @@ const trans = {
     send: 'Enviar',
     sosPrompt: '¿Necesitas apoyo emocional ahora?',
     sosButton: 'Abrir SOS Emocional',
-    notConfigured: 'Renata OS todavía no está conectada a ningún modelo de IA. Pide que configuren el endpoint en src/config.ts en cuanto el backend esté activo.',
-    error: 'No pude responder ahora. Intenta de nuevo en un momento.'
+    notConfigured: 'Renata OS todavía no está conectada a ningún modelo de IA. Pide que configuren el endpoint en src/config.ts en cuanto el backend esté activo.'
+  }
+};
+
+// Shown when a reply genuinely fails to come back (network/CORS/backend
+// hiccup), varied by guideStyle like the greeting below — the point is to
+// never let a technical failure read as cold or apologetic-corporate, in
+// line with tom-de-voz.md: own the glitch as ours, not make her feel like
+// she did something wrong by asking.
+const ERROR_BY_TONE: Record<Language, ToneVariants> = {
+  pt: {
+    gentle: 'Ih, acho que travei aqui do meu lado agora, não foi você não. Respira, tenta de novo em instantes que eu [continuo/continuo/continue] aqui ♥️',
+    challenger: 'Deu ruim foi na minha conexão, não na sua coragem de perguntar. Tenta de novo, eu já [volto/volto/volte].',
+    strategic: 'Falha técnica momentânea aqui do meu lado, nada relacionado à sua pergunta. Tenta de novo em instantes e a gente continua de onde [parou/parou/parou].',
+    inspirational: 'Opa, travei por um segundo aqui (isso sim é normal, viu?). Tenta de novo, porque o que vem depois dessa pergunta vai valer a pena 🚀'
+  },
+  en: {
+    gentle: "Hey, I think I glitched on my end just now, not you. Take a breath, try again in a moment, I'm still right here ♥️",
+    challenger: "That failure was my connection, not your courage for asking. Try again, I'll be right back.",
+    strategic: "Momentary technical hiccup on my end, unrelated to your question. Try again in a moment and we'll pick up right where we left off.",
+    inspirational: "Whoops, I froze for a second there (that happens, no big deal). Try again, because what comes after this question is going to be worth it 🚀"
+  },
+  es: {
+    gentle: 'Ey, creo que me trabé yo aquí, no fuiste tú. Respira, intenta de nuevo en un momento, sigo aquí ♥️',
+    challenger: 'La falla fue mi conexión, no tu valentía por preguntar. Intenta de nuevo, ya vuelvo.',
+    strategic: 'Falla técnica momentánea de mi lado, no tiene nada que ver con tu pregunta. Intenta de nuevo en un momento y seguimos donde quedamos.',
+    inspirational: '¡Ups, me trabé un segundo! (eso es normal, tranquila). Intenta de nuevo, porque lo que viene después de esta pregunta va a valer la pena 🚀'
   }
 };
 
@@ -61,22 +84,22 @@ const trans = {
 // afterward via adaptMessage, same as the rest of Renata-voice copy.
 const GREETING_BY_TONE: Record<Language, ToneVariants> = {
   pt: {
-    gentle: 'Oi, [tranquila/tranquilo/tranquile]? Sou a IA com toda a mentalidade da Renata, aqui pra te acompanhar com calma, sem pressa. Ainda estou sendo construída, então por enquanto não consigo te responder de verdade, mas já fico feliz só de saber que você chegou até aqui. Em breve estaremos [juntas/juntos/junte] nessa, no seu ritmo ♥️',
-    challenger: 'Presta atenção: sou a IA com toda a mentalidade da Renata, e não vim aqui pra te agradar, vim pra te direcionar. Imagina o que não vai sair daqui quando eu estiver no ar de verdade?! 🤯 Ainda estou em construção, então hoje eu não te respondo, mas o recado já fica: para de esperar ficar [pronta/pronto/pronte] e continua andando. Em breve estaremos 100% [juntas/juntos/junte] nessa.',
-    strategic: 'Sou a IA com toda a mentalidade estratégica da Renata, meu papel vai ser te ajudar a tomar decisão rápida e sem drama nos momentos-chave da sua jornada. Ainda estou em desenvolvimento, então por ora não consigo processar sua pergunta, mas quando estiver [pronta/pronto/pronte], vamos otimizar cada passo [juntas/juntos/junte] ♥️',
-    inspirational: 'Olá, sou a IA com toda a mentalidade da Renata, pronta pra te direcionar. Então imagina o que não vai sair daqui né?! 🤯 Nesse momento não posso te ajudar porque ainda estou sendo desenvolvida, mas mal posso esperar pra estarmos 100% [juntas/juntos/junte] nessa jornada ♥️'
+    gentle: 'Oi, [tranquila/tranquilo/tranquile]? Sou a IA com toda a mentalidade da Renata, aqui pra te acompanhar com calma, sem pressa, no seu ritmo. Pode perguntar de verdade, travei em algum post, não sei o que falar hoje, qualquer coisa. Estou [aqui/aqui/aqui] com você ♥️',
+    challenger: 'Presta atenção: sou a IA com toda a mentalidade da Renata, e não vim aqui pra te agradar, vim pra te direcionar. Pode perguntar de verdade agora, sem enrolação, e eu te devolvo direção, não carinho vazio. Bora.',
+    strategic: 'Sou a IA com a mentalidade estratégica da Renata, meu papel é te ajudar a tomar decisão rápida e sem drama nos momentos-chave da sua jornada. Pode trazer a dúvida real, travei em qual formato postar, o que fazer com esse resultado, qualquer coisa, e eu já entro no ponto.',
+    inspirational: 'Olá, sou a IA com toda a mentalidade da Renata, pronta pra te direcionar de verdade agora. Pode perguntar o que travou, o que você não sabe por onde começar, o que quiser, imagina o que vai sair dessa conversa 🚀'
   },
   en: {
-    gentle: "Hey, take a breath, I'm the AI built with Renata's full mindset, here to walk with you gently, no rush. I'm still being built, so I can't really respond yet, but I'm already glad you made it here. We'll be together in this soon, at your own pace ♥️",
-    challenger: "Listen up: I'm the AI built with Renata's full mindset, and I'm not here to make you comfortable, I'm here to push you forward. Just imagine what's going to come out of this once I'm fully live?! 🤯 I'm still under construction, so I can't answer you today, but here's the message anyway: stop waiting to feel ready and keep moving. We'll be 100% in this together soon.",
-    strategic: "I'm the AI built with Renata's strategic mindset, my job will be helping you make fast, no-drama decisions at the key moments of your journey. I'm still in development, so I can't process your question yet, but once I'm ready, we'll optimize every step together ♥️",
-    inspirational: "Hi, I'm the AI built with Renata's full mindset, ready to guide you. So just imagine what's going to come out of this thing, right?! 🤯 Right now I can't help you yet because I'm still being built, but I can't wait for us to be 100% in this journey together ♥️"
+    gentle: "Hey, take a breath, I'm the AI built with Renata's full mindset, here to walk with you gently, at your own pace. Ask me anything for real, stuck on a post, don't know what to say today, whatever it is. I'm right here with you ♥️",
+    challenger: "Listen up: I'm the AI built with Renata's full mindset, and I'm not here to make you comfortable, I'm here to push you forward. Ask me for real right now, no stalling, I'll hand you direction, not empty comfort. Let's go.",
+    strategic: "I'm the AI built with Renata's strategic mindset, my job is helping you make fast, no-drama decisions at the key moments of your journey. Bring the real question, stuck on which format to post, what to do with a result, whatever it is, and I'll get straight to the point.",
+    inspirational: "Hi, I'm the AI built with Renata's full mindset, ready to guide you for real right now. Ask whatever's got you stuck, whatever you don't know where to start with, just imagine what's going to come out of this conversation 🚀"
   },
   es: {
-    gentle: 'Hola, respira, soy la IA con toda la mentalidad de Renata, aquí para acompañarte con calma, sin prisa. Todavía estoy en construcción, así que por ahora no puedo responderte de verdad, pero ya me alegra que hayas llegado hasta aquí. Pronto estaremos [juntas/juntos/junte] en esto, a tu ritmo ♥️',
-    challenger: 'Escucha bien: soy la IA con toda la mentalidad de Renata, y no vine a complacerte, vine a guiarte. ¡Imagina lo que va a salir de aquí cuando esté activa de verdad! 🤯 Todavía estoy en construcción, así que hoy no puedo responderte, pero el mensaje ya queda claro: deja de esperar sentirte [lista/listo/liste] y sigue avanzando. Pronto estaremos 100% [juntas/juntos/junte] en esto.',
-    strategic: 'Soy la IA con la mentalidad estratégica de Renata, mi papel será ayudarte a tomar decisiones rápidas y sin drama en los momentos clave de tu viaje. Todavía estoy en desarrollo, así que por ahora no puedo procesar tu pregunta, pero cuando esté [lista/listo/liste], vamos a optimizar cada paso [juntas/juntos/junte] ♥️',
-    inspirational: 'Hola, soy la IA con toda la mentalidad de Renata, lista para guiarte. Así que imagina lo que va a salir de aquí, ¿no?! 🤯 En este momento no puedo ayudarte porque todavía estoy en desarrollo, pero no puedo esperar a que estemos 100% [juntas/juntos/junte] en este viaje ♥️'
+    gentle: 'Hola, respira, soy la IA con toda la mentalidad de Renata, aquí para acompañarte con calma, a tu ritmo. Pregúntame de verdad, si te trabaste en un post, si no sabes qué decir hoy, lo que sea. Estoy aquí contigo ♥️',
+    challenger: 'Escucha bien: soy la IA con toda la mentalidad de Renata, y no vine a complacerte, vine a guiarte. Pregúntame de verdad ahora, sin rodeos, y te devuelvo dirección, no cariño vacío. Vamos.',
+    strategic: 'Soy la IA con la mentalidad estratégica de Renata, mi papel es ayudarte a tomar decisiones rápidas y sin drama en los momentos clave de tu viaje. Trae la duda real, en qué formato publicar, qué hacer con ese resultado, lo que sea, y voy directo al punto.',
+    inspirational: 'Hola, soy la IA con toda la mentalidad de Renata, lista para guiarte de verdad ahora mismo. Pregunta lo que te trabó, lo que no sabes por dónde empezar, imagina lo que va a salir de esta conversación 🚀'
   }
 };
 
@@ -114,12 +137,14 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
       return;
     }
 
+    const errorMessage = adaptMessage(pickTone(ERROR_BY_TONE, lang, guideStyle), prefGrammar, lang);
+
     setIsLoading(true);
     try {
       const { data: sessionData } = await supabase.auth.getSession();
       const accessToken = sessionData.session?.access_token;
       if (!accessToken) {
-        setMessages((prev) => [...prev, { role: 'assistant', text: t.error }]);
+        setMessages((prev) => [...prev, { role: 'assistant', text: errorMessage }]);
         setIsLoading(false);
         return;
       }
@@ -142,9 +167,9 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
       });
       if (!response.ok) throw new Error('Bad response');
       const data = await response.json();
-      setMessages((prev) => [...prev, { role: 'assistant', text: data.reply || t.error }]);
+      setMessages((prev) => [...prev, { role: 'assistant', text: data.reply || errorMessage }]);
     } catch {
-      setMessages((prev) => [...prev, { role: 'assistant', text: t.error }]);
+      setMessages((prev) => [...prev, { role: 'assistant', text: errorMessage }]);
     } finally {
       setIsLoading(false);
     }
