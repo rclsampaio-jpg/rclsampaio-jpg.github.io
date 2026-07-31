@@ -13,8 +13,16 @@ export default function InviteAdminPanel() {
     setGenerating(true);
     setError(null);
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
     try {
-      const res = await fetch(`${supabaseUrl}/functions/v1/admin-generate-invite`, { method: 'POST' });
+      const res = await fetch(`${supabaseUrl}/functions/v1/admin-generate-invite`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseAnonKey,
+          'Authorization': `Bearer ${supabaseAnonKey}`,
+        },
+      });
       const json = await res.json();
       if (!json.code) {
         setError('Não foi possível gerar o código.');

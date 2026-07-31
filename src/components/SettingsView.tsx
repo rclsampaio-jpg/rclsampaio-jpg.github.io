@@ -6,7 +6,7 @@
 import { motion } from 'motion/react';
 import {
   Trash2, Globe, Flame, RefreshCcw, User, ShieldAlert,
-  Sparkles, Play, Sun, Moon
+  Sparkles, Play, Sun, Moon, LogOut
 } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { resolveGrammarPreference } from '../utils/grammar';
@@ -22,6 +22,7 @@ interface SettingsViewProps {
   onThemeChange: (theme: 'light' | 'dark') => void;
   onUpdateProgress: (updated: UserProgress) => void;
   isAdminUnlocked: boolean;
+  onSignOut: () => void;
 }
 
 export default function SettingsView({
@@ -35,6 +36,7 @@ export default function SettingsView({
   onThemeChange,
   onUpdateProgress,
   isAdminUnlocked,
+  onSignOut,
 }: SettingsViewProps) {
 
   const totalCompleted = progress.completionHistory.length;
@@ -60,6 +62,8 @@ export default function SettingsView({
       unlockedStatus: 'Status do Next Level',
       unlockedEligible: 'Elegível - Clique no botão "Next Level" na barra de navegação',
       unlockedLocked: 'Bloqueado (Requer completar todos os 30 dias)',
+      accountTitle: 'Sua Conta',
+      signOutBtn: 'Sair da Conta',
     },
     en: {
       accountProfile: 'Your Visibility Profile',
@@ -80,6 +84,8 @@ export default function SettingsView({
       unlockedStatus: 'Next Level Status',
       unlockedEligible: 'Eligible - Click "Next Level" in the navigation bar',
       unlockedLocked: 'Locked (Requires Day 30 completion)',
+      accountTitle: 'Your Account',
+      signOutBtn: 'Sign Out',
     },
     es: {
       accountProfile: 'Tu Perfil de Visibilidad',
@@ -100,6 +106,8 @@ export default function SettingsView({
       unlockedStatus: 'Estado de Next Level',
       unlockedEligible: 'Elegible - Haz clic en "Next Level" en la barra de navegación',
       unlockedLocked: 'Bloqueado (Requiere completar el Día 30)',
+      accountTitle: 'Tu Cuenta',
+      signOutBtn: 'Cerrar Sesión',
     }
   }[lang];
 
@@ -121,7 +129,28 @@ export default function SettingsView({
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
-      
+
+      {/* 0. Account */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white dark:bg-warmbrown-light border border-rose-100/40 dark:border-rosegold/10 rounded-3xl p-6 shadow-rosegold space-y-4"
+      >
+        <div className="flex items-center gap-2.5">
+          <User className="h-5 w-5 text-rosegold" />
+          <h3 className="text-sm font-sans font-medium text-slate-800 dark:text-warmwhite uppercase tracking-wider">
+            {textDict.accountTitle}
+          </h3>
+        </div>
+        <button
+          onClick={onSignOut}
+          className="px-5 py-3 bg-rose-50 dark:bg-rose-950/20 hover:bg-rose-100 dark:hover:bg-rose-950/30 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer flex items-center gap-2"
+        >
+          <LogOut className="h-4 w-4" />
+          {textDict.signOutBtn}
+        </button>
+      </motion.div>
+
       {/* 1. Language Toggle */}
       <motion.div 
         initial={{ opacity: 0, y: 15 }}

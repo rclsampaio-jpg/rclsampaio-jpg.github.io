@@ -2,6 +2,7 @@
 import { useState, type FormEvent } from 'react';
 import RenaSerLogo from '../RenaSerLogo';
 import ButterflyIcon from '../ButterflyIcon';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface SignupViewProps {
   inviteCodeFromUrl: string | null;
@@ -10,27 +11,45 @@ interface SignupViewProps {
 }
 
 export default function SignupView({ inviteCodeFromUrl, onSwitchToLogin, onSignupSuccess }: SignupViewProps) {
+  const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState(inviteCodeFromUrl ?? '');
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
+    setSuccessMessage(null);
 
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
     try {
       const res = await fetch(`${supabaseUrl}/functions/v1/validate-invite-and-signup`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseAnonKey,
+          'Authorization': `Bearer ${supabaseAnonKey}`,
+        },
         body: JSON.stringify({ email, password, code }),
       });
       const json = await res.json();
       if (!json.success) {
         setError(json.error ?? 'Não foi possível criar a conta.');
+        setSubmitting(false);
+        return;
+      }
+
+      // Account created with email_confirm: true, so credentials are valid
+      // immediately — sign in directly instead of dead-ending on a blank
+      // login screen with no feedback (I4).
+      const { error: signInError } = await signIn(email, password);
+      if (signInError) {
+        setSuccessMessage('Conta criada com sucesso! Faça login para continuar.');
         setSubmitting(false);
         return;
       }
@@ -82,6 +101,7 @@ export default function SignupView({ inviteCodeFromUrl, onSwitchToLogin, onSignu
           />
         </div>
         {error && <p className="text-xs text-rose-500 font-medium">{error}</p>}
+        {successMessage && <p className="text-xs text-emerald-600 font-medium">{successMessage}</p>}
         <button
           type="submit"
           disabled={submitting}

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Compass, Star, Settings, ShieldAlert,
@@ -12,10 +12,9 @@ import {
 
 import { MissionDay, Language, UserProgress } from './types';
 import { 
-  loadDaysFromStorage, 
-  saveDaysToStorage, 
-  loadUserProgressFromStorage, 
-  saveUserProgressToStorage,
+  loadDaysFromStorage,
+  saveDaysToStorage,
+  loadUserProgressFromStorage,
   generateInitialDays
 } from './data/templateData';
 
@@ -43,7 +42,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginView from './components/auth/LoginView';
 import SignupView from './components/auth/SignupView';
 import InviteAdminPanel from './components/auth/InviteAdminPanel';
-import { useProgressSync } from './hooks/useProgressSync';
+import { useProgressSync, clearLocalProgressCache } from './hooks/useProgressSync';
 
 import { adaptMessage, resolveGrammarPreference } from './utils/grammar';
 import { getLocalDateISO, getUnlockAnchorDateISO } from './utils/date';
@@ -62,12 +61,27 @@ export default function App() {
 function AppContent() {
   const system = useSystem();
 
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
   const inviteCodeFromUrl = new URLSearchParams(window.location.search).get('codigo');
   const [authMode, setAuthMode] = useState<'login' | 'signup'>(inviteCodeFromUrl ? 'signup' : 'login');
 
   const { progress, updateProgress } = useProgressSync(loadUserProgressFromStorage());
   const [days, setDays] = useState<MissionDay[]>(() => loadDaysFromStorage(progress.journeyStartDate));
+  const loadedJourneyStartDate = useRef(progress.journeyStartDate);
+
+  // Cross-device sync: if the cloud replaces `progress` with a different
+  // journeyStartDate (e.g. first login on a new device), recompute the
+  // journey calendar instead of keeping the stale local one (I3).
+  useEffect(() => {
+    if (progress.journeyStartDate === loadedJourneyStartDate.current) return;
+    loadedJourneyStartDate.current = progress.journeyStartDate;
+    setDays(loadDaysFromStorage(progress.journeyStartDate));
+  }, [progress.journeyStartDate]);
+
+  const handleSignOut = async () => {
+    await signOut();
+    clearLocalProgressCache();
+  };
   const [lang, setLang] = useState<Language>('pt'); // Default language
   const [activeTab, setActiveTab] = useState<TabId>('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -1056,6 +1070,7 @@ function AppContent() {
                 onThemeChange={handleThemeChange}
                 onUpdateProgress={updateProgress}
                 isAdminUnlocked={isAdminUnlocked}
+                onSignOut={handleSignOut}
               />
             )}
 
