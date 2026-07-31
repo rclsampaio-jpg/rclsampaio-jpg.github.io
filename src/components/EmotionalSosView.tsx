@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Heart, Wind, ArrowLeft, ShieldCheck, Sparkles, UserCheck, HelpCircle, AlertCircle, Headphones, RefreshCw, BookOpen } from 'lucide-react';
+import { Heart, Wind, ArrowLeft, ShieldCheck, Sparkles, HelpCircle, Headphones, RefreshCw, BookOpen, Moon, Waves, Zap } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, ToneVariants } from '../utils/grammar';
 
@@ -17,8 +17,42 @@ interface EmotionalSosViewProps {
   onUpdateProgress?: (updated: UserProgress) => void;
 }
 
-type BreathingState = 'idle' | 'inhale' | 'hold1' | 'exhale' | 'hold2';
-type SosStage = 'breathing' | 'categorySelect' | 'messageReveal' | 'feedback' | 'alternative';
+type SosStage = 'categorySelect' | 'techniqueSelect' | 'breathing' | 'messageReveal' | 'feedback' | 'alternative';
+type PhaseKey = 'inhale' | 'inhale2' | 'hold1' | 'exhale' | 'hold2';
+
+interface BreathPhase {
+  key: PhaseKey;
+  seconds: number;
+}
+
+interface BreathTechnique {
+  id: string;
+  icon: 'wind' | 'moon' | 'waves' | 'zap';
+  name: string;
+  tagline: string;
+  physiology: string;
+  phases: BreathPhase[];
+  cyclesTarget: number;
+}
+
+const TECHNIQUE_ICON = {
+  wind: Wind,
+  moon: Moon,
+  waves: Waves,
+  zap: Zap,
+};
+
+// Recommends a technique per friction category, based on which nervous-system
+// effect actually matches the physiology of that state (panic needs a fast
+// vagal brake, overwhelm needs deep parasympathetic drop, fear/impostor/
+// judgment need steady baseline regulation before a cognitive reframe lands).
+const CATEGORY_TECHNIQUE_MAP: Record<string, string> = {
+  panic: 'cyclicSigh',
+  overwhelm: 'fourSevenEight',
+  fear: 'coherent',
+  impostor: 'box',
+  judgment: 'coherent',
+};
 
 export default function EmotionalSosView({
   lang,
@@ -29,71 +63,202 @@ export default function EmotionalSosView({
 }: EmotionalSosViewProps) {
   const prefGrammar = resolveGrammarPreference(progress?.grammarPreference);
   const guideStyle = resolveGuideStyle(progress?.guideStyle);
-  const [stage, setStage] = useState<SosStage>('breathing');
-  const [breathState, setBreathState] = useState<BreathingState>('idle');
+  const [stage, setStage] = useState<SosStage>('categorySelect');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTechniqueId, setSelectedTechniqueId] = useState<string | null>(null);
+  const [phaseIndex, setPhaseIndex] = useState(0);
+  const [isBreathing, setIsBreathing] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(4);
   const [cyclesCompleted, setCyclesCompleted] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [feedbackResult, setFeedbackResult] = useState<'yes' | 'not_yet' | null>(null);
   const [chosenAltResource, setChosenAltResource] = useState<'letter' | 'breathing' | null>(null);
 
-  // Box Breathing cycle: 4 seconds each phase (extremely slow, calming pacing)
+  const techniques: Record<string, BreathTechnique> = {
+    box: {
+      id: 'box',
+      icon: 'wind',
+      name: {
+        pt: 'Respiração Quadrada',
+        en: 'Box Breathing',
+        es: 'Respiración Cuadrada'
+      }[lang],
+      tagline: {
+        pt: 'Estabiliza o foco antes de agir',
+        en: 'Stabilizes focus before acting',
+        es: 'Estabiliza el enfoque antes de actuar'
+      }[lang],
+      physiology: {
+        pt: 'Usada por operadores de elite sob pressão: quatro tempos iguais criam uma pausa consciente entre estímulo e reação, ativando o córtex pré-frontal e tirando você do modo automático de alerta.',
+        en: 'Used by operators under pressure: four equal counts create a conscious pause between stimulus and reaction, engaging the prefrontal cortex and pulling you out of automatic alert mode.',
+        es: 'Usada por operadores bajo presión: cuatro tiempos iguales crean una pausa consciente entre estímulo y reacción, activando la corteza prefrontal y sacándote del modo automático de alerta.'
+      }[lang],
+      phases: [
+        { key: 'inhale', seconds: 4 },
+        { key: 'hold1', seconds: 4 },
+        { key: 'exhale', seconds: 4 },
+        { key: 'hold2', seconds: 4 },
+      ],
+      cyclesTarget: 4,
+    },
+    fourSevenEight: {
+      id: 'fourSevenEight',
+      icon: 'moon',
+      name: '4-7-8',
+      tagline: {
+        pt: 'Desliga o alarme interno',
+        en: 'Turns off the inner alarm',
+        es: 'Apaga la alarma interna'
+      }[lang],
+      physiology: {
+        pt: 'A expiração quase o dobro da inspiração ativa fortemente o nervo vago, derrubando frequência cardíaca e cortisol em minutos — a técnica mais indicada para sobrecarga, exaustão e travamento de sono.',
+        en: 'An exhale nearly double the inhale strongly activates the vagus nerve, dropping heart rate and cortisol within minutes — the most indicated technique for overwhelm, exhaustion and sleep blocks.',
+        es: 'Una exhalación casi el doble de la inhalación activa fuertemente el nervio vago, bajando la frecuencia cardíaca y el cortisol en minutos — la técnica más indicada para sobrecarga, agotamiento y bloqueo de sueño.'
+      }[lang],
+      phases: [
+        { key: 'inhale', seconds: 4 },
+        { key: 'hold1', seconds: 7 },
+        { key: 'exhale', seconds: 8 },
+      ],
+      cyclesTarget: 3,
+    },
+    coherent: {
+      id: 'coherent',
+      icon: 'waves',
+      name: {
+        pt: 'Respiração Coerente',
+        en: 'Coherent Breathing',
+        es: 'Respiración Coherente'
+      }[lang],
+      tagline: {
+        pt: 'Recalibra sua linha de base',
+        en: 'Recalibrates your baseline',
+        es: 'Recalibra tu línea base'
+      }[lang],
+      physiology: {
+        pt: 'Sem pausas, em ritmo constante de cerca de 5,5 respirações por minuto — a cadência que mais eleva a variabilidade cardíaca (HRV), o principal marcador biológico de resiliência emocional. Ideal antes de encarar medo, síndrome do impostor ou julgamento externo, onde o corpo precisa de base estável antes da mente reformular o pensamento.',
+        en: 'No pauses, at a steady pace of about 5.5 breaths per minute — the cadence that most raises heart-rate variability (HRV), the leading biological marker of emotional resilience. Ideal before facing fear, impostor syndrome or external judgment, where the body needs a stable base before the mind can reframe the thought.',
+        es: 'Sin pausas, a un ritmo constante de unas 5,5 respiraciones por minuto — la cadencia que más eleva la variabilidad cardíaca (HRV), el principal marcador biológico de resiliencia emocional. Ideal antes de enfrentar miedo, síndrome del impostor o juicio externo, donde el cuerpo necesita una base estable antes de que la mente reformule el pensamiento.'
+      }[lang],
+      phases: [
+        { key: 'inhale', seconds: 6 },
+        { key: 'exhale', seconds: 6 },
+      ],
+      cyclesTarget: 5,
+    },
+    cyclicSigh: {
+      id: 'cyclicSigh',
+      icon: 'zap',
+      name: {
+        pt: 'Suspiro Cíclico',
+        en: 'Cyclic Sighing',
+        es: 'Suspiro Cíclico'
+      }[lang],
+      tagline: {
+        pt: 'O reset mais rápido para o pânico',
+        en: 'The fastest reset for panic',
+        es: 'El reinicio más rápido para el pánico'
+      }[lang],
+      physiology: {
+        pt: 'Duas inspirações pelo nariz — a segunda curta, para reinsuflar os alvéolos colapsados pela respiração superficial da ansiedade — seguidas de uma expiração longa pela boca. Estudo de Stanford (2023) mostrou que é o padrão respiratório mais eficaz para derrubar a ansiedade aguda em minutos, mais rápido que meditação.',
+        en: 'Two inhales through the nose — the second short, to reinflate alveoli collapsed by anxiety\'s shallow breathing — followed by one long exhale through the mouth. A Stanford study (2023) found this the most effective breathing pattern for dropping acute anxiety within minutes, faster than meditation.',
+        es: 'Dos inhalaciones por la nariz — la segunda corta, para reinflar los alvéolos colapsados por la respiración superficial de la ansiedad — seguidas de una exhalación larga por la boca. Un estudio de Stanford (2023) mostró que es el patrón respiratorio más eficaz para bajar la ansiedad aguda en minutos, más rápido que la meditación.'
+      }[lang],
+      phases: [
+        { key: 'inhale', seconds: 2 },
+        { key: 'inhale2', seconds: 1 },
+        { key: 'exhale', seconds: 6 },
+      ],
+      cyclesTarget: 6,
+    },
+  };
+
+  const phaseLabels: Record<PhaseKey, string> = {
+    pt: {
+      inhale: 'Inspire pelo nariz',
+      inhale2: 'Mais um pouco de ar',
+      hold1: 'Segure',
+      exhale: 'Solte devagar',
+      hold2: 'Fique vazio',
+    },
+    en: {
+      inhale: 'Inhale through the nose',
+      inhale2: 'A little more air',
+      hold1: 'Hold',
+      exhale: 'Release slowly',
+      hold2: 'Stay empty',
+    },
+    es: {
+      inhale: 'Inhala por la nariz',
+      inhale2: 'Un poco más de aire',
+      hold1: 'Retén',
+      exhale: 'Suelta despacio',
+      hold2: 'Quédate vacío',
+    },
+  }[lang] as Record<PhaseKey, string>;
+
+  const activeTechnique = selectedTechniqueId ? techniques[selectedTechniqueId] : null;
+
+  // Generic phase engine: drives any technique's phase array, not just box
+  // breathing — advancing to the next phase (or looping to phase 0 and
+  // counting a completed cycle) every time the current phase's seconds run out.
   useEffect(() => {
-    if (breathState === 'idle') return;
+    if (!isBreathing || !activeTechnique) return;
 
     const timer = setInterval(() => {
       setSecondsLeft((prev) => {
         if (prev <= 1) {
-          // Switch states
-          let nextState: BreathingState = 'idle';
-          setBreathState((currentState) => {
-            switch (currentState) {
-              case 'inhale': 
-                nextState = 'hold1';
-                return 'hold1';
-              case 'hold1': 
-                nextState = 'exhale';
-                return 'exhale';
-              case 'exhale': 
-                nextState = 'hold2';
-                return 'hold2';
-              case 'hold2': 
-                nextState = 'inhale';
-                setCyclesCompleted(c => c + 1);
-                return 'inhale';
-              default: return 'idle';
+          setPhaseIndex((currentIndex) => {
+            const nextIndex = currentIndex + 1;
+            if (nextIndex >= activeTechnique.phases.length) {
+              setCyclesCompleted((c) => c + 1);
+              return 0;
             }
+            return nextIndex;
           });
-          return 4; // Reset phase duration
+          const upcomingIndex = (phaseIndex + 1) % activeTechnique.phases.length;
+          return activeTechnique.phases[upcomingIndex].seconds;
         }
         return prev - 1;
       });
-    }, 1200); // 1.2s intervals to feel slower and calmer
+    }, 1000);
 
     return () => clearInterval(timer);
-  }, [breathState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isBreathing, activeTechnique]);
+
+  const handleSelectTechnique = (id: string) => {
+    setSelectedTechniqueId(id);
+    setPhaseIndex(0);
+    setCyclesCompleted(0);
+    setIsBreathing(false);
+    setSecondsLeft(techniques[id].phases[0].seconds);
+    setStage('breathing');
+  };
 
   const handleStartBreathing = () => {
-    setBreathState('inhale');
-    setSecondsLeft(4);
+    setIsBreathing(true);
   };
 
   const handleStopBreathing = () => {
-    setBreathState('idle');
+    setIsBreathing(false);
   };
 
   // Translations and dynamic responses
   const localText = {
     pt: {
-      breathingTitle: 'Santuário de Respiração Consciente',
-      breathingCta: 'Iniciar Ciclo de Respiração',
-      breathingStop: 'Pausar Respiração',
-      breathingCycles: 'Ciclos concluídos: {count}',
-      breathingProceed: 'Respirei. Ver Mensagens de Sintonização',
-      breathingProceedHint: 'Recomendamos completar pelo menos 1 ciclo completo antes de prosseguir.',
       back: 'Sair do SOS',
       categoryTitle: 'O que está travando você agora?',
       categoryDesc: 'Escolha o ponto de fricção que mais ressoa com o seu sentimento neste momento.',
+      techniqueEyebrow: 'Regulação do Sistema Nervoso',
+      techniqueTitleFor: 'Recomendado para o que você está sentindo',
+      techniqueOtherOptions: 'Outras técnicas disponíveis',
+      techniqueRecommended: 'Recomendada agora',
+      breathingCta: 'Iniciar Respiração',
+      breathingStop: 'Pausar',
+      breathingCycles: 'Ciclos concluídos: {count} de {target}',
+      breathingProceed: 'Respirei. Ver Mensagens de Sintonização',
+      breathingProceedHint: 'Recomendamos completar pelo menos 1 ciclo completo antes de prosseguir.',
+      breathingChangeTechnique: 'Trocar técnica',
       revealTitle: 'Sintonização de Alinhamento',
       feedbackQ: 'Esta mensagem te ajudou?',
       feedbackYes: 'Sim, ajudou',
@@ -103,22 +268,21 @@ export default function EmotionalSosView({
       altOptionPineal: 'Ouvir Áudio de Alinhamento (Descalcificação da Glândula Pineal)',
       letterTitle: 'Uma Carta para Você',
       letterClose: 'Concluir Sintonização',
-      inhale: 'Inspire...',
-      hold1: 'Prenda o Ar...',
-      exhale: 'Expire devagar...',
-      hold2: 'Mantenha Vazio...',
-      idle: 'Respire fundo...'
     },
     en: {
-      breathingTitle: 'Conscious Breathing Sanctuary',
-      breathingCta: 'Start Breathing Cycle',
-      breathingStop: 'Pause Breathing',
-      breathingCycles: 'Cycles completed: {count}',
-      breathingProceed: 'I Breathed. See Tuning Messages',
-      breathingProceedHint: 'We recommend completing at least 1 full cycle before proceeding.',
       back: 'Exit SOS',
       categoryTitle: 'What is blocking you right now?',
       categoryDesc: 'Select the friction point that most matches your current state of mind.',
+      techniqueEyebrow: 'Nervous System Regulation',
+      techniqueTitleFor: 'Recommended for what you are feeling',
+      techniqueOtherOptions: 'Other techniques available',
+      techniqueRecommended: 'Recommended now',
+      breathingCta: 'Start Breathing',
+      breathingStop: 'Pause',
+      breathingCycles: 'Cycles completed: {count} of {target}',
+      breathingProceed: 'I Breathed. See Tuning Messages',
+      breathingProceedHint: 'We recommend completing at least 1 full cycle before proceeding.',
+      breathingChangeTechnique: 'Change technique',
       revealTitle: 'Alignment Tuning',
       feedbackQ: 'Did this message help you?',
       feedbackYes: 'Yes, it helped',
@@ -128,22 +292,21 @@ export default function EmotionalSosView({
       altOptionPineal: 'Listen to the Alignment Audio (Pineal Gland Decalcification)',
       letterTitle: 'A Letter for You',
       letterClose: 'Complete Tuning',
-      inhale: 'Inhale...',
-      hold1: 'Hold Breath...',
-      exhale: 'Exhale slowly...',
-      hold2: 'Stay Empty...',
-      idle: 'Breathe deep...'
     },
     es: {
-      breathingTitle: 'Santuario de Respiración Consciente',
-      breathingCta: 'Iniciar Ciclo Respiratorio',
-      breathingStop: 'Pausar Respiración',
-      breathingCycles: 'Ciclos completados: {count}',
-      breathingProceed: 'Ya respiré. Ver Mensajes de Apoyo',
-      breathingProceedHint: 'Recomendamos completar al menos 1 ciclo antes de continuar.',
       back: 'Salir del SOS',
       categoryTitle: '¿Qué te está deteniendo ahora?',
       categoryDesc: 'Elige el punto de fricción que más resuena con tu sentimiento en este momento.',
+      techniqueEyebrow: 'Regulación del Sistema Nervioso',
+      techniqueTitleFor: 'Recomendado para lo que estás sintiendo',
+      techniqueOtherOptions: 'Otras técnicas disponibles',
+      techniqueRecommended: 'Recomendada ahora',
+      breathingCta: 'Iniciar Respiración',
+      breathingStop: 'Pausar',
+      breathingCycles: 'Ciclos completados: {count} de {target}',
+      breathingProceed: 'Ya respiré. Ver Mensajes de Apoyo',
+      breathingProceedHint: 'Recomendamos completar al menos 1 ciclo antes de continuar.',
+      breathingChangeTechnique: 'Cambiar técnica',
       revealTitle: 'Sintonización de Alineación',
       feedbackQ: '¿Te ayudó este mensaje?',
       feedbackYes: 'Sí, me ayudó',
@@ -153,29 +316,17 @@ export default function EmotionalSosView({
       altOptionPineal: 'Escuchar Audio de Alineación (Descalcificación de la Glándula Pineal)',
       letterTitle: 'Una Carta para Ti',
       letterClose: 'Concluir Sintonización',
-      inhale: 'Inhala...',
-      hold1: 'Retén el Aire...',
-      exhale: 'Exhala despacio...',
-      hold2: 'Mantente Vacío...',
-      idle: 'Respira hondo...'
     }
   }[lang];
 
   // Renata-voice comfort copy that varies by guideStyle (gentle/challenger/
   // strategic/inspirational). "inspirational" preserves the original wording.
   const toneText: Record<Language, {
-    breathingDesc: ToneVariants;
     feedbackSuccess: ToneVariants;
     altTitle: ToneVariants;
     altDesc: ToneVariants;
   }> = {
     pt: {
-      breathingDesc: {
-        gentle: 'Sua respiração pode ser o seu porto seguro agora. Não precisa fazer nada além de acompanhá-la, devagar, no seu próprio tempo.',
-        challenger: 'Sua respiração é a ferramenta mais rápida que você tem pra sair da reação e voltar ao controle. Use-a agora, sem enrolar.',
-        strategic: 'A respiração regula seu sistema nervoso em minutos — é o passo mais eficiente antes de qualquer decisão. Faça pelo menos um ciclo completo antes de continuar.',
-        inspirational: 'Sua respiração é a sua única âncora física agora. Antes de ler qualquer conselho, traga sua presença para o momento presente.'
-      },
       feedbackSuccess: {
         gentle: 'Que bom que ajudou. Vá no seu tempo, e volte sempre que precisar de acolhimento.',
         challenger: 'Bom. Agora volte pra ação — o desconforto passou, não deixe ele voltar por procrastinação.',
@@ -196,12 +347,6 @@ export default function EmotionalSosView({
       }
     },
     en: {
-      breathingDesc: {
-        gentle: "Your breath can be your safe harbor right now. You don't need to do anything except follow it, slowly, at your own pace.",
-        challenger: 'Your breath is the fastest tool you have to move from reaction back to control. Use it now, no stalling.',
-        strategic: "Breathing regulates your nervous system within minutes — it's the most efficient step before any decision. Complete at least one full cycle before continuing.",
-        inspirational: 'Your breath is your only physical anchor right now. Before reading any guidance, bring your full presence to the moment.'
-      },
       feedbackSuccess: {
         gentle: 'So glad it helped. Go at your own pace, and come back whenever you need comfort.',
         challenger: "Good. Now get back to action — the discomfort passed, don't let it return through procrastination.",
@@ -222,12 +367,6 @@ export default function EmotionalSosView({
       }
     },
     es: {
-      breathingDesc: {
-        gentle: 'Tu respiración puede ser tu puerto seguro ahora. No necesitas hacer nada más que seguirla, despacio, a tu propio ritmo.',
-        challenger: 'Tu respiración es la herramienta más rápida que tienes para salir de la reacción y volver al control. Úsala ahora, sin dar más vueltas.',
-        strategic: 'La respiración regula tu sistema nervioso en minutos — es el paso más eficiente antes de cualquier decisión. Completa al menos un ciclo completo antes de continuar.',
-        inspirational: 'Tu respiración es tu única ancla física ahora. Antes de leer cualquier consejo, trae tu presencia al momento presente.'
-      },
       feedbackSuccess: {
         gentle: 'Qué bueno que ayudó. Ve a tu ritmo, y vuelve siempre que necesites contención.',
         challenger: 'Bien. Ahora vuelve a la acción — la incomodidad pasó, no dejes que vuelva por procrastinación.',
@@ -419,12 +558,12 @@ export default function EmotionalSosView({
 
   const handleSelectCategory = (cat: string) => {
     setSelectedCategory(cat);
-    setStage('messageReveal');
+    setStage('techniqueSelect');
   };
 
   const handleFeedback = (helped: boolean) => {
     setFeedbackResult(helped ? 'yes' : 'not_yet');
-    
+
     // Save to userProgress if available
     if (progress && onUpdateProgress) {
       const sosCount = (progress.behaviorStats?.sosOpenedCount || 0) + 1;
@@ -467,16 +606,16 @@ export default function EmotionalSosView({
   const handleAlternative = (alt: 'breathing' | 'letter') => {
     setChosenAltResource(alt);
     if (alt === 'breathing') {
-      // restart breathing stage
-      setCyclesCompleted(0);
-      setBreathState('idle');
-      setStage('breathing');
+      setStage('techniqueSelect');
       setFeedbackResult(null);
     }
   };
 
+  const recommendedTechniqueId = selectedCategory ? CATEGORY_TECHNIQUE_MAP[selectedCategory] : null;
+  const currentPhase = activeTechnique?.phases[phaseIndex];
+
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -503,122 +642,10 @@ export default function EmotionalSosView({
 
       {/* MAIN CONTAINER BODY */}
       <div className="max-w-xl w-full mx-auto flex-1 flex flex-col justify-center py-3 sm:py-6 relative z-10">
-        
+
         <AnimatePresence mode="wait">
-          
-          {/* STAGE 1: BREATHING PORTAL FIRST (Mandatory or highly prioritized) */}
-          {stage === 'breathing' && (
-            <motion.div
-              key="breathing"
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.97 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-4 sm:space-y-8 text-center"
-            >
-              <div className="space-y-1.5 sm:space-y-2">
-                <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block">
-                  Sintonização Respiratória
-                </span>
-                <h2 className="text-xl sm:text-3xl font-serif font-light text-white leading-tight lowercase">
-                  {localText.breathingTitle}
-                </h2>
-                <p className="text-xs sm:text-sm text-stone-400 max-w-sm mx-auto leading-relaxed">
-                  {adaptMessage(toneText[lang].breathingDesc[guideStyle], prefGrammar, lang)}
-                </p>
-              </div>
 
-              {/* Glowing Slow Breathing Circle */}
-              <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-6 py-1 sm:py-4">
-                <div className="relative flex items-center justify-center">
-                  <motion.div
-                    animate={{
-                      scale:
-                        breathState === 'inhale' ? 1.45 :
-                        breathState === 'hold1' ? 1.45 :
-                        breathState === 'exhale' ? 1.0 :
-                        breathState === 'hold2' ? 1.0 : 1.0,
-                      opacity: breathState === 'idle' ? 0.35 : 1
-                    }}
-                    transition={{
-                      duration: breathState === 'idle' ? 2 : 4.8,
-                      ease: "easeInOut",
-                      repeat: breathState === 'idle' ? Infinity : 0
-                    }}
-                    className={`h-24 w-24 sm:h-32 sm:w-32 rounded-full flex flex-col items-center justify-center relative transition-colors duration-700 ${
-                      breathState === 'inhale' ? 'bg-rosegold/20 ring-4 ring-rosegold/10' :
-                      breathState === 'hold1' ? 'bg-[#D4AF37]/15 ring-4 ring-[#D4AF37]/10' :
-                      breathState === 'exhale' ? 'bg-amber-600/15 ring-4 ring-amber-600/10' :
-                      breathState === 'hold2' ? 'bg-slate-800/25 ring-4 ring-slate-800/10' :
-                      'bg-rosegold/10 border border-rosegold/20'
-                    }`}
-                  >
-                    {breathState !== 'idle' ? (
-                      <>
-                        <span className="text-2xl sm:text-3xl font-serif font-bold text-white mb-0.5">
-                          {secondsLeft}s
-                        </span>
-                        <span className="text-[11px] font-mono tracking-widest text-[#D4AF37] uppercase font-bold">
-                          {localText[breathState]}
-                        </span>
-                      </>
-                    ) : (
-                      <Wind className="h-6 w-6 sm:h-7 sm:w-7 text-stone-400 animate-pulse" />
-                    )}
-                  </motion.div>
-
-                  {/* Gentle Ripple Bounds */}
-                  <div className="absolute h-32 w-32 sm:h-44 sm:w-44 border border-white/5 rounded-full pointer-events-none" />
-                </div>
-
-                {breathState !== 'idle' && (
-                  <span className="text-xs font-mono text-stone-400">
-                    {localText.breathingCycles.replace('{count}', cyclesCompleted.toString())}
-                  </span>
-                )}
-              </div>
-
-              {/* Action Trigger Buttons */}
-              <div className="space-y-2.5 sm:space-y-4 max-w-xs mx-auto">
-                {breathState === 'idle' ? (
-                  <button
-                    onClick={handleStartBreathing}
-                    className="w-full py-2.5 sm:py-3 bg-rosegold hover:bg-rosegold/90 text-white rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all duration-300 shadow-lg shadow-rosegold/10 cursor-pointer"
-                  >
-                    {localText.breathingCta}
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleStopBreathing}
-                    className="w-full py-2.5 sm:py-3 bg-stone-900 border border-stone-800 text-stone-300 rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all cursor-pointer"
-                  >
-                    {localText.breathingStop}
-                  </button>
-                )}
-
-                {/* Transition Proceed button */}
-                <div className="pt-1 sm:pt-2">
-                  <button
-                    onClick={() => setStage('categorySelect')}
-                    className={`w-full py-3 rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all duration-500 cursor-pointer ${
-                      cyclesCompleted >= 1 
-                        ? 'bg-[#D4AF37] text-stone-950 shadow-lg shadow-[#D4AF37]/20 font-extrabold'
-                        : 'bg-white/5 border border-white/10 text-stone-300 hover:bg-white/10'
-                    }`}
-                  >
-                    {localText.breathingProceed}
-                  </button>
-                  {cyclesCompleted < 1 && (
-                    <p className="text-[11px] text-stone-500 mt-2 italic">
-                      {localText.breathingProceedHint}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* STAGE 2: CATEGORY SELECT POINT */}
+          {/* STAGE 1: CATEGORY SELECT POINT */}
           {stage === 'categorySelect' && (
             <motion.div
               key="category"
@@ -659,7 +686,184 @@ export default function EmotionalSosView({
             </motion.div>
           )}
 
-          {/* STAGE 3: MESSAGE REVEAL */}
+          {/* STAGE 2: TECHNIQUE SELECT — the deepened, sophisticated wellness core */}
+          {stage === 'techniqueSelect' && (
+            <motion.div
+              key="technique"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6 text-left"
+            >
+              <div className="space-y-2 text-center pb-1">
+                <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block">
+                  {localText.techniqueEyebrow}
+                </span>
+                <h2 className="text-lg sm:text-xl font-serif text-white leading-snug lowercase">
+                  {localText.techniqueTitleFor}
+                </h2>
+              </div>
+
+              <div className="space-y-3 max-w-md mx-auto">
+                {Object.values(techniques)
+                  .sort((a, b) => (a.id === recommendedTechniqueId ? -1 : b.id === recommendedTechniqueId ? 1 : 0))
+                  .map((tech) => {
+                    const Icon = TECHNIQUE_ICON[tech.icon];
+                    const isRecommended = tech.id === recommendedTechniqueId;
+                    return (
+                      <button
+                        key={tech.id}
+                        onClick={() => handleSelectTechnique(tech.id)}
+                        className={`w-full text-left p-4 sm:p-5 rounded-3xl border transition-all duration-300 cursor-pointer group ${
+                          isRecommended
+                            ? 'bg-[#D4AF37]/[0.06] border-[#D4AF37]/30 shadow-lg shadow-[#D4AF37]/5'
+                            : 'bg-white/[0.02] border-white/5 hover:bg-white/[0.04] hover:border-white/10'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3.5">
+                          <div className={`shrink-0 h-10 w-10 rounded-2xl flex items-center justify-center ${
+                            isRecommended ? 'bg-[#D4AF37]/15 text-[#D4AF37]' : 'bg-white/5 text-stone-300'
+                          }`}>
+                            <Icon className="h-4.5 w-4.5" />
+                          </div>
+                          <div className="flex-1 space-y-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-sm font-serif text-white">{tech.name}</span>
+                              {isRecommended && (
+                                <span className="text-[9px] font-mono uppercase tracking-widest text-[#D4AF37] font-bold px-2 py-0.5 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/20">
+                                  {localText.techniqueRecommended}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-stone-400 font-sans">{tech.tagline}</p>
+                            <p className="text-[11px] text-stone-500 leading-relaxed pt-1">{tech.physiology}</p>
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+              </div>
+            </motion.div>
+          )}
+
+          {/* STAGE 3: BREATHING EXERCISE (generic phase engine) */}
+          {stage === 'breathing' && activeTechnique && currentPhase && (
+            <motion.div
+              key="breathing"
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-4 sm:space-y-8 text-center"
+            >
+              <div className="space-y-1.5 sm:space-y-2">
+                <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block">
+                  {activeTechnique.name}
+                </span>
+                <h2 className="text-xl sm:text-2xl font-serif font-light text-white leading-tight lowercase">
+                  {activeTechnique.tagline}
+                </h2>
+                <p className="text-xs sm:text-sm text-stone-400 max-w-sm mx-auto leading-relaxed">
+                  {activeTechnique.physiology}
+                </p>
+              </div>
+
+              {/* Glowing Slow Breathing Circle */}
+              <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-6 py-1 sm:py-4">
+                <div className="relative flex items-center justify-center">
+                  <motion.div
+                    animate={{
+                      scale:
+                        currentPhase.key === 'inhale' || currentPhase.key === 'inhale2' || currentPhase.key === 'hold1' ? 1.45 : 1.0,
+                      opacity: !isBreathing ? 0.35 : 1
+                    }}
+                    transition={{
+                      duration: !isBreathing ? 2 : currentPhase.seconds,
+                      ease: "easeInOut",
+                      repeat: !isBreathing ? Infinity : 0
+                    }}
+                    className={`h-24 w-24 sm:h-32 sm:w-32 rounded-full flex flex-col items-center justify-center relative transition-colors duration-700 ${
+                      !isBreathing ? 'bg-rosegold/10 border border-rosegold/20' :
+                      currentPhase.key === 'inhale' || currentPhase.key === 'inhale2' ? 'bg-rosegold/20 ring-4 ring-rosegold/10' :
+                      currentPhase.key === 'hold1' ? 'bg-[#D4AF37]/15 ring-4 ring-[#D4AF37]/10' :
+                      currentPhase.key === 'exhale' ? 'bg-amber-600/15 ring-4 ring-amber-600/10' :
+                      'bg-slate-800/25 ring-4 ring-slate-800/10'
+                    }`}
+                  >
+                    {isBreathing ? (
+                      <>
+                        <span className="text-2xl sm:text-3xl font-serif font-bold text-white mb-0.5">
+                          {secondsLeft}s
+                        </span>
+                        <span className="text-[10px] sm:text-[11px] font-mono tracking-widest text-[#D4AF37] uppercase font-bold px-2 text-center leading-tight">
+                          {phaseLabels[currentPhase.key]}
+                        </span>
+                      </>
+                    ) : (
+                      <Wind className="h-6 w-6 sm:h-7 sm:w-7 text-stone-400 animate-pulse" />
+                    )}
+                  </motion.div>
+
+                  {/* Gentle Ripple Bounds */}
+                  <div className="absolute h-32 w-32 sm:h-44 sm:w-44 border border-white/5 rounded-full pointer-events-none" />
+                </div>
+
+                {isBreathing && (
+                  <span className="text-xs font-mono text-stone-400">
+                    {localText.breathingCycles.replace('{count}', cyclesCompleted.toString()).replace('{target}', activeTechnique.cyclesTarget.toString())}
+                  </span>
+                )}
+              </div>
+
+              {/* Action Trigger Buttons */}
+              <div className="space-y-2.5 sm:space-y-4 max-w-xs mx-auto">
+                {!isBreathing ? (
+                  <button
+                    onClick={handleStartBreathing}
+                    className="w-full py-2.5 sm:py-3 bg-rosegold hover:bg-rosegold/90 text-white rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all duration-300 shadow-lg shadow-rosegold/10 cursor-pointer"
+                  >
+                    {localText.breathingCta}
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleStopBreathing}
+                    className="w-full py-2.5 sm:py-3 bg-stone-900 border border-stone-800 text-stone-300 rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all cursor-pointer"
+                  >
+                    {localText.breathingStop}
+                  </button>
+                )}
+
+                {/* Transition Proceed button */}
+                <div className="pt-1 sm:pt-2">
+                  <button
+                    onClick={() => setStage('messageReveal')}
+                    className={`w-full py-3 rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all duration-500 cursor-pointer ${
+                      cyclesCompleted >= 1
+                        ? 'bg-[#D4AF37] text-stone-950 shadow-lg shadow-[#D4AF37]/20 font-extrabold'
+                        : 'bg-white/5 border border-white/10 text-stone-300 hover:bg-white/10'
+                    }`}
+                  >
+                    {localText.breathingProceed}
+                  </button>
+                  {cyclesCompleted < 1 && (
+                    <p className="text-[11px] text-stone-500 mt-2 italic">
+                      {localText.breathingProceedHint}
+                    </p>
+                  )}
+                </div>
+
+                <button
+                  onClick={() => { setIsBreathing(false); setStage('techniqueSelect'); }}
+                  className="text-[11px] text-stone-500 hover:text-stone-300 underline-offset-4 hover:underline transition cursor-pointer"
+                >
+                  {localText.breathingChangeTechnique}
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* STAGE 4: MESSAGE REVEAL */}
           {stage === 'messageReveal' && selectedCategory && (
             <motion.div
               key="reveal"
@@ -713,7 +917,7 @@ export default function EmotionalSosView({
             </motion.div>
           )}
 
-          {/* STAGE 4: FEEDBACK SUCCESS */}
+          {/* STAGE 5: FEEDBACK SUCCESS */}
           {stage === 'feedback' && (
             <motion.div
               key="feedback-success"
@@ -746,7 +950,7 @@ export default function EmotionalSosView({
             </motion.div>
           )}
 
-          {/* STAGE 5: ALTERNATIVE CALMING CHANNELS */}
+          {/* STAGE 6: ALTERNATIVE CALMING CHANNELS */}
           {stage === 'alternative' && (
             <motion.div
               key="alternative"
