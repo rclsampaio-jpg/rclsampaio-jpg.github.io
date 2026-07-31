@@ -16,3 +16,13 @@ SUPPORT_EMAIL = "manifestandomagicasuporte@gmail.com"
 #   npx wrangler secret put RESEND_API_KEY
 #
 # Each will prompt you to paste the key directly in your terminal.
+
+# Permite `import conteudo from './arquivo.md'` retornando o texto puro do
+# arquivo como string, resolvido em build-time pelo bundler do Wrangler —
+# não é leitura de arquivo em runtime (o Worker roda num V8 isolate, sem
+# acesso a filesystem). Usado para injetar os frameworks de referencias/
+# no system prompt sem precisar colar o conteúdo dentro de src/index.js.
+[[rules]]
+type = "Text"
+globs = ["referencias/**/*.md"]
+fallthrough = true
