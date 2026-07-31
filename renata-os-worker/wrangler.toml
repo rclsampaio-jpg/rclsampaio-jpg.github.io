@@ -10,17 +10,16 @@ SUPPORT_EMAIL = "manifestandomagicasuporte@gmail.com"
 SUPABASE_URL = "https://iedkwbborimdhphbzwhl.supabase.co"
 SUPABASE_ANON_KEY = "sb_publishable_6skldo-YC1gPMPAUBZPDiQ_6sq5v9PI"
 
-# GEMINI_API_KEY e RESEND_API_KEY são secrets, não vars — nunca ficam
-# neste arquivo nem no git. Já configurados no Cloudflare; se precisar
-# reconfigurar, rode (a partir desta pasta):
+# OPENROUTER_API_KEY e RESEND_API_KEY são secrets, não vars — nunca ficam
+# neste arquivo nem no git. Configure rodando (a partir desta pasta):
 #
-#   npx wrangler secret put GEMINI_API_KEY
+#   npx wrangler secret put OPENROUTER_API_KEY
 #   npx wrangler secret put RESEND_API_KEY
 #
-# Decisão deliberada: o Worker chama o Gemini direto (não via OpenRouter)
-# por enquanto, pra adiar o custo/setup da OpenRouter até o app estar mais
-# maduro. Trocar de volta pra OpenRouter é uma troca isolada dentro de
-# src/index.js (callGemini/getAIReply), sem mexer em auth/memória/prompt.
+# Decisão deliberada: usa modelos do free pool da OpenRouter (tag ":free"),
+# não o Gemini direto — o Gemini direto exige billing habilitado no Google
+# Cloud mesmo pro tier gratuito nesta conta/região, e por ora não queremos
+# pedir cartão pra rodar isso.
 
 # Permite `import conteudo from './arquivo.md'` retornando o texto puro do
 # arquivo como string, resolvido em build-time pelo bundler do Wrangler —
