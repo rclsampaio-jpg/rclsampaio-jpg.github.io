@@ -44,16 +44,16 @@ const HOME_TONE: Record<Language, {
       inspirational: 'Você está [pronta/pronto/pronte]?'
     },
     introText: {
-      gentle: 'Pelos próximos 30 dias, no seu ritmo, você vai receber um gancho diário e um áudio de até 10 minutos. Este espaço existe pra você se lembrar, com calma, de quem você realmente é.',
-      challenger: 'Pelos próximos 30 dias, sem desculpa: um gancho diário, um áudio de até 10 minutos, e a decisão de aparecer todo santo dia. Esse é o trato.',
-      strategic: 'Pelos próximos 30 dias, você recebe um gancho diário e um áudio prático de até 10 minutos — um sistema simples, repetível, desenhado pra gerar consistência mensurável.',
-      inspirational: 'Pelos próximos 30 dias, você receberá um gancho (hook) diário e um áudio prático de até 10 minutos. Este é um espaço seguro para você lembrar quem você realmente é.'
+      gentle: 'Pelos próximos 30 dias, no seu ritmo, você vai receber um gancho diário e um áudio de até 10 minutos. Não precisa sair perfeito nem controlar cada detalhe — solte um pouco e confie no processo. Este espaço existe pra você se lembrar, com calma, de quem você realmente é.',
+      challenger: 'Pelos próximos 30 dias, sem desculpa: um gancho diário, um áudio de até 10 minutos, e a decisão de aparecer todo santo dia, mesmo com medo. Encarar o desconforto de frente é o caminho — não tem atalho por fora dele. Esse é o trato.',
+      strategic: 'Pelos próximos 30 dias, você recebe um gancho diário e um áudio prático de até 10 minutos — um sistema simples, repetível, desenhado pra gerar consistência mensurável mesmo quando nem tudo sai como planejado.',
+      inspirational: 'Pelos próximos 30 dias, você receberá um gancho (hook) diário e um áudio prático de até 10 minutos. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando — e lembrar quem você realmente é.'
     },
     yesterdayReminder: {
-      gentle: '✨ Sem pressa nenhuma. Volte exatamente de onde parou, no seu tempo — não existe atraso aqui, só o seu próprio ritmo.',
-      challenger: '✨ A jornada não parou por sua causa. Volte agora e retome de onde parou — sem desculpa pra adiar mais um dia.',
-      strategic: '✨ Checkpoint: retome exatamente de onde parou. Consistência acumulada importa mais que qualquer pausa isolada.',
-      inspirational: '✨ A jornada estava à sua espera. Continue exatamente de onde parou — seu ritmo de crescimento é único e livre de julgamentos.'
+      gentle: '✨ Sem pressa nenhuma. Volte exatamente de onde parou, no seu tempo — não existe atraso aqui, só o seu próprio ritmo. Soltar o controle também faz parte.',
+      challenger: '✨ A jornada não parou por sua causa. Volte agora e retome de onde parou — sem desculpa pra adiar mais um dia, e sem se culpar pela pausa.',
+      strategic: '✨ Checkpoint: retome exatamente de onde parou. Consistência acumulada importa mais que qualquer pausa isolada — inclusive as que não saíram do plano.',
+      inspirational: '✨ A jornada estava à sua espera. Continue exatamente de onde parou — seu ritmo de crescimento é único, livre de julgamentos, e a vida continua a favor de você.'
     }
   },
   en: {
@@ -76,16 +76,16 @@ const HOME_TONE: Record<Language, {
       inspirational: 'Are you ready?'
     },
     introText: {
-      gentle: "For the next 30 days, at your own pace, you'll receive a daily hook and an audio up to 10 minutes. This space exists for you to gently remember who you truly are.",
-      challenger: "For the next 30 days, no excuses: a daily hook, an audio up to 10 minutes, and the decision to show up every single day. That's the deal.",
-      strategic: "For the next 30 days, you'll receive a daily hook and a practical audio up to 10 minutes — a simple, repeatable system designed to generate measurable consistency.",
-      inspirational: 'For the next 30 days, you will receive a daily hook and a practical audio up to 10 minutes long. This is a safe environment designed for you to remember who you truly are.'
+      gentle: "For the next 30 days, at your own pace, you'll receive a daily hook and an audio up to 10 minutes. It doesn't need to come out perfect, and you don't need to control every detail — let a little go and trust the process. This space exists for you to gently remember who you truly are.",
+      challenger: "For the next 30 days, no excuses: a daily hook, an audio up to 10 minutes, and the decision to show up every single day, even scared. Facing the discomfort head-on is the way through — there's no shortcut around it. That's the deal.",
+      strategic: "For the next 30 days, you'll receive a daily hook and a practical audio up to 10 minutes — a simple, repeatable system designed to generate measurable consistency, even when things don't go exactly as planned.",
+      inspirational: 'For the next 30 days, you will receive a daily hook and a practical audio up to 10 minutes long. This is a safe environment for you to trust that life is on the side of who you are becoming — and to remember who you truly are.'
     },
     yesterdayReminder: {
-      gentle: "✨ No rush at all. Come back exactly where you left off, at your own pace — there's no such thing as being late here, just your own rhythm.",
-      challenger: "✨ The journey didn't stop because of you. Come back now and pick up where you left off — no excuse to delay another day.",
-      strategic: '✨ Checkpoint: resume exactly where you left off. Accumulated consistency matters more than any single pause.',
-      inspirational: '✨ The journey has been waiting for you. Continue exactly from where you stopped — your pace of growth is unique and free from guilt.'
+      gentle: "✨ No rush at all. Come back exactly where you left off, at your own pace — there's no such thing as being late here, just your own rhythm. Letting go of control is part of it too.",
+      challenger: "✨ The journey didn't stop because of you. Come back now and pick up where you left off — no excuse to delay another day, and no blaming yourself for the pause.",
+      strategic: '✨ Checkpoint: resume exactly where you left off. Accumulated consistency matters more than any single pause — including the ones that went off plan.',
+      inspirational: '✨ The journey has been waiting for you. Continue exactly from where you stopped — your pace of growth is unique, free from guilt, and life is still on your side.'
     }
   },
   es: {
@@ -108,16 +108,16 @@ const HOME_TONE: Record<Language, {
       inspirational: '¿Estás [lista/listo/liste]?'
     },
     introText: {
-      gentle: 'Durante los próximos 30 días, a tu ritmo, recibirás un gancho diario y un audio de hasta 10 minutos. Este espacio existe para que recuerdes, con calma, quién eres realmente.',
-      challenger: 'Durante los próximos 30 días, sin excusas: un gancho diario, un audio de hasta 10 minutos, y la decisión de aparecer todos los días. Ese es el trato.',
-      strategic: 'Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de hasta 10 minutos — un sistema simple y repetible, diseñado para generar consistencia medible.',
-      inspirational: 'Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de hasta 10 minutos. Este es un espacio seguro diseñado para recordar quién eres realmente.'
+      gentle: 'Durante los próximos 30 días, a tu ritmo, recibirás un gancho diario y un audio de hasta 10 minutos. No necesita salir perfecto ni controlar cada detalle — suelta un poco y confía en el proceso. Este espacio existe para que recuerdes, con calma, quién eres realmente.',
+      challenger: 'Durante los próximos 30 días, sin excusas: un gancho diario, un audio de hasta 10 minutos, y la decisión de aparecer todos los días, incluso con miedo. Enfrentar la incomodidad de frente es el camino — no hay atajo por fuera de ella. Ese es el trato.',
+      strategic: 'Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de hasta 10 minutos — un sistema simple y repetible, diseñado para generar consistencia medible incluso cuando no todo sale según el plan.',
+      inspirational: 'Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de hasta 10 minutos. Este es un espacio seguro para confiar en que la vida está a favor de quien te estás convirtiendo — y recordar quién eres realmente.'
     },
     yesterdayReminder: {
-      gentle: '✨ Sin ninguna prisa. Vuelve exactamente donde lo dejaste, a tu ritmo — aquí no existe el atraso, solo tu propio ritmo.',
-      challenger: '✨ El viaje no se detuvo por tu culpa. Vuelve ahora y retoma donde lo dejaste — sin excusa para posponer otro día.',
-      strategic: '✨ Checkpoint: retoma exactamente donde lo dejaste. La consistencia acumulada importa más que cualquier pausa aislada.',
-      inspirational: '✨ El viaje te ha estado esperando. Continúa exactamente desde donde lo dejaste — tu ritmo de crecimiento es único y libre de culpas.'
+      gentle: '✨ Sin ninguna prisa. Vuelve exactamente donde lo dejaste, a tu ritmo — aquí no existe el atraso, solo tu propio ritmo. Soltar el control también es parte de esto.',
+      challenger: '✨ El viaje no se detuvo por tu culpa. Vuelve ahora y retoma donde lo dejaste — sin excusa para posponer otro día, y sin culparte por la pausa.',
+      strategic: '✨ Checkpoint: retoma exactamente donde lo dejaste. La consistencia acumulada importa más que cualquier pausa aislada — incluso las que se salieron del plan.',
+      inspirational: '✨ El viaje te ha estado esperando. Continúa exactamente desde donde lo dejaste — tu ritmo de crecimiento es único, libre de culpas, y la vida sigue a tu favor.'
     }
   }
 };
