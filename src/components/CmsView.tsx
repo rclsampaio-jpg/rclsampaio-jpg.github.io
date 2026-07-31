@@ -32,6 +32,7 @@ import {
   loadLibraryAssets, saveLibraryAssets
 } from '../data/ecosystemData';
 import AdminUsersPanel from './AdminUsersPanel';
+import AnalyticsPanel from './AnalyticsPanel';
 
 interface CmsViewProps {
   days: any[];
@@ -1644,68 +1645,7 @@ export default function CmsView({
         )}
 
         {/* Analytics PANEL MODULE */}
-        {activeModule === 'analytics' && (
-          <div className="space-y-6">
-            <div className="border-b border-rose-100/10 pb-4">
-              <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
-                <BarChart3 className="h-5 w-5 text-rosegold" /> Métricas & Insights
-              </h1>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
-                Acompanhe o engajamento dos alunos nas lições, média de consistência de hábitos diários e taxas de conclusão.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 p-5 rounded-2xl">
-                <span className="text-[10px] font-bold uppercase text-slate-400 block mb-1">Média de Conclusão</span>
-                <div className="text-2xl font-black text-slate-800 dark:text-white">82%</div>
-                <div className="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                  <div className="bg-rosegold h-full rounded-full" style={{ width: '82%' }} />
-                </div>
-              </div>
-
-              <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 p-5 rounded-2xl">
-                <span className="text-[10px] font-bold uppercase text-slate-400 block mb-1">Retenção (Semana 2)</span>
-                <div className="text-2xl font-black text-slate-800 dark:text-white">74%</div>
-                <div className="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                  <div className="bg-accentgold h-full rounded-full" style={{ width: '74%' }} />
-                </div>
-              </div>
-
-              <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 p-5 rounded-2xl">
-                <span className="text-[10px] font-bold uppercase text-slate-400 block mb-1">Suporte Acionado (SOS)</span>
-                <div className="text-2xl font-black text-slate-800 dark:text-white">12%</div>
-                <div className="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                  <div className="bg-[#B76E79] h-full rounded-full" style={{ width: '12%' }} />
-                </div>
-              </div>
-            </div>
-
-            {/* Simulated graph elements */}
-            <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 p-6 rounded-2xl space-y-4">
-              <div className="flex justify-between items-center border-b border-rose-100/10 pb-2">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white">
-                  Presença Semanal e Picos de Engajamento
-                </h3>
-                <span className="text-[10px] font-mono text-slate-400">ÚLTIMOS 7 DIAS</span>
-              </div>
-              <div className="h-48 flex items-end justify-between gap-2 pt-6">
-                {[45, 60, 52, 85, 78, 92, 65].map((val, i) => (
-                  <div key={i} className="flex-1 flex flex-col items-center gap-2">
-                    <div className="text-[9px] font-mono font-bold text-rosegold">{val}%</div>
-                    <div 
-                      className="w-full rounded-t-lg bg-gradient-to-t from-rosegold to-accentgold"
-                      style={{ height: `${val * 1.2}px` }}
-                    />
-                    <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold">
-                      {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'][i]}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        {activeModule === 'analytics' && <AnalyticsPanel />}
 
         {/* Users list MODULE */}
         {activeModule === 'users' && <AdminUsersPanel />}

@@ -14,6 +14,7 @@ import { Language, LibraryAsset, SupportConfig, UserProgress } from '../types';
 import { loadLibraryAssets, saveLibraryAssets, loadSupportConfig } from '../data/ecosystemData';
 import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 import { forceDownload } from '../utils/download';
+import { logEngagementEvent } from '../utils/engagement';
 
 interface LibraryViewProps {
   lang: Language;
@@ -99,6 +100,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
     // YouTube links (e.g. the weekly video) can't play in the native
     // <video>/<audio> tags the inline player uses, open them externally instead.
     if (/youtu\.?be/.test(asset.mediaUrl)) {
+      logEngagementEvent('weekly_video', asset.id);
       window.open(asset.mediaUrl, '_blank', 'noopener,noreferrer');
       return;
     }
@@ -111,6 +113,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
     // extra step nobody needs.
     if (asset.category === 'pdfs' || asset.category === 'workbooks' || /\.(pdf|docx?|pptx?|xlsx?)$/i.test(asset.mediaUrl)) {
       const filename = asset.mediaUrl.split('/').pop() || 'documento';
+      logEngagementEvent('library_pdf', asset.id);
       forceDownload(asset.mediaUrl, filename);
       return;
     }
@@ -128,12 +131,14 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
           audioRef.current.playbackRate = playbackSpeed;
           audioRef.current.play().catch(e => console.log('Audio autoplay blocked', e));
         }
+        logEngagementEvent('library_audio', asset.id);
       } else {
         if (videoRef.current) {
           videoRef.current.currentTime = savedPos;
           videoRef.current.playbackRate = playbackSpeed;
           videoRef.current.play().catch(e => console.log('Video autoplay blocked', e));
         }
+        logEngagementEvent('library_video', asset.id);
       }
     }, 150);
   };

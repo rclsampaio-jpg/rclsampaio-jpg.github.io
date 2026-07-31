@@ -15,6 +15,7 @@ import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions, getHookCat
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, GuideStyle } from '../utils/grammar';
 import { getLocalDateISO } from '../utils/date';
 import { forceDownload } from '../utils/download';
+import { logEngagementEvent } from '../utils/engagement';
 
 // Joins the 3 required promise-proof links into the single stored video-link string
 const LINK_SEPARATOR = '|||';
@@ -585,6 +586,7 @@ export default function DailyMissionView({
       audioRef.current.play()
         .then(() => {
           setIsPlaying(true);
+          logEngagementEvent('daily_audio', String(currentDay.dayNumber), currentDay.dayNumber);
         })
         .catch((e) => {
           console.log('Audio playback simulation fallback activated.', e);

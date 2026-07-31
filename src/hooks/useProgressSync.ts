@@ -88,6 +88,30 @@ export function useProgressSync(initialProgress: UserProgress) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
+  // Escuta mudanças feitas por fora deste dispositivo (ex.: ação de admin
+  // como "premiar dia") enquanto o app/PWA continua aberto. Sem isso, o
+  // progresso da nuvem só era lido uma vez no login, então uma alteração
+  // feita pelo admin nunca aparecia até a aluna fechar e reabrir o app —
+  // e podia inclusive ser sobrescrita pelo próximo updateProgress local.
+  useEffect(() => {
+    if (!user) return;
+    const channel = supabase
+      .channel(`user_progress_${user.id}`)
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'user_progress', filter: `user_id=eq.${user.id}` },
+        (payload) => {
+          const remoteProgress = payload.new.data as UserProgress;
+          setProgress(remoteProgress);
+          saveUserProgressToStorage(remoteProgress);
+        },
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
   const flushPendingWrite = useCallback(() => {
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
