@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, X, Send, HeartHandshake } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { RENATA_OS_ENDPOINT } from '../config';
+import { supabase } from '../lib/supabase';
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, ToneVariants } from '../utils/grammar';
 
 interface RenataOSChatProps {
@@ -115,9 +116,20 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
 
     setIsLoading(true);
     try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+      if (!accessToken) {
+        setMessages((prev) => [...prev, { role: 'assistant', text: t.error }]);
+        setIsLoading(false);
+        return;
+      }
+
       const response = await fetch(RENATA_OS_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        },
         body: JSON.stringify({
           message: question,
           lang,
