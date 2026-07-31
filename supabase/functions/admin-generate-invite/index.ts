@@ -17,7 +17,7 @@ function randomCode(length = 8): string {
 Deno.serve(async (req: Request) => {
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'authorization, content-type',
+    'Access-Control-Allow-Headers': 'authorization, apikey, content-type',
   };
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
