@@ -7,15 +7,19 @@ compatibility_date = "2024-11-01"
 [vars]
 ALLOWED_ORIGIN = "https://rclsampaio-jpg.github.io"
 SUPPORT_EMAIL = "manifestandomagicasuporte@gmail.com"
+SUPABASE_URL = "https://iedkwbborimdhphbzwhl.supabase.co"
+SUPABASE_ANON_KEY = "sb_publishable_6skldo-YC1gPMPAUBZPDiQ_6sq5v9PI"
 
-# GEMINI_API_KEY and RESEND_API_KEY are NOT set here — they must be added as
-# secrets, so they never end up in this file or in git. Run these once, from
-# this folder:
+# OPENROUTER_API_KEY e RESEND_API_KEY são secrets, não vars — nunca ficam
+# neste arquivo nem no git. Configure rodando (a partir desta pasta):
 #
-#   npx wrangler secret put GEMINI_API_KEY
+#   npx wrangler secret put OPENROUTER_API_KEY
 #   npx wrangler secret put RESEND_API_KEY
 #
-# Each will prompt you to paste the key directly in your terminal.
+# GEMINI_API_KEY (secret antigo) não é mais usado pelo código — o Gemini
+# agora é acessado através do OpenRouter, que gerencia sua própria chave
+# com o Google. Pode deixar o secret antigo como está no Cloudflare, sem
+# necessidade de removê-lo.
 
 # Permite `import conteudo from './arquivo.md'` retornando o texto puro do
 # arquivo como string, resolvido em build-time pelo bundler do Wrangler —
@@ -24,5 +28,5 @@ SUPPORT_EMAIL = "manifestandomagicasuporte@gmail.com"
 # no system prompt sem precisar colar o conteúdo dentro de src/index.js.
 [[rules]]
 type = "Text"
-globs = ["referencias/**/*.md"]
+globs = ["**/*.md"]
 fallthrough = true
