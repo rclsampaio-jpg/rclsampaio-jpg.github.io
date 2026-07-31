@@ -1,7 +1,6 @@
 // src/components/auth/SignupView.tsx
 import { useState, type FormEvent } from 'react';
 import RenaSerLogo from '../RenaSerLogo';
-import ButterflyIcon from '../ButterflyIcon';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface SignupViewProps {
@@ -62,7 +61,11 @@ export default function SignupView({ inviteCodeFromUrl, onSwitchToLogin, onSignu
 
   return (
     <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-[#1E1715] flex flex-col justify-center items-center p-6 text-center select-none">
-      <ButterflyIcon size={36} speedMultiplier={0.7} className="text-rosegold/30 absolute top-10 right-8 pointer-events-none" />
+      <img
+        src="/assets/images/butterfly.png"
+        alt=""
+        className="h-9 w-auto absolute top-10 right-8 pointer-events-none opacity-30"
+      />
       <form onSubmit={handleSubmit} className="max-w-sm w-full space-y-6 p-8 rounded-3xl border border-rosegold/20 bg-white dark:bg-[#251E1C] shadow-rosegold">
         <RenaSerLogo variant="vertical" size={64} className="mx-auto mb-2" />
         <div className="space-y-1.5">
