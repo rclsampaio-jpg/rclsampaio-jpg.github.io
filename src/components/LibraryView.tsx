@@ -97,15 +97,15 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   // Handle active asset play trigger
   const handlePlayAsset = (asset: LibraryAsset) => {
     // YouTube links (e.g. the weekly video) can't play in the native
-    // <video>/<audio> tags the inline player uses — open them externally instead.
+    // <video>/<audio> tags the inline player uses, open them externally instead.
     if (/youtu\.?be/.test(asset.mediaUrl)) {
       window.open(asset.mediaUrl, '_blank', 'noopener,noreferrer');
       return;
     }
-    // Downloadable documents (PDFs, worksheets) aren't playable media — the
+    // Downloadable documents (PDFs, worksheets) aren't playable media, the
     // inline player only knows how to render <audio>/<video>, so trying to
     // "play" a .pdf/.docx there would just show a broken black box. Download
-    // it directly instead — native PDF viewer chrome isn't reliably
+    // it directly instead, native PDF viewer chrome isn't reliably
     // available (especially in the iOS "Add to Home Screen" standalone
     // app), and an in-app preview screen before the download is just an
     // extra step nobody needs.
@@ -339,7 +339,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
       all: 'All',
       wellness: 'Wellness',
       wellnessTitle: 'Why being centered matters before you post',
-      wellnessExplanation: "The autonomic nervous system, the body's command network, built for precision, speed, and survival.\n\nIt connects the brain, spinal cord, muscles, and every organ, allowing sensory signals to come in, decisions to be made, and instructions to be sent — often before you even notice, in fractions of a second.\n\nThis system doesn't wait for thought. It operates in 2 main states: sympathetic and parasympathetic. One prepares for action: it reacts, heart rate rises, energy gets mobilized. The other is balance: heart rate slows, digestion returns to normal.\n\nThese states shift constantly based on your environment and your sense of safety. It learns through repetition — automatic pathways turn into reflex — but activation has a cost!\n\nChronic stress keeps the system on alert: recovery is delayed, sleep is fragmented, signals get noisy, fatigue shows up without effort.\n\nCalm and peace of mind don't come from the absence of activity — they come from good regulation of your autonomic nervous system.\n\nBreathing is our only voluntary influence over it. Every time you breathe consciously, you send a direct message that takes the system off autopilot. When balanced, you barely notice it. When chronically activated, everything feels urgent.\n\nIt isn't a body part — it's your control center, a living network that responds directly to your breath.\n\nStep out of autopilot and awaken your superpower.\n\nRemember who you are.",
+      wellnessExplanation: "The autonomic nervous system, the body's command network, built for precision, speed, and survival.\n\nIt connects the brain, spinal cord, muscles, and every organ, allowing sensory signals to come in, decisions to be made, and instructions to be sent, often before you even notice, in fractions of a second.\n\nThis system doesn't wait for thought. It operates in 2 main states: sympathetic and parasympathetic. One prepares for action: it reacts, heart rate rises, energy gets mobilized. The other is balance: heart rate slows, digestion returns to normal.\n\nThese states shift constantly based on your environment and your sense of safety. It learns through repetition, automatic pathways turn into reflex, but activation has a cost!\n\nChronic stress keeps the system on alert: recovery is delayed, sleep is fragmented, signals get noisy, fatigue shows up without effort.\n\nCalm and peace of mind don't come from the absence of activity, they come from good regulation of your autonomic nervous system.\n\nBreathing is our only voluntary influence over it. Every time you breathe consciously, you send a direct message that takes the system off autopilot. When balanced, you barely notice it. When chronically activated, everything feels urgent.\n\nIt isn't a body part, it's your control center, a living network that responds directly to your breath.\n\nStep out of autopilot and awaken your superpower.\n\nRemember who you are.",
       regulateSelf: 'Regulate Yourself',
       sosTrigger: 'Activate Emotional SOS',
       videos: 'Videos',
@@ -414,7 +414,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   // week's video (last entry of support.weeklyVideos) gets the full featured
   // standalone card. Once a newer one replaces it, it's synthesized below as
   // a real entry inside the Videos section of the library grid (title-only
-  // row, not a thumbnail card) — it's never duplicated as a second thumbnail.
+  // row, not a thumbnail card), it's never duplicated as a second thumbnail.
   const pastWeeklyVideos = support.weeklyVideos.slice(0, -1);
   const weeklyArchiveAssets: LibraryAsset[] = pastWeeklyVideos.map((url, idx) => ({
     id: `weekly-archive-${idx}`,
@@ -430,7 +430,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
     isArchivedWeekly: true
   }));
 
-  // Filtering list — real library assets plus the archived weekly videos,
+  // Filtering list, real library assets plus the archived weekly videos,
   // so both live inside the same searchable/filterable Videos section.
   const filteredAssets = [...assets, ...weeklyArchiveAssets].filter(asset => {
     const matchesSearch =
@@ -458,7 +458,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
         </p>
       </div>
 
-      {/* Video of the Week — featured standalone card, plus the archive of
+      {/* Video of the Week, featured standalone card, plus the archive of
           past weekly videos as title-only links. Both live inside the
           "Vídeos" section of the Library: shown under "Todos" and "Vídeos",
           hidden under every other category tab. */}
@@ -805,7 +805,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
 
       </div>
 
-      {/* Wellness tab: not a media category — a short explanation of why a
+      {/* Wellness tab: not a media category, a short explanation of why a
           regulated nervous system matters before posting, plus a direct
           path into the Emotional SOS. */}
       {selectedCategory === 'wellness' ? (

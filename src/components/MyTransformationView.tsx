@@ -69,10 +69,10 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
       videoLink: 'Ver Prova Gravada',
       unlocked: 'Revelado',
       locked: 'Ainda por viver',
-      vehicleWalking: 'Caminhando — "Dei meus primeiros passos."',
-      vehicleBicycle: 'Bicicleta — "Estou encontrando meu ritmo."',
-      vehicleSailing: 'Veleiro — "Estou aprendendo a confiar em mim mesma."',
-      vehicleButterfly: 'Borboleta — "Eu me transformei."',
+      vehicleWalking: 'Caminhando, "Dei meus primeiros passos."',
+      vehicleBicycle: 'Bicicleta, "Estou encontrando meu ritmo."',
+      vehicleSailing: 'Veleiro, "Estou aprendendo a confiar em mim mesma."',
+      vehicleButterfly: 'Borboleta, "Eu me transformei."',
       vehicleStage: 'Veículo de Evolução:'
     },
     en: {
@@ -116,10 +116,10 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
       videoLink: 'View Proof Video',
       unlocked: 'Revealed',
       locked: 'Yet to live',
-      vehicleWalking: 'Walking — "Taken my first steps."',
-      vehicleBicycle: 'Bicycle — "Finding my rhythm."',
-      vehicleSailing: 'Sailing — "Learning to trust myself."',
-      vehicleButterfly: 'Butterfly — "I have transformed."',
+      vehicleWalking: 'Walking, "Taken my first steps."',
+      vehicleBicycle: 'Bicycle, "Finding my rhythm."',
+      vehicleSailing: 'Sailing, "Learning to trust myself."',
+      vehicleButterfly: 'Butterfly, "I have transformed."',
       vehicleStage: 'Evolution Vehicle:'
     },
     es: {
@@ -163,10 +163,10 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
       videoLink: 'Ver Prueba Grabada',
       unlocked: 'Revelado',
       locked: 'Aún por vivir',
-      vehicleWalking: 'Caminando — "He dado mis primeros pasos."',
-      vehicleBicycle: 'Bicicleta — "Estoy encontrando mi ritmo."',
-      vehicleSailing: 'Velero — "Estoy aprendiendo a confiar en mí misma."',
-      vehicleButterfly: 'Mariposa — "Me he transformado."',
+      vehicleWalking: 'Caminando, "He dado mis primeros pasos."',
+      vehicleBicycle: 'Bicicleta, "Estoy encontrando mi ritmo."',
+      vehicleSailing: 'Velero, "Estoy aprendiendo a confiar en mí misma."',
+      vehicleButterfly: 'Mariposa, "Me he transformado."',
       vehicleStage: 'Vehículo de Evolución:'
     }
   }[lang];

@@ -119,7 +119,7 @@ const titlesByWeekDay: Record<DayType, Record<Language, string>> = {
 };
 
 // Action/transition hooks (how to open the camera and grab attention in the
-// first second of a recording) — these are a technique guide, not tied to any
+// first second of a recording), these are a technique guide, not tied to any
 // single day's theme, so they're always shown regardless of day-of-week.
 const ACTION_HOOK_OPTIONS: Record<Language, string[]> = {
   pt: [
@@ -551,7 +551,7 @@ const PROVOCATIVE_MESSAGES: Record<Language, string[]> = {
 
 // Assigns each message (1-indexed into DAILY_MESSAGES + PROVOCATIVE_MESSAGES
 // concatenated, so 1-30 = getting-started/general pool, 31-38 = provocative
-// pool) to a journey day, in a shuffled (non-sequential) order — with the
+// pool) to a journey day, in a shuffled (non-sequential) order, with the
 // "getting started" messages (1, 3, 4, 7, 8, 13, 17, 21, 24, 28) front-loaded
 // into the first 10 days, and the provocative set woven into days 11-30.
 const DAILY_MESSAGE_ORDER: number[] = [
@@ -580,17 +580,17 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
     const audioUrl = getAudioUrlForDay(i);
 
     // Every 3rd day, Step 3 (hook video) swaps for a Stories story-arc
-    // sequence instead — same cadence the "3 promises" checklist mirrors
+    // sequence instead, same cadence the "3 promises" checklist mirrors
     // in DailyMissionView (isStorySequenceDay there).
     const isStorySequenceDay = i % 3 === 0;
     const exposureActionPt = isStorySequenceDay
-      ? `Hoje você vai fazer 3 práticas de gravação\n• Grave um vídeo de até 60 segundos para postar no reels\n• Grave um vídeo de pelo menos 30 segundos nos stories sobre o seu maior aprendizado do Dia ${i} ou poste uma foto com uma legenda honesta\n• Grave uma sequência de pelo menos 3 vídeos nos stories contando: a dor que você viveu, a ponte que te tirou dela, e o resultado que você alcançou — mesmo que você ainda não tenha muitos seguidores, o hábito de contar é o que constrói o alcance`
+      ? `Hoje você vai fazer 3 práticas de gravação\n• Grave um vídeo de até 60 segundos para postar no reels\n• Grave um vídeo de pelo menos 30 segundos nos stories sobre o seu maior aprendizado do Dia ${i} ou poste uma foto com uma legenda honesta\n• Grave uma sequência de pelo menos 3 vídeos nos stories contando: a dor que você viveu, a ponte que te tirou dela, e o resultado que você alcançou, mesmo que você ainda não tenha muitos seguidores, o hábito de contar é o que constrói o alcance`
       : `Hoje você vai fazer 3 práticas de gravação\n• Grave um vídeo de até 60 segundos para postar no reels\n• Grave um vídeo de pelo menos 30 segundos nos stories sobre o seu maior aprendizado do Dia ${i} ou poste uma foto com uma legenda honesta\n• Grave um vídeo de até 90 segundos, com um dos hooks disponíveis pro dia de hoje`;
     const exposureActionEn = isStorySequenceDay
-      ? `Today you'll do 3 recording practices\n• Record a video up to 60 seconds long to post on reels\n• Record a video at least 30 seconds long on your Stories about your biggest takeaway from Day ${i}, or post a photo with an honest caption\n• Record a sequence of at least 3 Stories telling: the pain you went through, the bridge that got you past it, and the result you reached — even if you don't have many followers yet, the habit of telling it is what builds the reach`
+      ? `Today you'll do 3 recording practices\n• Record a video up to 60 seconds long to post on reels\n• Record a video at least 30 seconds long on your Stories about your biggest takeaway from Day ${i}, or post a photo with an honest caption\n• Record a sequence of at least 3 Stories telling: the pain you went through, the bridge that got you past it, and the result you reached, even if you don't have many followers yet, the habit of telling it is what builds the reach`
       : `Today you'll do 3 recording practices\n• Record a video up to 60 seconds long to post on reels\n• Record a video at least 30 seconds long on your Stories about your biggest takeaway from Day ${i}, or post a photo with an honest caption\n• Record a video up to 90 seconds long, using one of today's available hooks`;
     const exposureActionEs = isStorySequenceDay
-      ? `Hoy vas a hacer 3 prácticas de grabación\n• Graba un video de hasta 60 segundos para publicar en reels\n• Graba un video de al menos 30 segundos en tus stories sobre tu mayor aprendizaje del Día ${i} o publica una foto con una descripción honesta\n• Graba una secuencia de al menos 3 stories contando: el dolor que viviste, el puente que te sacó de ahí, y el resultado que lograste — aunque todavía no tengas muchos seguidores, el hábito de contarlo es lo que construye el alcance`
+      ? `Hoy vas a hacer 3 prácticas de grabación\n• Graba un video de hasta 60 segundos para publicar en reels\n• Graba un video de al menos 30 segundos en tus stories sobre tu mayor aprendizaje del Día ${i} o publica una foto con una descripción honesta\n• Graba una secuencia de al menos 3 stories contando: el dolor que viviste, el puente que te sacó de ahí, y el resultado que lograste, aunque todavía no tengas muchos seguidores, el hábito de contarlo es lo que construye el alcance`
       : `Hoy vas a hacer 3 prácticas de grabación\n• Graba un video de hasta 60 segundos para publicar en reels\n• Graba un video de al menos 30 segundos en tus stories sobre tu mayor aprendizaje del Día ${i} o publica una foto con una descripción honesta\n• Graba un video de hasta 90 segundos, con uno de los hooks disponibles para hoy`;
 
     days.push({
@@ -641,7 +641,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // Bump this whenever generateInitialDays()'s template content changes, so
 // browsers with an already-cached renaser_days regenerate instead of showing
 // stale copy. NOTE: this also discards any day content hand-edited via
-// Creator Studio (CMS) — acceptable while content is still being tuned from
+// Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
 const DAYS_CONTENT_VERSION = '11';
 
@@ -694,7 +694,7 @@ export function loadUserProgressFromStorage(): UserProgress {
       if ((parsed.completionHistory || []).length === 0 && parsed.journeyStartDate !== getTodayISO()) {
         parsed.journeyStartDate = getTodayISO();
         localStorage.setItem('renaser_user_progress', JSON.stringify(parsed));
-        // The 30-day array is pre-generated once and cached — it won't
+        // The 30-day array is pre-generated once and cached, it won't
         // regenerate just because journeyStartDate changed, so it would
         // keep showing the stale weekday themes. Clear it so it rebuilds
         // from the corrected anchor on this same load.

@@ -33,7 +33,7 @@ const GRADUATION_TONE: Record<Language, {
     },
     congratsSub: {
       gentle: 'No seu tempo, você mostrou que sua voz merece espaço.',
-      challenger: 'Você provou, na prática, que consegue — pare de duvidar disso.',
+      challenger: 'Você provou, na prática, que consegue, pare de duvidar disso.',
       strategic: 'Resultado consolidado: 30 dias de consistência comprovam que o método funciona.',
       inspirational: 'Você provou que sua voz tem valor de ser mostrada.'
     },
@@ -44,19 +44,19 @@ const GRADUATION_TONE: Record<Language, {
       inspirational: 'Daqui para frente, lembre-se destas 3 verdades:'
     },
     truth1: {
-      gentle: 'A câmera não julga — ela só reflete a coragem que você já teve de aparecer.',
+      gentle: 'A câmera não julga, ela só reflete a coragem que você já teve de aparecer.',
       challenger: 'A câmera não julga ninguém. Quem julga é a sua própria desculpa de sempre.',
       strategic: 'A câmera é apenas um canal de distribuição; o julgamento nunca esteve nela.',
       inspirational: 'A câmera não julga; ela serve de ponte para quem precisa ouvir você.'
     },
     truth2: {
-      gentle: 'Imperfeição gera conexão — pode continuar sendo real, isso já é suficiente.',
+      gentle: 'Imperfeição gera conexão, pode continuar sendo real, isso já é suficiente.',
       challenger: 'Perfeição afasta. Se você continuar buscando perfeito, vai continuar sozinha na tentativa.',
       strategic: 'Dado validado: conteúdo imperfeito converte mais que conteúdo polido. Use isso.',
       inspirational: 'A imperfeição gera conexão. A perfeição gera distanciamento.'
     },
     truth3: {
-      gentle: 'Continue no seu ritmo, com verdade — as pessoas certas vão te encontrar.',
+      gentle: 'Continue no seu ritmo, com verdade, as pessoas certas vão te encontrar.',
       challenger: 'Consistência não é opcional daqui pra frente. Sem ela, tudo que você construiu esfria.',
       strategic: 'Consistência com sua mensagem é a variável que mais impacta quem sua marca atrai.',
       inspirational: 'Seja consistente com sua verdade, e sua marca atrairá os aliados certos.'
@@ -77,7 +77,7 @@ const GRADUATION_TONE: Record<Language, {
     },
     congratsSub: {
       gentle: 'At your own pace, you showed your voice deserves space.',
-      challenger: "You proved, in practice, that you can — stop doubting it.",
+      challenger: "You proved, in practice, that you can, stop doubting it.",
       strategic: 'Consolidated result: 30 days of consistency prove the method works.',
       inspirational: 'You proved that your voice has immense value to be shared.'
     },
@@ -88,19 +88,19 @@ const GRADUATION_TONE: Record<Language, {
       inspirational: 'From this day forward, stand firm in these 3 truths:'
     },
     truth1: {
-      gentle: 'The camera does not judge — it only reflects the courage you already had to show up.',
+      gentle: 'The camera does not judge, it only reflects the courage you already had to show up.',
       challenger: "The camera judges no one. What judges is your own usual excuse.",
       strategic: 'The camera is just a distribution channel; judgment was never in it.',
       inspirational: 'The camera does not judge; it is a portal to those who need to learn from you.'
     },
     truth2: {
-      gentle: 'Imperfection creates connection — you can keep being real, that is already enough.',
+      gentle: 'Imperfection creates connection, you can keep being real, that is already enough.',
       challenger: "Perfection repels. If you keep chasing perfect, you'll keep trying alone.",
       strategic: 'Validated data: imperfect content converts more than polished content. Use that.',
       inspirational: 'Perfection repels. Vulnerability attracts and establishes real devotion.'
     },
     truth3: {
-      gentle: 'Keep going at your own pace, with truth — the right people will find you.',
+      gentle: 'Keep going at your own pace, with truth, the right people will find you.',
       challenger: "Consistency isn't optional from here on. Without it, everything you built goes cold.",
       strategic: 'Consistency with your message is the variable that most impacts who your brand attracts.',
       inspirational: 'Be consistent with your message, and your community will naturally rally.'
@@ -121,7 +121,7 @@ const GRADUATION_TONE: Record<Language, {
     },
     congratsSub: {
       gentle: 'A tu ritmo, demostraste que tu voz merece espacio.',
-      challenger: 'Demostraste, en la práctica, que puedes — deja de dudarlo.',
+      challenger: 'Demostraste, en la práctica, que puedes, deja de dudarlo.',
       strategic: 'Resultado consolidado: 30 días de consistencia demuestran que el método funciona.',
       inspirational: 'Has demostrado que tu voz tiene un gran valor para ser compartida.'
     },
@@ -132,19 +132,19 @@ const GRADUATION_TONE: Record<Language, {
       inspirational: 'A partir de hoy, recuerda estas 3 verdades esenciales:'
     },
     truth1: {
-      gentle: 'La cámara no juzga — solo refleja el coraje que ya tuviste para aparecer.',
+      gentle: 'La cámara no juzga, solo refleja el coraje que ya tuviste para aparecer.',
       challenger: 'La cámara no juzga a nadie. Quien juzga es tu propia excusa de siempre.',
       strategic: 'La cámara es solo un canal de distribución; el juicio nunca estuvo en ella.',
       inspirational: 'La cámara no juzga; es un puente para quienes necesitan escucharte.'
     },
     truth2: {
-      gentle: 'La imperfección conecta — puedes seguir siendo real, eso ya es suficiente.',
+      gentle: 'La imperfección conecta, puedes seguir siendo real, eso ya es suficiente.',
       challenger: 'La perfección aleja. Si sigues buscando lo perfecto, seguirás intentándolo sola.',
       strategic: 'Dato validado: el contenido imperfecto convierte más que el contenido pulido. Úsalo.',
       inspirational: 'La imperfección conecta de verdad. La perfección crea distancia.'
     },
     truth3: {
-      gentle: 'Sigue a tu ritmo, con verdad — las personas correctas te van a encontrar.',
+      gentle: 'Sigue a tu ritmo, con verdad, las personas correctas te van a encontrar.',
       challenger: 'La consistencia ya no es opcional de aquí en adelante. Sin ella, todo lo que construiste se enfría.',
       strategic: 'La consistencia con tu mensaje es la variable que más impacta a quién atrae tu marca.',
       inspirational: 'Sé fiel a tu propia verdad, y tu marca atraerá a las personas correctas.'

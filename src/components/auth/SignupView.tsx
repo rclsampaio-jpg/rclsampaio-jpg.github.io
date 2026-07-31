@@ -45,7 +45,7 @@ export default function SignupView({ inviteCodeFromUrl, onSwitchToLogin, onSignu
       }
 
       // Account created with email_confirm: true, so credentials are valid
-      // immediately — sign in directly instead of dead-ending on a blank
+      // immediately, sign in directly instead of dead-ending on a blank
       // login screen with no feedback (I4).
       const { error: signInError } = await signIn(email, password);
       if (signInError) {

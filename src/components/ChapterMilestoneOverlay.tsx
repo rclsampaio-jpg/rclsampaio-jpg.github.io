@@ -21,7 +21,7 @@ interface ChapterMilestoneOverlayProps {
   onSaveReflection?: (selectedFeeling: string, futureSelfNote: string, selectedSurprises?: string[]) => void;
 }
 
-// Milestone copy shown after completing a chapter — varied by guideStyle
+// Milestone copy shown after completing a chapter, varied by guideStyle
 const MILESTONE_COPY: Record<Language, { enteredNewVersion: ToneVariants; anotherPromiseKept: ToneVariants }> = {
   pt: {
     enteredNewVersion: {
@@ -32,7 +32,7 @@ const MILESTONE_COPY: Record<Language, { enteredNewVersion: ToneVariants; anothe
     },
     anotherPromiseKept: {
       gentle: 'Mais uma promessa gentil cumprida com você mesma.',
-      challenger: 'Mais uma promessa cumprida. Prova que você não precisa de motivação pra agir — só de decisão.',
+      challenger: 'Mais uma promessa cumprida. Prova que você não precisa de motivação pra agir, só de decisão.',
       strategic: 'Registro: mais uma promessa cumprida. O padrão está se consolidando.',
       inspirational: 'Mais uma promessa cumprida.'
     }
@@ -46,7 +46,7 @@ const MILESTONE_COPY: Record<Language, { enteredNewVersion: ToneVariants; anothe
     },
     anotherPromiseKept: {
       gentle: 'One more gentle promise kept with yourself.',
-      challenger: "Another promise kept. Proof you don't need motivation to act — just a decision.",
+      challenger: "Another promise kept. Proof you don't need motivation to act, just a decision.",
       strategic: 'Logged: another promise kept. The pattern is consolidating.',
       inspirational: 'Another promise kept.'
     }
@@ -60,7 +60,7 @@ const MILESTONE_COPY: Record<Language, { enteredNewVersion: ToneVariants; anothe
     },
     anotherPromiseKept: {
       gentle: 'Una promesa más cumplida contigo misma, con cariño.',
-      challenger: 'Otra promesa cumplida. Prueba de que no necesitas motivación para actuar — solo una decisión.',
+      challenger: 'Otra promesa cumplida. Prueba de que no necesitas motivación para actuar, solo una decisión.',
       strategic: 'Registro: otra promesa cumplida. El patrón se está consolidando.',
       inspirational: 'Otra promesa cumplida.'
     }

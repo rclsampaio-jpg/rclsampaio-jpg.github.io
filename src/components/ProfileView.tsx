@@ -176,7 +176,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
 
         <div className="flex flex-col sm:flex-row gap-5 items-center relative z-10 text-center sm:text-left">
           
-          {/* Avatar Ring — click to upload a profile photo */}
+          {/* Avatar Ring, click to upload a profile photo */}
           <input
             ref={avatarInputRef}
             type="file"

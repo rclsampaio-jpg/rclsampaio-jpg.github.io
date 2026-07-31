@@ -18,7 +18,7 @@ Cada tipo de vídeo tem uma estrutura que funciona melhor e uma "cara" de thumbn
 
 ### Review / Comparativo
 `gancho (vale a pena?) → o que é → critérios de avaliação → prós → contras → pra quem serve / pra quem não serve → veredito honesto → CTA`
-- Honestidade vende. Diga pra quem NÃO serve — gera confiança.
+- Honestidade vende. Diga pra quem NÃO serve, gera confiança.
 
 ### História / Caso
 `gancho (o resultado ou a virada) → contexto → conflito/problema → jornada → clímax → lição prática → CTA`
@@ -35,4 +35,4 @@ Cada tipo de vídeo tem uma estrutura que funciona melhor e uma "cara" de thumbn
 - **Review:** laranja/cinza, estrelas ou símbolo "vs", sensação "decisão".
 - **História:** azul-escuro/dourado, rosto com expressão (ou objeto-símbolo no faceless), sensação "intriga".
 
-> Use isso como ponto de partida, não como regra fixa — a marca do canal manda. O importante: thumb e título contam a MESMA história, e o vídeo cumpre.
+> Use isso como ponto de partida, não como regra fixa, a marca do canal manda. O importante: thumb e título contam a MESMA história, e o vídeo cumpre.

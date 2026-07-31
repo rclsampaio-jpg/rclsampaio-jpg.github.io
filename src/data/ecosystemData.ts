@@ -116,9 +116,9 @@ export const DEFAULT_MENTORING_CONFIG: MentoringConfig = {
   provider: 'WhatsApp'
 };
 
-// Only real, sent-in content is shown for now — the demo masterclass/workbook/
+// Only real, sent-in content is shown for now, the demo masterclass/workbook/
 // meditation/challenge placeholders are hidden until real material replaces
-// them. (The weekly video isn't stored here — see LibraryView, it's
+// them. (The weekly video isn't stored here, see LibraryView, it's
 // synthesized from SupportConfig.weeklyVideos so each week's link stays
 // browsable in the Library after a newer one is added.)
 export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
@@ -148,9 +148,9 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
       es: 'Cómo Crecer en Instagram Empezando de Cero'
     },
     description: {
-      pt: 'Guia de hooks e anti-hooks, gatilhos de conexão e nomeação de ofertas — use junto ao Passo 2 (Vitrine de Hooks) na hora de postar.',
-      en: 'A guide to hooks and anti-hooks, connection triggers, and offer naming — use it alongside Step 2 (Hook Showcase) whenever you post.',
-      es: 'Guía de hooks y anti-hooks, gatillos de conexión y nombramiento de ofertas — úsala junto al Paso 2 (Vitrina de Hooks) al publicar.'
+      pt: 'Guia de hooks e anti-hooks, gatilhos de conexão e nomeação de ofertas, use junto ao Passo 2 (Vitrine de Hooks) na hora de postar.',
+      en: 'A guide to hooks and anti-hooks, connection triggers, and offer naming, use it alongside Step 2 (Hook Showcase) whenever you post.',
+      es: 'Guía de hooks y anti-hooks, gatillos de conexión y nombramiento de ofertas, úsala junto al Paso 2 (Vitrina de Hooks) al publicar.'
     },
     category: 'pdfs',
     mediaUrl: '/assets/docs/como-crescer-no-instagram-do-zero.pdf',
@@ -162,7 +162,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // Bump whenever a DEFAULT_*_CONFIG constant above changes, so browsers with an
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
-// CMS hand-edits to these configs — acceptable while still being tuned from code.
+// CMS hand-edits to these configs, acceptable while still being tuned from code.
 const ECOSYSTEM_CONFIG_VERSION = '15';
 
 export function loadCommunityConfig(): CommunityConfig {

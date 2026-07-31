@@ -216,7 +216,7 @@ const identityPhrases: Record<number, Record<Language, string>> = {
   }
 };
 
-// Surprise letters data — each letter is written in 4 tones (gentle/challenger/
+// Surprise letters data, each letter is written in 4 tones (gentle/challenger/
 // strategic/inspirational) matched to the user's guideStyle preference.
 // "inspirational" preserves the original wording this content shipped with.
 const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note: string; p: string }>>> = {
@@ -224,15 +224,15 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     pt: {
       gentle: {
         note: "Um lembrete gentil de que está tudo bem...",
-        p: "Querida alma, você está no terceiro dia, e está tudo bem se o medo ainda estiver aqui com você. Ele não significa que algo está errado — só significa que isso importa de verdade. Você não precisa estar [pronta/pronto/pronte] pra ser real. Hoje, a única coisa que peço é 10 segundos de coragem: aperte o play, olhe pra lente, e deixe sua voz tremer se precisar. Está segura, eu prometo."
+        p: "Querida alma, você está no terceiro dia, e está tudo bem se o medo ainda estiver aqui com você. Ele não significa que algo está errado, só significa que isso importa de verdade. Você não precisa estar [pronta/pronto/pronte] pra ser real. Hoje, a única coisa que peço é 10 segundos de coragem: aperte o play, olhe pra lente, e deixe sua voz tremer se precisar. Está segura, eu prometo."
       },
       challenger: {
         note: "Um empurrão que você precisava ouvir...",
-        p: "Terceiro dia. E a desculpa de sempre já deve estar rondando sua cabeça: 'ainda não estou [pronta/pronto/pronte]'. Deixa eu te contar uma verdade incômoda: ninguém está. A perfeição é só um esconderijo confortável pra quem tem medo de ser vista. Hoje você não tem escolha de ficar boa — só tem a escolha de aparecer. Aperte o play, encare a lente por 10 segundos, e fale mesmo tremendo. O medo não te dá veto."
+        p: "Terceiro dia. E a desculpa de sempre já deve estar rondando sua cabeça: 'ainda não estou [pronta/pronto/pronte]'. Deixa eu te contar uma verdade incômoda: ninguém está. A perfeição é só um esconderijo confortável pra quem tem medo de ser vista. Hoje você não tem escolha de ficar boa, só tem a escolha de aparecer. Aperte o play, encare a lente por 10 segundos, e fale mesmo tremendo. O medo não te dá veto."
       },
       strategic: {
         note: "Uma leitura rápida e direta ao ponto...",
-        p: "Dia 3: aqui está o cálculo simples. 10 segundos de vídeo imperfeito valem infinitamente mais do que zero segundos de vídeo perfeito que nunca sai do rascunho. Sua ansiedade não é o problema a resolver hoje — é só um dado a considerar. Aperte o play, olhe pra lente, fale por 10 segundos. Consistência bate perfeição, sempre. É seguro seguir esse plano."
+        p: "Dia 3: aqui está o cálculo simples. 10 segundos de vídeo imperfeito valem infinitamente mais do que zero segundos de vídeo perfeito que nunca sai do rascunho. Sua ansiedade não é o problema a resolver hoje, é só um dado a considerar. Aperte o play, olhe pra lente, fale por 10 segundos. Consistência bate perfeição, sempre. É seguro seguir esse plano."
       },
       inspirational: {
         note: "Uma mensagem silenciosa de segurança...",
@@ -242,15 +242,15 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     en: {
       gentle: {
         note: "A gentle reminder that it's okay...",
-        p: "Dear soul, you're on day three, and it's okay if fear is still here with you. It doesn't mean something is wrong — it just means this matters. You don't need to feel ready to be real. Today, the only thing I'm asking for is 10 seconds of courage: press play, look at the lens, and let your voice shake if it needs to. You are safe, I promise."
+        p: "Dear soul, you're on day three, and it's okay if fear is still here with you. It doesn't mean something is wrong, it just means this matters. You don't need to feel ready to be real. Today, the only thing I'm asking for is 10 seconds of courage: press play, look at the lens, and let your voice shake if it needs to. You are safe, I promise."
       },
       challenger: {
         note: "A push you needed to hear...",
-        p: "Day three. And the usual excuse is probably already circling your head: 'I'm not ready yet.' Let me tell you an uncomfortable truth: no one is. Perfection is just a comfortable hiding place for people afraid to be seen. Today you don't get to choose to be good — you only get to choose to show up. Press play, face the lens for 10 seconds, and speak even while shaking. Fear doesn't get a veto."
+        p: "Day three. And the usual excuse is probably already circling your head: 'I'm not ready yet.' Let me tell you an uncomfortable truth: no one is. Perfection is just a comfortable hiding place for people afraid to be seen. Today you don't get to choose to be good, you only get to choose to show up. Press play, face the lens for 10 seconds, and speak even while shaking. Fear doesn't get a veto."
       },
       strategic: {
         note: "A quick, straight-to-the-point read...",
-        p: "Day 3: here's the simple math. 10 seconds of imperfect video are worth infinitely more than zero seconds of a perfect video that never leaves the draft folder. Your anxiety isn't the problem to solve today — it's just a data point to note. Press play, look at the lens, speak for 10 seconds. Consistency beats perfection, always. It's safe to follow this plan."
+        p: "Day 3: here's the simple math. 10 seconds of imperfect video are worth infinitely more than zero seconds of a perfect video that never leaves the draft folder. Your anxiety isn't the problem to solve today, it's just a data point to note. Press play, look at the lens, speak for 10 seconds. Consistency beats perfection, always. It's safe to follow this plan."
       },
       inspirational: {
         note: "A quiet message of safety...",
@@ -260,15 +260,15 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     es: {
       gentle: {
         note: "Un recordatorio suave de que está bien...",
-        p: "Querida alma, estás en el tercer día, y está bien si el miedo todavía está aquí contigo. No significa que algo esté mal — solo significa que esto importa de verdad. No necesitas estar [lista/listo/liste] para ser real. Hoy, lo único que te pido son 10 segundos de coraje: presiona grabar, mira a la lente, y deja que tu voz tiemble si hace falta. Estás [segura/seguro/segure], te lo prometo."
+        p: "Querida alma, estás en el tercer día, y está bien si el miedo todavía está aquí contigo. No significa que algo esté mal, solo significa que esto importa de verdad. No necesitas estar [lista/listo/liste] para ser real. Hoy, lo único que te pido son 10 segundos de coraje: presiona grabar, mira a la lente, y deja que tu voz tiemble si hace falta. Estás [segura/seguro/segure], te lo prometo."
       },
       challenger: {
         note: "Un empujón que necesitabas escuchar...",
-        p: "Tercer día. Y la excusa de siempre probablemente ya está rondando tu cabeza: 'todavía no estoy [lista/listo/liste]'. Déjame decirte una verdad incómoda: nadie lo está. La perfección es solo un escondite cómodo para quien tiene miedo de ser visto. Hoy no tienes la opción de estar bien — solo tienes la opción de aparecer. Presiona grabar, mira a la lente por 10 segundos, y habla aunque tiembles. El miedo no tiene voto."
+        p: "Tercer día. Y la excusa de siempre probablemente ya está rondando tu cabeza: 'todavía no estoy [lista/listo/liste]'. Déjame decirte una verdad incómoda: nadie lo está. La perfección es solo un escondite cómodo para quien tiene miedo de ser visto. Hoy no tienes la opción de estar bien, solo tienes la opción de aparecer. Presiona grabar, mira a la lente por 10 segundos, y habla aunque tiembles. El miedo no tiene voto."
       },
       strategic: {
         note: "Una lectura rápida y directa...",
-        p: "Día 3: aquí está el cálculo simple. 10 segundos de video imperfecto valen infinitamente más que cero segundos de un video perfecto que nunca sale del borrador. Tu ansiedad no es el problema a resolver hoy — es solo un dato a considerar. Presiona grabar, mira a la lente, habla por 10 segundos. La consistencia le gana a la perfección, siempre. Es seguro seguir este plan."
+        p: "Día 3: aquí está el cálculo simple. 10 segundos de video imperfecto valen infinitamente más que cero segundos de un video perfecto que nunca sale del borrador. Tu ansiedad no es el problema a resolver hoy, es solo un dato a considerar. Presiona grabar, mira a la lente, habla por 10 segundos. La consistencia le gana a la perfección, siempre. Es seguro seguir este plan."
       },
       inspirational: {
         note: "Un mensaje silencioso de seguridad...",
@@ -280,15 +280,15 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     pt: {
       gentle: {
         note: "Um cuidado com o seu crítico interno...",
-        p: "Você percebeu como seu crítico interno aparece nos detalhes mais bobos? Ele diz que o vídeo ficou sem graça, que você está [cansada/cansado/cansade] demais hoje. Não precisa vencer essa voz — só precisa não deixar ela decidir por você. O que você constrói aqui é sua própria confiança, no seu tempo. Grave hoje só por você, sem cobrança."
+        p: "Você percebeu como seu crítico interno aparece nos detalhes mais bobos? Ele diz que o vídeo ficou sem graça, que você está [cansada/cansado/cansade] demais hoje. Não precisa vencer essa voz, só precisa não deixar ela decidir por você. O que você constrói aqui é sua própria confiança, no seu tempo. Grave hoje só por você, sem cobrança."
       },
       challenger: {
         note: "Não negocie com essa voz...",
-        p: "Presta atenção no que seu crítico interno está fazendo: sabotando sua consistência nos detalhes mais bobos, disfarçado de 'só sendo realista'. Ele diz que o vídeo ficou sem graça, que você está [cansada/cansado/cansade] demais. Você vai negociar com essa voz de novo hoje? O que está em jogo aqui não é um feed bonito — é se você vai deixar o medo escolher por você. Grave. Agora."
+        p: "Presta atenção no que seu crítico interno está fazendo: sabotando sua consistência nos detalhes mais bobos, disfarçado de 'só sendo realista'. Ele diz que o vídeo ficou sem graça, que você está [cansada/cansado/cansade] demais. Você vai negociar com essa voz de novo hoje? O que está em jogo aqui não é um feed bonito, é se você vai deixar o medo escolher por você. Grave. Agora."
       },
       strategic: {
         note: "Um dado a ignorar hoje...",
-        p: "Dado observado: seu crítico interno tenta sabotar sua consistência exatamente nos detalhes mais simples — apontando que o vídeo 'ficou sem graça' ou que você está [cansada/cansado/cansade] demais hoje. Ignore esse dado, ele não é relevante pra decisão. A métrica que importa aqui é uma só: você gravou hoje ou não? Grave, e siga pro próximo passo."
+        p: "Dado observado: seu crítico interno tenta sabotar sua consistência exatamente nos detalhes mais simples, apontando que o vídeo 'ficou sem graça' ou que você está [cansada/cansado/cansade] demais hoje. Ignore esse dado, ele não é relevante pra decisão. A métrica que importa aqui é uma só: você gravou hoje ou não? Grave, e siga pro próximo passo."
       },
       inspirational: {
         note: "Um lembrete de soberania diária...",
@@ -298,15 +298,15 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     en: {
       gentle: {
         note: "A little care for your inner critic...",
-        p: "Have you noticed how your inner critic shows up in the silliest details? It says your video was boring, that you're too tired today. You don't need to defeat that voice — just don't let it decide for you. What you're building here is your own confidence, at your own pace. Record today just for you, no pressure."
+        p: "Have you noticed how your inner critic shows up in the silliest details? It says your video was boring, that you're too tired today. You don't need to defeat that voice, just don't let it decide for you. What you're building here is your own confidence, at your own pace. Record today just for you, no pressure."
       },
       challenger: {
         note: "Don't negotiate with that voice...",
-        p: "Pay attention to what your inner critic is doing: sabotaging your consistency in the smallest details, disguised as 'just being realistic.' It says the video was boring, that you're too tired. Are you going to negotiate with that voice again today? What's at stake here isn't a pretty feed — it's whether you let fear choose for you. Record. Now."
+        p: "Pay attention to what your inner critic is doing: sabotaging your consistency in the smallest details, disguised as 'just being realistic.' It says the video was boring, that you're too tired. Are you going to negotiate with that voice again today? What's at stake here isn't a pretty feed, it's whether you let fear choose for you. Record. Now."
       },
       strategic: {
         note: "A data point to ignore today...",
-        p: "Observed data point: your inner critic tries to sabotage your consistency in the simplest details — claiming the video 'was boring' or that you're too tired today. Ignore that data point, it's not relevant to the decision. There's only one metric that matters here: did you record today or not? Record, and move to the next step."
+        p: "Observed data point: your inner critic tries to sabotage your consistency in the simplest details, claiming the video 'was boring' or that you're too tired today. Ignore that data point, it's not relevant to the decision. There's only one metric that matters here: did you record today or not? Record, and move to the next step."
       },
       inspirational: {
         note: "A reminder of daily sovereignty...",
@@ -316,15 +316,15 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     es: {
       gentle: {
         note: "Un cuidado con tu crítico interno...",
-        p: "¿Has notado cómo tu crítico interno aparece en los detalles más tontos? Dice que el video quedó aburrido, que hoy estás demasiado [cansada/cansado/cansade]. No necesitas vencer esa voz — solo no dejar que decida por ti. Lo que construyes aquí es tu propia confianza, a tu ritmo. Graba hoy solo por ti, sin presión."
+        p: "¿Has notado cómo tu crítico interno aparece en los detalles más tontos? Dice que el video quedó aburrido, que hoy estás demasiado [cansada/cansado/cansade]. No necesitas vencer esa voz, solo no dejar que decida por ti. Lo que construyes aquí es tu propia confianza, a tu ritmo. Graba hoy solo por ti, sin presión."
       },
       challenger: {
         note: "No negocies con esa voz...",
-        p: "Presta atención a lo que tu crítico interno está haciendo: saboteando tu consistencia en los detalles más tontos, disfrazado de 'solo siendo realista'. Dice que el video quedó aburrido, que estás demasiado [cansada/cansado/cansade]. ¿Vas a negociar con esa voz otra vez hoy? Lo que está en juego aquí no es un feed bonito — es si dejas que el miedo decida por ti. Graba. Ahora."
+        p: "Presta atención a lo que tu crítico interno está haciendo: saboteando tu consistencia en los detalles más tontos, disfrazado de 'solo siendo realista'. Dice que el video quedó aburrido, que estás demasiado [cansada/cansado/cansade]. ¿Vas a negociar con esa voz otra vez hoy? Lo que está en juego aquí no es un feed bonito, es si dejas que el miedo decida por ti. Graba. Ahora."
       },
       strategic: {
         note: "Un dato a ignorar hoy...",
-        p: "Dato observado: tu crítico interno intenta sabotear tu consistencia justo en los detalles más simples — diciendo que el video 'quedó aburrido' o que estás demasiado [cansada/cansado/cansade] hoy. Ignora ese dato, no es relevante para la decisión. Aquí solo importa una métrica: ¿grabaste hoy o no? Graba, y sigue al siguiente paso."
+        p: "Dato observado: tu crítico interno intenta sabotear tu consistencia justo en los detalles más simples, diciendo que el video 'quedó aburrido' o que estás demasiado [cansada/cansado/cansade] hoy. Ignora ese dato, no es relevante para la decisión. Aquí solo importa una métrica: ¿grabaste hoy o no? Graba, y sigue al siguiente paso."
       },
       inspirational: {
         note: "Un recordatorio de soberanía diaria...",
@@ -336,7 +336,7 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     pt: {
       gentle: {
         note: "Um convite pra descansar da performance...",
-        p: "Autenticidade não é uma técnica pra dominar, é um convite pra descansar. Você não precisa parecer inteligente, séria ou impecável. Pode simplesmente ser quem você é, do jeito que está hoje. Quando você para de tentar controlar a impressão que passa, algo relaxa — e é exatamente aí que as pessoas se conectam de verdade com você."
+        p: "Autenticidade não é uma técnica pra dominar, é um convite pra descansar. Você não precisa parecer inteligente, séria ou impecável. Pode simplesmente ser quem você é, do jeito que está hoje. Quando você para de tentar controlar a impressão que passa, algo relaxa, e é exatamente aí que as pessoas se conectam de verdade com você."
       },
       challenger: {
         note: "Chega de ensaio...",
@@ -344,7 +344,7 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
       },
       strategic: {
         note: "Uma observação prática sobre conexão...",
-        p: "Observação prática: vídeos ensaiados demais geram menos conexão que vídeos genuínos, mesmo tecnicamente mais 'imperfeitos'. Autenticidade, aqui, não é filosofia — é a estratégia que realmente funciona. Pare de otimizar pra parecer inteligente ou séria, e otimize pra ser real. É isso que faz a câmera desaparecer."
+        p: "Observação prática: vídeos ensaiados demais geram menos conexão que vídeos genuínos, mesmo tecnicamente mais 'imperfeitos'. Autenticidade, aqui, não é filosofia, é a estratégia que realmente funciona. Pare de otimizar pra parecer inteligente ou séria, e otimize pra ser real. É isso que faz a câmera desaparecer."
       },
       inspirational: {
         note: "A verdade sobre a autenticidade...",
@@ -354,7 +354,7 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     en: {
       gentle: {
         note: "An invitation to rest from performing...",
-        p: "Authenticity isn't a technique to master, it's an invitation to rest. You don't need to look smart, serious, or flawless. You can simply be who you are, exactly as you are today. When you stop trying to control the impression you give, something relaxes — and that's exactly where people truly connect with you."
+        p: "Authenticity isn't a technique to master, it's an invitation to rest. You don't need to look smart, serious, or flawless. You can simply be who you are, exactly as you are today. When you stop trying to control the impression you give, something relaxes, and that's exactly where people truly connect with you."
       },
       challenger: {
         note: "Enough with the rehearsal...",
@@ -362,7 +362,7 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
       },
       strategic: {
         note: "A practical note on connection...",
-        p: "Practical observation: overly rehearsed videos generate less connection than genuine ones, even when technically more 'imperfect.' Authenticity, here, isn't philosophy — it's the strategy that actually works. Stop optimizing to look smart or serious, and optimize to be real. That's what makes the camera disappear."
+        p: "Practical observation: overly rehearsed videos generate less connection than genuine ones, even when technically more 'imperfect.' Authenticity, here, isn't philosophy, it's the strategy that actually works. Stop optimizing to look smart or serious, and optimize to be real. That's what makes the camera disappear."
       },
       inspirational: {
         note: "The truth about authenticity...",
@@ -372,7 +372,7 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     es: {
       gentle: {
         note: "Una invitación a descansar de la actuación...",
-        p: "La autenticidad no es una técnica para dominar, es una invitación a descansar. No necesitas parecer inteligente, seria o impecable. Puedes simplemente ser quien eres, tal como estás hoy. Cuando dejas de intentar controlar la impresión que das, algo se relaja — y ahí es exactamente donde la gente se conecta de verdad contigo."
+        p: "La autenticidad no es una técnica para dominar, es una invitación a descansar. No necesitas parecer inteligente, seria o impecable. Puedes simplemente ser quien eres, tal como estás hoy. Cuando dejas de intentar controlar la impresión que das, algo se relaja, y ahí es exactamente donde la gente se conecta de verdad contigo."
       },
       challenger: {
         note: "Basta de ensayo...",
@@ -380,7 +380,7 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
       },
       strategic: {
         note: "Una observación práctica sobre la conexión...",
-        p: "Observación práctica: los videos demasiado ensayados generan menos conexión que los genuinos, incluso siendo técnicamente más 'imperfectos'. La autenticidad, aquí, no es filosofía — es la estrategia que realmente funciona. Deja de optimizar para parecer inteligente o seria, y optimiza para ser real. Eso es lo que hace que la cámara desaparezca."
+        p: "Observación práctica: los videos demasiado ensayados generan menos conexión que los genuinos, incluso siendo técnicamente más 'imperfectos'. La autenticidad, aquí, no es filosofía, es la estrategia que realmente funciona. Deja de optimizar para parecer inteligente o seria, y optimiza para ser real. Eso es lo que hace que la cámara desaparezca."
       },
       inspirational: {
         note: "La verdad sobre la autenticidad...",
@@ -392,15 +392,15 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     pt: {
       gentle: {
         note: "Olhe com carinho pra sua própria jornada...",
-        p: "Olhe com carinho pra quem você era no Dia 1. Ela tinha medo, e mesmo assim apareceu. Repare como hoje suas palavras saem com mais calma, mais leveza. Você não precisa de roteiro pra se sentir segura — sua presença já é suficiente. Respire fundo. Você chegou até aqui, e isso já é enorme."
+        p: "Olhe com carinho pra quem você era no Dia 1. Ela tinha medo, e mesmo assim apareceu. Repare como hoje suas palavras saem com mais calma, mais leveza. Você não precisa de roteiro pra se sentir segura, sua presença já é suficiente. Respire fundo. Você chegou até aqui, e isso já é enorme."
       },
       challenger: {
         note: "Compare e pare de duvidar...",
-        p: "Compara: quem tinha medo de encarar a lente por 15 segundos no Dia 1, e quem fala com firmeza hoje. Não foi sorte, foi repetição e coragem. Então para de duvidar de si mesma agora, bem no momento em que já provou que consegue. Você é [dona/dono/done] da sua presença — age como se soubesse disso."
+        p: "Compara: quem tinha medo de encarar a lente por 15 segundos no Dia 1, e quem fala com firmeza hoje. Não foi sorte, foi repetição e coragem. Então para de duvidar de si mesma agora, bem no momento em que já provou que consegue. Você é [dona/dono/done] da sua presença, age como se soubesse disso."
       },
       strategic: {
         note: "Um balanço rápido do seu progresso...",
-        p: "Balanço do progresso: Dia 1 vs hoje. Você foi de 'incapaz de encarar a lente por 15 segundos' pra 'expressa pensamentos firmes sem roteiro'. Esse é um resultado mensurável, não sorte. Não precisa mais do apoio de scripts detalhados — seu próximo passo é confiar no que já foi comprovado que funciona."
+        p: "Balanço do progresso: Dia 1 vs hoje. Você foi de 'incapaz de encarar a lente por 15 segundos' pra 'expressa pensamentos firmes sem roteiro'. Esse é um resultado mensurável, não sorte. Não precisa mais do apoio de scripts detalhados, seu próximo passo é confiar no que já foi comprovado que funciona."
       },
       inspirational: {
         note: "Olhe para a sua própria história...",
@@ -410,15 +410,15 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     en: {
       gentle: {
         note: "Look tenderly at your own journey...",
-        p: "Look with tenderness at who you were on Day 1. She was scared, and still showed up. Notice how your words come out calmer, lighter today. You don't need a script to feel secure — your presence is already enough. Take a deep breath. You made it this far, and that's already huge."
+        p: "Look with tenderness at who you were on Day 1. She was scared, and still showed up. Notice how your words come out calmer, lighter today. You don't need a script to feel secure, your presence is already enough. Take a deep breath. You made it this far, and that's already huge."
       },
       challenger: {
         note: "Compare, and stop doubting...",
-        p: "Compare: the person afraid to face the lens for 15 seconds on Day 1, and the person speaking firmly today. That wasn't luck, it was repetition and courage. So stop doubting yourself now, right when you've already proven you can. You own your presence — act like you know it."
+        p: "Compare: the person afraid to face the lens for 15 seconds on Day 1, and the person speaking firmly today. That wasn't luck, it was repetition and courage. So stop doubting yourself now, right when you've already proven you can. You own your presence, act like you know it."
       },
       strategic: {
         note: "A quick progress checkpoint...",
-        p: "Progress checkpoint: Day 1 vs today. You went from 'unable to face the lens for 15 seconds' to 'expressing firm thoughts with no script'. That's a measurable result, not luck. You no longer need the crutch of detailed scripts — your next step is trusting what's already proven to work."
+        p: "Progress checkpoint: Day 1 vs today. You went from 'unable to face the lens for 15 seconds' to 'expressing firm thoughts with no script'. That's a measurable result, not luck. You no longer need the crutch of detailed scripts, your next step is trusting what's already proven to work."
       },
       inspirational: {
         note: "Look at your own story...",
@@ -428,15 +428,15 @@ const surpriseLetters: Record<number, Record<Language, Record<GuideStyle, { note
     es: {
       gentle: {
         note: "Mira con ternura tu propio camino...",
-        p: "Mira con ternura a quien eras en el Día 1. Tenía miedo, y aun así apareció. Nota cómo tus palabras salen hoy más calmadas, más ligeras. No necesitas un guion para sentirte segura — tu presencia ya es suficiente. Respira hondo. Llegaste hasta aquí, y eso ya es enorme."
+        p: "Mira con ternura a quien eras en el Día 1. Tenía miedo, y aun así apareció. Nota cómo tus palabras salen hoy más calmadas, más ligeras. No necesitas un guion para sentirte segura, tu presencia ya es suficiente. Respira hondo. Llegaste hasta aquí, y eso ya es enorme."
       },
       challenger: {
         note: "Compara, y deja de dudar...",
-        p: "Compara: quien tenía miedo de mirar a la lente por 15 segundos en el Día 1, y quien habla con firmeza hoy. No fue suerte, fue repetición y coraje. Así que deja de dudar de ti misma justo ahora, cuando ya demostraste que puedes. Eres [dueña/dueño/dueñe] de tu presencia — actúa como si lo supieras."
+        p: "Compara: quien tenía miedo de mirar a la lente por 15 segundos en el Día 1, y quien habla con firmeza hoy. No fue suerte, fue repetición y coraje. Así que deja de dudar de ti misma justo ahora, cuando ya demostraste que puedes. Eres [dueña/dueño/dueñe] de tu presencia, actúa como si lo supieras."
       },
       strategic: {
         note: "Un balance rápido de tu progreso...",
-        p: "Balance de progreso: Día 1 vs hoy. Pasaste de 'incapaz de mirar a la lente por 15 segundos' a 'expresar pensamientos firmes sin guion'. Es un resultado medible, no suerte. Ya no necesitas el apoyo de guiones detallados — tu próximo paso es confiar en lo que ya demostró que funciona."
+        p: "Balance de progreso: Día 1 vs hoy. Pasaste de 'incapaz de mirar a la lente por 15 segundos' a 'expresar pensamientos firmes sin guion'. Es un resultado medible, no suerte. Ya no necesitas el apoyo de guiones detallados, tu próximo paso es confiar en lo que ya demostró que funciona."
       },
       inspirational: {
         note: "Mira tu propia historia...",
@@ -510,7 +510,7 @@ export default function DailyMissionView({
   const isSeventhDayReflection = currentDay.dayNumber % 7 === 0;
 
   // Every 3rd day, Step 3 / Promise 3 swaps from a single hook video to a
-  // Stories story-arc sequence (dor → ponte → resultado) — must match the
+  // Stories story-arc sequence (dor → ponte → resultado), must match the
   // same i % 3 === 0 cadence used to generate exposureAction in templateData.ts.
   const isStorySequenceDay = currentDay.dayNumber % 3 === 0;
 
@@ -696,7 +696,7 @@ export default function DailyMissionView({
   };
 
   // Validation checking for Three Promises + Audio + Reflection Text
-  // Posting the 3 proof links is optional — completion only depends on the
+  // Posting the 3 proof links is optional, completion only depends on the
   // promise checkboxes, not on whether a link was pasted in for each.
   const allPromisesKept = promisesChecked.inertia && promisesChecked.confidence && promisesChecked.evidence;
   const canComplete = isRestDay || (audioCompleted && reflectionInput.trim().length > 3 && allPromisesKept);
@@ -729,7 +729,7 @@ export default function DailyMissionView({
     pt: {
       dailyMission: 'Missão Diária',
       lockedTitle: 'Dia Bloqueado',
-      lockedDesc: 'Este passo libera amanhã. Aproveite hoje pra descansar — você já cumpriu sua promessa.',
+      lockedDesc: 'Este passo libera amanhã. Aproveite hoje pra descansar, você já cumpriu sua promessa.',
       backToHome: 'Voltar pro Início',
       audioTitle: 'Mensagem da Renata',
       ratingLoved: 'Amei',
@@ -753,7 +753,7 @@ export default function DailyMissionView({
       importantNoticeDownload: 'Baixar Documento',
       openHookHeading: 'Use uma dessas variedades de ação pra começar o seu vídeo',
       dailyHookHeadingPrefix: 'Hoje usaremos ganchos de',
-      noDailyHookFallback: 'Hoje não tem hook temático — use o hook de abertura ou escreva o seu na aba "Minha Ideia".',
+      noDailyHookFallback: 'Hoje não tem hook temático, use o hook de abertura ou escreva o seu na aba "Minha Ideia".',
       ideaHeading: 'Qual a sua ideia?',
       ideaSubtitle: 'Se você decidiu por um gancho autoral, escreva abaixo:',
       ideaPlaceholder: 'Escreva aqui a sua frase de gancho...',
@@ -813,7 +813,7 @@ export default function DailyMissionView({
     en: {
       dailyMission: 'Daily Mission',
       lockedTitle: 'Day Locked',
-      lockedDesc: 'This step unlocks tomorrow. Take today to rest — you already kept your promise.',
+      lockedDesc: 'This step unlocks tomorrow. Take today to rest, you already kept your promise.',
       backToHome: 'Back to Home',
       audioTitle: "Renata's Message",
       ratingLoved: 'Loved it',
@@ -836,7 +836,7 @@ export default function DailyMissionView({
       importantNoticeDownload: 'Download Document',
       openHookHeading: "Today we'll use action hooks",
       dailyHookHeadingPrefix: "Today's hook theme:",
-      noDailyHookFallback: 'No themed hook today — use the opening hook, or write your own in the "My Idea" tab.',
+      noDailyHookFallback: 'No themed hook today, use the opening hook, or write your own in the "My Idea" tab.',
       ideaHeading: 'What is your idea?',
       ideaSubtitle: "If you've decided on your own original hook, write it below:",
       ideaPlaceholder: 'Write your hook line here...',
@@ -897,7 +897,7 @@ export default function DailyMissionView({
     es: {
       dailyMission: 'Misión Diaria',
       lockedTitle: 'Día Bloqueado',
-      lockedDesc: 'Este paso se libera mañana. Aprovecha hoy para descansar — ya cumpliste tu promesa.',
+      lockedDesc: 'Este paso se libera mañana. Aprovecha hoy para descansar, ya cumpliste tu promesa.',
       backToHome: 'Volver al Inicio',
       audioTitle: 'Mensaje de Renata',
       ratingLoved: 'Me encantó',
@@ -920,7 +920,7 @@ export default function DailyMissionView({
       importantNoticeDownload: 'Descargar Documento',
       openHookHeading: 'Hoy usaremos ganchos de acción',
       dailyHookHeadingPrefix: 'Hoy usaremos ganchos de',
-      noDailyHookFallback: 'Hoy no hay hook temático — usa el hook de apertura o escribe el tuyo en la pestaña "Mi Idea".',
+      noDailyHookFallback: 'Hoy no hay hook temático, usa el hook de apertura o escribe el tuyo en la pestaña "Mi Idea".',
       ideaHeading: '¿Cuál es tu idea?',
       ideaSubtitle: 'Si decidiste usar un hook propio, escríbelo abajo:',
       ideaPlaceholder: 'Escribe aquí tu frase de hook...',
@@ -980,7 +980,7 @@ export default function DailyMissionView({
     }
   }[lang];
 
-  // A newly-unlocked day waits for the real next calendar day — except a
+  // A newly-unlocked day waits for the real next calendar day, except a
   // completion late at night (before LATE_NIGHT_UNLOCK_CUTOFF_HOUR) is
   // backdated to "yesterday" via dayUnlockAnchorDate, so finishing right
   // after midnight opens the next day immediately instead of trapping the
@@ -1114,7 +1114,7 @@ export default function DailyMissionView({
         )}
       </AnimatePresence>
 
-      {/* Day Header — directly on the page background, no card */}
+      {/* Day Header, directly on the page background, no card */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -1234,7 +1234,7 @@ export default function DailyMissionView({
             </motion.div>
           ) : (
             <>
-              {/* Today's Message (not numbered — it's a message, not a step) */}
+              {/* Today's Message (not numbered, it's a message, not a step) */}
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}

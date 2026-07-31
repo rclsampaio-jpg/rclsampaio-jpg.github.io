@@ -28,7 +28,7 @@ const HOME_TONE: Record<Language, {
     onboardingWelcome: {
       gentle: 'Seja [bem-vinda/bem-vindo/bem-vinde], com carinho, ao RenaSer',
       challenger: 'Chegou a hora. Seja [bem-vinda/bem-vindo/bem-vinde] ao RenaSer',
-      strategic: 'Seja [bem-vinda/bem-vindo/bem-vinde] ao RenaSer — seu novo método começa agora',
+      strategic: 'Seja [bem-vinda/bem-vindo/bem-vinde] ao RenaSer, seu novo método começa agora',
       inspirational: 'Seja [Bem-vinda/Bem-vindo/Bem-vinde] ao RenaSer'
     },
     onboardingSub: {
@@ -44,23 +44,23 @@ const HOME_TONE: Record<Language, {
       inspirational: 'Você está [pronta/pronto/pronte]?'
     },
     introText: {
-      gentle: 'Pelos próximos 30 dias, no seu ritmo, você vai receber um gancho diário e um áudio de até 10 minutos. Não precisa sair perfeito nem controlar cada detalhe — solte um pouco e confie no processo. Este espaço existe pra você se lembrar, com calma, de quem você realmente é.',
-      challenger: 'Pelos próximos 30 dias, sem desculpa: um gancho diário, um áudio de até 10 minutos, e a decisão de aparecer todo santo dia, mesmo com medo. Encarar o desconforto de frente é o caminho — não tem atalho por fora dele. Esse é o trato.',
-      strategic: 'Pelos próximos 30 dias, você recebe um gancho diário e um áudio prático de até 10 minutos — um sistema simples, repetível, desenhado pra gerar consistência mensurável mesmo quando nem tudo sai como planejado.',
-      inspirational: 'Pelos próximos 30 dias, você receberá um gancho (hook) diário e um áudio prático de até 10 minutos. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando — e lembrar quem você realmente é.'
+      gentle: 'Pelos próximos 30 dias, no seu ritmo, você vai receber um gancho diário e um áudio de até 10 minutos. Não precisa sair perfeito nem controlar cada detalhe, solte um pouco e confie no processo. Este espaço existe pra você se lembrar, com calma, de quem você realmente é.',
+      challenger: 'Pelos próximos 30 dias, sem desculpa: um gancho diário, um áudio de até 10 minutos, e a decisão de aparecer todo santo dia, mesmo com medo. Encarar o desconforto de frente é o caminho, não tem atalho por fora dele. Esse é o trato.',
+      strategic: 'Pelos próximos 30 dias, você recebe um gancho diário e um áudio prático de até 10 minutos, um sistema simples, repetível, desenhado pra gerar consistência mensurável mesmo quando nem tudo sai como planejado.',
+      inspirational: 'Pelos próximos 30 dias, você receberá um gancho (hook) diário e um áudio prático de até 10 minutos. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar quem você realmente é.'
     },
     yesterdayReminder: {
-      gentle: '✨ Sem pressa nenhuma. Volte exatamente de onde parou, no seu tempo — não existe atraso aqui, só o seu próprio ritmo. Soltar o controle também faz parte.',
-      challenger: '✨ A jornada não parou por sua causa. Volte agora e retome de onde parou — sem desculpa pra adiar mais um dia, e sem se culpar pela pausa.',
-      strategic: '✨ Checkpoint: retome exatamente de onde parou. Consistência acumulada importa mais que qualquer pausa isolada — inclusive as que não saíram do plano.',
-      inspirational: '✨ A jornada estava à sua espera. Continue exatamente de onde parou — seu ritmo de crescimento é único, livre de julgamentos, e a vida continua a favor de você.'
+      gentle: '✨ Sem pressa nenhuma. Volte exatamente de onde parou, no seu tempo, não existe atraso aqui, só o seu próprio ritmo. Soltar o controle também faz parte.',
+      challenger: '✨ A jornada não parou por sua causa. Volte agora e retome de onde parou, sem desculpa pra adiar mais um dia, e sem se culpar pela pausa.',
+      strategic: '✨ Checkpoint: retome exatamente de onde parou. Consistência acumulada importa mais que qualquer pausa isolada, inclusive as que não saíram do plano.',
+      inspirational: '✨ A jornada estava à sua espera. Continue exatamente de onde parou, seu ritmo de crescimento é único, livre de julgamentos, e a vida continua a favor de você.'
     }
   },
   en: {
     onboardingWelcome: {
       gentle: 'Welcome, gently, to RenaSer',
       challenger: "It's time. Welcome to RenaSer",
-      strategic: 'Welcome to RenaSer — your new method starts now',
+      strategic: 'Welcome to RenaSer, your new method starts now',
       inspirational: 'Welcome to RenaSer'
     },
     onboardingSub: {
@@ -76,23 +76,23 @@ const HOME_TONE: Record<Language, {
       inspirational: 'Are you ready?'
     },
     introText: {
-      gentle: "For the next 30 days, at your own pace, you'll receive a daily hook and an audio up to 10 minutes. It doesn't need to come out perfect, and you don't need to control every detail — let a little go and trust the process. This space exists for you to gently remember who you truly are.",
-      challenger: "For the next 30 days, no excuses: a daily hook, an audio up to 10 minutes, and the decision to show up every single day, even scared. Facing the discomfort head-on is the way through — there's no shortcut around it. That's the deal.",
-      strategic: "For the next 30 days, you'll receive a daily hook and a practical audio up to 10 minutes — a simple, repeatable system designed to generate measurable consistency, even when things don't go exactly as planned.",
-      inspirational: 'For the next 30 days, you will receive a daily hook and a practical audio up to 10 minutes long. This is a safe environment for you to trust that life is on the side of who you are becoming — and to remember who you truly are.'
+      gentle: "For the next 30 days, at your own pace, you'll receive a daily hook and an audio up to 10 minutes. It doesn't need to come out perfect, and you don't need to control every detail, let a little go and trust the process. This space exists for you to gently remember who you truly are.",
+      challenger: "For the next 30 days, no excuses: a daily hook, an audio up to 10 minutes, and the decision to show up every single day, even scared. Facing the discomfort head-on is the way through, there's no shortcut around it. That's the deal.",
+      strategic: "For the next 30 days, you'll receive a daily hook and a practical audio up to 10 minutes, a simple, repeatable system designed to generate measurable consistency, even when things don't go exactly as planned.",
+      inspirational: 'For the next 30 days, you will receive a daily hook and a practical audio up to 10 minutes long. This is a safe environment for you to trust that life is on the side of who you are becoming, and to remember who you truly are.'
     },
     yesterdayReminder: {
-      gentle: "✨ No rush at all. Come back exactly where you left off, at your own pace — there's no such thing as being late here, just your own rhythm. Letting go of control is part of it too.",
-      challenger: "✨ The journey didn't stop because of you. Come back now and pick up where you left off — no excuse to delay another day, and no blaming yourself for the pause.",
-      strategic: '✨ Checkpoint: resume exactly where you left off. Accumulated consistency matters more than any single pause — including the ones that went off plan.',
-      inspirational: '✨ The journey has been waiting for you. Continue exactly from where you stopped — your pace of growth is unique, free from guilt, and life is still on your side.'
+      gentle: "✨ No rush at all. Come back exactly where you left off, at your own pace, there's no such thing as being late here, just your own rhythm. Letting go of control is part of it too.",
+      challenger: "✨ The journey didn't stop because of you. Come back now and pick up where you left off, no excuse to delay another day, and no blaming yourself for the pause.",
+      strategic: '✨ Checkpoint: resume exactly where you left off. Accumulated consistency matters more than any single pause, including the ones that went off plan.',
+      inspirational: '✨ The journey has been waiting for you. Continue exactly from where you stopped, your pace of growth is unique, free from guilt, and life is still on your side.'
     }
   },
   es: {
     onboardingWelcome: {
       gentle: '[Bienvenida/Bienvenido/Bienvenide], con cariño, a RenaSer',
       challenger: 'Llegó la hora. [Bienvenida/Bienvenido/Bienvenide] a RenaSer',
-      strategic: '[Bienvenida/Bienvenido/Bienvenide] a RenaSer — tu nuevo método empieza ahora',
+      strategic: '[Bienvenida/Bienvenido/Bienvenide] a RenaSer, tu nuevo método empieza ahora',
       inspirational: '[Bienvenida/Bienvenido/Bienvenide] a RenaSer'
     },
     onboardingSub: {
@@ -108,16 +108,16 @@ const HOME_TONE: Record<Language, {
       inspirational: '¿Estás [lista/listo/liste]?'
     },
     introText: {
-      gentle: 'Durante los próximos 30 días, a tu ritmo, recibirás un gancho diario y un audio de hasta 10 minutos. No necesita salir perfecto ni controlar cada detalle — suelta un poco y confía en el proceso. Este espacio existe para que recuerdes, con calma, quién eres realmente.',
-      challenger: 'Durante los próximos 30 días, sin excusas: un gancho diario, un audio de hasta 10 minutos, y la decisión de aparecer todos los días, incluso con miedo. Enfrentar la incomodidad de frente es el camino — no hay atajo por fuera de ella. Ese es el trato.',
-      strategic: 'Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de hasta 10 minutos — un sistema simple y repetible, diseñado para generar consistencia medible incluso cuando no todo sale según el plan.',
-      inspirational: 'Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de hasta 10 minutos. Este es un espacio seguro para confiar en que la vida está a favor de quien te estás convirtiendo — y recordar quién eres realmente.'
+      gentle: 'Durante los próximos 30 días, a tu ritmo, recibirás un gancho diario y un audio de hasta 10 minutos. No necesita salir perfecto ni controlar cada detalle, suelta un poco y confía en el proceso. Este espacio existe para que recuerdes, con calma, quién eres realmente.',
+      challenger: 'Durante los próximos 30 días, sin excusas: un gancho diario, un audio de hasta 10 minutos, y la decisión de aparecer todos los días, incluso con miedo. Enfrentar la incomodidad de frente es el camino, no hay atajo por fuera de ella. Ese es el trato.',
+      strategic: 'Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de hasta 10 minutos, un sistema simple y repetible, diseñado para generar consistencia medible incluso cuando no todo sale según el plan.',
+      inspirational: 'Durante los próximos 30 días, recibirás un gancho diario y un audio práctico de hasta 10 minutos. Este es un espacio seguro para confiar en que la vida está a favor de quien te estás convirtiendo, y recordar quién eres realmente.'
     },
     yesterdayReminder: {
-      gentle: '✨ Sin ninguna prisa. Vuelve exactamente donde lo dejaste, a tu ritmo — aquí no existe el atraso, solo tu propio ritmo. Soltar el control también es parte de esto.',
-      challenger: '✨ El viaje no se detuvo por tu culpa. Vuelve ahora y retoma donde lo dejaste — sin excusa para posponer otro día, y sin culparte por la pausa.',
-      strategic: '✨ Checkpoint: retoma exactamente donde lo dejaste. La consistencia acumulada importa más que cualquier pausa aislada — incluso las que se salieron del plan.',
-      inspirational: '✨ El viaje te ha estado esperando. Continúa exactamente desde donde lo dejaste — tu ritmo de crecimiento es único, libre de culpas, y la vida sigue a tu favor.'
+      gentle: '✨ Sin ninguna prisa. Vuelve exactamente donde lo dejaste, a tu ritmo, aquí no existe el atraso, solo tu propio ritmo. Soltar el control también es parte de esto.',
+      challenger: '✨ El viaje no se detuvo por tu culpa. Vuelve ahora y retoma donde lo dejaste, sin excusa para posponer otro día, y sin culparte por la pausa.',
+      strategic: '✨ Checkpoint: retoma exactamente donde lo dejaste. La consistencia acumulada importa más que cualquier pausa aislada, incluso las que se salieron del plan.',
+      inspirational: '✨ El viaje te ha estado esperando. Continúa exactamente desde donde lo dejaste, tu ritmo de crecimiento es único, libre de culpas, y la vida sigue a tu favor.'
     }
   }
 };
@@ -150,7 +150,7 @@ export default function HomeView({
   onTriggerSos
 }: HomeViewProps) {
   // Computed lazily (not via useEffect) so the very first render already
-  // knows whether onboarding is needed — otherwise this defaulted to
+  // knows whether onboarding is needed, otherwise this defaulted to
   // 'complete' for one frame, briefly flashing the normal Home screen
   // (header + bottom nav) underneath before switching to the onboarding
   // overlay on the next render.
@@ -234,7 +234,7 @@ export default function HomeView({
       restDesc: "Hoje vai CURTIR! É sextaaa 🎉 E não esquece de se divertir no processo! Nenhuma ação é requerida hoje. Pra acompanhar seu progresso, visite a aba Meu Ser.",
       lockedTitle: "Dia Bloqueado",
       lockedDesc: "Complete o dia anterior para liberar este conteúdo.",
-      waitingForTomorrow: "Este passo libera amanhã. Aproveite hoje pra descansar — você já cumpriu sua promessa.",
+      waitingForTomorrow: "Este passo libera amanhã. Aproveite hoje pra descansar, você já cumpriu sua promessa.",
       copyHook: "Copiar Gancho",
       copied: "Copiado!",
       sosHeading: "Precisando de apoio agora? O SOS Emocional está sempre disponível, mesmo com o dia bloqueado.",
@@ -270,7 +270,7 @@ export default function HomeView({
       restDesc: "Today you get to ENJOY! It's Friyaaay 🎉 And don't forget to have fun along the way! No action required today. To check your progress, visit the My Portal tab.",
       lockedTitle: "Day Locked",
       lockedDesc: "Complete the previous day to unlock this content.",
-      waitingForTomorrow: "This step unlocks tomorrow. Take today to rest — you already kept your promise.",
+      waitingForTomorrow: "This step unlocks tomorrow. Take today to rest, you already kept your promise.",
       copyHook: "Copy Hook",
       copied: "Copied!",
       sosHeading: "Need support right now? The Emotional SOS is always available, even with the day locked.",
@@ -306,7 +306,7 @@ export default function HomeView({
       restDesc: "¡Hoy toca DISFRUTAR! Es viernessss 🎉 ¡Y no te olvides de divertirte en el proceso! Hoy no se requiere ninguna acción. Para ver tu progreso, visita la pestaña Mi Portal.",
       lockedTitle: "Día Bloqueado",
       lockedDesc: "Completa el día anterior para desbloquear este contenido.",
-      waitingForTomorrow: "Este paso se libera mañana. Aprovecha hoy para descansar — ya cumpliste tu promesa.",
+      waitingForTomorrow: "Este paso se libera mañana. Aprovecha hoy para descansar, ya cumpliste tu promesa.",
       copyHook: "Copiar Gancho",
       copied: "¡Copiado!",
       sosHeading: "¿Necesitas apoyo ahora? El SOS Emocional siempre está disponible, incluso con el día bloqueado.",
@@ -342,7 +342,7 @@ export default function HomeView({
   const isCompleted = progress.completionHistory.includes(currentDay.dayNumber);
   const isRestDay = currentDay.type === DayType.Rest;
 
-  // A newly-unlocked day waits for the real next calendar day — except a
+  // A newly-unlocked day waits for the real next calendar day, except a
   // completion late at night (before LATE_NIGHT_UNLOCK_CUTOFF_HOUR) is
   // backdated to "yesterday" via dayUnlockAnchorDate, so finishing right
   // after midnight opens the next day immediately instead of trapping the
@@ -370,7 +370,7 @@ export default function HomeView({
 
   // Splash Screen & Onboarding Layout
   if (onboardState !== 'complete') {
-    // Rendered via a portal straight to <body> — this component is mounted
+    // Rendered via a portal straight to <body>, this component is mounted
     // inside App.tsx's tab-content `motion.div` (which animates `y`), and a
     // `transform` on any ancestor turns `position: fixed` into "fixed
     // relative to that ancestor" instead of the real viewport. That broke
@@ -382,7 +382,7 @@ export default function HomeView({
         {/* Ambient atmospheric backdrop light */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-rosegold/10 dark:bg-rosegold/5 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDuration: '6s' }} />
 
-        {/* Butterfly only on this first "Começar Jornada" screen — not
+        {/* Butterfly only on this first "Começar Jornada" screen, not
             repeated across the later onboarding steps (lang/name/etc), so
             new users only see the animation once, not on a loop through
             the whole setup flow. */}
@@ -909,10 +909,10 @@ export default function HomeView({
           </span>
         </div>
 
-        {/* SOS must stay reachable even when the day is locked — the "Go to
+        {/* SOS must stay reachable even when the day is locked, the "Go to
             Daily Mission" button above is disabled in that state, so this is
             the only way to reach emotional support without it. No extra
-            explanatory copy here — that instructional context lives only in
+            explanatory copy here, that instructional context lives only in
             the Library's Bem-Estar tab. */}
         {isLocked && onTriggerSos && (
           <button
