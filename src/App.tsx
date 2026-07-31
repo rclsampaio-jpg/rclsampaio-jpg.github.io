@@ -86,6 +86,14 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState<TabId>('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Switching tabs otherwise keeps whatever scroll position the previous
+  // tab was left at, so the new screen can render already scrolled past
+  // its own top content — jarring on mobile, where every tab switch felt
+  // like it "started scrolled down."
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab]);
+
   // Admin-only gate for Brand Identity & Creator Studio (CMS).
   // NOTE: this is a client-side deterrent, not real security — anyone who reads
   // the deployed JS bundle can find ADMIN_PASSPHRASE. Change it below if needed.

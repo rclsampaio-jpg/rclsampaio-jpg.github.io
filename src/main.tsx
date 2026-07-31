@@ -4,6 +4,15 @@ import App from './App.tsx';
 import { SystemProvider } from './engines/SystemEngine.tsx';
 import './index.css';
 
+// The browser's default scroll restoration reopens a reload/back-navigation
+// at whatever scroll position the page was previously at — on a single-page
+// app with tab-switching instead of real routes, that reads as "the app
+// always starts scrolled down." The app manages its own scroll-to-top on
+// tab changes (see App.tsx), so the browser shouldn't second-guess it.
+if ('scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual';
+}
+
 // The iOS "Add to Home Screen" standalone shell caches the app aggressively
 // and has no built-in way to notice a new deploy — reopening the icon can
 // keep running old code (and reading/writing storage under old version-gated
