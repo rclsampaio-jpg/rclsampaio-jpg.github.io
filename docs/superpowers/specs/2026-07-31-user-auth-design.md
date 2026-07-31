@@ -69,13 +69,19 @@ uma migração separada — fora do escopo aqui (YAGNI).
 ## Fluxo de cadastro
 
 1. Tela de cadastro pede **email, senha, código de convite**.
-2. O front-end chama uma **Edge Function** (`validate-invite-and-signup`)
+2. O código chega pré-preenchido quando a pessoa entra por um **link de
+   convite** (`https://rclsampaio-jpg.github.io/#/cadastro?codigo=ABC123`)
+   — a tela lê o parâmetro `codigo` da URL e preenche o campo sozinha,
+   deixando só email e senha pra digitar. O campo continua editável: quem
+   recebeu só o código por telefone/verbalmente também consegue digitar
+   manualmente.
+3. O front-end chama uma **Edge Function** (`validate-invite-and-signup`)
    em vez de checar o código direto contra a tabela — assim o código nunca
    fica legível no navegador de quem está tentando adivinhar.
-3. A função: valida o código existe e `used_by IS NULL`; se válido, cria a
+4. A função: valida o código existe e `used_by IS NULL`; se válido, cria a
    conta via Supabase Auth Admin API, marca o código como usado
    (`used_by`, `used_at`), cria a linha em `profiles`.
-4. Se o código for inválido/já usado, retorna erro amigável
+5. Se o código for inválido/já usado, retorna erro amigável
    ("código inválido ou já utilizado").
 
 Login subsequente é email+senha padrão do Supabase Auth — não pede código
@@ -84,9 +90,13 @@ de novo.
 ## Geração de códigos (admin)
 
 Nova tela dentro do app, protegida pelo `ADMIN_PASSPHRASE` já existente
-(`src/App.tsx`, ~linha 92). Um botão "Gerar código" chama uma Edge Function
-(`admin-generate-invite`) que insere uma linha em `invite_codes` com um
-código aleatório (ex: 8 caracteres alfanuméricos) e devolve pra copiar.
+(`src/App.tsx`, ~linha 92). Um botão "Gerar convite" chama uma Edge
+Function (`admin-generate-invite`) que insere uma linha em `invite_codes`
+com um código aleatório (ex: 8 caracteres alfanuméricos) e devolve **duas
+coisas pra copiar**: o link pronto
+(`.../#/cadastro?codigo=ABC123`, para colar direto no WhatsApp/email) e o
+código sozinho (para os casos em que só o código é repassado, ex: por
+telefone).
 
 A rota de admin continua gated pela passphrase existente — não estamos
 trocando o mecanismo de admin, só adicionando uma ação nova a ele.
