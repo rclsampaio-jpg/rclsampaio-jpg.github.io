@@ -619,14 +619,17 @@ export default function EmotionalSosView({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[45] bg-[#16110F] text-[#FAF6F0] flex flex-col justify-between p-4 sm:p-6 pb-24 lg:pb-6 overflow-y-auto select-none font-sans"
+      className="fixed inset-0 h-[100dvh] z-[45] bg-[#1E1715] text-[#FAF6F0] flex flex-col justify-between p-4 sm:p-6 pb-6 overflow-y-auto select-none font-sans"
     >
-      {/* Background Soft Serene Ambient Glow */}
+      {/* Background Soft Serene Ambient Glow — warm, low-contrast, matched to
+          the app's own dark palette rather than a separate near-black stage,
+          so the "calm down" screen doesn't read more intense than the rest
+          of the app. */}
       <div className="absolute top-1/4 left-1/4 h-80 w-80 bg-rosegold/5 blur-3xl rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 h-80 w-80 bg-[#D4AF37]/5 blur-3xl rounded-full pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 h-80 w-80 bg-[#D4AF37]/4 blur-3xl rounded-full pointer-events-none" />
 
       {/* Top Bar with Silent Back link */}
-      <div className="max-w-3xl w-full mx-auto flex items-center justify-between pb-4 relative z-10">
+      <div className="max-w-3xl w-full mx-auto flex items-center justify-between pb-3 sm:pb-4 relative z-10 shrink-0">
         <button
           onClick={onBackToMission}
           className="flex items-center gap-2 text-xs font-sans text-stone-400 hover:text-white transition duration-300 cursor-pointer"
@@ -635,13 +638,13 @@ export default function EmotionalSosView({
           <span>{localText.back}</span>
         </button>
 
-        <span className="text-[10px] font-mono tracking-widest text-[#D4AF37] uppercase font-bold">
+        <span className="text-[10px] font-mono tracking-widest text-rosegold-light uppercase font-bold">
           Santuário de Apoio RenaSer
         </span>
       </div>
 
       {/* MAIN CONTAINER BODY */}
-      <div className="max-w-xl w-full mx-auto flex-1 flex flex-col justify-center py-3 sm:py-6 relative z-10">
+      <div className="max-w-xl w-full mx-auto flex-1 flex flex-col justify-center py-1 sm:py-4 relative z-10 min-h-0">
 
         <AnimatePresence mode="wait">
 
@@ -653,33 +656,33 @@ export default function EmotionalSosView({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.6 }}
-              className="space-y-6 text-left"
+              className="space-y-3.5 sm:space-y-5 text-left"
             >
-              <div className="space-y-2 text-center pb-2">
-                <span className="text-[10px] uppercase font-mono tracking-widest text-[#D4AF37] font-bold block">
+              <div className="space-y-1.5 text-center pb-1">
+                <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold-light font-bold block">
                   Identificação do Sentimento
                 </span>
-                <h2 className="text-xl sm:text-2xl font-serif text-white leading-snug">
+                <h2 className="text-lg sm:text-2xl font-serif text-white leading-snug">
                   {localText.categoryTitle}
                 </h2>
-                <p className="text-xs text-stone-400">
+                <p className="text-[11px] sm:text-xs text-stone-400">
                   {localText.categoryDesc}
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 gap-3 max-w-md mx-auto">
+              <div className="grid grid-cols-1 gap-2 sm:gap-2.5 max-w-md mx-auto">
                 {Object.entries(sosGuidance).map(([key, item]) => (
                   <button
                     key={key}
                     onClick={() => handleSelectCategory(key)}
-                    className="w-full text-left p-4 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-[#D4AF37]/5 hover:border-[#D4AF37]/25 text-stone-200 transition-all duration-300 flex items-center justify-between group cursor-pointer"
+                    className="w-full text-left px-4 py-3 sm:py-3.5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-rosegold/5 hover:border-rosegold/25 text-stone-200 transition-all duration-300 flex items-center justify-between group cursor-pointer"
                   >
                     <div className="space-y-0.5">
                       <span className="text-xs font-sans font-bold tracking-wide group-hover:text-white transition duration-200">
                         {item.title}
                       </span>
                     </div>
-                    <span className="text-[#D4AF37] opacity-0 group-hover:opacity-100 transition duration-300 text-sm">→</span>
+                    <span className="text-rosegold-light opacity-0 group-hover:opacity-100 transition duration-300 text-sm">→</span>
                   </button>
                 ))}
               </div>
@@ -694,18 +697,20 @@ export default function EmotionalSosView({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.6 }}
-              className="space-y-6 text-left"
+              className="space-y-3 sm:space-y-4 text-left"
             >
-              <div className="space-y-2 text-center pb-1">
-                <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block">
+              <div className="space-y-1 text-center pb-0.5 shrink-0">
+                <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold-light font-bold block">
                   {localText.techniqueEyebrow}
                 </span>
-                <h2 className="text-lg sm:text-xl font-serif text-white leading-snug lowercase">
+                <h2 className="text-base sm:text-xl font-serif text-white leading-snug lowercase">
                   {localText.techniqueTitleFor}
                 </h2>
               </div>
 
-              <div className="space-y-3 max-w-md mx-auto">
+              {/* Only this list scrolls if it can't fit — header/footer of the
+                  whole screen stay put, so the page itself never has to move. */}
+              <div className="space-y-2 max-w-md mx-auto max-h-[54vh] sm:max-h-[58vh] overflow-y-auto pr-0.5 -mr-0.5">
                 {Object.values(techniques)
                   .sort((a, b) => (a.id === recommendedTechniqueId ? -1 : b.id === recommendedTechniqueId ? 1 : 0))
                   .map((tech) => {
@@ -715,29 +720,31 @@ export default function EmotionalSosView({
                       <button
                         key={tech.id}
                         onClick={() => handleSelectTechnique(tech.id)}
-                        className={`w-full text-left p-4 sm:p-5 rounded-3xl border transition-all duration-300 cursor-pointer group ${
+                        className={`w-full text-left p-3.5 sm:p-4 rounded-2xl border transition-all duration-300 cursor-pointer group ${
                           isRecommended
-                            ? 'bg-[#D4AF37]/[0.06] border-[#D4AF37]/30 shadow-lg shadow-[#D4AF37]/5'
+                            ? 'bg-rosegold/[0.07] border-rosegold/30 shadow-lg shadow-rosegold/5'
                             : 'bg-white/[0.02] border-white/5 hover:bg-white/[0.04] hover:border-white/10'
                         }`}
                       >
-                        <div className="flex items-start gap-3.5">
-                          <div className={`shrink-0 h-10 w-10 rounded-2xl flex items-center justify-center ${
-                            isRecommended ? 'bg-[#D4AF37]/15 text-[#D4AF37]' : 'bg-white/5 text-stone-300'
+                        <div className="flex items-start gap-3">
+                          <div className={`shrink-0 h-9 w-9 rounded-2xl flex items-center justify-center ${
+                            isRecommended ? 'bg-rosegold/15 text-rosegold-light' : 'bg-white/5 text-stone-300'
                           }`}>
-                            <Icon className="h-4.5 w-4.5" />
+                            <Icon className="h-4 w-4" />
                           </div>
-                          <div className="flex-1 space-y-1">
+                          <div className="flex-1 space-y-0.5 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
                               <span className="text-sm font-serif text-white">{tech.name}</span>
                               {isRecommended && (
-                                <span className="text-[9px] font-mono uppercase tracking-widest text-[#D4AF37] font-bold px-2 py-0.5 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/20">
+                                <span className="text-[9px] font-mono uppercase tracking-widest text-rosegold-light font-bold px-2 py-0.5 rounded-full bg-rosegold/10 border border-rosegold/20">
                                   {localText.techniqueRecommended}
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-stone-400 font-sans">{tech.tagline}</p>
-                            <p className="text-[11px] text-stone-500 leading-relaxed pt-1">{tech.physiology}</p>
+                            <p className="text-[11px] text-stone-400 font-sans">{tech.tagline}</p>
+                            <p className={`text-[10px] text-stone-500 leading-relaxed pt-0.5 ${isRecommended ? '' : 'line-clamp-2'}`}>
+                              {tech.physiology}
+                            </p>
                           </div>
                         </div>
                       </button>
@@ -899,7 +906,7 @@ export default function EmotionalSosView({
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => handleFeedback(true)}
-                    className="py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-stone-950 text-xs font-sans font-extrabold tracking-wider uppercase rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5"
+                    className="py-3 px-4 bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-stone-950 text-xs font-sans font-extrabold tracking-wider uppercase rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     <ShieldCheck className="h-4 w-4" />
                     <span>{localText.feedbackYes}</span>
