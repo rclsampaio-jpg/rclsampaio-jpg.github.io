@@ -48,6 +48,43 @@ html, body {
   --color-warmwhite: #FAF6F2;
   --color-warmbrown: #3A2A24;
   --color-warmbrown-light: #4A3B35;
+
+  /* Dark mode tokens — "Opção B" / "Luxo Contido", per
+     docs/superpowers/specs/2026-07-31-dark-mode-tokens-design.md.
+     Deliberately a single accent (rosegold-light) instead of the light
+     mode's rosegold+gold pair — restraint is what reads as "contained
+     luxury" instead of "light mode inverted". */
+  --color-ink: #17130F;
+  --color-ink-raised: #211C17;
+  --color-ink-text: #F3ECE4;
+  --color-ink-muted: #8C8078;
+  --color-ink-hairline: #3A342E;
+}
+
+/* Luxo Contido utility classes — flat surfaces, no blur/gradient (those
+   read as "cheap" on dark backgrounds, unlike on the light mode's paper
+   tones), outline buttons instead of filled blocks, underline-only inputs. */
+.ink-card {
+  background-color: var(--color-ink-raised);
+  border: 1px solid var(--color-ink-hairline);
+}
+
+.ink-button-outline {
+  background: transparent;
+  border: 1px solid var(--color-rosegold-light);
+  color: var(--color-rosegold-light);
+}
+
+.ink-input-line {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-ink-hairline);
+  border-radius: 0;
+  color: var(--color-ink-text);
+}
+.ink-input-line:focus {
+  border-bottom-color: var(--color-rosegold-light);
+  outline: none;
 }
 
 /* Luxury Material and Glassmorphism System */

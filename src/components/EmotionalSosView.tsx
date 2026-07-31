@@ -619,20 +619,20 @@ export default function EmotionalSosView({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 h-[100dvh] z-[45] bg-[#1E1715] text-[#FAF6F0] flex flex-col justify-between p-4 sm:p-6 pb-6 overflow-y-auto select-none font-sans"
+      className="fixed inset-0 h-[100dvh] z-[45] bg-ink text-ink-text flex flex-col justify-between p-4 sm:p-6 pb-6 overflow-y-auto select-none font-sans"
     >
       {/* Background Soft Serene Ambient Glow — warm, low-contrast, matched to
           the app's own dark palette rather than a separate near-black stage,
           so the "calm down" screen doesn't read more intense than the rest
           of the app. */}
       <div className="absolute top-1/4 left-1/4 h-80 w-80 bg-rosegold/5 blur-3xl rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 h-80 w-80 bg-[#D4AF37]/4 blur-3xl rounded-full pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 h-80 w-80 bg-rosegold-light/4 blur-3xl rounded-full pointer-events-none" />
 
       {/* Top Bar with Silent Back link */}
       <div className="max-w-3xl w-full mx-auto flex items-center justify-between pb-3 sm:pb-4 relative z-10 shrink-0">
         <button
           onClick={onBackToMission}
-          className="flex items-center gap-2 text-xs font-sans text-stone-400 hover:text-white transition duration-300 cursor-pointer"
+          className="flex items-center gap-2 text-xs font-sans text-ink-muted hover:text-ink-text transition duration-300 cursor-pointer"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>{localText.back}</span>
@@ -662,10 +662,10 @@ export default function EmotionalSosView({
                 <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold-light font-bold block">
                   Identificação do Sentimento
                 </span>
-                <h2 className="text-lg sm:text-2xl font-serif text-white leading-snug">
+                <h2 className="text-lg sm:text-2xl font-serif text-ink-text leading-snug">
                   {localText.categoryTitle}
                 </h2>
-                <p className="text-[11px] sm:text-xs text-stone-400">
+                <p className="text-[11px] sm:text-xs text-ink-muted">
                   {localText.categoryDesc}
                 </p>
               </div>
@@ -675,10 +675,10 @@ export default function EmotionalSosView({
                   <button
                     key={key}
                     onClick={() => handleSelectCategory(key)}
-                    className="w-full text-left px-4 py-3 sm:py-3.5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-rosegold/5 hover:border-rosegold/25 text-stone-200 transition-all duration-300 flex items-center justify-between group cursor-pointer"
+                    className="w-full text-left px-4 py-3 sm:py-3.5 rounded-2xl ink-card hover:border-rosegold-light/30 text-ink-text transition-all duration-300 flex items-center justify-between group cursor-pointer"
                   >
                     <div className="space-y-0.5">
-                      <span className="text-xs font-sans font-bold tracking-wide group-hover:text-white transition duration-200">
+                      <span className="text-xs font-sans font-bold tracking-wide group-hover:text-rosegold-light transition duration-200">
                         {item.title}
                       </span>
                     </div>
@@ -703,7 +703,7 @@ export default function EmotionalSosView({
                 <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold-light font-bold block">
                   {localText.techniqueEyebrow}
                 </span>
-                <h2 className="text-base sm:text-xl font-serif text-white leading-snug lowercase">
+                <h2 className="text-base sm:text-xl font-serif text-ink-text leading-snug lowercase">
                   {localText.techniqueTitleFor}
                 </h2>
               </div>
@@ -722,27 +722,27 @@ export default function EmotionalSosView({
                         onClick={() => handleSelectTechnique(tech.id)}
                         className={`w-full text-left p-3.5 sm:p-4 rounded-2xl border transition-all duration-300 cursor-pointer group ${
                           isRecommended
-                            ? 'bg-rosegold/[0.07] border-rosegold/30 shadow-lg shadow-rosegold/5'
-                            : 'bg-white/[0.02] border-white/5 hover:bg-white/[0.04] hover:border-white/10'
+                            ? 'ink-card border-rosegold-light/30 shadow-lg shadow-rosegold-light/5'
+                            : 'ink-card hover:border-rosegold-light/20'
                         }`}
                       >
                         <div className="flex items-start gap-3">
                           <div className={`shrink-0 h-9 w-9 rounded-2xl flex items-center justify-center ${
-                            isRecommended ? 'bg-rosegold/15 text-rosegold-light' : 'bg-white/5 text-stone-300'
+                            isRecommended ? 'bg-rosegold-light/15 text-rosegold-light' : 'bg-white/5 text-ink-muted'
                           }`}>
                             <Icon className="h-4 w-4" />
                           </div>
                           <div className="flex-1 space-y-0.5 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="text-sm font-serif text-white">{tech.name}</span>
+                              <span className="text-sm font-serif text-ink-text">{tech.name}</span>
                               {isRecommended && (
                                 <span className="text-[9px] font-mono uppercase tracking-widest text-rosegold-light font-bold px-2 py-0.5 rounded-full bg-rosegold/10 border border-rosegold/20">
                                   {localText.techniqueRecommended}
                                 </span>
                               )}
                             </div>
-                            <p className="text-[11px] text-stone-400 font-sans">{tech.tagline}</p>
-                            <p className={`text-[10px] text-stone-500 leading-relaxed pt-0.5 ${isRecommended ? '' : 'line-clamp-2'}`}>
+                            <p className="text-[11px] text-ink-muted font-sans">{tech.tagline}</p>
+                            <p className={`text-[10px] text-ink-muted/80 leading-relaxed pt-0.5 ${isRecommended ? '' : 'line-clamp-2'}`}>
                               {tech.physiology}
                             </p>
                           </div>
@@ -768,10 +768,10 @@ export default function EmotionalSosView({
                 <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block">
                   {activeTechnique.name}
                 </span>
-                <h2 className="text-xl sm:text-2xl font-serif font-light text-white leading-tight lowercase">
+                <h2 className="text-xl sm:text-2xl font-serif font-light text-ink-text leading-tight lowercase">
                   {activeTechnique.tagline}
                 </h2>
-                <p className="text-xs sm:text-sm text-stone-400 max-w-sm mx-auto leading-relaxed">
+                <p className="text-xs sm:text-sm text-ink-muted max-w-sm mx-auto leading-relaxed">
                   {activeTechnique.physiology}
                 </p>
               </div>
@@ -793,31 +793,31 @@ export default function EmotionalSosView({
                     className={`h-24 w-24 sm:h-32 sm:w-32 rounded-full flex flex-col items-center justify-center relative transition-colors duration-700 ${
                       !isBreathing ? 'bg-rosegold/10 border border-rosegold/20' :
                       currentPhase.key === 'inhale' || currentPhase.key === 'inhale2' ? 'bg-rosegold/20 ring-4 ring-rosegold/10' :
-                      currentPhase.key === 'hold1' ? 'bg-[#D4AF37]/15 ring-4 ring-[#D4AF37]/10' :
-                      currentPhase.key === 'exhale' ? 'bg-amber-600/15 ring-4 ring-amber-600/10' :
-                      'bg-slate-800/25 ring-4 ring-slate-800/10'
+                      currentPhase.key === 'hold1' ? 'bg-rosegold-light/15 ring-4 ring-rosegold-light/10' :
+                      currentPhase.key === 'exhale' ? 'bg-rosegold-light/10 ring-4 ring-rosegold-light/5' :
+                      'bg-ink-raised ring-4 ring-white/5'
                     }`}
                   >
                     {isBreathing ? (
                       <>
-                        <span className="text-2xl sm:text-3xl font-serif font-bold text-white mb-0.5">
+                        <span className="text-2xl sm:text-3xl font-serif font-bold text-ink-text mb-0.5">
                           {secondsLeft}s
                         </span>
-                        <span className="text-[10px] sm:text-[11px] font-mono tracking-widest text-[#D4AF37] uppercase font-bold px-2 text-center leading-tight">
+                        <span className="text-[10px] sm:text-[11px] font-mono tracking-widest text-rosegold-light uppercase font-bold px-2 text-center leading-tight">
                           {phaseLabels[currentPhase.key]}
                         </span>
                       </>
                     ) : (
-                      <Wind className="h-6 w-6 sm:h-7 sm:w-7 text-stone-400 animate-pulse" />
+                      <Wind className="h-6 w-6 sm:h-7 sm:w-7 text-ink-muted animate-pulse" />
                     )}
                   </motion.div>
 
                   {/* Gentle Ripple Bounds */}
-                  <div className="absolute h-32 w-32 sm:h-44 sm:w-44 border border-white/5 rounded-full pointer-events-none" />
+                  <div className="absolute h-32 w-32 sm:h-44 sm:w-44 border border-ink-hairline rounded-full pointer-events-none" />
                 </div>
 
                 {isBreathing && (
-                  <span className="text-xs font-mono text-stone-400">
+                  <span className="text-xs font-mono text-ink-muted">
                     {localText.breathingCycles.replace('{count}', cyclesCompleted.toString()).replace('{target}', activeTechnique.cyclesTarget.toString())}
                   </span>
                 )}
@@ -828,14 +828,14 @@ export default function EmotionalSosView({
                 {!isBreathing ? (
                   <button
                     onClick={handleStartBreathing}
-                    className="w-full py-2.5 sm:py-3 bg-rosegold hover:bg-rosegold/90 text-white rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all duration-300 shadow-lg shadow-rosegold/10 cursor-pointer"
+                    className="w-full py-2.5 sm:py-3 ink-button-outline rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all duration-300 hover:bg-rosegold-light/10 cursor-pointer"
                   >
                     {localText.breathingCta}
                   </button>
                 ) : (
                   <button
                     onClick={handleStopBreathing}
-                    className="w-full py-2.5 sm:py-3 bg-stone-900 border border-stone-800 text-stone-300 rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all cursor-pointer"
+                    className="w-full py-2.5 sm:py-3 bg-transparent border border-ink-hairline text-ink-muted rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all cursor-pointer"
                   >
                     {localText.breathingStop}
                   </button>
@@ -847,14 +847,14 @@ export default function EmotionalSosView({
                     onClick={() => setStage('messageReveal')}
                     className={`w-full py-3 rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all duration-500 cursor-pointer ${
                       cyclesCompleted >= 1
-                        ? 'bg-[#D4AF37] text-stone-950 shadow-lg shadow-[#D4AF37]/20 font-extrabold'
-                        : 'bg-white/5 border border-white/10 text-stone-300 hover:bg-white/10'
+                        ? 'ink-button-outline shadow-lg shadow-rosegold-light/10 font-extrabold'
+                        : 'bg-transparent border border-ink-hairline text-ink-muted hover:border-rosegold-light/30 hover:text-ink-text'
                     }`}
                   >
                     {localText.breathingProceed}
                   </button>
                   {cyclesCompleted < 1 && (
-                    <p className="text-[11px] text-stone-500 mt-2 italic">
+                    <p className="text-[11px] text-ink-muted mt-2 italic">
                       {localText.breathingProceedHint}
                     </p>
                   )}
@@ -862,7 +862,7 @@ export default function EmotionalSosView({
 
                 <button
                   onClick={() => { setIsBreathing(false); setStage('techniqueSelect'); }}
-                  className="text-[11px] text-stone-500 hover:text-stone-300 underline-offset-4 hover:underline transition cursor-pointer"
+                  className="text-[11px] text-ink-muted hover:text-rosegold-light underline-offset-4 hover:underline transition cursor-pointer"
                 >
                   {localText.breathingChangeTechnique}
                 </button>
@@ -884,13 +884,13 @@ export default function EmotionalSosView({
                 <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block">
                   {localText.revealTitle}
                 </span>
-                <h2 className="text-xl sm:text-2xl font-serif text-[#FAF6F0] font-light uppercase">
+                <h2 className="text-xl sm:text-2xl font-serif text-ink-text font-light uppercase">
                   {sosGuidance[selectedCategory as keyof typeof sosGuidance]?.title}
                 </h2>
               </div>
 
               {/* Richly designed copywriting box */}
-              <div className="p-6 sm:p-8 rounded-3xl bg-white/[0.02] border border-white/5 font-serif italic text-stone-200 text-base sm:text-lg leading-relaxed text-left border-l-4 border-l-[#D4AF37] max-w-lg mx-auto shadow-inner relative overflow-hidden">
+              <div className="p-6 sm:p-8 rounded-3xl ink-card font-serif italic text-ink-text text-base sm:text-lg leading-relaxed text-left border-l-4 border-l-rosegold-light max-w-lg mx-auto shadow-inner relative overflow-hidden">
                 <div className="absolute top-0 right-0 h-16 w-16 bg-rosegold/5 blur-xl rounded-full" />
                 <p className="relative z-10 whitespace-pre-wrap">
                   "{adaptMessage(sosGuidance[selectedCategory as keyof typeof sosGuidance]?.text[guideStyle] || '', prefGrammar, lang)}"
@@ -898,15 +898,15 @@ export default function EmotionalSosView({
               </div>
 
               {/* EVALUATION QUESTION */}
-              <div className="space-y-4 pt-4 border-t border-white/5 max-w-sm mx-auto">
-                <p className="text-xs font-sans text-stone-400 font-bold uppercase tracking-wider">
+              <div className="space-y-4 pt-4 border-t border-ink-hairline max-w-sm mx-auto">
+                <p className="text-xs font-sans text-ink-muted font-bold uppercase tracking-wider">
                   {localText.feedbackQ}
                 </p>
 
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => handleFeedback(true)}
-                    className="py-3 px-4 bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-stone-950 text-xs font-sans font-extrabold tracking-wider uppercase rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5"
+                    className="py-3 px-4 ink-button-outline hover:bg-rosegold-light/10 text-xs font-sans font-extrabold tracking-wider uppercase rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     <ShieldCheck className="h-4 w-4" />
                     <span>{localText.feedbackYes}</span>
@@ -914,7 +914,7 @@ export default function EmotionalSosView({
 
                   <button
                     onClick={() => handleFeedback(false)}
-                    className="py-3 px-4 bg-white/5 border border-white/10 hover:bg-white/10 text-stone-200 text-xs font-sans font-bold tracking-wider uppercase rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5"
+                    className="py-3 px-4 bg-transparent border border-ink-hairline hover:border-rosegold-light/30 text-ink-muted text-xs font-sans font-bold tracking-wider uppercase rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     <HelpCircle className="h-4 w-4" />
                     <span>{localText.feedbackNo}</span>
@@ -933,15 +933,15 @@ export default function EmotionalSosView({
               exit={{ opacity: 0 }}
               className="text-center space-y-6 max-w-md mx-auto"
             >
-              <div className="w-14 h-14 bg-[#D4AF37]/10 text-[#D4AF37] rounded-full mx-auto flex items-center justify-center border border-[#D4AF37]/20">
+              <div className="w-14 h-14 bg-rosegold-light/10 text-rosegold-light rounded-full mx-auto flex items-center justify-center border border-rosegold-light/20">
                 <Sparkles className="h-6 w-6 animate-pulse" />
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-lg font-serif text-[#FAF6F0] lowercase">
+                <h3 className="text-lg font-serif text-ink-text lowercase">
                   Sintonização realizada
                 </h3>
-                <p className="text-sm text-stone-300 leading-relaxed font-sans">
+                <p className="text-sm text-ink-text/85 leading-relaxed font-sans">
                   {adaptMessage(toneText[lang].feedbackSuccess[guideStyle], prefGrammar, lang)}
                 </p>
               </div>
@@ -949,7 +949,7 @@ export default function EmotionalSosView({
               <div className="pt-4">
                 <button
                   onClick={onBackToMission}
-                  className="px-6 py-3 bg-rosegold hover:bg-rosegold/90 text-white rounded-xl text-xs font-sans font-bold tracking-widest uppercase transition cursor-pointer"
+                  className="px-6 py-3 ink-button-outline hover:bg-rosegold-light/10 rounded-xl text-xs font-sans font-bold tracking-widest uppercase transition cursor-pointer"
                 >
                   Voltar para o Portal
                 </button>
@@ -972,10 +972,10 @@ export default function EmotionalSosView({
                     <div className="p-3 bg-rose-50/10 text-rosegold rounded-2xl w-12 h-12 mx-auto flex items-center justify-center">
                       <Heart className="h-5 w-5 fill-current" />
                     </div>
-                    <h2 className="text-xl font-serif text-[#FAF6F0] leading-snug">
+                    <h2 className="text-xl font-serif text-ink-text leading-snug">
                       {adaptMessage(toneText[lang].altTitle[guideStyle], prefGrammar, lang)}
                     </h2>
-                    <p className="text-xs text-stone-400 leading-relaxed max-w-xs mx-auto">
+                    <p className="text-xs text-ink-muted leading-relaxed max-w-xs mx-auto">
                       {adaptMessage(toneText[lang].altDesc[guideStyle], prefGrammar, lang)}
                     </p>
                   </div>
@@ -983,10 +983,10 @@ export default function EmotionalSosView({
                   <div className="space-y-3 pt-2">
                     <button
                       onClick={() => handleAlternative('breathing')}
-                      className="w-full p-4 bg-white/[0.02] border border-white/5 hover:bg-[#D4AF37]/5 hover:border-[#D4AF37]/20 rounded-2xl text-left text-xs font-sans font-bold tracking-wide text-stone-200 transition cursor-pointer flex items-center justify-between group"
+                      className="w-full p-4 ink-card hover:border-rosegold-light/30 rounded-2xl text-left text-xs font-sans font-bold tracking-wide text-ink-text transition cursor-pointer flex items-center justify-between group"
                     >
                       <span className="flex items-center gap-2">
-                        <RefreshCw className="h-4 w-4 text-[#D4AF37] group-hover:rotate-180 transition duration-500" />
+                        <RefreshCw className="h-4 w-4 text-rosegold-light group-hover:rotate-180 transition duration-500" />
                         <span>{localText.altOptionBreathing}</span>
                       </span>
                       <span>→</span>
@@ -994,10 +994,10 @@ export default function EmotionalSosView({
 
                     <button
                       onClick={() => handleAlternative('letter')}
-                      className="w-full p-4 bg-white/[0.02] border border-white/5 hover:bg-[#D4AF37]/5 hover:border-[#D4AF37]/20 rounded-2xl text-left text-xs font-sans font-bold tracking-wide text-stone-200 transition cursor-pointer flex items-center justify-between group"
+                      className="w-full p-4 ink-card hover:border-rosegold-light/30 rounded-2xl text-left text-xs font-sans font-bold tracking-wide text-ink-text transition cursor-pointer flex items-center justify-between group"
                     >
                       <span className="flex items-center gap-2">
-                        <BookOpen className="h-4 w-4 text-[#D4AF37]" />
+                        <BookOpen className="h-4 w-4 text-rosegold-light" />
                         <span>{localText.altOptionLetter}</span>
                       </span>
                       <span>→</span>
@@ -1005,10 +1005,10 @@ export default function EmotionalSosView({
 
                     <button
                       onClick={onGoToLibrary}
-                      className="w-full p-4 bg-white/[0.02] border border-white/5 hover:bg-[#D4AF37]/5 hover:border-[#D4AF37]/20 rounded-2xl text-left text-xs font-sans font-bold tracking-wide text-stone-200 transition cursor-pointer flex items-center justify-between group"
+                      className="w-full p-4 ink-card hover:border-rosegold-light/30 rounded-2xl text-left text-xs font-sans font-bold tracking-wide text-ink-text transition cursor-pointer flex items-center justify-between group"
                     >
                       <span className="flex items-center gap-2">
-                        <Headphones className="h-4 w-4 text-[#D4AF37]" />
+                        <Headphones className="h-4 w-4 text-rosegold-light" />
                         <span>{localText.altOptionPineal}</span>
                       </span>
                       <span>→</span>
@@ -1027,20 +1027,20 @@ export default function EmotionalSosView({
                     <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block">
                       Refúgio Secreto
                     </span>
-                    <h2 className="text-xl sm:text-2xl font-serif text-[#FAF6F0] lowercase font-light">
+                    <h2 className="text-xl sm:text-2xl font-serif text-ink-text lowercase font-light">
                       {localText.letterTitle}
                     </h2>
                   </div>
 
                   {/* Deeply cozy letter typeset */}
-                  <div className="p-6 rounded-3xl bg-amber-50/[0.02] border border-amber-100/5 text-stone-200 font-serif italic text-sm leading-relaxed whitespace-pre-wrap max-h-80 overflow-y-auto pl-4 border-l-2 border-l-[#D4AF37] max-w-md mx-auto">
+                  <div className="p-6 rounded-3xl ink-card text-ink-text font-serif italic text-sm leading-relaxed whitespace-pre-wrap max-h-80 overflow-y-auto pl-4 border-l-2 border-l-rosegold-light max-w-md mx-auto">
                     {adaptMessage(comfortLetter[guideStyle], prefGrammar, lang)}
                   </div>
 
                   <div className="flex justify-center pt-2">
                     <button
                       onClick={onBackToMission}
-                      className="px-6 py-2.5 bg-rosegold hover:bg-rosegold/90 text-white rounded-xl text-xs font-sans font-bold tracking-widest uppercase transition cursor-pointer shadow-md"
+                      className="px-6 py-2.5 ink-button-outline hover:bg-rosegold-light/10 rounded-xl text-xs font-sans font-bold tracking-widest uppercase transition cursor-pointer"
                     >
                       {localText.letterClose}
                     </button>
@@ -1056,7 +1056,7 @@ export default function EmotionalSosView({
       </div>
 
       {/* Warm bottom bar credit */}
-      <div className="max-w-md w-full mx-auto text-center text-[11px] font-mono text-stone-600 uppercase tracking-widest py-2 border-t border-white/5 relative z-10">
+      <div className="max-w-md w-full mx-auto text-center text-[11px] font-mono text-ink-muted/70 uppercase tracking-widest py-2 border-t border-ink-hairline relative z-10">
         {adaptMessage('você é [dona/dono/done] do seu ritmo • renaser os', prefGrammar, 'pt')}
       </div>
 
