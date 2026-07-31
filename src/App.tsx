@@ -39,6 +39,11 @@ import BrandIdentityView from './components/BrandIdentityView';
 import RenaSerLogo from './components/RenaSerLogo';
 import RenataOSChat from './components/RenataOSChat';
 import DayCompletionOverlay from './components/DayCompletionOverlay';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import LoginView from './components/auth/LoginView';
+import SignupView from './components/auth/SignupView';
+import InviteAdminPanel from './components/auth/InviteAdminPanel';
+import { useProgressSync } from './hooks/useProgressSync';
 
 import { adaptMessage, resolveGrammarPreference } from './utils/grammar';
 import { getLocalDateISO, getUnlockAnchorDateISO } from './utils/date';
@@ -47,40 +52,25 @@ import { useSystem } from './engines/SystemEngine';
 type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'transformation' | 'community' | 'library' | 'profile' | 'brand';
 
 export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+function AppContent() {
   const system = useSystem();
 
-  const [progress, setProgress] = useState<UserProgress>(() => loadUserProgressFromStorage());
+  const { user, loading: authLoading } = useAuth();
+  const inviteCodeFromUrl = new URLSearchParams(window.location.search).get('codigo');
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>(inviteCodeFromUrl ? 'signup' : 'login');
+
+  const { progress, updateProgress } = useProgressSync(loadUserProgressFromStorage());
   const [days, setDays] = useState<MissionDay[]>(() => loadDaysFromStorage(progress.journeyStartDate));
   const [lang, setLang] = useState<Language>('pt'); // Default language
   const [activeTab, setActiveTab] = useState<TabId>('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  // Shared-passcode gate for the whole ecosystem, so the link alone isn't
-  // enough to get in. NOTE: same caveat as the admin gate below — this is a
-  // deterrent against casual link sharing, not real per-user access control
-  // (anyone with the passcode can still share passcode + link together).
-  // Real enforcement would require server-side auth tied to a purchase record.
-  // The unlock expires after ACCESS_REASK_INTERVAL_MS so the passcode is
-  // re-asked periodically instead of staying unlocked forever on a device.
-  const ACCESS_REASK_INTERVAL_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
-  const isAccessStillValid = () => {
-    const unlockedAt = Number(localStorage.getItem('renaser_access_unlocked_at') || '0');
-    return unlockedAt > 0 && (Date.now() - unlockedAt) < ACCESS_REASK_INTERVAL_MS;
-  };
-  const [isAccessUnlocked, setIsAccessUnlocked] = useState(() => isAccessStillValid());
-  const [accessPassInput, setAccessPassInput] = useState('');
-  const [accessPassError, setAccessPassError] = useState(false);
-  const ACCESS_PASSPHRASE = 'renasci2026';
-
-  const handleAccessUnlock = () => {
-    if (accessPassInput.trim().toLowerCase() === ACCESS_PASSPHRASE.toLowerCase()) {
-      setIsAccessUnlocked(true);
-      localStorage.setItem('renaser_access_unlocked_at', String(Date.now()));
-      setAccessPassError(false);
-    } else {
-      setAccessPassError(true);
-    }
-  };
 
   // Admin-only gate for Brand Identity & Creator Studio (CMS).
   // NOTE: this is a client-side deterrent, not real security — anyone who reads
@@ -169,12 +159,6 @@ export default function App() {
       setLang(savedLang);
     }
   }, []);
-
-  // Update localStorage when progress state changes
-  const updateProgress = (newProgress: UserProgress) => {
-    setProgress(newProgress);
-    saveUserProgressToStorage(newProgress);
-  };
 
   const handleLanguageChange = (newLang: Language) => {
     setLang(newLang);
@@ -481,43 +465,17 @@ export default function App() {
 
   const isNextLevelUnlocked = progress.completionHistory.includes(30);
 
-  if (!isAccessUnlocked) {
-    return (
-      <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-[#1E1715] flex flex-col justify-center items-center p-6 text-center select-none">
-        <div className="max-w-sm w-full space-y-6 p-8 rounded-3xl border border-rosegold/20 bg-white dark:bg-[#251E1C] shadow-rosegold">
-          <div className="mx-auto h-12 w-12 rounded-2xl bg-rosegold/10 text-rosegold flex items-center justify-center">
-            <Lock className="h-5 w-5" />
-          </div>
-          <div className="space-y-1.5">
-            <h2 className="text-lg font-serif font-medium text-slate-900 dark:text-white">
-              {lang === 'pt' ? 'Acesso Exclusivo RenaSer' : lang === 'es' ? 'Acceso Exclusivo RenaSer' : 'Exclusive RenaSer Access'}
-            </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              {lang === 'pt' ? 'Digite o código que você recebeu para entrar.' : lang === 'es' ? 'Ingresa el código que recibiste para entrar.' : 'Enter the code you received to continue.'}
-            </p>
-          </div>
-          <input
-            type="password"
-            value={accessPassInput}
-            onChange={(e) => { setAccessPassInput(e.target.value); setAccessPassError(false); }}
-            onKeyDown={(e) => e.key === 'Enter' && handleAccessUnlock()}
-            placeholder={lang === 'pt' ? 'Código de acesso' : lang === 'es' ? 'Código de acceso' : 'Access code'}
-            className="w-full text-center bg-[#FAF8F5] dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-2xl p-3.5 text-sm text-slate-800 dark:text-slate-100"
-            autoFocus
-          />
-          {accessPassError && (
-            <p className="text-xs text-rose-500 font-medium">
-              {lang === 'pt' ? 'Código incorreto. Tente novamente.' : lang === 'es' ? 'Código incorrecto. Intenta de nuevo.' : 'Incorrect code. Please try again.'}
-            </p>
-          )}
-          <button
-            onClick={handleAccessUnlock}
-            className="w-full py-3.5 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer"
-          >
-            {lang === 'pt' ? 'Entrar' : lang === 'es' ? 'Entrar' : 'Enter'}
-          </button>
-        </div>
-      </div>
+  if (authLoading) return null;
+
+  if (!user) {
+    return authMode === 'login' ? (
+      <LoginView onSwitchToSignup={() => setAuthMode('signup')} />
+    ) : (
+      <SignupView
+        inviteCodeFromUrl={inviteCodeFromUrl}
+        onSwitchToLogin={() => setAuthMode('login')}
+        onSignupSuccess={() => setAuthMode('login')}
+      />
     );
   }
 
@@ -1124,9 +1082,12 @@ export default function App() {
             )}
 
             {activeTab === 'brand' && isAdminUnlocked && (
-              <BrandIdentityView
-                lang={lang}
-              />
+              <>
+                <BrandIdentityView
+                  lang={lang}
+                />
+                <InviteAdminPanel />
+              </>
             )}
           </motion.div>
         </AnimatePresence>

@@ -1,0 +1,75 @@
+=== Commits ===
+3ae423c feat(sync): hook de sincronização de progresso com Supabase
+
+=== Diff stat ===
+ src/hooks/useProgressSync.ts | 61 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
+
+=== Full diff ===
+diff --git a/src/hooks/useProgressSync.ts b/src/hooks/useProgressSync.ts
+new file mode 100644
+index 0000000..386dacf
+--- /dev/null
++++ b/src/hooks/useProgressSync.ts
+@@ -0,0 +1,61 @@
++import { useState, useEffect, useRef, useCallback } from 'react';
++import { UserProgress } from '../types';
++import { saveUserProgressToStorage } from '../data/templateData';
++import { supabase } from '../lib/supabase';
++import { useAuth } from '../contexts/AuthContext';
++
++const SYNC_DEBOUNCE_MS = 2000;
++
++export function useProgressSync(initialProgress: UserProgress) {
++  const { user } = useAuth();
++  const [progress, setProgress] = useState<UserProgress>(initialProgress);
++  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
++  const didInitialLoad = useRef(false);
++
++  // Ao logar: busca progresso da nuvem; se nuvem vazia e há progresso local
++  // (localStorage), sobe o local uma vez (migração de quem já usava o app).
++  useEffect(() => {
++    if (!user || didInitialLoad.current) return;
++    didInitialLoad.current = true;
++
++    (async () => {
++      const { data: cloudRow } = await supabase
++        .from('user_progress')
++        .select('data')
++        .eq('user_id', user.id)
++        .maybeSingle();
++
++      if (cloudRow?.data) {
++        const cloudProgress = cloudRow.data as UserProgress;
++        setProgress(cloudProgress);
++        saveUserProgressToStorage(cloudProgress);
++      } else {
++        // Nada na nuvem ainda: migra o progresso local (se houver) para lá.
++        await supabase.from('user_progress').upsert({
++          user_id: user.id,
++          data: initialProgress,
++          updated_at: new Date().toISOString(),
++        });
++      }
++    })();
++  }, [user, initialProgress]);
++
++  const updateProgress = useCallback(
++    (newProgress: UserProgress) => {
++      setProgress(newProgress);
++      saveUserProgressToStorage(newProgress);
++
++      if (!user) return; // sem sessão ainda (não deveria acontecer pós-login, mas defensivo)
++
++      if (debounceTimer.current) clearTimeout(debounceTimer.current);
++      debounceTimer.current = setTimeout(() => {
++        supabase
++          .from('user_progress')
++          .upsert({ user_id: user.id, data: newProgress, updated_at: new Date().toISOString() });
++      }, SYNC_DEBOUNCE_MS);
++    },
++    [user],
++  );
++
++  return { progress, updateProgress };
++}
