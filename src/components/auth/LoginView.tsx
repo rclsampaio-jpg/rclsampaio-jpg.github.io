@@ -3,6 +3,7 @@ import { useState, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
 import RenaSerLogo from '../RenaSerLogo';
+import GoogleSignInButton from './GoogleSignInButton';
 
 interface LoginViewProps {
   onSwitchToSignup: () => void;
@@ -152,6 +153,12 @@ export default function LoginView({ onSwitchToSignup }: LoginViewProps) {
         >
           {submitting ? 'Entrando...' : 'Entrar'}
         </button>
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-px bg-rose-100/30 dark:bg-rosegold/10" />
+          <span className="text-[10px] text-slate-400 uppercase tracking-wider">ou</span>
+          <div className="flex-1 h-px bg-rose-100/30 dark:bg-rosegold/10" />
+        </div>
+        <GoogleSignInButton label="Entrar com Google" onError={setError} />
         <div className="flex flex-col gap-2">
           <button
             type="button"

@@ -8,6 +8,7 @@ interface AuthContextValue {
   loading: boolean;
   passwordRecovery: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signInWithGoogle: () => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   requestPasswordReset: (email: string) => Promise<{ error: string | null }>;
   updatePassword: (newPassword: string) => Promise<{ error: string | null }>;
@@ -42,6 +43,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: error ? traduzErroLogin(error.message) : null };
   };
 
+  // Google sign-in creates an account automatically on first use — there's
+  // no invite-code check here, unlike email/password signup. That's a
+  // deliberate product decision to make; if invite-only access must apply
+  // to Google too, gate it in the Supabase Auth Hook (dashboard), not here.
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin + window.location.pathname },
+    });
+    return { error: error ? 'Não foi possível iniciar o login com Google. Tente novamente.' : null };
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
     setPasswordRecovery(false);
@@ -62,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user: session?.user ?? null, session, loading, passwordRecovery, signIn, signOut, requestPasswordReset, updatePassword }}
+      value={{ user: session?.user ?? null, session, loading, passwordRecovery, signIn, signInWithGoogle, signOut, requestPasswordReset, updatePassword }}
     >
       {children}
     </AuthContext.Provider>
