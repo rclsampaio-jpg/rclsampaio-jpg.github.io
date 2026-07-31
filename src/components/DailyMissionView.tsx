@@ -583,10 +583,10 @@ export default function DailyMissionView({
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
+      logEngagementEvent('daily_audio', String(currentDay.dayNumber), currentDay.dayNumber);
       audioRef.current.play()
         .then(() => {
           setIsPlaying(true);
-          logEngagementEvent('daily_audio', String(currentDay.dayNumber), currentDay.dayNumber);
         })
         .catch((e) => {
           console.log('Audio playback simulation fallback activated.', e);

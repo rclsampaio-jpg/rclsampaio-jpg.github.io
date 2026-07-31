@@ -83,11 +83,11 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
       },
       typography: {
         title: "Diretrizes de Tipografia",
-        desc: "A tipografia é o alicerce de nossa sofisticação editorial. Usamos 'Playfair Display' para títulos display expressivos, e 'Outfit' para uma interface limpa, moderna e altamente legível.",
+        desc: "A tipografia é o alicerce de nossa sofisticação editorial. Usamos 'Cormorant Garamond' para títulos display expressivos, e 'Inter' para uma interface limpa, moderna e altamente legível.",
         fontPairing: "Combinação de Fontes Recomendada",
-        headingFont: "Fonte Display: Playfair Display",
+        headingFont: "Fonte Display: Cormorant Garamond",
         headingDesc: "Usada para grandes cabeçalhos, citações e momentos de profunda reflexão. Expressa elegância clássica.",
-        bodyFont: "Fonte Sans: Outfit",
+        bodyFont: "Fonte Sans: Inter",
         bodyDesc: "Usada para a interface do aplicativo, textos explicativos e botões. Transmite modernidade e precisão.",
         tryText: "Teste a Tipografia com seu texto:"
       },
@@ -163,11 +163,11 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
       },
       typography: {
         title: "Typography Recommendations",
-        desc: "Typography is the cornerstone of our editorial sophistication. We pair 'Playfair Display' for expressive display headings with 'Outfit' for a clean, modern, and highly legible UI.",
+        desc: "Typography is the cornerstone of our editorial sophistication. We pair 'Cormorant Garamond' for expressive display headings with 'Inter' for a clean, modern, and highly legible UI.",
         fontPairing: "Recommended Font Pairing",
-        headingFont: "Display Typeface: Playfair Display",
+        headingFont: "Display Typeface: Cormorant Garamond",
         headingDesc: "Used for major headings, quotes, and moments of deep reflection. Expresses classical elegance.",
-        bodyFont: "Sans Typeface: Outfit",
+        bodyFont: "Sans Typeface: Inter",
         bodyDesc: "Used for application UI, micro-copy, and active elements. Conveys modernity and absolute precision.",
         tryText: "Try the Typography with your text:"
       },
@@ -243,11 +243,11 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
       },
       typography: {
         title: "Directrices de Tipografía",
-        desc: "La tipografía es la base de nuestra sofisticación editorial. Combinamos 'Playfair Display' para títulos expresivos y 'Outfit' para una interfaz limpia, moderna y altamente legible.",
+        desc: "La tipografía es la base de nuestra sofisticación editorial. Combinamos 'Cormorant Garamond' para títulos expresivos y 'Inter' para una interfaz limpia, moderna y altamente legible.",
         fontPairing: "Combinación de Fuentes Recomendada",
-        headingFont: "Tipografía Display: Playfair Display",
+        headingFont: "Tipografía Display: Cormorant Garamond",
         headingDesc: "Usada para grandes títulos, citas y momentos de reflexión profunda. Expresa elegancia clásica.",
-        bodyFont: "Tipografía Sans: Outfit",
+        bodyFont: "Tipografía Sans: Inter",
         bodyDesc: "Usada para la interfaz del aplicativo, micro-textos y botones. Transmite modernidad y precisión.",
         tryText: "Prueba la Tipografía con tu texto:"
       },
@@ -275,59 +275,17 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
     }
   }[lang];
 
-  // Helper to render the geometric S butterfly app icon
-  const renderGeometricIcon = (className: string, strokeWidth = 3, gradientId = "iconGrad") => {
-    return (
-      <svg viewBox="0 0 100 100" className={className}>
-        <defs>
-          <linearGradient id="iconGradGold" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#BF953F" />
-            <stop offset="25%" stopColor="#FCF6BA" />
-            <stop offset="50%" stopColor="#B38728" />
-            <stop offset="100%" stopColor="#AA771C" />
-          </linearGradient>
-          <linearGradient id="iconGradRose" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#B76E79" />
-            <stop offset="50%" stopColor="#E8B4A0" />
-            <stop offset="100%" stopColor="#B76E79" />
-          </linearGradient>
-          <linearGradient id="iconGradWhite" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="100%" stopColor="#e2e8f0" />
-          </linearGradient>
-        </defs>
-        
-        {/* Continuous organic loop that creates a stylized "S" as two butterfly wings folded */}
-        <motion.path 
-          d="M 50,18 
-             C 28,18 18,36 34,48 
-             C 50,60 70,64 54,82 
-             C 38,94 22,82 22,70 
-             M 50,82 
-             C 72,82 82,64 66,52 
-             C 50,40 30,36 46,18 
-             C 62,6 78,18 78,30"
-          stroke={
-            iconPreviewStyle === 'gold' ? 'url(#iconGradGold)' :
-            iconPreviewStyle === 'rosegold' ? 'url(#iconGradRose)' :
-            iconPreviewStyle === 'white' ? 'url(#iconGradWhite)' : '#B76E79'
-          }
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.8, ease: "easeInOut" }}
-        />
-        
-        {/* Subtle geometric structural dots representing precision */}
-        <circle cx="50" cy="18" r="2" fill={iconPreviewStyle === 'gold' ? '#D4AF37' : '#B76E79'} className="opacity-40" />
-        <circle cx="50" cy="82" r="2" fill={iconPreviewStyle === 'gold' ? '#D4AF37' : '#B76E79'} className="opacity-40" />
-        <circle cx="50" cy="50" r="1.5" fill={iconPreviewStyle === 'gold' ? '#FCF6BA' : '#E8B4A0'} className="opacity-60" />
-      </svg>
-    );
-  };
+  // Renders the real RenaSer mark (public/assets/images/logo.png) — the
+  // one actually used app-wide (LoginView, header, RenaSerLogo.tsx), not a
+  // fabricated placeholder glyph.
+  const renderGeometricIcon = (className: string, ..._unused: unknown[]) => (
+    <img
+      src="/assets/images/logo.png"
+      alt="RenaSer"
+      className={`${className} object-contain`}
+      referrerPolicy="no-referrer"
+    />
+  );
 
   // Helper to render the typographic logo "RenaSer"
   const renderLogo = (style: typeof logoRenderStyle, layout: 'primary' | 'horizontal' | 'stacked' = 'primary') => {
@@ -365,7 +323,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
         <div className="flex items-center gap-4">
           {renderGeometricIcon("h-10 w-10 shrink-0", 2.5)}
           <div className="h-6 w-px bg-slate-200 dark:bg-slate-800" />
-          <h1 className={`text-2xl font-sans tracking-[0.18em] uppercase font-light leading-none ${colorClass}`}>
+          <h1 className={`text-2xl font-display tracking-[0.18em] uppercase font-light leading-none ${colorClass}`}>
             Rena{sSpan}er
           </h1>
         </div>
@@ -376,7 +334,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
       return (
         <div className="flex flex-col items-center gap-4 text-center">
           {renderGeometricIcon("h-16 w-16", 2.8)}
-          <h1 className={`text-2xl font-sans tracking-[0.25em] uppercase font-light leading-none mt-2 ${colorClass}`}>
+          <h1 className={`text-2xl font-display tracking-[0.25em] uppercase font-light leading-none mt-2 ${colorClass}`}>
             Rena{sSpan}er
           </h1>
           <span className="text-[9px] tracking-[0.4em] font-sans uppercase text-[#E8B4A0] dark:text-slate-400 mt-1 block">
@@ -389,7 +347,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
     // Default Primary
     return (
       <div className="flex flex-col items-center justify-center p-8">
-        <h1 className={`text-4xl sm:text-5xl md:text-6xl font-sans tracking-[0.28em] uppercase font-light text-center leading-normal select-none ${colorClass}`}>
+        <h1 className={`text-4xl sm:text-5xl md:text-6xl font-display tracking-[0.28em] uppercase font-light text-center leading-normal select-none ${colorClass}`}>
           Rena{sSpan}er
         </h1>
         <p className="text-[10px] sm:text-xs tracking-[0.35em] font-sans uppercase text-[#E8B4A0] dark:text-slate-400 mt-4 font-light text-center">
@@ -802,10 +760,19 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   </p>
                 </div>
 
+                <div className="flex items-center gap-3">
+                  <span className="px-3 py-1 rounded-full bg-rosegold/10 text-rosegold text-[10px] font-sans font-bold uppercase tracking-widest">
+                    Opção A
+                  </span>
+                  <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    Modo Claro — Glam Acolhedor
+                  </h4>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                   {[
-                    { 
-                      name: dictionary.colors.primaryColor, 
+                    {
+                      name: dictionary.colors.primaryColor,
                       hex: '#B76E79', 
                       rgb: '183, 110, 121', 
                       cmyk: '24, 61, 41, 4', 
@@ -886,6 +853,64 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   ))}
                 </div>
 
+                <div className="flex items-center gap-3 pt-4">
+                  <span className="px-3 py-1 rounded-full bg-[#EBB4A0]/15 text-[#B76E79] dark:text-[#EBB4A0] text-[10px] font-sans font-bold uppercase tracking-widest">
+                    Opção B
+                  </span>
+                  <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    Modo Escuro — Luxo Contido
+                  </h4>
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400 max-w-2xl -mt-2">
+                  {lang === 'pt'
+                    ? 'Um único acento (rosegold-light) em vez do par rosegold+dourado do modo claro — restrição é o que separa "luxo contido" de "modo claro invertido". Superfícies planas, sem vidro nem gradiente.'
+                    : lang === 'es'
+                    ? 'Un único acento (rosegold-light) en lugar del par rosegold+dorado del modo claro. Superficies planas, sin vidrio ni gradiente.'
+                    : 'A single accent (rosegold-light) instead of the light mode\'s rosegold+gold pair. Flat surfaces, no glass or gradient.'}
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                  {[
+                    { name: 'Ink (Fundo Principal)', hex: '#17130F', rgb: '23, 19, 15', token: '--color-ink', bg: 'bg-[#17130F]', desc: 'Fundo principal das telas no dark mode.' },
+                    { name: 'Ink Raised (Superfícies)', hex: '#211C17', rgb: '33, 28, 23', token: '--color-ink-raised', bg: 'bg-[#211C17]', desc: 'Cards e headers elevados — um degrau sólido acima do fundo, sem gradiente.' },
+                    { name: 'Ink Text (Texto Principal)', hex: '#F3ECE4', rgb: '243, 236, 228', token: '--color-ink-text', bg: 'bg-[#F3ECE4] border border-rose-100/30', desc: 'Texto principal sobre fundo escuro.' },
+                    { name: 'Ink Muted (Texto Secundário)', hex: '#8C8078', rgb: '140, 128, 120', token: '--color-ink-muted', bg: 'bg-[#8C8078]', desc: 'Texto secundário, legendas.' },
+                    { name: 'Rosegold Light (Acento Único)', hex: '#EBB4A0', rgb: '235, 180, 160', token: '--color-rosegold-light', bg: 'bg-[#EBB4A0]', desc: 'Único acento do dark mode — CTAs, links, ícones.' },
+                  ].map((color, idx) => (
+                    <div
+                      key={`dark_${idx}`}
+                      className="bg-white dark:bg-[#1E1715] rounded-3xl border border-rose-100/10 p-5 shadow-rosegold flex flex-col justify-between space-y-4"
+                    >
+                      <div className="space-y-2">
+                        <div className={`h-24 w-full rounded-2xl ${color.bg} shadow-inner relative group overflow-hidden`}>
+                          <button
+                            onClick={() => copyToClipboard(color.hex, `hex_dark_${idx}`)}
+                            className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-1.5 text-white text-xs font-sans font-bold uppercase tracking-wider transition-all cursor-pointer"
+                          >
+                            {copiedText === `hex_dark_${idx}` ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                            <span>{copiedText === `hex_dark_${idx}` ? dictionary.colors.copySuccess : 'Copy Hex'}</span>
+                          </button>
+                        </div>
+                        <div className="space-y-1">
+                          <h4 className="text-xs font-sans font-bold text-slate-800 dark:text-slate-100 line-clamp-1">
+                            {color.name}
+                          </h4>
+                          <span className="text-xs font-mono font-bold text-[#B76E79] dark:text-[#EBB4A0]">
+                            {color.hex}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="space-y-2 pt-3 border-t border-rose-100/10 text-[10px] font-mono text-slate-500">
+                        <div><span className="font-sans font-bold text-slate-400">RGB:</span> {color.rgb}</div>
+                        <div><span className="font-sans font-bold text-slate-400">Token:</span> {color.token}</div>
+                        <p className="font-sans italic leading-relaxed pt-2 border-t border-rose-100/5 text-slate-400 dark:text-slate-500">
+                          {color.desc}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
                 {/* Simulated Foil finishes */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Embossed Paper Card */}
@@ -895,7 +920,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                       <span className="text-[10px] font-sans font-bold text-slate-400 uppercase tracking-widest block">
                         Tactile Embossed Print
                       </span>
-                      <h3 className="text-4xl font-sans tracking-[0.25em] font-light uppercase text-transparent bg-clip-text bg-gradient-to-br from-slate-300 to-slate-500 dark:from-slate-700 dark:to-slate-800" style={{ filter: "drop-shadow(1px 2px 2px rgba(0,0,0,0.15))" }}>
+                      <h3 className="text-4xl font-display tracking-[0.25em] font-light uppercase text-transparent bg-clip-text bg-gradient-to-br from-slate-300 to-slate-500 dark:from-slate-700 dark:to-slate-800" style={{ filter: "drop-shadow(1px 2px 2px rgba(0,0,0,0.15))" }}>
                         RenaSer
                       </h3>
                       <p className="text-[10px] font-sans text-slate-400 italic">
@@ -911,7 +936,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                       <span className="text-[10px] font-sans font-bold text-amber-500 uppercase tracking-widest block">
                         Gold Foil Stamp finish
                       </span>
-                      <h3 className="text-4xl font-sans tracking-[0.25em] font-light uppercase metallic-gold animate-pulse">
+                      <h3 className="text-4xl font-display tracking-[0.25em] font-light uppercase metallic-gold animate-pulse">
                         RenaSer
                       </h3>
                       <p className="text-[10px] font-sans text-amber-500/60 italic">
@@ -953,7 +978,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                           {dictionary.typography.headingFont}
                         </span>
                         <p className="text-3xl font-display italic text-slate-900 dark:text-white">
-                          Playfair Display
+                          Cormorant Garamond
                         </p>
                         <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-sans">
                           {dictionary.typography.headingDesc}
@@ -965,7 +990,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                           {dictionary.typography.bodyFont}
                         </span>
                         <p className="text-xl font-sans tracking-wide font-light text-slate-900 dark:text-white">
-                          Outfit Sans-Serif
+                          Inter
                         </p>
                         <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-sans">
                           {dictionary.typography.bodyDesc}
@@ -992,14 +1017,14 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                     <div className="py-6 border-t border-b border-rose-100/5 space-y-4">
                       {/* Live display demo */}
                       <div className="space-y-1">
-                        <span className="text-[9px] font-mono text-slate-400 block">Playfair Display Italic (Title display):</span>
+                        <span className="text-[9px] font-mono text-slate-400 block">Cormorant Garamond Italic (Title display):</span>
                         <p className="text-3xl font-display italic text-slate-900 dark:text-white line-clamp-1 leading-normal">
                           "{customTyposText}"
                         </p>
                       </div>
 
                       <div className="space-y-1 pt-4 border-t border-rose-100/5">
-                        <span className="text-[9px] font-mono text-slate-400 block">Outfit Ultra-Tracking (Logo concept):</span>
+                        <span className="text-[9px] font-mono text-slate-400 block">Inter Ultra-Tracking (Logo concept):</span>
                         <p className="text-2xl font-sans font-light uppercase tracking-[0.25em] text-[#B76E79] line-clamp-1 leading-normal">
                           {customTyposText.replace(/[sS]/, 'S')}
                         </p>
@@ -1045,7 +1070,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                       <span className="absolute right-2 top-1/2 -translate-y-1/2 -rotate-90 text-[9px] font-mono text-[#D4AF37] font-bold">1X</span>
 
                       {/* Typographic Logo Centered */}
-                      <h2 className="text-3xl sm:text-4xl font-sans tracking-[0.25em] uppercase font-light text-[#B76E79]">
+                      <h2 className="text-3xl sm:text-4xl font-display tracking-[0.25em] uppercase font-light text-[#B76E79]">
                         Rena<strong className="font-extrabold text-[#D4AF37] text-[1.1em] inline-block -translate-y-[1px]">S</strong>er
                       </h2>
                     </div>
@@ -1178,7 +1203,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                     {/* Centered deeply embossed Gold foil logo */}
                     <div className="text-center space-y-1.5 transform transition-transform duration-500 group-hover:scale-105">
                       {renderGeometricIcon("w-14 h-14 mx-auto mb-2", 2)}
-                      <h4 className="text-2xl font-sans tracking-[0.25em] font-light uppercase metallic-gold">
+                      <h4 className="text-2xl font-display tracking-[0.25em] font-light uppercase metallic-gold">
                         RenaSer
                       </h4>
                     </div>

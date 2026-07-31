@@ -20,6 +20,8 @@ export function logEngagementEvent(mediaType: EngagementMediaType, assetId: stri
       media_type: mediaType,
       asset_id: assetId,
       day_number: dayNumber ?? null,
+    }).then(({ error }) => {
+      if (error) console.error('logEngagementEvent failed:', error);
     });
   });
 }
