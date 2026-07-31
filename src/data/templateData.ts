@@ -30,9 +30,9 @@ export function getDayType(dayNumber: number, startDate?: string | null): DayTyp
   switch (position) {
     case 0: return DayType.RestartIntention; // Monday
     case 1: return DayType.Truth;            // Tuesday
-    case 2: return DayType.Storytelling;     // Wednesday
+    case 2: return DayType.Rest;               // Wednesday (Rest Day)
     case 3: return DayType.ContrarianThinking; // Thursday
-    case 4: return DayType.Rest;               // Friday (Rest Day)
+    case 4: return DayType.Storytelling;     // Friday
     case 5: return DayType.Presence;           // Saturday
     case 6: return DayType.Reflection;         // Sunday
     default: return DayType.RestartIntention;
@@ -52,9 +52,9 @@ export function getDayTypeLabel(type: DayType, lang: Language): string {
       es: 'Verdad (Martes)'
     },
     [DayType.Storytelling]: {
-      pt: 'Storytelling (Quarta-feira)',
-      en: 'Storytelling (Wednesday)',
-      es: 'Storytelling (Miércoles)'
+      pt: 'Storytelling (Sexta-feira)',
+      en: 'Storytelling (Friday)',
+      es: 'Storytelling (Viernes)'
     },
     [DayType.ContrarianThinking]: {
       pt: 'Pensamento Contrário (Quinta-feira)',
@@ -62,9 +62,9 @@ export function getDayTypeLabel(type: DayType, lang: Language): string {
       es: 'Pensamiento Contrario (Jueves)'
     },
     [DayType.Rest]: {
-      pt: 'Dia de Descanso (Sexta-feira)',
-      en: 'Rest Day (Friday)',
-      es: 'Día de Descanso (Viernes)'
+      pt: 'Dia de Descanso (Quarta-feira)',
+      en: 'Rest Day (Wednesday)',
+      es: 'Día de Descanso (Miércoles)'
     },
     [DayType.Presence]: {
       pt: 'Treino de Presença (Sábado)',
@@ -643,7 +643,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '11';
+const DAYS_CONTENT_VERSION = '12';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
