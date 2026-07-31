@@ -48,13 +48,12 @@ const NextLevelView = lazy(() => import('./components/NextLevelView'));
 const MyTransformationView = lazy(() => import('./components/MyTransformationView'));
 const CommunityView = lazy(() => import('./components/CommunityView'));
 const LibraryView = lazy(() => import('./components/LibraryView'));
-const BrandIdentityView = lazy(() => import('./components/BrandIdentityView'));
 
 import { adaptMessage, resolveGrammarPreference } from './utils/grammar';
 import { getLocalDateISO, getUnlockAnchorDateISO } from './utils/date';
 import { useSystem } from './engines/SystemEngine';
 
-type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'transformation' | 'community' | 'library' | 'profile' | 'brand';
+type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'transformation' | 'community' | 'library' | 'profile';
 
 export default function App() {
   return (
@@ -142,7 +141,7 @@ function AppContent() {
       setShowAdminPrompt(false);
       setAdminPassInput('');
       setAdminPassError(false);
-      setActiveTab('brand');
+      setActiveTab('cms');
     } else {
       setAdminPassError(true);
     }
@@ -151,7 +150,7 @@ function AppContent() {
   const handleAdminLock = () => {
     setIsAdminUnlocked(false);
     localStorage.removeItem('renaser_admin_unlocked');
-    if (activeTab === 'brand' || activeTab === 'cms') {
+    if (activeTab === 'cms') {
       setActiveTab('home');
     }
   };
@@ -485,7 +484,6 @@ function AppContent() {
       community: 'Comunidade',
       library: 'Biblioteca',
       profile: 'Meu Ser',
-      brand: 'Identidade de Marca',
     },
     en: {
       home: 'Home',
@@ -499,7 +497,6 @@ function AppContent() {
       community: 'Community',
       library: 'Library',
       profile: 'My Portal',
-      brand: 'Brand Identity',
     },
     es: {
       home: 'Inicio',
@@ -513,7 +510,6 @@ function AppContent() {
       community: 'Comunidad',
       library: 'Biblioteca',
       profile: 'Mi Portal',
-      brand: 'Portal de Marca',
     }
   }[lang];
 
@@ -801,19 +797,6 @@ function AppContent() {
               <>
                 <span className="h-5 w-px bg-rose-100 dark:bg-rosegold/20 mx-2" />
                 <button
-                  onClick={() => setActiveTab('brand')}
-                  className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
-                    activeTab === 'brand'
-                      ? 'bg-[#B76E79] text-white shadow-sm shadow-rosegold/25 ring-1 ring-[#B76E79]/20'
-                      : 'text-[#B76E79] dark:text-[#E8B4A0] hover:bg-rose-50/50 dark:hover:bg-rosegold/10 font-bold'
-                  }`}
-                >
-                  <span className="flex items-center gap-1.5">
-                    <Sparkles className="h-3 w-3 text-[#D4AF37] animate-pulse" />
-                    {labels.brand}
-                  </span>
-                </button>
-                <button
                   onClick={() => setActiveTab('cms')}
                   className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
                     activeTab === 'cms'
@@ -944,12 +927,6 @@ function AppContent() {
 
               {isAdminUnlocked && (
                 <>
-                  <button
-                    onClick={() => { setActiveTab('brand'); setMobileMenuOpen(false); }}
-                    className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'brand' ? 'bg-[#B76E79] text-white font-bold shadow-sm' : 'text-[#B76E79] dark:text-[#E8B4A0] font-bold bg-rose-50/20 dark:bg-rosegold/5'}`}
-                  >
-                    ✦ {labels.brand}
-                  </button>
                   <button
                     onClick={() => { setActiveTab('cms'); setMobileMenuOpen(false); }}
                     className={`w-full py-2.5 px-4 text-left rounded-xl ${activeTab === 'cms' ? 'bg-slate-900 text-white font-bold' : 'text-slate-700'}`}
@@ -1156,11 +1133,6 @@ function AppContent() {
               />
             )}
 
-            {activeTab === 'brand' && isAdminUnlocked && (
-              <BrandIdentityView
-                lang={lang}
-              />
-            )}
           </Suspense>
           </motion.div>
         </AnimatePresence>

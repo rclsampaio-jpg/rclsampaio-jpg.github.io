@@ -5,13 +5,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  LayoutDashboard, BookOpen, Layers, Calendar, Video, Volume2, 
-  Heart, Sparkles, Users, BarChart3, Settings, Globe, FileImage, 
-  MessageSquare, HelpCircle, PhoneCall, Compass, Trash2, Plus, 
-  Edit, Copy, ArrowRight, Lock, ShieldAlert, Upload, Folder, 
-  Tag, Search, Undo, Check, Activity, FileText, ExternalLink, RefreshCw
+import {
+  LayoutDashboard, BookOpen, Layers, Calendar, Video, Volume2,
+  Heart, Sparkles, Users, BarChart3, Settings, Globe, FileImage,
+  MessageSquare, HelpCircle, PhoneCall, Compass, Trash2, Plus,
+  Edit, Copy, ArrowRight, Lock, ShieldAlert, Upload, Folder,
+  Tag, Search, Undo, Check, Activity, FileText, ExternalLink, RefreshCw,
+  AlertTriangle
 } from 'lucide-react';
+import BrandIdentityView from './BrandIdentityView';
 
 import { 
   Language, DayType, Journey, Chapter, Day, 
@@ -41,11 +43,13 @@ interface CmsViewProps {
   onResetDays: () => void;
 }
 
-type StudioModule = 
-  | 'dashboard' | 'journeys' | 'chapters' | 'days' 
-  | 'videos' | 'audios' | 'hooks' | 'sos' 
-  | 'community' | 'mentorship' | 'library' | 'analytics' 
-  | 'users' | 'support' | 'settings';
+type StudioModule =
+  | 'dashboard' | 'journeys' | 'chapters' | 'days'
+  | 'videos' | 'audios' | 'hooks' | 'sos'
+  | 'channels' | 'library' | 'analytics'
+  | 'users' | 'brand' | 'settings';
+
+type ChannelTab = 'community' | 'mentorship' | 'support';
 
 export default function CmsView({
   days: parentDays,
@@ -72,6 +76,8 @@ export default function CmsView({
   const [selectedJourneyId, setSelectedJourneyId] = useState<string>('destrave_visibilidade');
   const [selectedChapterId, setSelectedChapterId] = useState<string>('ch_despertar');
   const [studioLang, setStudioLang] = useState<Language>('pt');
+  const [activeChannelTab, setActiveChannelTab] = useState<ChannelTab>('community');
+  const [resetConfirmInput, setResetConfirmInput] = useState('');
 
   // Interactive Form States
   const [editingJourney, setEditingJourney] = useState<Journey | null>(null);
@@ -401,27 +407,15 @@ export default function CmsView({
             </button>
 
             <button
-              onClick={() => setActiveModule('community')}
+              onClick={() => setActiveModule('channels')}
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
-                activeModule === 'community'
+                activeModule === 'channels'
                   ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
                   : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
               }`}
             >
               <Users className="h-4 w-4" />
-              <span>Portal de Comunidade</span>
-            </button>
-
-            <button
-              onClick={() => setActiveModule('mentorship')}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
-                activeModule === 'mentorship'
-                  ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
-                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
-              }`}
-            >
-              <Heart className="h-4 w-4" />
-              <span>Módulo de Mentorias</span>
+              <span>Canais & Suporte</span>
             </button>
 
             <button
@@ -434,18 +428,6 @@ export default function CmsView({
             >
               <Folder className="h-4 w-4" />
               <span>Biblioteca de Mídias</span>
-            </button>
-
-            <button
-              onClick={() => setActiveModule('support')}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
-                activeModule === 'support'
-                  ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
-                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
-              }`}
-            >
-              <PhoneCall className="h-4 w-4" />
-              <span>Suporte & FAQs</span>
             </button>
 
             <button
@@ -471,6 +453,30 @@ export default function CmsView({
               <FileText className="h-4 w-4" />
               <span>Usuários & Convites</span>
             </button>
+
+            <button
+              onClick={() => setActiveModule('brand')}
+              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
+                activeModule === 'brand'
+                  ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
+                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
+              }`}
+            >
+              <Sparkles className="h-4 w-4" />
+              <span>Identidade de Marca</span>
+            </button>
+
+            <button
+              onClick={() => setActiveModule('settings')}
+              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
+                activeModule === 'settings'
+                  ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
+                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
+              }`}
+            >
+              <Settings className="h-4 w-4" />
+              <span>Configurações</span>
+            </button>
           </nav>
         </div>
 
@@ -482,12 +488,6 @@ export default function CmsView({
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> SYNCED
             </span>
           </div>
-          <button
-            onClick={onResetDays}
-            className="w-full py-2 bg-slate-100 hover:bg-red-50 hover:text-red-600 dark:bg-warmbrown-light/10 text-slate-600 dark:text-slate-400 rounded-xl text-[10px] uppercase font-bold tracking-wider transition-all flex items-center justify-center gap-1"
-          >
-            <RefreshCw className="h-3 w-3" /> Resetar Currículo Primordial
-          </button>
         </div>
       </aside>
 
@@ -1209,17 +1209,40 @@ export default function CmsView({
           </div>
         )}
 
-        {/* Community MODULE */}
-        {activeModule === 'community' && (
-          <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
+        {/* Channels & Support MODULE (Community + Mentorship + Support merged) */}
+        {activeModule === 'channels' && (
+          <div className="space-y-6">
             <div className="border-b border-rose-100/10 pb-4">
               <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
-                <Users className="h-5 w-5 text-rosegold" /> Portal de Comunidade VIP
+                <Users className="h-5 w-5 text-rosegold" /> Canais & Suporte
               </h1>
               <p className="text-xs text-slate-400 dark:text-slate-500">
-                Configure os canais onde seus alunos interagem, validam ganchos de vídeo e fazem parcerias.
+                Comunidade, mentorias e suporte/FAQs num só lugar.
               </p>
             </div>
+
+            <div className="flex gap-2">
+              {([
+                { key: 'community', label: 'Comunidade', icon: Users },
+                { key: 'mentorship', label: 'Mentorias', icon: Heart },
+                { key: 'support', label: 'Suporte & FAQs', icon: PhoneCall },
+              ] as const).map(tab => (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveChannelTab(tab.key)}
+                  className={`px-4 py-2 text-xs font-sans rounded-xl border flex items-center gap-1.5 transition-all ${
+                    activeChannelTab === tab.key
+                      ? 'bg-[#2C221E] text-white border-[#2C221E] font-bold dark:bg-rosegold dark:border-rosegold'
+                      : 'bg-white dark:bg-warmbrown border-rose-100/25 dark:border-rosegold/10 text-slate-600 dark:text-slate-400'
+                  }`}
+                >
+                  <tab.icon className="h-3.5 w-3.5" /> {tab.label}
+                </button>
+              ))}
+            </div>
+
+        {activeChannelTab === 'community' && (
+          <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
@@ -1293,8 +1316,7 @@ export default function CmsView({
           </div>
         )}
 
-        {/* Mentorship MODULE */}
-        {activeModule === 'mentorship' && (
+        {activeChannelTab === 'mentorship' && (
           <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
             <div className="border-b border-rose-100/10 pb-4">
               <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
@@ -1371,6 +1393,122 @@ export default function CmsView({
                 Salvar Mentorias
               </button>
             </div>
+          </div>
+        )}
+
+        {activeChannelTab === 'support' && (
+          <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
+            <div className="border-b border-rose-100/10 pb-4">
+              <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
+                <PhoneCall className="h-5 w-5 text-rosegold" /> Suporte & FAQs
+              </h1>
+              <p className="text-xs text-slate-400 dark:text-slate-500">
+                Configure canais diretos de suporte no WhatsApp e monte uma lista dinâmica de FAQs.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase text-slate-400">Email de Suporte</label>
+                <input
+                  type="text"
+                  value={support.email}
+                  onChange={e => setSupport({ ...support, email: e.target.value })}
+                  className="w-full bg-slate-50 dark:bg-warmbrown border p-2.5 rounded-xl text-xs"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase text-slate-400">WhatsApp Oficial Helpline</label>
+                <input
+                  type="text"
+                  value={support.whatsapp}
+                  onChange={e => setSupport({ ...support, whatsapp: e.target.value })}
+                  className="w-full bg-slate-50 dark:bg-warmbrown border p-2.5 rounded-xl text-xs"
+                />
+              </div>
+
+              <div className="space-y-1 sm:col-span-2">
+                <label className="text-[10px] font-bold uppercase text-slate-400">Mensagem de Celebração / Uplifting (PT)</label>
+                <textarea
+                  rows={2}
+                  value={support.upliftMessage.pt}
+                  onChange={e => setSupport({ ...support, upliftMessage: { ...support.upliftMessage, pt: e.target.value } })}
+                  className="w-full bg-slate-50 dark:bg-warmbrown border p-2.5 rounded-xl text-xs"
+                />
+              </div>
+            </div>
+
+            {/* List and edit FAQs */}
+            <div className="space-y-4 border-t border-rose-100/10 pt-4">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white">
+                Lista de FAQs Cadastradas
+              </h3>
+              <div className="space-y-3">
+                {support.faqs.map((faq, idx) => (
+                  <div key={faq.id} className="border border-rose-100/10 p-3 rounded-xl bg-slate-50/50 dark:bg-warmbrown-light/5 relative">
+                    <button
+                      onClick={() => {
+                        const filtered = support.faqs.filter(f => f.id !== faq.id);
+                        setSupport({ ...support, faqs: filtered });
+                        showNotice('FAQ removida.');
+                      }}
+                      className="absolute top-3 right-3 text-red-500 hover:text-red-700"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                    <input
+                      type="text"
+                      value={faq.question.pt}
+                      onChange={e => {
+                        const copy = [...support.faqs];
+                        copy[idx].question.pt = e.target.value;
+                        setSupport({ ...support, faqs: copy });
+                      }}
+                      className="w-11/12 bg-transparent border-b border-rose-100/10 font-bold text-xs pb-1"
+                      placeholder="Pergunta"
+                    />
+                    <textarea
+                      rows={2}
+                      value={faq.answer.pt}
+                      onChange={e => {
+                        const copy = [...support.faqs];
+                        copy[idx].answer.pt = e.target.value;
+                        setSupport({ ...support, faqs: copy });
+                      }}
+                      className="w-full bg-transparent text-[11px] text-slate-500 mt-2"
+                      placeholder="Resposta"
+                    />
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => {
+                  const newFaq = {
+                    id: 'faq_' + Date.now(),
+                    question: { pt: 'Nova Pergunta Frequente', en: 'New Question', es: 'Nueva Pregunta' },
+                    answer: { pt: 'Escreva a resposta simplificada aqui.', en: 'Answer here.', es: 'Respuesta aquí.' }
+                  };
+                  setSupport({ ...support, faqs: [...support.faqs, newFaq] });
+                }}
+                className="px-3 py-1.5 bg-slate-100 dark:bg-warmbrown text-[10px] font-bold rounded-lg hover:bg-rosegold/10 text-slate-700 hover:text-rosegold"
+              >
+                + Inserir Nova Pergunta (FAQ)
+              </button>
+            </div>
+
+            <div className="flex justify-end pt-4 border-t border-rose-100/10">
+              <button
+                onClick={() => {
+                  saveSupportConfig(support);
+                  showNotice('Suporte e FAQs sincronizados com sucesso!');
+                }}
+                className="px-6 py-2 bg-rosegold text-white text-xs uppercase font-sans font-bold tracking-wider rounded-xl hover:bg-[#A35D68] transition"
+              >
+                Salvar FAQs
+              </button>
+            </div>
+          </div>
+        )}
           </div>
         )}
 
@@ -1529,126 +1667,66 @@ export default function CmsView({
           </div>
         )}
 
-        {/* Support & FAQ MODULE */}
-        {activeModule === 'support' && (
-          <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
-            <div className="border-b border-rose-100/10 pb-4">
-              <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
-                <PhoneCall className="h-5 w-5 text-rosegold" /> Suporte & FAQs
-              </h1>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
-                Configure canais diretos de suporte no WhatsApp e monte uma lista dinâmica de FAQs.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <label className="text-[10px] font-bold uppercase text-slate-400">Email de Suporte</label>
-                <input 
-                  type="text" 
-                  value={support.email}
-                  onChange={e => setSupport({ ...support, email: e.target.value })}
-                  className="w-full bg-slate-50 dark:bg-warmbrown border p-2.5 rounded-xl text-xs"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-[10px] font-bold uppercase text-slate-400">WhatsApp Oficial Helpline</label>
-                <input 
-                  type="text" 
-                  value={support.whatsapp}
-                  onChange={e => setSupport({ ...support, whatsapp: e.target.value })}
-                  className="w-full bg-slate-50 dark:bg-warmbrown border p-2.5 rounded-xl text-xs"
-                />
-              </div>
-
-              <div className="space-y-1 sm:col-span-2">
-                <label className="text-[10px] font-bold uppercase text-slate-400">Mensagem de Celebração / Uplifting (PT)</label>
-                <textarea 
-                  rows={2}
-                  value={support.upliftMessage.pt}
-                  onChange={e => setSupport({ ...support, upliftMessage: { ...support.upliftMessage, pt: e.target.value } })}
-                  className="w-full bg-slate-50 dark:bg-warmbrown border p-2.5 rounded-xl text-xs"
-                />
-              </div>
-            </div>
-
-            {/* List and edit FAQs */}
-            <div className="space-y-4 border-t border-rose-100/10 pt-4">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white">
-                Lista de FAQs Cadastradas
-              </h3>
-              <div className="space-y-3">
-                {support.faqs.map((faq, idx) => (
-                  <div key={faq.id} className="border border-rose-100/10 p-3 rounded-xl bg-slate-50/50 dark:bg-warmbrown-light/5 relative">
-                    <button
-                      onClick={() => {
-                        const filtered = support.faqs.filter(f => f.id !== faq.id);
-                        setSupport({ ...support, faqs: filtered });
-                        showNotice('FAQ removida.');
-                      }}
-                      className="absolute top-3 right-3 text-red-500 hover:text-red-700"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                    <input 
-                      type="text" 
-                      value={faq.question.pt}
-                      onChange={e => {
-                        const copy = [...support.faqs];
-                        copy[idx].question.pt = e.target.value;
-                        setSupport({ ...support, faqs: copy });
-                      }}
-                      className="w-11/12 bg-transparent border-b border-rose-100/10 font-bold text-xs pb-1"
-                      placeholder="Pergunta"
-                    />
-                    <textarea 
-                      rows={2}
-                      value={faq.answer.pt}
-                      onChange={e => {
-                        const copy = [...support.faqs];
-                        copy[idx].answer.pt = e.target.value;
-                        setSupport({ ...support, faqs: copy });
-                      }}
-                      className="w-full bg-transparent text-[11px] text-slate-500 mt-2"
-                      placeholder="Resposta"
-                    />
-                  </div>
-                ))}
-              </div>
-              <button
-                onClick={() => {
-                  const newFaq = {
-                    id: 'faq_' + Date.now(),
-                    question: { pt: 'Nova Pergunta Frequente', en: 'New Question', es: 'Nueva Pregunta' },
-                    answer: { pt: 'Escreva a resposta simplificada aqui.', en: 'Answer here.', es: 'Respuesta aquí.' }
-                  };
-                  setSupport({ ...support, faqs: [...support.faqs, newFaq] });
-                }}
-                className="px-3 py-1.5 bg-slate-100 dark:bg-warmbrown text-[10px] font-bold rounded-lg hover:bg-rosegold/10 text-slate-700 hover:text-rosegold"
-              >
-                + Inserir Nova Pergunta (FAQ)
-              </button>
-            </div>
-
-            <div className="flex justify-end pt-4 border-t border-rose-100/10">
-              <button
-                onClick={() => {
-                  saveSupportConfig(support);
-                  showNotice('Suporte e FAQs sincronizados com sucesso!');
-                }}
-                className="px-6 py-2 bg-rosegold text-white text-xs uppercase font-sans font-bold tracking-wider rounded-xl hover:bg-[#A35D68] transition"
-              >
-                Salvar FAQs
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* Analytics PANEL MODULE */}
         {activeModule === 'analytics' && <AnalyticsPanel />}
 
         {/* Users list MODULE */}
         {activeModule === 'users' && <AdminUsersPanel />}
+
+        {/* Brand Identity MODULE */}
+        {activeModule === 'brand' && <BrandIdentityView lang={studioLang} />}
+
+        {/* Settings MODULE */}
+        {activeModule === 'settings' && (
+          <div className="space-y-6">
+            <div className="border-b border-rose-100/10 pb-4">
+              <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
+                <Settings className="h-5 w-5 text-rosegold" /> Configurações
+              </h1>
+              <p className="text-xs text-slate-400 dark:text-slate-500">
+                Ações administrativas de risco. Use com cuidado.
+              </p>
+            </div>
+
+            <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-red-200/40 dark:border-red-500/20 p-6 space-y-4">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-wide text-slate-800 dark:text-white">
+                    Resetar Currículo Primordial
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    Apaga todas as edições feitas nas jornadas, capítulos e dias, e restaura o conteúdo original de fábrica. Isso não pode ser desfeito.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 pt-2 border-t border-rose-100/10">
+                <label className="text-[10px] font-bold uppercase text-slate-400">
+                  Digite RESETAR para confirmar
+                </label>
+                <input
+                  type="text"
+                  value={resetConfirmInput}
+                  onChange={e => setResetConfirmInput(e.target.value)}
+                  placeholder="RESETAR"
+                  className="bg-slate-50 dark:bg-warmbrown border border-rose-100/20 dark:border-rosegold/10 p-2 rounded-xl text-xs w-40"
+                />
+                <button
+                  onClick={() => {
+                    if (resetConfirmInput.trim().toUpperCase() !== 'RESETAR') return;
+                    onResetDays();
+                    setResetConfirmInput('');
+                    showNotice('Currículo restaurado ao original.');
+                  }}
+                  disabled={resetConfirmInput.trim().toUpperCase() !== 'RESETAR'}
+                  className="px-4 py-2 bg-red-600 disabled:bg-red-200 dark:disabled:bg-red-950/40 disabled:cursor-not-allowed text-white text-xs font-bold rounded-xl transition"
+                >
+                  Resetar Tudo
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );
