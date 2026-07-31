@@ -1,5 +1,6 @@
 // src/components/auth/SignupView.tsx
 import { useState, type FormEvent } from 'react';
+import { motion } from 'framer-motion';
 import RenaSerLogo from '../RenaSerLogo';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -60,13 +61,34 @@ export default function SignupView({ inviteCodeFromUrl, onSwitchToLogin, onSignu
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-[#1E1715] flex flex-col justify-center items-center p-6 text-center select-none">
-      <img
-        src="/assets/images/butterfly.png"
-        alt=""
-        className="h-9 w-auto absolute top-10 right-8 pointer-events-none opacity-30"
-      />
-      <form onSubmit={handleSubmit} className="max-w-sm w-full space-y-6 p-8 rounded-3xl border border-rosegold/20 bg-white dark:bg-[#251E1C] shadow-rosegold">
+    <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-[#1E1715] flex flex-col justify-center items-center p-6 text-center select-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
+        <motion.div
+          initial={{ x: '-15vw', y: '70vh', rotate: 20 }}
+          animate={{
+            x: '115vw',
+            y: ['70vh', '50vh', '60vh', '35vh', '45vh', '20vh'],
+            rotate: [20, 0, 15, -10, 5, -20]
+          }}
+          transition={{
+            duration: 14,
+            ease: 'easeInOut',
+            repeat: Infinity,
+            repeatDelay: 2
+          }}
+          className="absolute"
+        >
+          <motion.img
+            src="/assets/images/butterfly.png"
+            alt=""
+            animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
+            transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut' }}
+            className="h-9 w-auto opacity-30"
+            style={{ transformOrigin: 'center 70%' }}
+          />
+        </motion.div>
+      </div>
+      <form onSubmit={handleSubmit} className="relative z-20 max-w-sm w-full space-y-6 p-8 rounded-3xl border border-rosegold/20 bg-white dark:bg-[#251E1C] shadow-rosegold">
         <RenaSerLogo variant="vertical" size={64} className="mx-auto mb-2" />
         <div className="space-y-1.5">
           <h2 className="text-lg font-serif font-medium text-slate-900 dark:text-white">
