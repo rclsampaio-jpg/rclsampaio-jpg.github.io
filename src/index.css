@@ -23,6 +23,20 @@ html, body {
   text-size-adjust: 100%;
 }
 
+/* iOS Safari auto-zooms the whole page in when focusing any input/textarea/
+   select whose computed font-size is below 16px — this is the real cause
+   behind "preciso dar zoom pra caber" after tapping a field (e.g. the
+   Renata OS chat input, which uses text-sm/14px). The zoom sticks until the
+   user pinches back out manually. Forcing 16px on focus for form fields on
+   small screens (where this iOS behavior actually applies) prevents the
+   zoom from triggering in the first place, without changing how any input
+   looks on desktop. */
+@media (max-width: 640px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Cormorant Garamond", Georgia, serif;
