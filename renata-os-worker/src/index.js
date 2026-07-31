@@ -7,10 +7,13 @@
  * cliente Supabase por requisição, de forma que o RLS do Postgres aplique
  * auth.uid() naturalmente — o Worker nunca usa a service_role key.
  *
- * Modelo via OpenRouter: Gemini como primário, GPT-4o mini como fallback
- * automático se o primário falhar ou estiver com erro/rate-limit.
+ * Modelo: Gemini direto (generativelanguage.googleapis.com), sem OpenRouter
+ * por enquanto — decisão deliberada de adiar o custo/setup da OpenRouter até
+ * o app estar mais maduro. Trocar por OpenRouter (com fallback pra outro
+ * modelo) é uma troca isolada em callGemini/getAIReply quando chegar a hora,
+ * sem precisar mexer em auth/memória/prompt.
  *
- * Secrets (Cloudflare): OPENROUTER_API_KEY, RESEND_API_KEY.
+ * Secrets (Cloudflare): GEMINI_API_KEY, RESEND_API_KEY.
  */
 
 import { createClient } from '@supabase/supabase-js';
@@ -48,10 +51,7 @@ ${REFERENCIAS_CONTEXT}`,
 ${REFERENCIAS_CONTEXT}`
 };
 
-const OPENROUTER_MODELS = {
-  primary: 'google/gemini-2.5-flash',
-  fallback: 'openai/gpt-4o-mini'
-};
+const GEMINI_MODEL = 'gemini-2.0-flash';
 
 const CHAT_HISTORY_LIMIT = 20;
 
@@ -156,49 +156,43 @@ async function saveExchange(supabase, userId, userText, assistantText) {
   }
 }
 
-async function callOpenRouter(model, systemPrompt, history, userMessage, env) {
-  const messages = [
-    { role: 'system', content: systemPrompt },
-    ...history.map((m) => ({ role: m.role, content: m.content })),
-    { role: 'user', content: userMessage }
+// Gemini usa "contents" com role user/model alternados, em vez do formato
+// OpenAI (system/user/assistant). O histórico já vem como { role, content }
+// (role 'user'|'assistant') de fetchHistory — mapeia 'assistant' -> 'model'
+// aqui. O prompt de sistema vai à parte, em systemInstruction.
+async function callGemini(systemPrompt, history, userMessage, env) {
+  const contents = [
+    ...history.map((m) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    })),
+    { role: 'user', parts: [{ text: userMessage }] }
   ];
 
-  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
-      'HTTP-Referer': 'https://rclsampaio-jpg.github.io',
-      'X-Title': 'RenaSer - Renata OS'
-    },
-    body: JSON.stringify({ model, messages })
-  });
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${env.GEMINI_API_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents,
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+      })
+    }
+  );
 
   if (!response.ok) {
-    throw new Error(`OpenRouter error (${model}): ${await response.text()}`);
+    throw new Error(`Gemini API error: ${await response.text()}`);
   }
 
   const data = await response.json();
-  const reply = data?.choices?.[0]?.message?.content?.trim();
-  if (!reply) throw new Error(`OpenRouter empty reply (${model})`);
+  const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+  if (!reply) throw new Error('Gemini empty reply');
   return reply;
 }
 
-// Tenta o modelo primário; se falhar por qualquer motivo (erro HTTP,
-// resposta vazia, rate limit), tenta o fallback automaticamente. Só lança
-// erro pro chamador se os DOIS falharem.
 async function getAIReply(systemPrompt, history, userMessage, env) {
-  try {
-    return await callOpenRouter(OPENROUTER_MODELS.primary, systemPrompt, history, userMessage, env);
-  } catch (primaryError) {
-    try {
-      return await callOpenRouter(OPENROUTER_MODELS.fallback, systemPrompt, history, userMessage, env);
-    } catch (fallbackError) {
-      throw new Error(
-        `Both models failed. Primary: ${primaryError.message}. Fallback: ${fallbackError.message}`
-      );
-    }
-  }
+  return callGemini(systemPrompt, history, userMessage, env);
 }
 
 export default {
@@ -253,7 +247,7 @@ export default {
     } catch (err) {
       // Mensagem amigável, sem vazar o erro técnico (que vai só nos logs
       // do Cloudflare, não na resposta).
-      console.error('Renata OS: both models failed', err);
+      console.error('Renata OS: Gemini call failed', err);
       const friendlyError = {
         pt: 'Não consegui responder agora. Tente de novo em instantes.',
         en: "I couldn't respond right now. Please try again in a moment.",
