@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { resolveGrammarPreference } from '../utils/grammar';
+import type { SyncStatus } from '../hooks/useProgressSync';
 
 interface SettingsViewProps {
   progress: UserProgress;
@@ -23,7 +24,15 @@ interface SettingsViewProps {
   onUpdateProgress: (updated: UserProgress) => void;
   isAdminUnlocked: boolean;
   onSignOut: () => void;
+  syncStatus?: SyncStatus;
 }
+
+const SYNC_LABEL: Record<SyncStatus, Record<Language, string>> = {
+  idle: { pt: '', en: '', es: '' },
+  syncing: { pt: 'Sincronizando...', en: 'Syncing...', es: 'Sincronizando...' },
+  synced: { pt: 'Sincronizado com a nuvem', en: 'Synced to the cloud', es: 'Sincronizado con la nube' },
+  error: { pt: 'Falha ao sincronizar — verifique sua conexão', en: 'Sync failed — check your connection', es: 'Fallo al sincronizar — revisa tu conexión' },
+};
 
 export default function SettingsView({
   progress,
@@ -37,6 +46,7 @@ export default function SettingsView({
   onUpdateProgress,
   isAdminUnlocked,
   onSignOut,
+  syncStatus = 'idle',
 }: SettingsViewProps) {
 
   const totalCompleted = progress.completionHistory.length;
@@ -149,6 +159,12 @@ export default function SettingsView({
           <LogOut className="h-4 w-4" />
           {textDict.signOutBtn}
         </button>
+        {syncStatus !== 'idle' && (
+          <p className={`text-[11px] flex items-center gap-1.5 ${syncStatus === 'error' ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'}`}>
+            <span className={`h-1.5 w-1.5 rounded-full ${syncStatus === 'syncing' ? 'bg-amber-400 animate-pulse' : syncStatus === 'error' ? 'bg-rose-500' : 'bg-emerald-500'}`} />
+            {SYNC_LABEL[syncStatus][lang]}
+          </p>
+        )}
       </motion.div>
 
       {/* 1. Language Toggle */}

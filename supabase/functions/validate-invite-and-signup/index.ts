@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { checkRateLimit } from '../_shared/rateLimit.ts';
 
 const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_URL')!,
@@ -11,6 +12,18 @@ Deno.serve(async (req: Request) => {
     'Access-Control-Allow-Headers': 'authorization, apikey, content-type',
   };
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+
+  // Without this, invite codes (8 random chars) could be brute-forced by
+  // hammering this endpoint — cap attempts per IP instead of per account,
+  // since a failed guess never creates one.
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown';
+  const { limited } = await checkRateLimit(supabaseAdmin, `signup:${ip}`, 8, 15 * 60);
+  if (limited) {
+    return new Response(
+      JSON.stringify({ success: false, error: 'Muitas tentativas. Aguarde alguns minutos e tente novamente.' }),
+      { status: 429, headers: corsHeaders },
+    );
+  }
 
   try {
     const { email, password, code } = await req.json();

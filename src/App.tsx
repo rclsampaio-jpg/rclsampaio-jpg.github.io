@@ -3,15 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
+import {
   Compass, Star, Settings, ShieldAlert,
   Sparkles, Award, Lock, Menu, X, ArrowUpRight, Home, Users, User, BookOpen
 } from 'lucide-react';
 
 import { MissionDay, Language, UserProgress } from './types';
-import { 
+import {
   loadDaysFromStorage,
   saveDaysToStorage,
   loadUserProgressFromStorage,
@@ -22,27 +22,32 @@ import {
 import { getChapterForDay, chapters } from './data/chaptersData';
 import ChapterMilestoneOverlay from './components/ChapterMilestoneOverlay';
 
-// Subcomponents
+// Subcomponents — the core daily-use screens stay eager (loaded in the main
+// bundle); everything opened less often (CMS, brand style guide, community,
+// library, transformation recap, next-level unlock) is code-split via
+// React.lazy so first paint doesn't have to download all of it up front.
 import HomeView from './components/HomeView';
 import DailyMissionView from './components/DailyMissionView';
 import JourneyView from './components/JourneyView';
 import EmotionalSosView from './components/EmotionalSosView';
-import CmsView from './components/CmsView';
 import SettingsView from './components/SettingsView';
-import NextLevelView from './components/NextLevelView';
-import MyTransformationView from './components/MyTransformationView';
-import CommunityView from './components/CommunityView';
-import LibraryView from './components/LibraryView';
 import ProfileView from './components/ProfileView';
-import BrandIdentityView from './components/BrandIdentityView';
 import RenaSerLogo from './components/RenaSerLogo';
 import RenataOSChat from './components/RenataOSChat';
 import DayCompletionOverlay from './components/DayCompletionOverlay';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginView from './components/auth/LoginView';
 import SignupView from './components/auth/SignupView';
-import InviteAdminPanel from './components/auth/InviteAdminPanel';
+import ResetPasswordView from './components/auth/ResetPasswordView';
 import { useProgressSync, clearLocalProgressCache } from './hooks/useProgressSync';
+
+const CmsView = lazy(() => import('./components/CmsView'));
+const NextLevelView = lazy(() => import('./components/NextLevelView'));
+const MyTransformationView = lazy(() => import('./components/MyTransformationView'));
+const CommunityView = lazy(() => import('./components/CommunityView'));
+const LibraryView = lazy(() => import('./components/LibraryView'));
+const BrandIdentityView = lazy(() => import('./components/BrandIdentityView'));
+const InviteAdminPanel = lazy(() => import('./components/auth/InviteAdminPanel'));
 
 import { adaptMessage, resolveGrammarPreference } from './utils/grammar';
 import { getLocalDateISO, getUnlockAnchorDateISO } from './utils/date';
@@ -61,11 +66,11 @@ export default function App() {
 function AppContent() {
   const system = useSystem();
 
-  const { user, loading: authLoading, signOut } = useAuth();
+  const { user, loading: authLoading, signOut, passwordRecovery } = useAuth();
   const inviteCodeFromUrl = new URLSearchParams(window.location.search).get('codigo');
   const [authMode, setAuthMode] = useState<'login' | 'signup'>(inviteCodeFromUrl ? 'signup' : 'login');
 
-  const { progress, updateProgress } = useProgressSync(loadUserProgressFromStorage());
+  const { progress, updateProgress, syncStatus } = useProgressSync(loadUserProgressFromStorage());
   const [days, setDays] = useState<MissionDay[]>(() => loadDaysFromStorage(progress.journeyStartDate));
   const loadedJourneyStartDate = useRef(progress.journeyStartDate);
 
@@ -488,6 +493,14 @@ function AppContent() {
   const isNextLevelUnlocked = progress.completionHistory.includes(30);
 
   if (authLoading) return null;
+
+  // The user IS authenticated at this point (Supabase logs them in via the
+  // recovery link's token), but they came from a "forgot password" email —
+  // show the "set new password" screen instead of the normal app until
+  // they actually pick one, regardless of the !user check below.
+  if (passwordRecovery) {
+    return <ResetPasswordView />;
+  }
 
   if (!user) {
     return authMode === 'login' ? (
@@ -987,6 +1000,7 @@ function AppContent() {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
           >
+          <Suspense fallback={<div className="flex justify-center py-24"><div className="h-8 w-8 border-2 border-rosegold border-t-transparent rounded-full animate-spin" /></div>}>
             {activeTab === 'home' && (
               <HomeView
                 currentDay={activeMissionDay}
@@ -1079,6 +1093,7 @@ function AppContent() {
                 onUpdateProgress={updateProgress}
                 isAdminUnlocked={isAdminUnlocked}
                 onSignOut={handleSignOut}
+                syncStatus={syncStatus}
               />
             )}
 
@@ -1112,6 +1127,7 @@ function AppContent() {
                 <InviteAdminPanel />
               </>
             )}
+          </Suspense>
           </motion.div>
         </AnimatePresence>
 

@@ -99,9 +99,31 @@ function corsHeaders(origin, allowedOrigin) {
   };
 }
 
+// Best-effort in-memory rate limit — resets on cold start and isn't shared
+// across Cloudflare edge locations, so it's not a hard guarantee, but it
+// stops the common case (one script hammering the endpoint) without adding
+// a new secret/dependency. /support has no authenticated user to scope a
+// real per-account limit to, unlike the chat endpoint below.
+const supportAttemptsByIp = new Map();
+const SUPPORT_LIMIT = 3;
+const SUPPORT_WINDOW_MS = 10 * 60 * 1000;
+
+function isSupportRateLimited(ip) {
+  const now = Date.now();
+  const attempts = (supportAttemptsByIp.get(ip) || []).filter((t) => now - t < SUPPORT_WINDOW_MS);
+  attempts.push(now);
+  supportAttemptsByIp.set(ip, attempts);
+  return attempts.length > SUPPORT_LIMIT;
+}
+
 // Relays a student's quick-support message to SUPPORT_EMAIL via Resend, so it
 // arrives as a real email without needing any mail client open on their device.
 async function handleSupportMessage(request, env, headers) {
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  if (isSupportRateLimited(ip)) {
+    return new Response(JSON.stringify({ error: 'Muitas mensagens. Aguarde alguns minutos.' }), { status: 429, headers });
+  }
+
   let body;
   try {
     body = await request.json();
@@ -269,6 +291,25 @@ export default {
     const { message, lang, context } = body || {};
     if (!message || typeof message !== 'string') {
       return new Response(JSON.stringify({ error: 'Missing message' }), { status: 400, headers });
+    }
+
+    // Uses the request's own RLS-scoped client (authenticated as this
+    // user), so this only ever counts/limits the caller's own messages —
+    // no service_role key needed for this check.
+    const oneMinuteAgo = new Date(Date.now() - 60 * 1000).toISOString();
+    const { count: recentCount } = await supabase
+      .from('chat_messages')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .eq('role', 'user')
+      .gte('created_at', oneMinuteAgo);
+    if ((recentCount ?? 0) >= 10) {
+      const friendlyLimit = {
+        pt: 'Você está enviando mensagens muito rápido. Espere um minuto e tente de novo.',
+        en: "You're sending messages too fast. Wait a minute and try again.",
+        es: 'Estás enviando mensajes muy rápido. Espera un minuto e intenta de nuevo.'
+      }[['pt', 'en', 'es'].includes(lang) ? lang : 'pt'];
+      return new Response(JSON.stringify({ reply: friendlyLimit }), { status: 200, headers });
     }
 
     const langKey = ['pt', 'en', 'es'].includes(lang) ? lang : 'pt';

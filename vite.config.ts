@@ -23,6 +23,23 @@ export default defineConfig(() => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    build: {
+      // The remaining warning threshold after code-splitting the admin/CMS
+      // screens (see App.tsx's React.lazy imports) — vendor libraries
+      // (react, framer-motion, supabase-js) are the main weight left in the
+      // main chunk, split out below so route-level lazy chunks don't each
+      // duplicate them.
+      chunkSizeWarningLimit: 600,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vendor-react': ['react', 'react-dom'],
+            'vendor-motion': ['motion'],
+            'vendor-supabase': ['@supabase/supabase-js'],
+          },
+        },
+      },
+    },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modifyâfile watching is disabled to prevent flickering during agent edits.

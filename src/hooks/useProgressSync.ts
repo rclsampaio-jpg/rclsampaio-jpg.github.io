@@ -23,9 +23,12 @@ export function clearLocalProgressCache(): void {
   localStorage.removeItem(OWNER_KEY);
 }
 
+export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error';
+
 export function useProgressSync(initialProgress: UserProgress) {
   const { user } = useAuth();
   const [progress, setProgress] = useState<UserProgress>(initialProgress);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle');
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingWrite = useRef<{ userId: string; data: UserProgress } | null>(null);
   const loadedForUserId = useRef<string | null>(null);
@@ -93,9 +96,11 @@ export function useProgressSync(initialProgress: UserProgress) {
     if (pendingWrite.current) {
       const { userId, data } = pendingWrite.current;
       pendingWrite.current = null;
+      setSyncStatus('syncing');
       supabase
         .from('user_progress')
-        .upsert({ user_id: userId, data, updated_at: new Date().toISOString() });
+        .upsert({ user_id: userId, data, updated_at: new Date().toISOString() })
+        .then(({ error }) => setSyncStatus(error ? 'error' : 'synced'));
     }
   }, []);
 
@@ -129,15 +134,17 @@ export function useProgressSync(initialProgress: UserProgress) {
 
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
       pendingWrite.current = { userId: user.id, data: newProgress };
+      setSyncStatus('syncing');
       debounceTimer.current = setTimeout(() => {
         pendingWrite.current = null;
         supabase
           .from('user_progress')
-          .upsert({ user_id: user.id, data: newProgress, updated_at: new Date().toISOString() });
+          .upsert({ user_id: user.id, data: newProgress, updated_at: new Date().toISOString() })
+          .then(({ error }) => setSyncStatus(error ? 'error' : 'synced'));
       }, SYNC_DEBOUNCE_MS);
     },
     [user],
   );
 
-  return { progress, updateProgress };
+  return { progress, updateProgress, syncStatus };
 }
