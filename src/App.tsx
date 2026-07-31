@@ -39,6 +39,8 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginView from './components/auth/LoginView';
 import SignupView from './components/auth/SignupView';
 import ResetPasswordView from './components/auth/ResetPasswordView';
+import InviteGateView from './components/auth/InviteGateView';
+import { supabase } from './lib/supabase';
 import { useProgressSync, clearLocalProgressCache } from './hooks/useProgressSync';
 
 const CmsView = lazy(() => import('./components/CmsView'));
@@ -69,6 +71,32 @@ function AppContent() {
   const { user, loading: authLoading, signOut, passwordRecovery } = useAuth();
   const inviteCodeFromUrl = new URLSearchParams(window.location.search).get('codigo');
   const [authMode, setAuthMode] = useState<'login' | 'signup'>(inviteCodeFromUrl ? 'signup' : 'login');
+
+  // Google sign-in creates the auth.users row with no invite check at all
+  // (unlike email/password signup, which validates the code first) — so a
+  // Google-authenticated user with no `profiles` row yet hasn't actually
+  // redeemed an invite. Gate them behind InviteGateView until they do.
+  // Only checked for the google provider: email/password accounts are
+  // trusted here since validate-invite-and-signup already gated them.
+  const [needsInviteRedeem, setNeedsInviteRedeem] = useState(false);
+  const [inviteCheckDone, setInviteCheckDone] = useState(false);
+  useEffect(() => {
+    if (!user) {
+      setInviteCheckDone(false);
+      return;
+    }
+    const provider = user.app_metadata?.provider;
+    if (provider !== 'google') {
+      setNeedsInviteRedeem(false);
+      setInviteCheckDone(true);
+      return;
+    }
+    (async () => {
+      const { data } = await supabase.from('profiles').select('id').eq('id', user.id).maybeSingle();
+      setNeedsInviteRedeem(!data);
+      setInviteCheckDone(true);
+    })();
+  }, [user?.id]);
 
   const { progress, updateProgress, syncStatus } = useProgressSync(loadUserProgressFromStorage());
   const [days, setDays] = useState<MissionDay[]>(() => loadDaysFromStorage(progress.journeyStartDate));
@@ -510,6 +538,16 @@ function AppContent() {
         inviteCodeFromUrl={inviteCodeFromUrl}
         onSwitchToLogin={() => setAuthMode('login')}
         onSignupSuccess={() => setAuthMode('login')}
+      />
+    );
+  }
+
+  if (user && !inviteCheckDone) return null;
+
+  if (needsInviteRedeem) {
+    return (
+      <InviteGateView
+        onUnlocked={() => setNeedsInviteRedeem(false)}
       />
     );
   }
