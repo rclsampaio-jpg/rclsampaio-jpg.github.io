@@ -302,7 +302,22 @@ async function callOpenRouter(model, systemPrompt, history, userContent, env, ex
   const data = await response.json();
   const reply = data?.choices?.[0]?.message?.content?.trim();
   if (!reply) throw new Error(`OpenRouter empty reply (${model})`);
-  return reply;
+  return stripMarkdown(reply);
+}
+
+// Safety net: the chat UI renders plain text, but this free-tier model
+// doesn't reliably follow the "no markdown" instruction in the system
+// prompt (small model, instruction buried before a long reference block).
+// Strip the common markdown symbols here so a slip in the model's output
+// never reaches the screen as literal asterisks/hashes.
+function stripMarkdown(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/__(.+?)__/g, '$1')
+    .replace(/(?<!\w)\*(?!\s)(.+?)(?<!\s)\*(?!\w)/g, '$1')
+    .replace(/(?<!\w)_(?!\s)(.+?)(?<!\s)_(?!\w)/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^[-*]\s+/gm, '');
 }
 
 // Tenta o modelo primário; se falhar por qualquer motivo (erro HTTP,
