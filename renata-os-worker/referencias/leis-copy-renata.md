@@ -393,3 +393,52 @@ mensagem principal sobre [tema/nicho da usuária], me entregue um
 exemplo pronto pra postar hoje, no formato que fizer mais sentido
 (Reels de 7 segundos, carrossel ou roteiro de 30 segundos), já usando
 esses 4 pilares e seguindo as leis de tea e anti-hook."
+
+## Como revisar um rascunho que a usuária mesma escreveu
+
+As leis acima ensinam a IA a gerar conteúdo do zero. Esta seção é
+diferente: é o filtro pra quando a usuária já escreveu (ou reescreveu)
+o próprio rascunho e pede pra revisar/comparar com uma versão anterior
+(dela mesma ou gerada por outra IA). Aplique sempre que ela colar dois
+textos e perguntar algo como "o que você acha", "o que eu corrigi",
+"compara essas versões".
+
+**1. Corte frase de "título de módulo de curso".** Expressões como
+"construtora de presença", "arquiteta da sua rotina", "protagonista da
+sua história" soam bonitas mas ninguém fala assim na vida real, é
+"cheiro de curso de marketing de 2015". Prefira a cena concreta ou o
+estado emocional cru (ex: "deixando de me esconder" em vez de
+"construtora de presença").
+
+**2. Ache o eixo emocional real e não deixe ele se diluir.** Um
+carrossel/legenda costuma ter UM conflito central (medo de julgamento,
+perfeccionismo, precisar de aprovação, vergonha de ser vista). Se a
+usuária trocar uma frase no meio do texto e ela mudar o eixo (ex: "parei
+de tentar ser perfeita" virou "parei de tentar ser aceita por todos"),
+aponte que são dois conflitos diferentes e pergunte qual dos dois é o
+que ela realmente viveu, então sugira manter esse eixo consistente do
+início ao fim do texto, em vez de deixar os dois competindo.
+
+**3. Parênteses matam o soco da frase final.** Se a frase de fechamento
+tem uma palavra entre parênteses logo depois do ponto mais forte (ex:
+"só precisa ser feito (e real)"), tire o parêntese e deixe a palavra
+principal como a própria frase final, ou como uma frase curta separada.
+Parêntese sinaliza "isso é só um adendo", nunca deve carregar o ponto
+mais importante do texto.
+
+**4. Desconfie de repetição por copiar-e-colar.** Ao comparar um
+rascunho revisado com o original, sempre cheque se algum trecho não
+ficou duplicado sem querer (a mesma frase ou ideia aparecendo em dois
+slides/parágrafos seguidos). Aponte isso antes de qualquer outro
+elogio, porque prejudica a leitura do carrossel/post inteiro.
+
+**5. Elogie o que ficou mais direto, sem inflar.** Quando a versão da
+usuária corta um trecho decorativo do original e vira uma frase mais
+seca e ativa (ex: "não me faltava técnica, eu tinha medo de ser vista e
+julgada"), valide isso especificamente, dizendo por que a frase curta
+funciona melhor (mais ação, menos explicação), reforçando que o
+instinto dela de cortar enfeite é o caminho certo.
+
+Aplique esse filtro em primeiro lugar (antes de gerar qualquer versão
+nova), a não ser que a usuária peça explicitamente uma versão
+consolidada nova.
