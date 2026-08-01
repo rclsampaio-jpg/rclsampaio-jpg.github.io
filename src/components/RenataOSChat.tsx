@@ -283,22 +283,22 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
               initial={{ y: 40, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
-              className="relative w-full sm:max-w-md h-[85vh] sm:h-[600px] bg-[#FAF8F5] dark:bg-[#1E1715] rounded-t-3xl sm:rounded-3xl border border-rosegold/20 shadow-rosegold flex flex-col overflow-hidden"
+              className="relative w-full sm:max-w-md h-[85vh] sm:h-[600px] bg-[#FAF8F5] dark:bg-ink rounded-t-3xl sm:rounded-3xl border border-rosegold/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none flex flex-col overflow-hidden"
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-5 border-b border-rose-100/20 dark:border-rosegold/10">
+              <div className="flex items-center justify-between p-5 border-b border-rose-100/20 dark:border-ink-hairline">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full overflow-hidden shrink-0 border-2 border-rosegold/40 dark:border-rosegold-light/40">
                     <img src="/assets/images/minhafoto.jpg" alt="Renata" className="h-full w-full object-cover" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">{t.title}</h3>
-                    <p className="text-[10px] text-slate-400 font-sans">{t.subtitle}</p>
+                    <h3 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">{t.title}</h3>
+                    <p className="text-[10px] text-slate-400 dark:text-ink-text-muted font-sans">{t.subtitle}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 rounded-full text-slate-400 hover:text-rosegold hover:bg-rose-50/50 dark:hover:bg-rosegold/10 transition cursor-pointer"
+                  className="p-2 rounded-full text-slate-400 dark:text-ink-text-muted hover:text-rosegold dark:hover:text-rosegold-light hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10 transition cursor-pointer"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -317,7 +317,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                       className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm font-sans leading-relaxed ${
                         msg.role === 'user'
                           ? 'bg-rosegold text-white rounded-br-sm'
-                          : 'bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 text-slate-700 dark:text-slate-200 rounded-bl-sm'
+                          : 'bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline text-slate-700 dark:text-ink-text rounded-bl-sm'
                       }`}
                     >
                       {msg.text}
@@ -329,7 +329,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                     <span className="h-6 w-6 rounded-full overflow-hidden shrink-0 border border-rose-100/40 dark:border-rosegold-light/30">
                       <img src="/assets/images/minhafoto.jpg" alt="Renata" className="h-full w-full object-cover" />
                     </span>
-                    <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm text-slate-400 font-sans">
+                    <div className="bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm text-slate-400 dark:text-ink-text-muted font-sans">
                       •••
                     </div>
                   </div>
@@ -340,7 +340,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
               <div className="px-5 pb-2">
                 <button
                   onClick={() => { setIsOpen(false); onOpenSos(); }}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-rose-50/60 dark:bg-rosegold/5 border border-rose-100/30 dark:border-rosegold/10 text-xs font-sans font-semibold text-rosegold transition cursor-pointer hover:bg-rose-50 dark:hover:bg-rosegold/10"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-rose-50/60 dark:bg-transparent border border-rose-100/30 dark:border-rosegold-light/30 text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light transition cursor-pointer hover:bg-rose-50 dark:hover:bg-rosegold-light/10"
                 >
                   <HeartHandshake className="h-3.5 w-3.5" />
                   {t.sosPrompt} {t.sosButton}
@@ -348,14 +348,14 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
               </div>
 
               {/* Input row */}
-              <div className="p-5 pt-2 border-t border-rose-100/20 dark:border-rosegold/10 flex items-center gap-2">
+              <div className="p-5 pt-2 border-t border-rose-100/20 dark:border-ink-hairline flex items-center gap-2">
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   placeholder={t.placeholder}
-                  className="flex-1 text-sm bg-white dark:bg-[#130E0D] border border-rose-100/20 dark:border-rosegold/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl px-4 py-3 text-slate-700 dark:text-slate-200 transition-all"
+                  className="flex-1 text-sm bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 focus:ring-rosegold dark:focus:ring-rosegold-light rounded-xl px-4 py-3 text-slate-700 dark:text-ink-text placeholder:dark:text-ink-text-muted transition-all"
                 />
                 <button
                   onClick={handleSend}
