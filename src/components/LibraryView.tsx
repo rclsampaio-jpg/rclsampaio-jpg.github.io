@@ -513,36 +513,6 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
         </div>
       )}
 
-      {/* Fixed list of meeting recordings ("Encontros"), ordered by their
-          number. Plain clickable title + URL rows, not a thumbnail grid,
-          since these are just links out to YouTube. */}
-      {(selectedCategory === 'all' || selectedCategory === 'videos') && (
-        <div className="max-w-xl">
-          <h3 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-ink-muted mb-3">
-            {trans.meetingsTitle}
-          </h3>
-          <div className="space-y-2">
-            {MEETING_VIDEOS.map((meeting) => (
-              <a
-                key={meeting.number}
-                href={meeting.url}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => logEngagementEvent('library_video', `encontro_${meeting.number}`)}
-                className="block px-4 py-3 bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-ink-hairline rounded-2xl hover:border-rosegold/40 dark:hover:border-rosegold-light transition group"
-              >
-                <p className="text-sm font-sans font-medium text-slate-700 dark:text-ink-text group-hover:text-rosegold dark:group-hover:text-rosegold-light">
-                  Encontro {meeting.number}
-                </p>
-                <p className="text-xs text-slate-400 dark:text-ink-muted mt-0.5 truncate">
-                  {meeting.url}
-                </p>
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Inline Active Player Panel */}
       <AnimatePresence>
         {activeAsset && (
@@ -852,6 +822,37 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
         </div>
 
       </div>
+
+      {/* Fixed list of meeting recordings ("Encontros"), ordered by their
+          number. Plain clickable title + URL rows, not a thumbnail grid,
+          since these are just links out to YouTube. Lives inside the
+          "Vídeos" tab content, shown under "Todos" and "Vídeos". */}
+      {(selectedCategory === 'all' || selectedCategory === 'videos') && (
+        <div className="max-w-xl">
+          <h3 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-ink-muted mb-3">
+            {trans.meetingsTitle}
+          </h3>
+          <div className="space-y-2">
+            {MEETING_VIDEOS.map((meeting) => (
+              <a
+                key={meeting.number}
+                href={meeting.url}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => logEngagementEvent('library_video', `encontro_${meeting.number}`)}
+                className="block px-4 py-3 bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-ink-hairline rounded-2xl hover:border-rosegold/40 dark:hover:border-rosegold-light transition group"
+              >
+                <p className="text-sm font-sans font-medium text-slate-700 dark:text-ink-text group-hover:text-rosegold dark:group-hover:text-rosegold-light">
+                  Encontro {meeting.number}
+                </p>
+                <p className="text-xs text-slate-400 dark:text-ink-muted mt-0.5 truncate">
+                  {meeting.url}
+                </p>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Wellness tab: not a media category, a short explanation of why a
           regulated nervous system matters before posting, plus a direct
