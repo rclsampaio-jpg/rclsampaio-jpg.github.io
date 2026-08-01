@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, ChangeEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Send, HeartHandshake } from 'lucide-react';
+import { X, Send, HeartHandshake, Plus, Paperclip } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { RenaSerIcon } from './RenaSerLogo';
 import { RENATA_OS_ENDPOINT } from '../config';
@@ -34,6 +34,10 @@ const trans = {
     subtitle: 'Sua IA de apoio na jornada',
     placeholder: 'Pergunte alguma coisa para a Renata OS...',
     send: 'Enviar',
+    attach: 'Enviar arquivo pdf/imagem',
+    removeAttachment: 'Remover arquivo',
+    fileTooLarge: 'Esse arquivo é grande demais. Tenta um arquivo menor.',
+    fileTypeInvalid: 'Só posso analisar imagens ou PDFs.',
     sosPrompt: 'Precisa de apoio emocional agora?',
     sosButton: 'Abrir SOS Emocional',
     notConfigured: 'A Renata OS ainda não está conectada a nenhum modelo de IA. Peça para configurarem o endpoint em src/config.ts assim que o backend estiver no ar.'
@@ -43,6 +47,10 @@ const trans = {
     subtitle: 'Your AI support through the journey',
     placeholder: 'Ask Renata OS anything...',
     send: 'Send',
+    attach: 'Send a PDF/image file',
+    removeAttachment: 'Remove file',
+    fileTooLarge: 'That file is too large. Try a smaller one.',
+    fileTypeInvalid: 'I can only analyze images or PDFs.',
     sosPrompt: 'Need emotional support right now?',
     sosButton: 'Open Emotional SOS',
     notConfigured: "Renata OS isn't connected to an AI model yet. Ask for the endpoint in src/config.ts to be configured once the backend is live."
@@ -52,11 +60,23 @@ const trans = {
     subtitle: 'Tu IA de apoyo en el viaje',
     placeholder: 'Pregúntale algo a Renata OS...',
     send: 'Enviar',
+    attach: 'Enviar archivo pdf/imagen',
+    removeAttachment: 'Quitar archivo',
+    fileTooLarge: 'Ese archivo es demasiado grande. Intenta con uno más pequeño.',
+    fileTypeInvalid: 'Solo puedo analizar imágenes o PDFs.',
     sosPrompt: '¿Necesitas apoyo emocional ahora?',
     sosButton: 'Abrir SOS Emocional',
     notConfigured: 'Renata OS todavía no está conectada a ningún modelo de IA. Pide que configuren el endpoint en src/config.ts en cuanto el backend esté activo.'
   }
 };
+
+const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024;
+
+interface PendingAttachment {
+  name: string;
+  mime: string;
+  dataUrl: string;
+}
 
 // Shown when a reply genuinely fails to come back (network/CORS/backend
 // hiccup), varied by guideStyle like the greeting below — the point is to
@@ -119,7 +139,10 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [attachment, setAttachment] = useState<PendingAttachment | null>(null);
+  const [attachmentError, setAttachmentError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   // First-visit hint bubble so the floating button reads as "AI chat" at a
   // glance instead of a mystery icon — shown once, dismissed on first open
   // or automatically after a few seconds, remembered via localStorage so it
@@ -150,12 +173,45 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, isLoading]);
 
+  const handleAttachClick = () => fileInputRef.current?.click();
+
+  // Reads the file straight into a base64 data URL in memory, nothing
+  // touches disk/storage — the file is sent with the next message and
+  // discarded right after (backend doesn't persist it either), by design.
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    setAttachmentError(null);
+    const isImage = file.type.startsWith('image/');
+    const isPdf = file.type === 'application/pdf';
+    if (!isImage && !isPdf) {
+      setAttachmentError(t.fileTypeInvalid);
+      return;
+    }
+    if (file.size > MAX_ATTACHMENT_BYTES) {
+      setAttachmentError(t.fileTooLarge);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setAttachment({ name: file.name, mime: file.type, dataUrl: reader.result as string });
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSend = async () => {
     const question = input.trim();
-    if (!question || isLoading) return;
+    const sentAttachment = attachment;
+    if ((!question && !sentAttachment) || isLoading) return;
 
-    setMessages((prev) => [...prev, { role: 'user', text: question }]);
+    const displayText = question || `📎 ${sentAttachment!.name}`;
+    setMessages((prev) => [...prev, { role: 'user', text: displayText }]);
     setInput('');
+    setAttachment(null);
+    setAttachmentError(null);
 
     if (!RENATA_OS_ENDPOINT) {
       setMessages((prev) => [...prev, { role: 'assistant', text: t.notConfigured }]);
@@ -187,7 +243,10 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
             dayNumber: currentDayNumber,
             completedDays: progress.completionHistory.length,
             currentStreak: progress.currentStreak
-          }
+          },
+          ...(sentAttachment
+            ? { attachment: { name: sentAttachment.name, mime: sentAttachment.mime, dataUrl: sentAttachment.dataUrl } }
+            : {})
         })
       });
       if (!response.ok) throw new Error('Bad response');
@@ -348,23 +407,59 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
               </div>
 
               {/* Input row */}
-              <div className="p-5 pt-2 border-t border-rose-100/20 dark:border-ink-hairline flex items-center gap-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder={t.placeholder}
-                  className="flex-1 text-sm bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 focus:ring-rosegold dark:focus:ring-rosegold-light rounded-xl px-4 py-3 text-slate-700 dark:text-ink-text placeholder:dark:text-ink-muted transition-all"
-                />
-                <button
-                  onClick={handleSend}
-                  disabled={isLoading || !input.trim()}
-                  className="h-11 w-11 shrink-0 rounded-xl bg-rosegold hover:bg-[#A35D68] disabled:opacity-40 disabled:cursor-not-allowed text-white flex items-center justify-center transition cursor-pointer"
-                  title={t.send}
-                >
-                  <Send className="h-4 w-4" />
-                </button>
+              <div className="px-5 pt-2 pb-5 border-t border-rose-100/20 dark:border-ink-hairline">
+                {(attachment || attachmentError) && (
+                  <div className="mb-2 flex items-center gap-2 text-xs font-sans">
+                    {attachment && (
+                      <span className="flex items-center gap-1.5 max-w-full bg-rose-50/60 dark:bg-rosegold-light/10 border border-rose-100/40 dark:border-rosegold-light/30 text-rosegold dark:text-rosegold-light rounded-full pl-2.5 pr-1.5 py-1">
+                        <Paperclip className="h-3 w-3 shrink-0" />
+                        <span className="truncate max-w-[160px]">{attachment.name}</span>
+                        <button
+                          type="button"
+                          onClick={() => setAttachment(null)}
+                          title={t.removeAttachment}
+                          className="h-4 w-4 shrink-0 rounded-full bg-rosegold/20 hover:bg-rosegold/30 flex items-center justify-center cursor-pointer"
+                        >
+                          <X className="h-2.5 w-2.5" />
+                        </button>
+                      </span>
+                    )}
+                    {attachmentError && <span className="text-red-500">{attachmentError}</span>}
+                  </div>
+                )}
+                <div className="flex items-center gap-2">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*,application/pdf"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAttachClick}
+                    title={t.attach}
+                    className="h-11 w-11 shrink-0 rounded-xl border border-rose-100/30 dark:border-ink-hairline text-slate-500 dark:text-ink-muted hover:text-rosegold hover:border-rosegold/50 dark:hover:text-rosegold-light flex items-center justify-center transition cursor-pointer"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                    placeholder={t.placeholder}
+                    className="flex-1 text-sm bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 focus:ring-rosegold dark:focus:ring-rosegold-light rounded-xl px-4 py-3 text-slate-700 dark:text-ink-text placeholder:dark:text-ink-muted transition-all"
+                  />
+                  <button
+                    onClick={handleSend}
+                    disabled={isLoading || (!input.trim() && !attachment)}
+                    className="h-11 w-11 shrink-0 rounded-xl bg-rosegold hover:bg-[#A35D68] disabled:opacity-40 disabled:cursor-not-allowed text-white flex items-center justify-center transition cursor-pointer"
+                    title={t.send}
+                  >
+                    <Send className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>

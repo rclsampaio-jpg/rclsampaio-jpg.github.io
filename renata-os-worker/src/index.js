@@ -100,8 +100,19 @@ ${REFERENCIAS_CONTEXT}`
 // pro fallback automaticamente.
 const OPENROUTER_MODELS = {
   primary: 'google/gemma-4-26b-a4b-it:free',
-  fallback: 'openai/gpt-oss-20b:free'
+  fallback: 'openai/gpt-oss-20b:free',
+  // Used only when the user attaches an image/PDF — the text-only free
+  // models above can't read attachments. Gemini 2.0 Flash's free tier on
+  // OpenRouter supports both vision and PDF file input.
+  vision: 'google/gemini-2.0-flash-exp:free'
 };
+
+// Attachments are processed in-memory for a single reply and never
+// persisted (not to Supabase, not to disk) — deliberate choice to avoid
+// growing storage/cost for something that's only useful in the moment.
+// 8MB base64 comfortably covers a phone photo or a few-page PDF while
+// keeping the Worker request body small.
+const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024;
 
 const CHAT_HISTORY_LIMIT = 20;
 
@@ -238,11 +249,11 @@ async function saveExchange(supabase, userId, userText, assistantText) {
 // times out) predictable instead of open-ended.
 const OPENROUTER_TIMEOUT_MS = 15_000;
 
-async function callOpenRouter(model, systemPrompt, history, userMessage, env) {
+async function callOpenRouter(model, systemPrompt, history, userContent, env, extraBody) {
   const messages = [
     { role: 'system', content: systemPrompt },
     ...history.map((m) => ({ role: m.role, content: m.content })),
-    { role: 'user', content: userMessage }
+    { role: 'user', content: userContent }
   ];
 
   const controller = new AbortController();
@@ -258,7 +269,7 @@ async function callOpenRouter(model, systemPrompt, history, userMessage, env) {
         'HTTP-Referer': 'https://rclsampaio-jpg.github.io',
         'X-Title': 'RenaSer - Renata OS'
       },
-      body: JSON.stringify({ model, messages }),
+      body: JSON.stringify({ model, messages, ...extraBody }),
       signal: controller.signal
     });
   } catch (err) {
@@ -295,6 +306,30 @@ async function getAIReply(systemPrompt, history, userMessage, env) {
   }
 }
 
+// Same idea as getAIReply, but for a message that includes an attached
+// image or PDF: builds a multimodal content array and always routes to the
+// vision-capable model, since the text-only free models can't read either.
+async function getAIReplyWithAttachment(systemPrompt, history, userMessage, attachment, env) {
+  const content = [];
+  if (userMessage) content.push({ type: 'text', text: userMessage });
+
+  const extraBody = {};
+  if (attachment.mime === 'application/pdf') {
+    content.push({
+      type: 'file',
+      file: { filename: attachment.name || 'documento.pdf', file_data: attachment.dataUrl }
+    });
+    // Free, text-extraction-only parsing engine (no per-page OCR cost) —
+    // enough for real text PDFs, which covers what a course/creator app
+    // realistically gets sent.
+    extraBody.plugins = [{ id: 'file-parser', pdf: { engine: 'pdf-text' } }];
+  } else {
+    content.push({ type: 'image_url', image_url: { url: attachment.dataUrl } });
+  }
+
+  return callOpenRouter(OPENROUTER_MODELS.vision, systemPrompt, history, content, env, extraBody);
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
@@ -326,9 +361,27 @@ export default {
       return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers });
     }
 
-    const { message, lang, context } = body || {};
-    if (!message || typeof message !== 'string') {
+    const { message, lang, context, attachment } = body || {};
+    if ((!message || typeof message !== 'string') && !attachment) {
       return new Response(JSON.stringify({ error: 'Missing message' }), { status: 400, headers });
+    }
+
+    const langKeyEarly = ['pt', 'en', 'es'].includes(lang) ? lang : 'pt';
+    let validAttachment = null;
+    if (attachment) {
+      const { mime, dataUrl, name } = attachment;
+      const isImage = typeof mime === 'string' && mime.startsWith('image/');
+      const isPdf = mime === 'application/pdf';
+      const tooBig = typeof dataUrl === 'string' && dataUrl.length > MAX_ATTACHMENT_BYTES;
+      if (typeof dataUrl !== 'string' || (!isImage && !isPdf)) {
+        const err = { pt: 'Só posso analisar imagens ou PDFs.', en: 'I can only analyze images or PDFs.', es: 'Solo puedo analizar imágenes o PDFs.' }[langKeyEarly];
+        return new Response(JSON.stringify({ reply: err }), { status: 200, headers });
+      }
+      if (tooBig) {
+        const err = { pt: 'Esse arquivo é grande demais. Tenta um arquivo menor.', en: 'That file is too large. Try a smaller one.', es: 'Ese archivo es demasiado grande. Intenta con uno más pequeño.' }[langKeyEarly];
+        return new Response(JSON.stringify({ reply: err }), { status: 200, headers });
+      }
+      validAttachment = { mime, dataUrl, name: typeof name === 'string' ? name : undefined };
     }
 
     // Uses the request's own RLS-scoped client (authenticated as this
@@ -360,9 +413,13 @@ export default {
 
     const history = await fetchHistory(supabase, user.id);
 
+    const messageText = typeof message === 'string' ? message.trim() : '';
+
     let reply;
     try {
-      reply = await getAIReply(systemPrompt, history, message, env);
+      reply = validAttachment
+        ? await getAIReplyWithAttachment(systemPrompt, history, messageText, validAttachment, env)
+        : await getAIReply(systemPrompt, history, messageText, env);
     } catch (err) {
       // Mensagem amigável, sem vazar o erro técnico (que vai só nos logs
       // do Cloudflare, não na resposta).
@@ -375,7 +432,14 @@ export default {
       return new Response(JSON.stringify({ reply: friendlyError }), { status: 200, headers });
     }
 
-    await saveExchange(supabase, user.id, message, reply);
+    // The attachment itself is never persisted (processed in-memory only,
+    // see MAX_ATTACHMENT_BYTES comment above) — history just remembers that
+    // one was sent, so future replies in the same conversation still make
+    // sense without needing the image/PDF bytes again.
+    const historyText = messageText || (validAttachment
+      ? { pt: '[enviou um arquivo para análise]', en: '[sent a file for analysis]', es: '[envió un archivo para análisis]' }[langKey]
+      : '');
+    await saveExchange(supabase, user.id, historyText, reply);
 
     return new Response(JSON.stringify({ reply }), { headers });
   }
