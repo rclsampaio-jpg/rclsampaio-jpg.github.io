@@ -36,7 +36,7 @@ import RenaSerLogo from './components/RenaSerLogo';
 import RenataOSChat from './components/RenataOSChat';
 import DayCompletionOverlay from './components/DayCompletionOverlay';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { SiteContentProvider } from './lib/siteContent';
+import { SiteContentProvider, useSiteContent } from './lib/siteContent';
 import EditModeToggle from './components/editable/EditModeToggle';
 import LoginView from './components/auth/LoginView';
 import SignupView from './components/auth/SignupView';
@@ -62,7 +62,6 @@ export default function App() {
     <AuthProvider>
       <SiteContentProvider>
         <AppContent />
-        <EditModeToggle />
       </SiteContentProvider>
     </AuthProvider>
   );
@@ -165,9 +164,12 @@ function AppContent() {
     }
   };
 
+  const { setEditMode } = useSiteContent();
+
   const handleAdminLock = () => {
     setIsAdminUnlocked(false);
     localStorage.removeItem('renaser_admin_unlocked');
+    setEditMode(false);
     if (activeTab === 'cms') {
       setActiveTab('home');
     }
@@ -727,6 +729,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] dark:bg-ink text-slate-900 dark:text-ink-text font-sans flex flex-col selection:bg-rosegold/10 selection:text-rosegold transition-colors duration-350 butterfly-bg">
+      <EditModeToggle isAdminUnlocked={isAdminUnlocked} />
 
       {/* Brand Elegant Top Header bar. Dark mode: flat ink surface, no
           blur/glass (Opção B — Luxo Contido, see BrandIdentityView →

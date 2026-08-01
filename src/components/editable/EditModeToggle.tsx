@@ -7,13 +7,17 @@ import { Pencil, X } from 'lucide-react';
 import { useSiteContent } from '../../lib/siteContent';
 
 // Small floating pill, bottom-right, visible only to a real admin
-// (profiles.is_admin server-side check — see src/lib/siteContent.tsx),
-// independent of the old client-side ADMIN_PASSPHRASE CMS gate. Toggles
-// whether EditableText/EditableImage show their inline-edit affordances.
-export default function EditModeToggle() {
+// (profiles.is_admin server-side check — see src/lib/siteContent.tsx) who
+// has ALSO unlocked the client-side ADMIN_PASSPHRASE gate (App.tsx). The
+// admin's own Supabase session persists across app opens (that's normal
+// auth behavior, needed for Edge Functions etc.), so gating on isAdmin
+// alone meant the pencil was always visible to her whenever she was
+// simply logged into her own account — this second gate makes edit mode
+// something she opts into per session instead.
+export default function EditModeToggle({ isAdminUnlocked }: { isAdminUnlocked: boolean }) {
   const { isAdmin, editMode, setEditMode } = useSiteContent();
 
-  if (!isAdmin) return null;
+  if (!isAdmin || !isAdminUnlocked) return null;
 
   return (
     <button
