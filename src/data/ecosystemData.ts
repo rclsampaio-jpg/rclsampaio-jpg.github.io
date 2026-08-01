@@ -156,6 +156,22 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
     mediaUrl: '/assets/docs/como-crescer-no-instagram-do-zero.pdf',
     durationOrSize: 'Documento',
     coverImage: '/assets/images/como-crescer-no-instagram-cover.jpg'
+  },
+  {
+    id: 'lib_7',
+    title: {
+      pt: 'Prompts Prontos pra Usar na Renata OS (IA)',
+      en: 'Ready-Made Prompts for Renata OS (AI)',
+      es: 'Prompts Listos para Usar en Renata OS (IA)'
+    },
+    description: {
+      pt: 'Os 10 prompts prontos pra pedir conteúdo direto pra Renata OS: cole o tema entre colchetes e mande, ela entrega o conteúdo pronto.',
+      en: 'The 10 ready-made prompts to request content directly from Renata OS: fill in the topic and send, she delivers the finished content.',
+      es: 'Los 10 prompts listos para pedir contenido directo a Renata OS: completa el tema entre corchetes y envíalo, ella entrega el contenido listo.'
+    },
+    category: 'pdfs',
+    mediaUrl: '/assets/docs/prompts-prontos-renata-os.pdf',
+    durationOrSize: 'Documento'
   }
 ];
 
@@ -163,7 +179,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs, acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '15';
+const ECOSYSTEM_CONFIG_VERSION = '16';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');
