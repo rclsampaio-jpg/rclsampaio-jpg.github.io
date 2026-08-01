@@ -169,12 +169,36 @@ export default function TreeOfRebirth({ completedCount, lang }: TreeOfRebirthPro
   const info = getStageInfo(completedCount);
   const stage = info.stage;
 
-  // Map the 10 growth stages onto the 4 tree illustrations (1: sapling -> 4: completed tree)
-  const getTreeImage = (s: number) => {
-    if (s <= 2) return '/assets/images/trees/tree-1.png';
-    if (s <= 5) return '/assets/images/trees/tree-2.png';
-    if (s <= 8) return '/assets/images/trees/tree-3.png';
-    return '/assets/images/trees/tree-4.png';
+  // Map the 10 growth stages onto the 4 tree illustrations (1: sapling -> 4: completed tree).
+  // Dark mode uses a separate set (AI-regenerated, glow matches the ink
+  // background) since the light-mode art doesn't translate cleanly to dark —
+  // see docs/superpowers/specs/2026-07-31-dark-mode-tokens-design.md context.
+  const getTreeImage = (s: number, variant: 'light' | 'dark') => {
+    // Was s<=2/s<=5/s<=8 before, which put stage 1 "Semente Sagrada" and
+    // stage 2 "Broto de Coragem" on the same seed image — the title said
+    // sprout, the art still showed a seed. Realigned so each image matches
+    // what its stage titles actually describe (tree-4's butterflies now
+    // land on stage 7 "Pouso da Borboleta", not stage 9).
+    const base = s <= 1 ? 'tree-1' : s <= 3 ? 'tree-2' : s <= 5 ? 'tree-3' : 'tree-4';
+    return variant === 'dark'
+      ? `/assets/images/trees/${base}-dark.png`
+      : `/assets/images/trees/${base}.png`;
+  };
+
+  const treeMotionProps = {
+    alt: info.title[lang],
+    style: stage >= 6 ? { scaleY: 1.18, transformOrigin: 'bottom center' } : undefined,
+    initial: { opacity: 0, scale: 0.9 },
+    animate: {
+      opacity: 1,
+      scale: [1, 1.03, 1],
+      y: [0, -0.6, 0]
+    },
+    transition: {
+      opacity: { duration: 0.4 },
+      scale: { duration: 7, repeat: Infinity, ease: "easeInOut" as const },
+      y: { duration: 7, repeat: Infinity, ease: "easeInOut" as const }
+    }
   };
 
   return (
@@ -183,26 +207,20 @@ export default function TreeOfRebirth({ completedCount, lang }: TreeOfRebirthPro
       {/* The Visual Tree Area */}
       <div className="relative w-28 h-28 shrink-0 flex items-center justify-center">
         <motion.img
-          key={stage}
-          src={getTreeImage(stage)}
-          alt={info.title[lang]}
-          className="w-full h-full object-contain"
-          style={stage >= 9 ? { scaleY: 1.18, transformOrigin: 'bottom center' } : undefined}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{
-            opacity: 1,
-            scale: [1, 1.03, 1],
-            y: [0, -0.6, 0]
-          }}
-          transition={{
-            opacity: { duration: 0.4 },
-            scale: { duration: 7, repeat: Infinity, ease: "easeInOut" },
-            y: { duration: 7, repeat: Infinity, ease: "easeInOut" }
-          }}
+          key={`${stage}-light`}
+          {...treeMotionProps}
+          src={getTreeImage(stage, 'light')}
+          className="w-full h-full object-contain block dark:hidden"
+        />
+        <motion.img
+          key={`${stage}-dark`}
+          {...treeMotionProps}
+          src={getTreeImage(stage, 'dark')}
+          className="w-full h-full object-contain hidden dark:block absolute inset-0"
         />
 
         {/* Butterflies fluttering around the fully-bloomed tree's canopy */}
-        {stage >= 9 && (
+        {stage >= 6 && (
           <>
             <motion.div
               className="absolute pointer-events-none"
