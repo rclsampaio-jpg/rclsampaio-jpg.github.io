@@ -54,7 +54,7 @@ export default function InviteGateView({ onUnlocked }: InviteGateViewProps) {
           <h2 className="text-lg font-serif font-medium text-slate-900 dark:text-white">
             Falta um passo
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-slate-500 dark:text-ink-text-muted">
             Digite o código de convite que você recebeu para liberar seu acesso
           </p>
         </div>
@@ -64,7 +64,7 @@ export default function InviteGateView({ onUnlocked }: InviteGateViewProps) {
           onChange={(e) => setCode(e.target.value)}
           placeholder="Código de convite"
           required
-          className="w-full bg-[#FAF8F5] dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-2xl p-3.5 text-sm text-slate-800 dark:text-slate-100 text-center tracking-widest uppercase"
+          className="w-full bg-[#FAF8F5] dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-2xl p-3.5 text-sm text-slate-800 dark:text-ink-text text-center tracking-widest uppercase"
         />
         {error && <p className="text-xs text-rose-500 font-medium">{error}</p>}
         <button

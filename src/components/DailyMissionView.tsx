@@ -1002,7 +1002,7 @@ export default function DailyMissionView({
           <h2 className="text-lg font-serif font-bold text-slate-800 dark:text-white">
             {textDict.lockedTitle}
           </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p className="text-sm text-slate-500 dark:text-ink-text-muted leading-relaxed">
             {textDict.lockedDesc}
           </p>
           <button
@@ -1021,7 +1021,7 @@ export default function DailyMissionView({
               <Heart className="h-4.5 w-4.5 fill-current text-rosegold animate-pulse" />
             </div>
             <div className="min-w-0 flex-1">
-              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100 font-sans tracking-wide leading-relaxed">
+              <h4 className="text-xs font-bold text-slate-800 dark:text-ink-text font-sans tracking-wide leading-relaxed">
                 {textDict.sosHeading}
               </h4>
             </div>
@@ -1097,7 +1097,7 @@ export default function DailyMissionView({
               </div>
 
               {/* Serif handwritten aesthetic body */}
-              <div className="font-display italic text-slate-700 dark:text-slate-200 text-base sm:text-lg leading-relaxed pt-3 border-l-2 border-rosegold/30 pl-5 space-y-4">
+              <div className="font-display italic text-slate-700 dark:text-ink-text text-base sm:text-lg leading-relaxed pt-3 border-l-2 border-rosegold/30 pl-5 space-y-4">
                 <p>
                   {adaptMessage(surpriseLetters[currentDay.dayNumber as keyof typeof surpriseLetters][lang][guideStyle].p, prefGrammar, lang)}
                 </p>
@@ -1198,7 +1198,7 @@ export default function DailyMissionView({
                   </p>
                 </div>
 
-                <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed font-sans">
+                <p className="text-slate-600 dark:text-ink-text-muted text-xs sm:text-sm leading-relaxed font-sans">
                   {textDict.restDayDescription}
                 </p>
 
@@ -1267,7 +1267,7 @@ export default function DailyMissionView({
                 </div>
 
                 <div className="p-6 rounded-2xl bg-gradient-to-br from-rose-50/10 via-[#FAF8F5] to-rose-50/5 dark:bg-none! dark:bg-transparent! border border-rose-100/15 dark:border-ink-hairline shadow-sm dark:shadow-none">
-                  <p className="text-slate-800 dark:text-slate-100 font-display text-lg sm:text-xl italic leading-relaxed">
+                  <p className="text-slate-800 dark:text-ink-text font-display text-lg sm:text-xl italic leading-relaxed">
                     "{localizedContent.hook}"
                   </p>
                 </div>
@@ -1314,17 +1314,17 @@ export default function DailyMissionView({
                       title={textDict.ratingDisliked}
                       className="h-9 w-9 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-ink-hairline flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
                     >
-                      <ThumbsDown className={`h-4 w-4 transition-colors ${audioRating === 'disliked' ? 'text-slate-600 dark:text-slate-300 fill-current' : 'text-slate-400'}`} />
+                      <ThumbsDown className={`h-4 w-4 transition-colors ${audioRating === 'disliked' ? 'text-slate-600 dark:text-ink-text-muted fill-current' : 'text-slate-400'}`} />
                     </button>
                   </div>
                 </div>
 
                 {/* Title + duration */}
                 <div className="mt-3 space-y-1 relative z-10">
-                  <h3 className="text-xl sm:text-2xl font-serif font-semibold text-slate-800 dark:text-slate-100">
+                  <h3 className="text-xl sm:text-2xl font-serif font-semibold text-slate-800 dark:text-ink-text">
                     {audioCompleted ? textDict.audioFinished : adaptMessage(currentDay.title[lang] || currentDay.title['pt'], prefGrammar, lang)}
                   </h3>
-                  <span className="text-xs text-slate-400 dark:text-slate-500 font-sans block">
+                  <span className="text-xs text-slate-400 dark:text-ink-text-muted font-sans block">
                     {formatTime(duration)}
                   </span>
                 </div>
@@ -1365,7 +1365,7 @@ export default function DailyMissionView({
                     onChange={handleSeekChange}
                     className="w-full h-1 bg-rose-200/50 dark:bg-ink-raised rounded-full appearance-none cursor-pointer accent-rosegold transition-all focus:outline-none"
                   />
-                  <div className="flex items-center justify-between text-[11px] font-sans text-slate-400 dark:text-slate-500 mt-2">
+                  <div className="flex items-center justify-between text-[11px] font-sans text-slate-400 dark:text-ink-text-muted mt-2">
                     <span>{formatTime(currentTime)}</span>
                     <span>{formatTime(duration)}</span>
                   </div>
@@ -1410,7 +1410,7 @@ export default function DailyMissionView({
                       {textDict.importantNoticeTitle}
                     </span>
                   </div>
-                  <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-sans whitespace-pre-line">
+                  <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed font-sans whitespace-pre-line">
                     {adaptMessage(textDict.importantNoticeBody, prefGrammar, lang)}
                   </p>
                   <button
@@ -1454,7 +1454,7 @@ export default function DailyMissionView({
 
                 {activeHookTab === 0 && (
                   <div className="space-y-3">
-                    <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">
+                    <h4 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
                       {textDict.openHookHeading}
                     </h4>
                     <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
@@ -1463,7 +1463,7 @@ export default function DailyMissionView({
                           key={idx}
                           className="flex items-start gap-3 p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-ink-hairline"
                         >
-                          <span className="flex-1 text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
+                          <span className="flex-1 text-sm text-slate-700 dark:text-ink-text-muted font-sans leading-relaxed">
                             {option}
                           </span>
                           <button
@@ -1491,7 +1491,7 @@ export default function DailyMissionView({
                 {activeHookTab === 1 && (
                   <div className="space-y-3">
                     {hookCategoryLabel && (
-                      <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">
+                      <h4 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
                         {textDict.dailyHookHeadingPrefix} {hookCategoryLabel}
                       </h4>
                     )}
@@ -1502,7 +1502,7 @@ export default function DailyMissionView({
                             key={idx}
                             className="flex items-start gap-3 p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-ink-hairline"
                           >
-                            <span className="flex-1 text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
+                            <span className="flex-1 text-sm text-slate-700 dark:text-ink-text-muted font-sans leading-relaxed">
                               {option}
                             </span>
                             <button
@@ -1525,7 +1525,7 @@ export default function DailyMissionView({
                         ))}
                       </div>
                     ) : (
-                      <p className="text-xs text-slate-500 dark:text-slate-400 italic font-sans p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-ink-hairline">
+                      <p className="text-xs text-slate-500 dark:text-ink-text-muted italic font-sans p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-ink-hairline">
                         {textDict.noDailyHookFallback}
                       </p>
                     )}
@@ -1534,10 +1534,10 @@ export default function DailyMissionView({
 
                 {activeHookTab === 2 && (
                   <div className="space-y-3">
-                    <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">
+                    <h4 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
                       {textDict.ideaHeading}
                     </h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 font-sans">
+                    <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans">
                       {textDict.ideaSubtitle}
                     </p>
                     <textarea
@@ -1545,7 +1545,7 @@ export default function DailyMissionView({
                       onChange={(e) => setCustomHookIdea(e.target.value)}
                       placeholder={textDict.ideaPlaceholder}
                       rows={3}
-                      className="w-full text-sm bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-slate-200 transition-all duration-300 shadow-xs resize-none"
+                      className="w-full text-sm bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-ink-text transition-all duration-300 shadow-xs resize-none"
                     />
                   </div>
                 )}
@@ -1569,12 +1569,12 @@ export default function DailyMissionView({
                     const [title, ...bullets] = localizedContent.exposureAction.split('\n').filter(Boolean);
                     return (
                       <>
-                        <p className="text-slate-800 dark:text-slate-200 text-sm font-sans font-semibold leading-relaxed">
+                        <p className="text-slate-800 dark:text-ink-text text-sm font-sans font-semibold leading-relaxed">
                           {title}
                         </p>
                         <ul className="space-y-2">
                           {bullets.map((bullet, idx) => (
-                            <li key={idx} className="flex gap-2 text-slate-700 dark:text-slate-300 text-sm font-sans leading-relaxed">
+                            <li key={idx} className="flex gap-2 text-slate-700 dark:text-ink-text-muted text-sm font-sans leading-relaxed">
                               <span className="text-rosegold shrink-0">•</span>
                               <span>{bullet.replace(/^•\s*/, '')}</span>
                             </li>
@@ -1599,7 +1599,7 @@ export default function DailyMissionView({
                     <Sparkles className="h-4.5 w-4.5 text-accentgold animate-pulse" />
                     {textDict.promisesTitle}
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-sans">
+                  <p className="text-xs text-slate-500 dark:text-ink-text-muted leading-relaxed font-sans">
                     {textDict.promisesSubtitle}
                   </p>
                 </div>
@@ -1626,8 +1626,8 @@ export default function DailyMissionView({
                         className="mt-0.5 h-4.5 w-4.5 rounded-md text-rosegold border-slate-300 focus:ring-rosegold transition-all duration-300"
                       />
                       <div className="text-xs font-sans">
-                        <span className="font-semibold text-slate-700 dark:text-slate-200 block">{item.label}</span>
-                        <span className="text-slate-500 dark:text-slate-400 block mt-1 leading-relaxed">{item.desc}</span>
+                        <span className="font-semibold text-slate-700 dark:text-ink-text block">{item.label}</span>
+                        <span className="text-slate-500 dark:text-ink-text-muted block mt-1 leading-relaxed">{item.desc}</span>
                       </div>
                     </label>
                   ))}
@@ -1648,7 +1648,7 @@ export default function DailyMissionView({
             className="rounded-3xl bg-white dark:bg-ink-raised border border-rose-100/30 dark:border-ink-hairline p-6 shadow-sm space-y-6"
           >
             <div>
-              <h3 className="text-xs font-sans text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-3.5 font-extrabold">
+              <h3 className="text-xs font-sans text-slate-400 dark:text-ink-text-muted uppercase tracking-[0.15em] mb-3.5 font-extrabold">
                 {isRestDay ? textDict.statusTitle : textDict.progressLockTitle}
               </h3>
 
@@ -1656,7 +1656,7 @@ export default function DailyMissionView({
                 <div className="space-y-3">
                   {/* Validation checkmark widgets */}
                   <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 p-4 rounded-xl shadow-xs">
-                    <span className="text-slate-600 dark:text-slate-300 font-semibold font-sans">{textDict.listenItem}</span>
+                    <span className="text-slate-600 dark:text-ink-text-muted font-semibold font-sans">{textDict.listenItem}</span>
                     <span className={`px-3 py-1 rounded-full text-[11px] font-sans font-bold uppercase tracking-wider ${
                       audioCompleted
                         ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
@@ -1667,7 +1667,7 @@ export default function DailyMissionView({
                   </div>
 
                   <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 p-4 rounded-xl shadow-xs">
-                    <span className="text-slate-600 dark:text-slate-300 font-semibold font-sans">{textDict.promisesItem}</span>
+                    <span className="text-slate-600 dark:text-ink-text-muted font-semibold font-sans">{textDict.promisesItem}</span>
                     <span className={`px-3 py-1 rounded-full text-[11px] font-sans font-bold uppercase tracking-wider ${
                       allPromisesKept
                         ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
@@ -1679,7 +1679,7 @@ export default function DailyMissionView({
 
                   {/* 3 mandatory recording links */}
                   <div className="space-y-2 pt-1">
-                    <p className="text-xs text-slate-500 dark:text-slate-400 font-sans">
+                    <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans">
                       {textDict.recordingsLinkInstruction}
                     </p>
                     {([
@@ -1694,7 +1694,7 @@ export default function DailyMissionView({
                         disabled={isCompleted}
                         onChange={(e) => setPromiseLinks(p => ({ ...p, [item.key]: e.target.value }))}
                         placeholder={`${textDict.linkRequiredPlaceholder} (${idx + 1}/3)`}
-                        className="w-full text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-slate-200 transition-all duration-300 shadow-xs"
+                        className="w-full text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-ink-text transition-all duration-300 shadow-xs"
                       />
                     ))}
                   </div>
@@ -1710,14 +1710,14 @@ export default function DailyMissionView({
                 </label>
                 
                 {isSeventhDayReflection ? (
-                  <div className="text-xs text-slate-500 dark:text-slate-400 space-y-2 p-4 rounded-2xl bg-amber-500/5 border border-accentgold/20 font-sans italic">
+                  <div className="text-xs text-slate-500 dark:text-ink-text-muted space-y-2 p-4 rounded-2xl bg-amber-500/5 border border-accentgold/20 font-sans italic">
                     <p className="font-bold text-accentgold not-italic uppercase tracking-widest text-[11px]">{localizedPhase.title} {textDict.reflectionMoment}</p>
                     <p>{textDict.reflection7Q1}</p>
                     <p>{textDict.reflection7Q2}</p>
                     <p>{textDict.reflection7Q3}</p>
                   </div>
                 ) : (
-                  <p className="text-xs text-slate-500 dark:text-slate-400 italic leading-relaxed">
+                  <p className="text-xs text-slate-500 dark:text-ink-text-muted italic leading-relaxed">
                     "{localizedContent.reflectionQuestion}"
                   </p>
                 )}
@@ -1728,7 +1728,7 @@ export default function DailyMissionView({
                   disabled={isCompleted}
                   placeholder={textDict.reflectionPlaceholder}
                   rows={4}
-                  className="w-full text-sm bg-[#FAF8F5] dark:bg-ink border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-2xl p-4 placeholder-slate-400 text-slate-700 dark:text-slate-200 transition-all duration-300 shadow-inner"
+                  className="w-full text-sm bg-[#FAF8F5] dark:bg-ink border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-2xl p-4 placeholder-slate-400 text-slate-700 dark:text-ink-text transition-all duration-300 shadow-inner"
                 />
                 
                 {reflectionInput.trim().length <= 3 && !isCompleted && (
@@ -1794,7 +1794,7 @@ export default function DailyMissionView({
                   <span className="text-[11px] font-extrabold uppercase text-slate-400 tracking-[0.15em] block">
                     {textDict.identityHeader}
                   </span>
-                  <p className="text-sm text-slate-700 dark:text-slate-200 font-medium italic font-display leading-relaxed">
+                  <p className="text-sm text-slate-700 dark:text-ink-text font-medium italic font-display leading-relaxed">
                     "{adaptMessage(identityPhrases[currentDay.dayNumber as keyof typeof identityPhrases]?.[lang] || 'You showed up today.', prefGrammar, lang)}"
                   </p>
                 </div>
@@ -1811,7 +1811,7 @@ export default function DailyMissionView({
                       <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Capítulo' : lang === 'es' ? 'Capítulo' : 'Chapter'}
                       </span>
-                      <span className="font-bold text-slate-800 dark:text-slate-200 font-sans">
+                      <span className="font-bold text-slate-800 dark:text-ink-text font-sans">
                         {getPhaseId(currentDay.dayNumber)} • {
                           getPhaseId(currentDay.dayNumber) === 1 ? (lang === 'pt' ? 'DESPERTAR' : lang === 'es' ? 'DESPERTAR' : 'AWAKENING') :
                           getPhaseId(currentDay.dayNumber) === 2 ? (lang === 'pt' ? 'CORAGEM' : lang === 'es' ? 'CORAJE' : 'COURAGE') :
@@ -1826,7 +1826,7 @@ export default function DailyMissionView({
                       <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Dia / Racha' : lang === 'es' ? 'Día / Racha' : 'Day / Streak'}
                       </span>
-                      <span className="font-bold text-slate-800 dark:text-slate-200 font-sans">
+                      <span className="font-bold text-slate-800 dark:text-ink-text font-sans">
                         {currentDay.dayNumber}/30 ({progress.currentStreak}d)
                       </span>
                     </div>
@@ -1836,7 +1836,7 @@ export default function DailyMissionView({
                       <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Conclusão' : lang === 'es' ? 'Completado' : 'Completion'}
                       </span>
-                      <span className="font-bold text-slate-800 dark:text-slate-200 font-sans">
+                      <span className="font-bold text-slate-800 dark:text-ink-text font-sans">
                         {Math.round((progress.completionHistory.length / 30) * 100)}%
                       </span>
                     </div>
@@ -1846,7 +1846,7 @@ export default function DailyMissionView({
                       <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Fase Atual' : lang === 'es' ? 'Fase Actual' : 'Current Phase'}
                       </span>
-                      <span className="font-bold text-slate-800 dark:text-slate-200 font-sans">
+                      <span className="font-bold text-slate-800 dark:text-ink-text font-sans">
                         {(() => {
                           const cid = getPhaseId(currentDay.dayNumber);
                           const range = cid === 1 ? [1, 7] : cid === 2 ? [8, 14] : cid === 3 ? [15, 21] : [22, 30];
@@ -1865,15 +1865,15 @@ export default function DailyMissionView({
                     </span>
                     
                     <div className="space-y-1.5 text-[11px] font-sans">
-                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                      <div className="flex items-center gap-2 text-slate-600 dark:text-ink-text-muted">
                         <Check className="h-4 w-4 text-emerald-500 shrink-0" />
                         <span>{lang === 'pt' ? 'Mensagem da Renata Concluída' : lang === 'es' ? 'Mensaje de Renata Completado' : "Renata's Message Completed"}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                      <div className="flex items-center gap-2 text-slate-600 dark:text-ink-text-muted">
                         <Check className="h-4 w-4 text-emerald-500 shrink-0" />
                         <span>{lang === 'pt' ? 'Três Compromissos Selados' : lang === 'es' ? 'Tres Compromisos Sellados' : 'Three Promises Sealed'}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                      <div className="flex items-center gap-2 text-slate-600 dark:text-ink-text-muted">
                         <Check className="h-4 w-4 text-emerald-500 shrink-0" />
                         <span>{lang === 'pt' ? 'Reflexão Pessoal Salva' : lang === 'es' ? 'Reflexión Personal Guardada' : 'Personal Reflection Saved'}</span>
                       </div>
@@ -1890,7 +1890,7 @@ export default function DailyMissionView({
                 className={`w-full py-4.5 px-6 rounded-2xl text-xs font-sans font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2.5 transition-all duration-300 cursor-pointer ${
                   canComplete 
                     ? 'bg-rosegold text-white hover:bg-[#A35D68] shadow-rosegold hover:scale-[1.01]' 
-                    : 'bg-rose-50/40 dark:bg-rosegold/5 text-slate-400 dark:text-slate-600 cursor-not-allowed border border-rose-100/10'
+                    : 'bg-rose-50/40 dark:bg-rosegold/5 text-slate-400 dark:text-ink-text-muted cursor-not-allowed border border-rose-100/10'
                 }`}
               >
                 <span>{isRestDay ? textDict.completeBtnRest : textDict.completeBtn}</span>
@@ -1912,7 +1912,7 @@ export default function DailyMissionView({
                 <Heart className="h-4.5 w-4.5 fill-current text-rosegold animate-pulse" />
               </div>
               <div className="min-w-0 flex-1">
-                <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100 font-sans tracking-wide leading-relaxed">
+                <h4 className="text-xs font-bold text-slate-800 dark:text-ink-text font-sans tracking-wide leading-relaxed">
                   {textDict.sosHeading}
                 </h4>
               </div>

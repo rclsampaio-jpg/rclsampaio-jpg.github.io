@@ -94,7 +94,7 @@ export default function SignupView({ inviteCodeFromUrl, onSwitchToLogin, onSignu
           <h2 className="text-lg font-serif font-medium text-slate-900 dark:text-white">
             Comece sua jornada
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-slate-500 dark:text-ink-text-muted">
             Crie sua conta com o código de convite que você recebeu
           </p>
         </div>
@@ -105,7 +105,7 @@ export default function SignupView({ inviteCodeFromUrl, onSwitchToLogin, onSignu
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             required
-            className="w-full bg-[#FAF8F5] dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-2xl p-3.5 text-sm text-slate-800 dark:text-slate-100"
+            className="w-full bg-[#FAF8F5] dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-2xl p-3.5 text-sm text-slate-800 dark:text-ink-text"
           />
           <input
             type="password"
@@ -114,7 +114,7 @@ export default function SignupView({ inviteCodeFromUrl, onSwitchToLogin, onSignu
             placeholder="Crie uma senha"
             required
             minLength={6}
-            className="w-full bg-[#FAF8F5] dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-2xl p-3.5 text-sm text-slate-800 dark:text-slate-100"
+            className="w-full bg-[#FAF8F5] dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-2xl p-3.5 text-sm text-slate-800 dark:text-ink-text"
           />
           <input
             type="text"
@@ -122,7 +122,7 @@ export default function SignupView({ inviteCodeFromUrl, onSwitchToLogin, onSignu
             onChange={(e) => setCode(e.target.value)}
             placeholder="Código de convite"
             required
-            className="w-full bg-[#FAF8F5] dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-2xl p-3.5 text-sm text-slate-800 dark:text-slate-100"
+            className="w-full bg-[#FAF8F5] dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-2xl p-3.5 text-sm text-slate-800 dark:text-ink-text"
           />
         </div>
         {error && <p className="text-xs text-rose-500 font-medium">{error}</p>}

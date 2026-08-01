@@ -160,7 +160,7 @@ export default function SettingsView({
           {textDict.signOutBtn}
         </button>
         {syncStatus !== 'idle' && (
-          <p className={`text-[11px] flex items-center gap-1.5 ${syncStatus === 'error' ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'}`}>
+          <p className={`text-[11px] flex items-center gap-1.5 ${syncStatus === 'error' ? 'text-rose-500' : 'text-slate-400 dark:text-ink-text-muted'}`}>
             <span className={`h-1.5 w-1.5 rounded-full ${syncStatus === 'syncing' ? 'bg-amber-400 animate-pulse' : syncStatus === 'error' ? 'bg-rose-500' : 'bg-emerald-500'}`} />
             {SYNC_LABEL[syncStatus][lang]}
           </p>
@@ -216,7 +216,7 @@ export default function SettingsView({
 
         {/* Part A: Mentor Guidance Style */}
         <div className="space-y-3">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-ink-text-muted">
             {lang === 'pt' ? 'Estilo de Orientação do Mentor' : lang === 'es' ? 'Estilo de Orientación de Mentor' : 'Mentor Guidance Style'}
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -238,7 +238,7 @@ export default function SettingsView({
                   }`}
                 >
                   <span className="text-xs font-sans font-semibold tracking-wide">{styleObj.title}</span>
-                  <span className={`text-[10px] ${isSelected ? 'text-rose-100' : 'text-slate-400 dark:text-slate-500'}`}>{styleObj.desc}</span>
+                  <span className={`text-[10px] ${isSelected ? 'text-rose-100' : 'text-slate-400 dark:text-ink-text-muted'}`}>{styleObj.desc}</span>
                 </button>
               );
             })}
@@ -247,7 +247,7 @@ export default function SettingsView({
 
         {/* Part B: Address Pronouns */}
         <div className="space-y-3">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-ink-text-muted">
             {lang === 'pt' ? 'Gênero Gramatical (Forma de Tratamento)' : lang === 'es' ? 'Preferencia de Tratamiento' : 'Grammar & Address'}
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -379,7 +379,7 @@ export default function SettingsView({
           </h3>
         </div>
 
-        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-lg">
+        <p className="text-xs text-slate-500 dark:text-ink-text-muted leading-relaxed max-w-lg">
           {textDict.resetProgressWarning}
         </p>
 

@@ -28,7 +28,7 @@ export default function GoogleSignInButton({ label, onError }: GoogleSignInButto
       type="button"
       onClick={handleClick}
       disabled={submitting}
-      className="w-full py-3.5 flex items-center justify-center gap-2.5 bg-white dark:bg-[#2A2119] border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 text-slate-700 dark:text-slate-200 rounded-2xl text-xs font-sans font-bold tracking-[0.1em] uppercase transition-all duration-300 cursor-pointer disabled:opacity-60"
+      className="w-full py-3.5 flex items-center justify-center gap-2.5 bg-white dark:bg-[#2A2119] border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 text-slate-700 dark:text-ink-text rounded-2xl text-xs font-sans font-bold tracking-[0.1em] uppercase transition-all duration-300 cursor-pointer disabled:opacity-60"
     >
       <svg className="h-4 w-4" viewBox="0 0 24 24">
         <path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.57-5.17 3.57-8.82z"/>

@@ -223,7 +223,7 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
         <h1 className="text-4xl sm:text-5xl font-display font-light tracking-tight text-slate-900 dark:text-white leading-tight">
           {congratsHeading}
         </h1>
-        <p className="text-sm sm:text-md text-slate-500 dark:text-slate-400 max-w-lg mx-auto font-sans">
+        <p className="text-sm sm:text-md text-slate-500 dark:text-ink-text-muted max-w-lg mx-auto font-sans">
           {congratsSub}
         </p>
 
@@ -298,7 +298,7 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
           <h3 className="text-xl font-display text-slate-800 dark:text-white">
             {textDict.blueprintTitle}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-sans">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-text-muted leading-relaxed font-sans">
             {blueprintIntro}
           </p>
 
@@ -306,7 +306,7 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
             {[truth1, truth2, truth3].map((truth, idx) => (
               <div key={idx} className="flex items-start gap-3 bg-white dark:bg-[#2C221E] p-4 rounded-xl border border-rose-100/20 dark:border-rosegold/10">
                 <CheckCircle2 className="h-5 w-5 text-rosegold shrink-0 mt-0.5" />
-                <p className="text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-sans font-medium">
+                <p className="text-slate-700 dark:text-ink-text text-xs sm:text-sm font-sans font-medium">
                   {truth}
                 </p>
               </div>
@@ -327,7 +327,7 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
             <h3 className="text-lg sm:text-xl font-display font-bold text-slate-900 dark:text-white leading-snug">
               {textDict.ctaHeading}
             </h3>
-            <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed font-sans">
+            <p className="text-slate-500 dark:text-ink-text-muted text-xs sm:text-sm leading-relaxed font-sans">
               {ctaDesc}
             </p>
           </div>

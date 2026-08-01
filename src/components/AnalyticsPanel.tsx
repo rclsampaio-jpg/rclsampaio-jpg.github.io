@@ -75,7 +75,7 @@ export default function AnalyticsPanel() {
           <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-rosegold" /> Métricas & Insights
           </h1>
-          <p className="text-xs text-slate-400 dark:text-slate-500">
+          <p className="text-xs text-slate-400 dark:text-ink-text-muted">
             Consumo real de áudios, vídeos e PDFs desde que o registro de eventos entrou no ar.
           </p>
         </div>

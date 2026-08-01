@@ -55,7 +55,7 @@ export default function InviteAdminPanel() {
         <h3 className="text-base font-serif font-medium text-slate-900 dark:text-white">
           Convites
         </h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs text-slate-500 dark:text-ink-text-muted">
           Gere um código de convite para uma nova assinante.
         </p>
       </div>
@@ -73,9 +73,9 @@ export default function InviteAdminPanel() {
       {lastCode && (
         <div className="space-y-3 pt-2 border-t border-rose-100/30 dark:border-rosegold/10">
           <div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Código</p>
+            <p className="text-xs text-slate-500 dark:text-ink-text-muted mb-1">Código</p>
             <div className="flex items-center gap-2">
-              <code className="text-sm text-slate-800 dark:text-slate-100">{lastCode}</code>
+              <code className="text-sm text-slate-800 dark:text-ink-text">{lastCode}</code>
               <button
                 onClick={() => copyToClipboard(lastCode, 'code')}
                 className="text-xs text-rosegold/80 hover:text-rosegold underline-offset-4 hover:underline"
@@ -85,9 +85,9 @@ export default function InviteAdminPanel() {
             </div>
           </div>
           <div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Link pronto</p>
+            <p className="text-xs text-slate-500 dark:text-ink-text-muted mb-1">Link pronto</p>
             <div className="flex items-center gap-2">
-              <code className="text-sm text-slate-800 dark:text-slate-100 truncate">{inviteLink}</code>
+              <code className="text-sm text-slate-800 dark:text-ink-text truncate">{inviteLink}</code>
               <button
                 onClick={() => copyToClipboard(inviteLink!, 'link')}
                 className="text-xs text-rosegold/80 hover:text-rosegold underline-offset-4 hover:underline shrink-0"

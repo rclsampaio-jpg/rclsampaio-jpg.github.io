@@ -61,7 +61,7 @@ export default function DayCompletionOverlay({ dayNumber, lang, onClose }: DayCo
             {trans.heading}
           </h2>
 
-          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+          <p className="text-sm text-slate-600 dark:text-ink-text-muted leading-relaxed">
             {trans.message}
           </p>
 

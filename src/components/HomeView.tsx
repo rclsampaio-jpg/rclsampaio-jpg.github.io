@@ -467,7 +467,7 @@ export default function HomeView({
                 <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
                   {trans.languageTitle}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-sans tracking-wide">
+                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans tracking-wide">
                   {trans.selectLanguage}
                 </p>
               </div>
@@ -523,7 +523,7 @@ export default function HomeView({
                 <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
                   {trans.nameStepTitle}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-sans tracking-wide">
+                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans tracking-wide">
                   {trans.nameStepSubtitle}
                 </p>
               </div>
@@ -565,7 +565,7 @@ export default function HomeView({
                 <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
                   {lang === 'pt' ? 'Estilo de Orientação' : lang === 'es' ? 'Estilo de Orientación' : 'Guidance Style'}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-sans tracking-wide">
+                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans tracking-wide">
                   {lang === 'pt' ? 'Como você gostaria que o RenaSer guiasse sua jornada?' : lang === 'es' ? '¿Cómo te gustaría que RenaSer guíe tu camino?' : 'How would you like RenaSer to guide your journey?'}
                 </p>
               </div>
@@ -603,7 +603,7 @@ export default function HomeView({
                     }`}
                   >
                     <span className="font-bold font-sans tracking-wide text-xs uppercase">{item.title}</span>
-                    <span className={`text-[10px] leading-relaxed font-sans ${selectedStyle === item.code ? 'text-rose-100' : 'text-slate-500 dark:text-slate-400'}`}>
+                    <span className={`text-[10px] leading-relaxed font-sans ${selectedStyle === item.code ? 'text-rose-100' : 'text-slate-500 dark:text-ink-text-muted'}`}>
                       {item.desc}
                     </span>
                   </button>
@@ -637,7 +637,7 @@ export default function HomeView({
                 <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
                   {lang === 'pt' ? 'Como devemos falar?' : lang === 'es' ? '¿Cómo debemos hablarte?' : 'Pronoun Preference'}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-sans tracking-wide">
+                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans tracking-wide">
                   {lang === 'pt' ? 'Escolha sua preferência gramatical para as mensagens personalizadas.' : lang === 'es' ? 'Elige tu preferencia gramatical para los mensajes personalizados.' : 'Choose your grammar address preference for personalized prompts.'}
                 </p>
               </div>
@@ -694,7 +694,7 @@ export default function HomeView({
                 <h1 className="text-3xl font-display font-light text-slate-900 dark:text-white leading-tight">
                   {adaptMessage(HOME_TONE[lang].onboardingWelcome[selectedStyle], selectedGrammar, lang)}
                 </h1>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-sans leading-relaxed max-w-xs mx-auto">
+                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans leading-relaxed max-w-xs mx-auto">
                   {HOME_TONE[lang].onboardingSub[selectedStyle]}
                 </p>
               </div>
@@ -723,7 +723,7 @@ export default function HomeView({
                 <h2 className="text-2xl font-display font-light text-slate-900 dark:text-white leading-tight">
                   {adaptMessage(HOME_TONE[lang].introTitle[selectedStyle], selectedGrammar, lang)}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-sans leading-relaxed max-w-sm mx-auto">
+                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans leading-relaxed max-w-sm mx-auto">
                   {HOME_TONE[lang].introText[selectedStyle]}
                 </p>
               </div>
@@ -823,7 +823,7 @@ export default function HomeView({
           <span className="text-xs font-serif italic text-rosegold dark:text-[#E8B4A0]">
             {lighting.greeting}
           </span>
-          <h3 className="text-sm font-sans font-medium tracking-wide text-slate-800 dark:text-slate-200">
+          <h3 className="text-sm font-sans font-medium tracking-wide text-slate-800 dark:text-ink-text">
             {prefGrammar === 'feminine' 
               ? (lang === 'pt' ? 'Bem-vinda de volta' : lang === 'es' ? 'Bienvenida de vuelta' : 'Welcome back')
               : prefGrammar === 'masculine'
@@ -948,7 +948,7 @@ export default function HomeView({
           </motion.button>
 
           {/* Quick, reassuring, pressure-free micro-copy */}
-          <span className="text-[10px] text-slate-400 dark:text-slate-500 font-sans tracking-wide leading-relaxed max-w-xs sm:max-w-md">
+          <span className="text-[10px] text-slate-400 dark:text-ink-text-muted font-sans tracking-wide leading-relaxed max-w-xs sm:max-w-md">
             {isLocked
               ? trans.waitingForTomorrow
               : yesterdayIncomplete

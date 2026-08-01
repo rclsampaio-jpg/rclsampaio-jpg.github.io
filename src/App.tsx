@@ -689,7 +689,7 @@ function AppContent() {
 
           {/* Chapter Display */}
           <div className="space-y-4 py-6 border-t border-b border-rose-100/30 dark:border-rosegold/10">
-            <span className="text-xs font-sans text-slate-400 dark:text-slate-500 uppercase tracking-widest block font-medium">
+            <span className="text-xs font-sans text-slate-400 dark:text-ink-text-muted uppercase tracking-widest block font-medium">
               {gateText.chapterName} {chapter.id}
             </span>
             <h2 className="text-3xl sm:text-4xl font-serif tracking-widest text-slate-900 dark:text-white font-light uppercase">
@@ -702,7 +702,7 @@ function AppContent() {
 
           {/* Core Daily Intention Message */}
           <div className="space-y-8">
-            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-serif italic max-w-sm mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg text-slate-600 dark:text-ink-text-muted font-serif italic max-w-sm mx-auto leading-relaxed">
               "{adaptMessage(gateText.promise, resolveGrammarPreference(progress.grammarPreference), lang)}"
             </p>
 
@@ -785,7 +785,7 @@ function AppContent() {
               className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
                 activeTab === 'library'
                   ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25'
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
+                  : 'text-slate-600 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
               }`}
             >
               {labels.library}
@@ -796,7 +796,7 @@ function AppContent() {
               className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
                 activeTab === 'profile'
                   ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25'
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
+                  : 'text-slate-600 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
               }`}
             >
               {labels.profile}
@@ -811,7 +811,7 @@ function AppContent() {
                   ? 'bg-gradient-to-r from-accentgold to-amber-500 text-warmbrown font-bold shadow-md shadow-accentgold/20'
                   : isNextLevelUnlocked
                   ? 'text-accentgold bg-accentgold/10 hover:bg-accentgold/20'
-                  : 'text-slate-300 dark:text-slate-600 bg-slate-50 dark:bg-warmbrown-light/25 cursor-not-allowed'
+                  : 'text-slate-300 dark:text-ink-text-muted bg-slate-50 dark:bg-warmbrown-light/25 cursor-not-allowed'
               }`}
             >
               {isNextLevelUnlocked ? <Sparkles className="h-3.5 w-3.5 animate-pulse text-accentgold" /> : <Lock className="h-3 w-3" />}
@@ -1203,7 +1203,7 @@ function AppContent() {
             className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
               activeTab === 'home'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
-                : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+                : 'text-slate-400 dark:text-ink-text-muted hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
             <Home className="h-4.5 w-4.5" />
@@ -1218,7 +1218,7 @@ function AppContent() {
             className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
               activeTab === 'journey'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
-                : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+                : 'text-slate-400 dark:text-ink-text-muted hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
             <Compass className="h-4.5 w-4.5" />
@@ -1233,7 +1233,7 @@ function AppContent() {
             className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
               activeTab === 'community'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
-                : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+                : 'text-slate-400 dark:text-ink-text-muted hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
             <Users className="h-4.5 w-4.5" />
@@ -1248,7 +1248,7 @@ function AppContent() {
             className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
               activeTab === 'library'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
-                : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+                : 'text-slate-400 dark:text-ink-text-muted hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
             <BookOpen className="h-4.5 w-4.5" />
@@ -1263,7 +1263,7 @@ function AppContent() {
             className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
               activeTab === 'profile'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
-                : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+                : 'text-slate-400 dark:text-ink-text-muted hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
             <User className="h-4.5 w-4.5" />
@@ -1277,7 +1277,7 @@ function AppContent() {
       </main>
 
       {/* Minimalistic Craft Footer */}
-      <footer className="py-8 border-t border-rose-100/10 dark:border-rosegold/5 bg-[#FAF6F2] dark:bg-[#3A2A24] text-center text-xs text-slate-400 dark:text-slate-500 font-sans select-none">
+      <footer className="py-8 border-t border-rose-100/10 dark:border-rosegold/5 bg-[#FAF6F2] dark:bg-[#3A2A24] text-center text-xs text-slate-400 dark:text-ink-text-muted font-sans select-none">
         <p className="tracking-wide">© 2026 RenaSer • {taglines[lang]} • Craftsmanship &amp; Editorial Intent</p>
       </footer>
 

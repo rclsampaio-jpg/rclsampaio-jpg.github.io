@@ -89,7 +89,7 @@ export default function AdminUsersPanel() {
           <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
             <Users className="h-5 w-5 text-rosegold" /> Alunas & Contas
           </h1>
-          <p className="text-xs text-slate-400 dark:text-slate-500">
+          <p className="text-xs text-slate-400 dark:text-ink-text-muted">
             Gestão real de contas: bloquear, resetar progresso, premiar dias ou excluir.
           </p>
         </div>

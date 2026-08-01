@@ -293,7 +293,7 @@ export default function ChapterMilestoneOverlay({
             <h1 className={`text-4xl font-serif tracking-tight font-black uppercase mt-1 ${styles.text}`}>
               {chapter.title[lang]}
             </h1>
-            <p className="text-xs font-sans text-slate-400 dark:text-slate-500 uppercase tracking-widest font-semibold">
+            <p className="text-xs font-sans text-slate-400 dark:text-ink-text-muted uppercase tracking-widest font-semibold">
               {chapter.theme[lang]}
             </p>
           </div>
@@ -317,7 +317,7 @@ export default function ChapterMilestoneOverlay({
                 <h3 className="text-xs font-sans uppercase font-bold text-rosegold tracking-wider">
                   {trans.reflectionTitle}
                 </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed italic font-serif">
+                <p className="text-sm text-slate-600 dark:text-ink-text-muted leading-relaxed italic font-serif">
                   {adaptMessage(pickTone(chapter.reflection, lang, resolvedGuideStyle), grammarPreference, lang)}
                 </p>
               </div>
@@ -330,7 +330,7 @@ export default function ChapterMilestoneOverlay({
                       <Volume2 className="h-4 w-4 text-rosegold" />
                       {trans.audioTitle}
                     </h4>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500">
+                    <p className="text-[11px] text-slate-400 dark:text-ink-text-muted">
                       {trans.audioSubtitle}
                     </p>
                   </div>
@@ -376,7 +376,7 @@ export default function ChapterMilestoneOverlay({
                 <h3 className="text-xs font-sans uppercase font-bold text-rosegold tracking-wider">
                   {trans.expectationTitle}
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
+                <p className="text-xs text-slate-600 dark:text-ink-text-muted leading-relaxed font-sans">
                   {adaptMessage(pickTone(chapter.expectation, lang, resolvedGuideStyle), grammarPreference, lang)}
                 </p>
               </div>
@@ -395,7 +395,7 @@ export default function ChapterMilestoneOverlay({
                   <h2 className="text-xl font-serif text-slate-800 dark:text-white">
                     {trans.congratulations}
                   </h2>
-                  <p className="text-xs text-slate-400 dark:text-slate-500 font-sans uppercase tracking-widest font-bold">
+                  <p className="text-xs text-slate-400 dark:text-ink-text-muted font-sans uppercase tracking-widest font-bold">
                     {trans.phaseClosed}
                   </p>
                 </div>
@@ -403,7 +403,7 @@ export default function ChapterMilestoneOverlay({
 
               {/* Identity Reinforcement Block */}
               <div className="text-center py-3 bg-[#FAF8F5] dark:bg-[#251D1A] rounded-xl border border-rose-100/10 dark:border-rosegold/5 space-y-0.5">
-                <span className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest font-bold">
+                <span className="text-[10px] text-slate-400 dark:text-ink-text-muted uppercase tracking-widest font-bold">
                   Identity Shift
                 </span>
                 <p className="text-sm font-sans font-bold text-[#D4AF37] animate-pulse">
@@ -421,7 +421,7 @@ export default function ChapterMilestoneOverlay({
                   <span className="text-[10px] font-sans text-slate-400 uppercase tracking-widest block font-bold">
                     {trans.yourReflection}
                   </span>
-                  <p className="text-xs text-slate-700 dark:text-slate-300 font-serif italic leading-relaxed">
+                  <p className="text-xs text-slate-700 dark:text-ink-text-muted font-serif italic leading-relaxed">
                     "{userReflection}"
                   </p>
                 </div>
@@ -449,8 +449,8 @@ export default function ChapterMilestoneOverlay({
                           key={surpriseOpt}
                           className={`flex items-center gap-2.5 p-2 rounded-xl border text-xs cursor-pointer select-none transition ${
                             isChecked 
-                              ? 'bg-[#FAF8F5] dark:bg-[#1C1513] border-accentgold/30 text-slate-800 dark:text-slate-100' 
-                              : 'bg-transparent border-transparent text-slate-500 dark:text-slate-400 hover:bg-rose-50/20'
+                              ? 'bg-[#FAF8F5] dark:bg-[#1C1513] border-accentgold/30 text-slate-800 dark:text-ink-text' 
+                              : 'bg-transparent border-transparent text-slate-500 dark:text-ink-text-muted hover:bg-rose-50/20'
                           }`}
                         >
                           <input 
@@ -495,7 +495,7 @@ export default function ChapterMilestoneOverlay({
                           className={`py-2.5 px-3 rounded-xl border text-[11px] font-sans font-semibold text-left transition select-none cursor-pointer ${
                             isSelected 
                               ? 'bg-rosegold/10 border-rosegold/40 text-rosegold font-bold shadow-xs' 
-                              : 'bg-transparent border-rose-100/10 hover:border-rose-100/30 text-slate-600 dark:text-slate-300'
+                              : 'bg-transparent border-rose-100/10 hover:border-rose-100/30 text-slate-600 dark:text-ink-text-muted'
                           }`}
                         >
                           {adaptMessage(feelOpt.label, grammarPreference, lang)}
@@ -521,7 +521,7 @@ export default function ChapterMilestoneOverlay({
                       value={futureSelfNote}
                       onChange={(e) => setFutureSelfNote(e.target.value)}
                       placeholder={trans.notePlaceholder}
-                      className="w-full text-xs bg-white dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-xl p-2.5 text-slate-700 dark:text-slate-200 transition font-sans leading-relaxed"
+                      className="w-full text-xs bg-white dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-xl p-2.5 text-slate-700 dark:text-ink-text transition font-sans leading-relaxed"
                     />
                     <div className="text-right text-[11px] text-slate-400 font-mono">
                       {futureSelfNote.length}/300
@@ -534,7 +534,7 @@ export default function ChapterMilestoneOverlay({
               {/* Preview of the next chapter or final transition */}
               {!isFinalChapter && nextChapter ? (
                 <div className="p-4 rounded-2xl border border-dashed border-rose-200/30 dark:border-rosegold/20 bg-rose-50/5 dark:bg-rosegold/5 space-y-2">
-                  <span className="text-[10px] font-sans text-slate-400 dark:text-slate-500 uppercase tracking-widest block font-bold">
+                  <span className="text-[10px] font-sans text-slate-400 dark:text-ink-text-muted uppercase tracking-widest block font-bold">
                     {trans.nextPhaseTitle} • {trans.chapter} {nextChapter.id}
                   </span>
                   <div className="flex items-center justify-between gap-4">
@@ -542,7 +542,7 @@ export default function ChapterMilestoneOverlay({
                       <h4 className="text-sm font-serif font-bold text-rosegold dark:text-[#E2C2BA] uppercase">
                         {nextChapter.title[lang]}
                       </h4>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                      <p className="text-xs text-slate-500 dark:text-ink-text-muted">
                         {nextChapter.theme[lang]}
                       </p>
                     </div>
@@ -554,7 +554,7 @@ export default function ChapterMilestoneOverlay({
                   <h4 className="text-sm font-serif font-extrabold text-accentgold uppercase tracking-wider">
                     {trans.enterRebirth}
                   </h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <p className="text-xs text-slate-500 dark:text-ink-text-muted">
                     {trans.rebirthSub}
                   </p>
                 </div>

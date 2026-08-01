@@ -387,7 +387,7 @@ export default function CmsView({
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
                 activeModule === 'dashboard'
                   ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
-                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
+                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-ink-text-muted dark:hover:bg-rosegold/5'
               }`}
             >
               <LayoutDashboard className="h-4 w-4" />
@@ -399,7 +399,7 @@ export default function CmsView({
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
                 activeModule === 'journeys'
                   ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
-                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
+                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-ink-text-muted dark:hover:bg-rosegold/5'
               }`}
             >
               <Compass className="h-4 w-4" />
@@ -411,7 +411,7 @@ export default function CmsView({
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
                 activeModule === 'channels'
                   ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
-                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
+                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-ink-text-muted dark:hover:bg-rosegold/5'
               }`}
             >
               <Users className="h-4 w-4" />
@@ -423,7 +423,7 @@ export default function CmsView({
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
                 activeModule === 'library'
                   ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
-                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
+                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-ink-text-muted dark:hover:bg-rosegold/5'
               }`}
             >
               <Folder className="h-4 w-4" />
@@ -435,7 +435,7 @@ export default function CmsView({
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
                 activeModule === 'analytics'
                   ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
-                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
+                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-ink-text-muted dark:hover:bg-rosegold/5'
               }`}
             >
               <BarChart3 className="h-4 w-4" />
@@ -447,7 +447,7 @@ export default function CmsView({
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
                 activeModule === 'users'
                   ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
-                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
+                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-ink-text-muted dark:hover:bg-rosegold/5'
               }`}
             >
               <FileText className="h-4 w-4" />
@@ -459,7 +459,7 @@ export default function CmsView({
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
                 activeModule === 'brand'
                   ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
-                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
+                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-ink-text-muted dark:hover:bg-rosegold/5'
               }`}
             >
               <Sparkles className="h-4 w-4" />
@@ -471,7 +471,7 @@ export default function CmsView({
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-xl transition-all ${
                 activeModule === 'settings'
                   ? 'bg-rosegold/10 text-rosegold font-bold dark:bg-rosegold/20 dark:text-rosegold-light'
-                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-slate-300 dark:hover:bg-rosegold/5'
+                  : 'text-slate-600 hover:bg-rose-50/50 dark:text-ink-text-muted dark:hover:bg-rosegold/5'
               }`}
             >
               <Settings className="h-4 w-4" />
@@ -482,7 +482,7 @@ export default function CmsView({
 
         {/* Sync Status Banner */}
         <div className="pt-6 border-t border-rose-100/20 mt-6 space-y-3">
-          <div className="flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500 font-mono">
+          <div className="flex items-center justify-between text-[10px] text-slate-400 dark:text-ink-text-muted font-mono">
             <span>DATABASE MODE</span>
             <span className="text-emerald-500 font-bold flex items-center gap-1">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> SYNCED
@@ -517,7 +517,7 @@ export default function CmsView({
                 <h1 className="text-2xl font-serif font-black text-slate-800 dark:text-white uppercase">
                   Painel de Controle do Criador
                 </h1>
-                <p className="text-xs text-slate-400 dark:text-slate-500">
+                <p className="text-xs text-slate-400 dark:text-ink-text-muted">
                   Gerencie o ecossistema de transformação RenaSer com facilidade e elegância visual.
                 </p>
               </div>
@@ -534,7 +534,7 @@ export default function CmsView({
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-white dark:bg-[#2C221E] p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
-                <div className="flex justify-between items-center text-slate-400 dark:text-slate-500 mb-2">
+                <div className="flex justify-between items-center text-slate-400 dark:text-ink-text-muted mb-2">
                   <span className="text-xs font-semibold uppercase tracking-wider">Jornadas Ativas</span>
                   <Compass className="h-5 w-5 text-rosegold" />
                 </div>
@@ -543,7 +543,7 @@ export default function CmsView({
               </div>
 
               <div className="bg-white dark:bg-[#2C221E] p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
-                <div className="flex justify-between items-center text-slate-400 dark:text-slate-500 mb-2">
+                <div className="flex justify-between items-center text-slate-400 dark:text-ink-text-muted mb-2">
                   <span className="text-xs font-semibold uppercase tracking-wider">Módulos/Capítulos</span>
                   <Layers className="h-5 w-5 text-rosegold" />
                 </div>
@@ -552,7 +552,7 @@ export default function CmsView({
               </div>
 
               <div className="bg-white dark:bg-[#2C221E] p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
-                <div className="flex justify-between items-center text-slate-400 dark:text-slate-500 mb-2">
+                <div className="flex justify-between items-center text-slate-400 dark:text-ink-text-muted mb-2">
                   <span className="text-xs font-semibold uppercase tracking-wider">Aulas Ativas</span>
                   <Calendar className="h-5 w-5 text-rosegold" />
                 </div>
@@ -561,7 +561,7 @@ export default function CmsView({
               </div>
 
               <div className="bg-white dark:bg-[#2C221E] p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
-                <div className="flex justify-between items-center text-slate-400 dark:text-slate-500 mb-2">
+                <div className="flex justify-between items-center text-slate-400 dark:text-ink-text-muted mb-2">
                   <span className="text-xs font-semibold uppercase tracking-wider">Mídias em Biblioteca</span>
                   <Folder className="h-5 w-5 text-rosegold" />
                 </div>
@@ -596,18 +596,18 @@ export default function CmsView({
                           }`}>
                             {j.status === 'published' ? 'Publicada' : 'Rascunho'}
                           </span>
-                          <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500">ID: {j.id}</span>
+                          <span className="text-[10px] font-mono text-slate-400 dark:text-ink-text-muted">ID: {j.id}</span>
                         </div>
                         <h4 className="text-base font-serif font-black uppercase text-slate-800 dark:text-white">
                           {j.title.pt}
                         </h4>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-slate-500 dark:text-ink-text-muted line-clamp-2 leading-relaxed">
                           {j.subtitle.pt}
                         </p>
                       </div>
 
                       <div className="flex items-center justify-between border-t border-rose-100/10 pt-3">
-                        <div className="flex gap-4 text-[10px] text-slate-400 dark:text-slate-500">
+                        <div className="flex gap-4 text-[10px] text-slate-400 dark:text-ink-text-muted">
                           <span>{chCount} Capítulos</span>
                           <span>{dayCount} Lições</span>
                           <span className="capitalize">{j.difficulty}</span>
@@ -622,7 +622,7 @@ export default function CmsView({
                           </button>
                           <button
                             onClick={() => duplicateJourney(j)}
-                            className="p-1.5 bg-slate-100 dark:bg-warmbrown text-slate-600 dark:text-slate-400 rounded-lg hover:bg-rosegold/10 hover:text-rosegold transition"
+                            className="p-1.5 bg-slate-100 dark:bg-warmbrown text-slate-600 dark:text-ink-text-muted rounded-lg hover:bg-rosegold/10 hover:text-rosegold transition"
                             title="Duplicar"
                           >
                             <Copy className="h-3 w-3" />
@@ -646,7 +646,7 @@ export default function CmsView({
                   <Compass className="h-6 w-6 text-rosegold" />
                   Currículo de Jornadas
                 </h1>
-                <p className="text-xs text-slate-400 dark:text-slate-500">
+                <p className="text-xs text-slate-400 dark:text-ink-text-muted">
                   Gerencie as trajetórias de ponta a ponta. Adicione capítulos, ordene as missões diárias e monte rituais de consagração.
                 </p>
               </div>
@@ -669,7 +669,7 @@ export default function CmsView({
                   className={`px-4 py-2 text-xs font-sans rounded-xl border transition-all ${
                     selectedJourneyId === j.id
                       ? 'bg-[#2C221E] text-white border-[#2C221E] font-bold dark:bg-rosegold dark:border-rosegold'
-                      : 'bg-white dark:bg-warmbrown border-rose-100/25 dark:border-rosegold/10 text-slate-600 dark:text-slate-400'
+                      : 'bg-white dark:bg-warmbrown border-rose-100/25 dark:border-rosegold/10 text-slate-600 dark:text-ink-text-muted'
                   }`}
                 >
                   {j.title.pt}
@@ -700,7 +700,7 @@ export default function CmsView({
                           <h2 className="text-lg font-serif font-bold uppercase text-slate-800 dark:text-white">
                             {activeJ.title.pt}
                           </h2>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xl">
+                          <p className="text-xs text-slate-500 dark:text-ink-text-muted max-w-xl">
                             {activeJ.subtitle.pt}
                           </p>
                           <div className="flex gap-3 pt-1 text-[10px] text-slate-400 font-mono">
@@ -713,7 +713,7 @@ export default function CmsView({
                       <div className="flex flex-row md:flex-col justify-end gap-2 shrink-0">
                         <button
                           onClick={() => setEditingJourney(activeJ)}
-                          className="px-4 py-2 bg-slate-100 dark:bg-warmbrown text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl flex items-center gap-1 hover:bg-rosegold/10 hover:text-rosegold transition-all"
+                          className="px-4 py-2 bg-slate-100 dark:bg-warmbrown text-slate-700 dark:text-ink-text-muted text-xs font-bold rounded-xl flex items-center gap-1 hover:bg-rosegold/10 hover:text-rosegold transition-all"
                         >
                           <Edit className="h-3.5 w-3.5" /> Configurar Detalhes
                         </button>
@@ -764,7 +764,7 @@ export default function CmsView({
                                       <h4 className="text-sm font-bold uppercase tracking-tight text-slate-800 dark:text-white">
                                         {ch.title.pt}
                                       </h4>
-                                      <p className="text-[11px] text-slate-400 dark:text-slate-500 font-sans italic">
+                                      <p className="text-[11px] text-slate-400 dark:text-ink-text-muted font-sans italic">
                                         {ch.theme.pt} • {chDays.length} lições cadastradas
                                       </p>
                                     </div>
@@ -779,14 +779,14 @@ export default function CmsView({
                                     </button>
                                     <button
                                       onClick={() => setEditingChapter(ch)}
-                                      className="p-1.5 bg-slate-100 dark:bg-warmbrown text-slate-600 dark:text-slate-400 rounded-lg hover:text-rosegold hover:bg-rosegold/10 transition"
+                                      className="p-1.5 bg-slate-100 dark:bg-warmbrown text-slate-600 dark:text-ink-text-muted rounded-lg hover:text-rosegold hover:bg-rosegold/10 transition"
                                       title="Editar Capítulo"
                                     >
                                       <Edit className="h-3 w-3" />
                                     </button>
                                     <button
                                       onClick={() => duplicateChapter(ch)}
-                                      className="p-1.5 bg-slate-100 dark:bg-warmbrown text-slate-600 dark:text-slate-400 rounded-lg hover:text-rosegold hover:bg-rosegold/10 transition"
+                                      className="p-1.5 bg-slate-100 dark:bg-warmbrown text-slate-600 dark:text-ink-text-muted rounded-lg hover:text-rosegold hover:bg-rosegold/10 transition"
                                       title="Duplicar"
                                     >
                                       <Copy className="h-3 w-3" />
@@ -824,7 +824,7 @@ export default function CmsView({
                                             <h5 className="text-xs font-bold text-slate-800 dark:text-white line-clamp-1 mt-1">
                                               {day.title.pt}
                                             </h5>
-                                            <p className="text-[10px] text-slate-400 dark:text-slate-500 line-clamp-1 italic mt-0.5">
+                                            <p className="text-[10px] text-slate-400 dark:text-ink-text-muted line-clamp-1 italic mt-0.5">
                                               {day.hook.pt}
                                             </p>
                                           </div>
@@ -832,14 +832,14 @@ export default function CmsView({
                                           <div className="flex justify-end gap-1 border-t border-rose-100/5 pt-2">
                                             <button
                                               onClick={() => setEditingDay(day)}
-                                              className="p-1 text-slate-500 dark:text-slate-400 hover:text-rosegold transition"
+                                              className="p-1 text-slate-500 dark:text-ink-text-muted hover:text-rosegold transition"
                                               title="Editar Lição"
                                             >
                                               <Edit className="h-3 w-3" />
                                             </button>
                                             <button
                                               onClick={() => duplicateDay(day)}
-                                              className="p-1 text-slate-500 dark:text-slate-400 hover:text-rosegold transition"
+                                              className="p-1 text-slate-500 dark:text-ink-text-muted hover:text-rosegold transition"
                                               title="Duplicar"
                                             >
                                               <Copy className="h-3 w-3" />
@@ -962,7 +962,7 @@ export default function CmsView({
                 <div className="flex justify-end gap-2 pt-4 border-t border-rose-100/10">
                   <button
                     onClick={() => setEditingJourney(null)}
-                    className="px-4 py-2 bg-slate-100 dark:bg-warmbrown text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold"
+                    className="px-4 py-2 bg-slate-100 dark:bg-warmbrown text-slate-700 dark:text-ink-text-muted rounded-xl text-xs font-bold"
                   >
                     Cancelar
                   </button>
@@ -1060,7 +1060,7 @@ export default function CmsView({
                 <div className="flex justify-end gap-2 pt-4 border-t border-rose-100/10">
                   <button
                     onClick={() => setEditingChapter(null)}
-                    className="px-4 py-2 bg-slate-100 dark:bg-warmbrown text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold"
+                    className="px-4 py-2 bg-slate-100 dark:bg-warmbrown text-slate-700 dark:text-ink-text-muted rounded-xl text-xs font-bold"
                   >
                     Cancelar
                   </button>
@@ -1188,7 +1188,7 @@ export default function CmsView({
                 <div className="flex justify-end gap-2 pt-4 border-t border-rose-100/10">
                   <button
                     onClick={() => setEditingDay(null)}
-                    className="px-4 py-2 bg-slate-100 dark:bg-warmbrown text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold"
+                    className="px-4 py-2 bg-slate-100 dark:bg-warmbrown text-slate-700 dark:text-ink-text-muted rounded-xl text-xs font-bold"
                   >
                     Cancelar
                   </button>
@@ -1216,7 +1216,7 @@ export default function CmsView({
               <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
                 <Users className="h-5 w-5 text-rosegold" /> Canais & Suporte
               </h1>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
+              <p className="text-xs text-slate-400 dark:text-ink-text-muted">
                 Comunidade, mentorias e suporte/FAQs num só lugar.
               </p>
             </div>
@@ -1233,7 +1233,7 @@ export default function CmsView({
                   className={`px-4 py-2 text-xs font-sans rounded-xl border flex items-center gap-1.5 transition-all ${
                     activeChannelTab === tab.key
                       ? 'bg-[#2C221E] text-white border-[#2C221E] font-bold dark:bg-rosegold dark:border-rosegold'
-                      : 'bg-white dark:bg-warmbrown border-rose-100/25 dark:border-rosegold/10 text-slate-600 dark:text-slate-400'
+                      : 'bg-white dark:bg-warmbrown border-rose-100/25 dark:border-rosegold/10 text-slate-600 dark:text-ink-text-muted'
                   }`}
                 >
                   <tab.icon className="h-3.5 w-3.5" /> {tab.label}
@@ -1322,7 +1322,7 @@ export default function CmsView({
               <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
                 <Heart className="h-5 w-5 text-rosegold" /> Módulo de Mentorias Privadas
               </h1>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
+              <p className="text-xs text-slate-400 dark:text-ink-text-muted">
                 Ofereça atendimentos 1-on-1 para destravar vocalmente seus líderes de conteúdo diretamente por plataformas integradas de agenda.
               </p>
             </div>
@@ -1402,7 +1402,7 @@ export default function CmsView({
               <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
                 <PhoneCall className="h-5 w-5 text-rosegold" /> Suporte & FAQs
               </h1>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
+              <p className="text-xs text-slate-400 dark:text-ink-text-muted">
                 Configure canais diretos de suporte no WhatsApp e monte uma lista dinâmica de FAQs.
               </p>
             </div>
@@ -1520,7 +1520,7 @@ export default function CmsView({
                 <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
                   <Folder className="h-5 w-5 text-rosegold" /> Biblioteca de Mídias Centralizada
                 </h1>
-                <p className="text-xs text-slate-400 dark:text-slate-500">
+                <p className="text-xs text-slate-400 dark:text-ink-text-muted">
                   Insira arquivos em PDF, áudios práticos, apostilas de exercícios ou desafios extras que podem ser acessados na aba Biblioteca.
                 </p>
               </div>
@@ -1683,7 +1683,7 @@ export default function CmsView({
               <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
                 <Settings className="h-5 w-5 text-rosegold" /> Configurações
               </h1>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
+              <p className="text-xs text-slate-400 dark:text-ink-text-muted">
                 Ações administrativas de risco. Use com cuidado.
               </p>
             </div>
@@ -1695,7 +1695,7 @@ export default function CmsView({
                   <h3 className="text-sm font-bold uppercase tracking-wide text-slate-800 dark:text-white">
                     Resetar Currículo Primordial
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  <p className="text-xs text-slate-500 dark:text-ink-text-muted mt-1">
                     Apaga todas as edições feitas nas jornadas, capítulos e dias, e restaura o conteúdo original de fábrica. Isso não pode ser desfeito.
                   </p>
                 </div>
