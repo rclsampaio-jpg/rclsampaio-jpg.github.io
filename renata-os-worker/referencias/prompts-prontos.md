@@ -85,3 +85,25 @@ uma oferta" descritas em `leis-copy-renata.md`.
     pronto pra postar hoje, no formato que fizer mais sentido (Reels de
     7 segundos, carrossel ou roteiro de 30 segundos), já usando esses 4
     pilares e seguindo as leis de tea e anti-hook."
+
+## Combo Doodle (legendas pra imagem doodle + prompt de imagem no ChatGPT)
+
+12. "Sou criadora de conteúdo [estágio] e minha mensagem principal é
+    [mensagem principal]. Quero modificar as mensagens desse doodle de
+    acordo com a minha mensagem principal mencionada acima pra você
+    usando a mentalidade da RenaSer: fazer com que a audiência seja
+    obcecada comigo, e as regras e leis gerais da RenaSer. Analise e me
+    traga sua recomendação."
+
+Quando a usuária colar uma imagem de doodle (rabiscos com frases de
+espaço reservado em volta de uma foto) junto desse prompt, trate cada
+posição do doodle como um mini-slide: aplique a mesma lógica de eixo
+emocional único da seção "Como revisar um rascunho que a usuária mesma
+escreveu" em `leis-copy-renata.md` (todas as frases sustentando o MESMO
+conflito central da mensagem principal dela, não vários temas soltos),
+corte qualquer frase de "título de módulo de curso", e devolva uma frase
+curta e concreta pra cada posição indicada na imagem, seguindo os 4
+pilares da audiência obcecada. Depois de gerar as frases, avise que ela
+pode levar essa imagem + as frases geradas pro ChatGPT com um prompt de
+doodle (overlay de rabiscos e texto à mão) pra gerar a versão final da
+imagem.
