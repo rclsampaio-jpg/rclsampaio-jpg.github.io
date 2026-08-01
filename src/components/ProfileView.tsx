@@ -169,7 +169,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
     <div className="space-y-8 max-w-5xl mx-auto font-sans">
       
       {/* Profile Luxury Upper Header Card */}
-      <div className="bg-gradient-to-r from-warmbrown-light/40 to-[#2C221E] dark:from-[#2C221E] dark:to-[#1E1715] border border-rosegold/15 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row gap-6 items-center justify-between shadow-rosegold text-white relative overflow-hidden">
+      <div className="bg-gradient-to-r from-warmbrown-light/40 to-[#2C221E] dark:bg-none! dark:bg-ink-raised! border border-rosegold/15 dark:border-ink-hairline rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row gap-6 items-center justify-between shadow-rosegold dark:shadow-none text-white relative overflow-hidden">
         
         {/* Abstract golden flare */}
         <div className="absolute -left-12 -bottom-12 h-40 w-40 bg-accentgold/10 blur-3xl rounded-full" />
@@ -240,7 +240,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
       </div>
 
       {/* Profile Sections Inner Tabs (Scrapbook vs Tuning/Personalization) */}
-      <div className="flex border-b border-rose-100/30 dark:border-rosegold/10">
+      <div className="flex border-b border-rose-100/30 dark:border-ink-hairline">
         <button
           onClick={() => setActiveProfileSection('scrapbook')}
           className={`pb-4 px-6 text-xs sm:text-sm font-sans font-bold tracking-wider uppercase border-b-2 transition ${
@@ -287,7 +287,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.15 }}
-              className="space-y-8 bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 shadow-rosegold"
+              className="space-y-8 bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-ink-hairline rounded-3xl p-6 sm:p-8 shadow-rosegold dark:shadow-none"
             >
               
               {/* Personalization Intro */}
@@ -319,11 +319,11 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
                       onClick={() => handleUpdateGuideStyle('gentle')}
                       className={`w-full p-4 text-left border rounded-2xl flex gap-3.5 items-start transition cursor-pointer ${
                         guideStyle === 'gentle'
-                          ? 'border-rosegold bg-rose-50/10 dark:bg-rosegold/10'
-                          : 'border-rose-100/20 dark:border-rosegold/5 hover:border-rose-150'
+                          ? 'border-rosegold dark:border-rosegold-light bg-rose-50/10 dark:bg-rosegold-light/10'
+                          : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
-                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'gentle' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-warmbrown text-slate-400'}`}>
+                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'gentle' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-text-muted'}`}>
                         <Heart className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
@@ -340,11 +340,11 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
                       onClick={() => handleUpdateGuideStyle('challenger')}
                       className={`w-full p-4 text-left border rounded-2xl flex gap-3.5 items-start transition cursor-pointer ${
                         guideStyle === 'challenger'
-                          ? 'border-rosegold bg-rose-50/10 dark:bg-rosegold/10'
-                          : 'border-rose-100/20 dark:border-rosegold/5 hover:border-rose-150'
+                          ? 'border-rosegold dark:border-rosegold-light bg-rose-50/10 dark:bg-rosegold-light/10'
+                          : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
-                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'challenger' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-warmbrown text-slate-400'}`}>
+                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'challenger' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-text-muted'}`}>
                         <Flame className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
@@ -361,11 +361,11 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
                       onClick={() => handleUpdateGuideStyle('strategic')}
                       className={`w-full p-4 text-left border rounded-2xl flex gap-3.5 items-start transition cursor-pointer ${
                         guideStyle === 'strategic'
-                          ? 'border-rosegold bg-rose-50/10 dark:bg-rosegold/10'
-                          : 'border-rose-100/20 dark:border-rosegold/5 hover:border-rose-150'
+                          ? 'border-rosegold dark:border-rosegold-light bg-rose-50/10 dark:bg-rosegold-light/10'
+                          : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
-                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'strategic' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-warmbrown text-slate-400'}`}>
+                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'strategic' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-text-muted'}`}>
                         <Compass className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
@@ -382,11 +382,11 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
                       onClick={() => handleUpdateGuideStyle('inspirational')}
                       className={`w-full p-4 text-left border rounded-2xl flex gap-3.5 items-start transition cursor-pointer ${
                         guideStyle === 'inspirational'
-                          ? 'border-rosegold bg-rose-50/10 dark:bg-rosegold/10'
-                          : 'border-rose-100/20 dark:border-rosegold/5 hover:border-rose-150'
+                          ? 'border-rosegold dark:border-rosegold-light bg-rose-50/10 dark:bg-rosegold-light/10'
+                          : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
-                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'inspirational' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-warmbrown text-slate-400'}`}>
+                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'inspirational' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-text-muted'}`}>
                         <Sparkles className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
@@ -415,8 +415,8 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
                       onClick={() => handleUpdateGrammar('feminine')}
                       className={`w-full p-4 text-left border rounded-2xl flex justify-between items-center transition cursor-pointer ${
                         grammarPreference === 'feminine'
-                          ? 'border-rosegold bg-rose-50/10 dark:bg-rosegold/10'
-                          : 'border-rose-100/20 dark:border-rosegold/5 hover:border-rose-150'
+                          ? 'border-rosegold dark:border-rosegold-light bg-rose-50/10 dark:bg-rosegold-light/10'
+                          : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
                       <span className="text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200">
@@ -433,8 +433,8 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
                       onClick={() => handleUpdateGrammar('masculine')}
                       className={`w-full p-4 text-left border rounded-2xl flex justify-between items-center transition cursor-pointer ${
                         grammarPreference === 'masculine'
-                          ? 'border-rosegold bg-rose-50/10 dark:bg-rosegold/10'
-                          : 'border-rose-100/20 dark:border-rosegold/5 hover:border-rose-150'
+                          ? 'border-rosegold dark:border-rosegold-light bg-rose-50/10 dark:bg-rosegold-light/10'
+                          : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
                       <span className="text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200">

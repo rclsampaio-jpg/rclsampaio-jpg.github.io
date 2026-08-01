@@ -1007,7 +1007,7 @@ export default function DailyMissionView({
           </p>
           <button
             onClick={onBackToHome}
-            className="px-8 py-3 rounded-xl bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
+            className="px-8 py-3 rounded-xl bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
           >
             {textDict.backToHome}
           </button>
@@ -1015,7 +1015,7 @@ export default function DailyMissionView({
 
         {/* The SOS trigger must stay reachable even on a locked day —
             emotional support shouldn't depend on the next day being open. */}
-        <div className="rounded-[1.5rem] border border-rose-150/40 dark:border-rosegold/15 bg-[#251E1C]/5 dark:bg-[#1C1513]/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="rounded-[1.5rem] border border-rose-150/40 dark:border-ink-hairline bg-[#251E1C]/5 dark:bg-ink/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3 min-w-0">
             <div className="p-2.5 rounded-xl bg-rosegold/10 text-rosegold shrink-0">
               <Heart className="h-4.5 w-4.5 fill-current text-rosegold animate-pulse" />
@@ -1079,7 +1079,7 @@ export default function DailyMissionView({
               initial={{ scale: 0.95, opacity: 0, y: 30 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 30 }}
-              className="bg-[#FAF8F5] dark:bg-[#1E1715] max-w-lg w-full rounded-[2rem] p-8 sm:p-10 border border-rosegold/35 shadow-rosegold text-left relative overflow-hidden"
+              className="bg-[#FAF8F5] dark:bg-ink-raised max-w-lg w-full rounded-[2rem] p-8 sm:p-10 border border-rosegold/35 shadow-rosegold text-left relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 h-32 w-32 bg-gradient-to-bl from-rosegold/15 to-transparent blur-2xl rounded-full" />
               <button 
@@ -1106,7 +1106,7 @@ export default function DailyMissionView({
               <div className="flex justify-end pt-6">
                 <button
                   onClick={() => setShowSurpriseLetter(false)}
-                  className="px-6 py-3 bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-[0.15em] rounded-xl shadow-rosegold transition-all cursor-pointer hover:scale-[1.02]"
+                  className="px-6 py-3 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 text-xs font-sans font-bold uppercase tracking-[0.15em] rounded-xl shadow-rosegold dark:shadow-none transition-all cursor-pointer hover:scale-[1.02]"
                 >
                   {textDict.closeLetter}
                 </button>
@@ -1182,7 +1182,7 @@ export default function DailyMissionView({
             <motion.div 
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              className="rounded-[2rem] border border-rose-150/30 dark:border-rosegold/15 bg-white/45 dark:bg-[#1C1513]/40 backdrop-blur-md p-8 sm:p-10 text-center space-y-8 shadow-rosegold overflow-hidden relative"
+              className="rounded-[2rem] border border-rose-150/30 dark:border-ink-hairline bg-white/45 dark:bg-ink-raised backdrop-blur-md dark:backdrop-blur-none p-8 sm:p-10 text-center space-y-8 shadow-rosegold overflow-hidden relative"
             >
               {/* Sacred Friday background elements */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 h-44 w-44 bg-emerald-500/5 blur-3xl rounded-full" />
@@ -1241,7 +1241,7 @@ export default function DailyMissionView({
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-[2rem] bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold space-y-5"
+                className="rounded-[2rem] bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-6 sm:p-8 shadow-rosegold space-y-5"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
@@ -1266,7 +1266,7 @@ export default function DailyMissionView({
                   </button>
                 </div>
 
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-rose-50/10 via-[#FAF8F5] to-rose-50/5 dark:from-[#2C221E]/10 dark:via-[#241C1A] dark:to-rosegold/5 border border-rose-100/15 dark:border-rosegold/10 shadow-sm">
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-rose-50/10 via-[#FAF8F5] to-rose-50/5 dark:bg-none! dark:bg-transparent! border border-rose-100/15 dark:border-ink-hairline shadow-sm dark:shadow-none">
                   <p className="text-slate-800 dark:text-slate-100 font-display text-lg sm:text-xl italic leading-relaxed">
                     "{localizedContent.hook}"
                   </p>
@@ -1278,7 +1278,7 @@ export default function DailyMissionView({
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-[2rem] bg-[#FAF3EF] dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold relative overflow-hidden"
+                className="rounded-[2rem] bg-[#FAF3EF] dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-6 sm:p-8 shadow-rosegold relative overflow-hidden"
               >
                 <audio
                   ref={audioRef}
@@ -1298,21 +1298,21 @@ export default function DailyMissionView({
                     <button
                       onClick={() => setAudioRating((v) => (v === 'loved' ? null : 'loved'))}
                       title={textDict.ratingLoved}
-                      className="h-9 w-9 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
+                      className="h-9 w-9 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-ink-hairline flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
                     >
                       <Heart className={`h-4 w-4 transition-colors ${audioRating === 'loved' ? 'text-rosegold fill-current' : 'text-slate-400'}`} />
                     </button>
                     <button
                       onClick={() => setAudioRating((v) => (v === 'liked' ? null : 'liked'))}
                       title={textDict.ratingLiked}
-                      className="h-9 w-9 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
+                      className="h-9 w-9 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-ink-hairline flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
                     >
                       <ThumbsUp className={`h-4 w-4 transition-colors ${audioRating === 'liked' ? 'text-emerald-500 fill-current' : 'text-slate-400'}`} />
                     </button>
                     <button
                       onClick={() => setAudioRating((v) => (v === 'disliked' ? null : 'disliked'))}
                       title={textDict.ratingDisliked}
-                      className="h-9 w-9 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
+                      className="h-9 w-9 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-ink-hairline flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-105"
                     >
                       <ThumbsDown className={`h-4 w-4 transition-colors ${audioRating === 'disliked' ? 'text-slate-600 dark:text-slate-300 fill-current' : 'text-slate-400'}`} />
                     </button>
@@ -1363,7 +1363,7 @@ export default function DailyMissionView({
                     step="0.1"
                     value={audioProgress}
                     onChange={handleSeekChange}
-                    className="w-full h-1 bg-rose-200/50 dark:bg-[#2C221E] rounded-full appearance-none cursor-pointer accent-rosegold transition-all focus:outline-none"
+                    className="w-full h-1 bg-rose-200/50 dark:bg-ink-raised rounded-full appearance-none cursor-pointer accent-rosegold transition-all focus:outline-none"
                   />
                   <div className="flex items-center justify-between text-[11px] font-sans text-slate-400 dark:text-slate-500 mt-2">
                     <span>{formatTime(currentTime)}</span>
@@ -1376,7 +1376,7 @@ export default function DailyMissionView({
                   <button
                     onClick={cycleAudioSpeed}
                     title={textDict.audioSpeedTooltip}
-                    className="h-10 w-10 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center text-xs font-sans font-bold text-rosegold transition-all duration-300 cursor-pointer hover:scale-105"
+                    className="h-10 w-10 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-ink-hairline flex items-center justify-center text-xs font-sans font-bold text-rosegold transition-all duration-300 cursor-pointer hover:scale-105"
                   >
                     {audioSpeed}x
                   </button>
@@ -1384,7 +1384,7 @@ export default function DailyMissionView({
                   <button
                     onClick={handleSkipBack10}
                     title={textDict.skipBack}
-                    className="h-10 px-3 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-rosegold/10 flex items-center justify-center gap-1 text-rosegold transition-all duration-300 cursor-pointer hover:scale-105"
+                    className="h-10 px-3 rounded-full bg-white/70 dark:bg-white/5 border border-rose-100/40 dark:border-ink-hairline flex items-center justify-center gap-1 text-rosegold transition-all duration-300 cursor-pointer hover:scale-105"
                   >
                     <RotateCcw className="h-4 w-4" />
                     <span className="text-[10px] font-sans font-bold">10s</span>
@@ -1428,9 +1428,9 @@ export default function DailyMissionView({
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-[2rem] bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold space-y-5"
+                className="rounded-[2rem] bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-6 sm:p-8 shadow-rosegold space-y-5"
               >
-                <div className="flex items-center justify-between pb-2 border-b border-rose-100/15 dark:border-rosegold/5">
+                <div className="flex items-center justify-between pb-2 border-b border-rose-100/15 dark:border-ink-hairline">
                   <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
                     {textDict.step02} • {textDict.hookShowcaseTitle}
                   </span>
@@ -1461,7 +1461,7 @@ export default function DailyMissionView({
                       {actionHookOptions.map((option, idx) => (
                         <div
                           key={idx}
-                          className="flex items-start gap-3 p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-rosegold/10"
+                          className="flex items-start gap-3 p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-ink-hairline"
                         >
                           <span className="flex-1 text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
                             {option}
@@ -1500,7 +1500,7 @@ export default function DailyMissionView({
                         {hookOptions.map((option, idx) => (
                           <div
                             key={idx}
-                            className="flex items-start gap-3 p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-rosegold/10"
+                            className="flex items-start gap-3 p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-ink-hairline"
                           >
                             <span className="flex-1 text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
                               {option}
@@ -1525,7 +1525,7 @@ export default function DailyMissionView({
                         ))}
                       </div>
                     ) : (
-                      <p className="text-xs text-slate-500 dark:text-slate-400 italic font-sans p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-rosegold/10">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 italic font-sans p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-ink-hairline">
                         {textDict.noDailyHookFallback}
                       </p>
                     )}
@@ -1545,7 +1545,7 @@ export default function DailyMissionView({
                       onChange={(e) => setCustomHookIdea(e.target.value)}
                       placeholder={textDict.ideaPlaceholder}
                       rows={3}
-                      className="w-full text-sm bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-slate-200 transition-all duration-300 shadow-xs resize-none"
+                      className="w-full text-sm bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-slate-200 transition-all duration-300 shadow-xs resize-none"
                     />
                   </div>
                 )}
@@ -1556,7 +1556,7 @@ export default function DailyMissionView({
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-[2rem] bg-white dark:bg-[#1E1715] border border-rose-100/20 dark:border-rosegold/10 p-6 sm:p-8 shadow-rosegold space-y-4"
+                className="rounded-[2rem] bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-6 sm:p-8 shadow-rosegold space-y-4"
               >
                 <div className="flex items-center gap-2">
                   <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold bg-rose-50/50 dark:bg-rosegold/10 px-3 py-1 rounded-full uppercase font-extrabold">
@@ -1564,7 +1564,7 @@ export default function DailyMissionView({
                   </span>
                 </div>
                 
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-rose-50/15 to-rose-50/5 dark:from-[#2C221E]/10 dark:to-rosegold/5 border border-rose-100/15 dark:border-rosegold/10 shadow-sm space-y-3">
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-rose-50/15 to-rose-50/5 dark:bg-none! dark:bg-transparent! border border-rose-100/15 dark:border-ink-hairline shadow-sm dark:shadow-none space-y-3">
                   {(() => {
                     const [title, ...bullets] = localizedContent.exposureAction.split('\n').filter(Boolean);
                     return (
@@ -1616,7 +1616,7 @@ export default function DailyMissionView({
                   ]).map((item) => (
                     <label
                       key={item.key}
-                      className="flex items-start gap-3.5 p-4 bg-white dark:bg-[#1E1715] rounded-2xl border border-rose-100/10 cursor-pointer hover:bg-amber-50/30 dark:hover:bg-rosegold/5 transition-all duration-300 select-none shadow-xs"
+                      className="flex items-start gap-3.5 p-4 bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/10 cursor-pointer hover:bg-amber-50/30 dark:hover:bg-rosegold/5 transition-all duration-300 select-none shadow-xs"
                     >
                       <input
                         type="checkbox"
@@ -1645,7 +1645,7 @@ export default function DailyMissionView({
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="rounded-3xl bg-white dark:bg-[#2C221E] border border-rose-100/30 dark:border-rosegold/10 p-6 shadow-sm space-y-6"
+            className="rounded-3xl bg-white dark:bg-ink-raised border border-rose-100/30 dark:border-ink-hairline p-6 shadow-sm space-y-6"
           >
             <div>
               <h3 className="text-xs font-sans text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-3.5 font-extrabold">
@@ -1655,7 +1655,7 @@ export default function DailyMissionView({
               {!isRestDay && (
                 <div className="space-y-3">
                   {/* Validation checkmark widgets */}
-                  <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 p-4 rounded-xl shadow-xs">
+                  <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 p-4 rounded-xl shadow-xs">
                     <span className="text-slate-600 dark:text-slate-300 font-semibold font-sans">{textDict.listenItem}</span>
                     <span className={`px-3 py-1 rounded-full text-[11px] font-sans font-bold uppercase tracking-wider ${
                       audioCompleted
@@ -1666,7 +1666,7 @@ export default function DailyMissionView({
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 p-4 rounded-xl shadow-xs">
+                  <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 p-4 rounded-xl shadow-xs">
                     <span className="text-slate-600 dark:text-slate-300 font-semibold font-sans">{textDict.promisesItem}</span>
                     <span className={`px-3 py-1 rounded-full text-[11px] font-sans font-bold uppercase tracking-wider ${
                       allPromisesKept
@@ -1694,7 +1694,7 @@ export default function DailyMissionView({
                         disabled={isCompleted}
                         onChange={(e) => setPromiseLinks(p => ({ ...p, [item.key]: e.target.value }))}
                         placeholder={`${textDict.linkRequiredPlaceholder} (${idx + 1}/3)`}
-                        className="w-full text-xs bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-slate-200 transition-all duration-300 shadow-xs"
+                        className="w-full text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-slate-200 transition-all duration-300 shadow-xs"
                       />
                     ))}
                   </div>
@@ -1728,7 +1728,7 @@ export default function DailyMissionView({
                   disabled={isCompleted}
                   placeholder={textDict.reflectionPlaceholder}
                   rows={4}
-                  className="w-full text-sm bg-[#FAF8F5] dark:bg-[#130E0D] border border-rose-100/20 dark:border-rosegold/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-2xl p-4 placeholder-slate-400 text-slate-700 dark:text-slate-200 transition-all duration-300 shadow-inner"
+                  className="w-full text-sm bg-[#FAF8F5] dark:bg-ink border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-2xl p-4 placeholder-slate-400 text-slate-700 dark:text-slate-200 transition-all duration-300 shadow-inner"
                 />
                 
                 {reflectionInput.trim().length <= 3 && !isCompleted && (
@@ -1743,7 +1743,7 @@ export default function DailyMissionView({
                   <label className="block text-xs font-sans text-rosegold uppercase font-extrabold tracking-widest">
                     {lang === 'pt' ? 'Como você se sente agora?' : lang === 'es' ? '¿Cómo te sientes ahora?' : 'How do you feel now?'}
                   </label>
-                  <div className="grid grid-cols-5 gap-1 p-1.5 bg-[#FAF8F5] dark:bg-[#130E0D] rounded-2xl border border-rose-100/10 dark:border-rosegold/5 shadow-inner">
+                  <div className="grid grid-cols-5 gap-1 p-1.5 bg-[#FAF8F5] dark:bg-ink rounded-2xl border border-rose-100/10 dark:border-ink-hairline shadow-inner">
                     {(['calm', 'hopeful', 'neutral', 'heavy', 'emotional'] as const).map((moodKey) => {
                       const info = {
                         calm: { emoji: '😎', label: lang === 'pt' ? 'Plena' : lang === 'es' ? 'Plena' : 'Fulfilled', color: 'hover:bg-emerald-500/10 text-emerald-600', active: 'bg-emerald-500/10 border-emerald-500/35 text-emerald-600 shadow-xs' },
@@ -1782,7 +1782,7 @@ export default function DailyMissionView({
 
             {/* Submit Lock / Completion CTA */}
             {isCompleted ? (
-              <div className="bg-[#FAF8F5] dark:bg-[#1C1513] border border-emerald-500/20 rounded-3xl p-6 space-y-5 shadow-sm">
+              <div className="bg-[#FAF8F5] dark:bg-ink border border-emerald-500/20 rounded-3xl p-6 space-y-5 shadow-sm">
                 <div className="text-center space-y-1">
                   <span className="text-emerald-600 dark:text-emerald-400 font-extrabold text-[10px] block uppercase tracking-[0.2em] bg-emerald-500/10 px-3 py-1 rounded-full w-max mx-auto">
                     🎉 {textDict.completedBadge}!
@@ -1807,7 +1807,7 @@ export default function DailyMissionView({
                   
                   <div className="grid grid-cols-2 gap-3.5 text-[11px] leading-tight">
                     {/* Current Chapter */}
-                    <div className="bg-white dark:bg-[#1E1715] p-3 rounded-2xl border border-rose-100/10 shadow-xs">
+                    <div className="bg-white dark:bg-ink-raised p-3 rounded-2xl border border-rose-100/10 shadow-xs">
                       <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Capítulo' : lang === 'es' ? 'Capítulo' : 'Chapter'}
                       </span>
@@ -1822,7 +1822,7 @@ export default function DailyMissionView({
                     </div>
 
                     {/* Current Day */}
-                    <div className="bg-white dark:bg-[#1E1715] p-3 rounded-2xl border border-rose-100/10 shadow-xs">
+                    <div className="bg-white dark:bg-ink-raised p-3 rounded-2xl border border-rose-100/10 shadow-xs">
                       <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Dia / Racha' : lang === 'es' ? 'Día / Racha' : 'Day / Streak'}
                       </span>
@@ -1832,7 +1832,7 @@ export default function DailyMissionView({
                     </div>
 
                     {/* Journey Percentage */}
-                    <div className="bg-white dark:bg-[#1E1715] p-3 rounded-2xl border border-rose-100/10 shadow-xs">
+                    <div className="bg-white dark:bg-ink-raised p-3 rounded-2xl border border-rose-100/10 shadow-xs">
                       <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Conclusão' : lang === 'es' ? 'Completado' : 'Completion'}
                       </span>
@@ -1842,7 +1842,7 @@ export default function DailyMissionView({
                     </div>
 
                     {/* Chapter Percentage */}
-                    <div className="bg-white dark:bg-[#1E1715] p-3 rounded-2xl border border-rose-100/10 shadow-xs">
+                    <div className="bg-white dark:bg-ink-raised p-3 rounded-2xl border border-rose-100/10 shadow-xs">
                       <span className="block text-[10px] text-slate-400 uppercase font-sans font-extrabold tracking-wider mb-1">
                         {lang === 'pt' ? 'Fase Atual' : lang === 'es' ? 'Fase Actual' : 'Current Phase'}
                       </span>
@@ -1905,7 +1905,7 @@ export default function DailyMissionView({
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
-            className="rounded-[1.5rem] border border-rose-150/40 dark:border-rosegold/15 bg-[#251E1C]/5 dark:bg-[#1C1513]/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            className="rounded-[1.5rem] border border-rose-150/40 dark:border-ink-hairline bg-[#251E1C]/5 dark:bg-ink/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
           >
             <div className="flex items-center gap-3 min-w-0">
               <div className="p-2.5 rounded-xl bg-rosegold/10 text-rosegold shrink-0">

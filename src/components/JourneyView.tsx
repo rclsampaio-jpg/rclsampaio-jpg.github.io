@@ -156,7 +156,7 @@ export default function JourneyView({
     <div className="space-y-10 select-none">
       
       {/* Journey Switcher Bar */}
-      <div className="bg-white dark:bg-[#2C221E] border border-rose-100/30 dark:border-rosegold/10 rounded-3xl p-6 shadow-xs">
+      <div className="bg-white dark:bg-ink-raised border border-rose-100/30 dark:border-ink-hairline rounded-3xl p-6 shadow-xs dark:shadow-none">
         <h4 className="text-xs font-sans text-slate-400 dark:text-slate-500 uppercase tracking-widest font-black mb-3 text-center sm:text-left">
           {textDict.switchTitle}
         </h4>
@@ -173,8 +173,8 @@ export default function JourneyView({
                 onClick={() => handleSwitch(j.id)}
                 className={`text-left p-4 rounded-2xl border transition-all relative flex flex-col justify-between h-36 ${
                   isSelected
-                    ? 'border-rosegold bg-rose-50/20 dark:bg-rosegold/5 dark:border-rosegold shadow-md'
-                    : 'border-rose-100/15 bg-[#FAF8F5]/30 dark:bg-transparent dark:border-rosegold/5 hover:border-rosegold/40'
+                    ? 'border-rosegold bg-rose-50/20 dark:bg-rosegold-light/5 dark:border-rosegold-light shadow-md dark:shadow-none'
+                    : 'border-rose-100/15 bg-[#FAF8F5]/30 dark:bg-transparent dark:border-ink-hairline hover:border-rosegold/40 dark:hover:border-rosegold-light/40'
                 }`}
               >
                 <div>
@@ -199,7 +199,7 @@ export default function JourneyView({
                     <span>{jPct}% concluído</span>
                     <span>{jCompletedCount}/{jDays.length} dias</span>
                   </div>
-                  <div className="w-full bg-rose-50/50 dark:bg-warmbrown h-1 rounded-full overflow-hidden">
+                  <div className="w-full bg-rose-50/50 dark:bg-ink-hairline h-1 rounded-full overflow-hidden">
                     <div 
                       className="bg-rosegold h-full rounded-full transition-all" 
                       style={{ width: `${jPct}%` }} 
@@ -216,7 +216,7 @@ export default function JourneyView({
       <motion.div 
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white dark:bg-[#2C221E] border border-rose-100/30 dark:border-rosegold/10 rounded-3xl p-6 shadow-sm"
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white dark:bg-ink-raised border border-rose-100/30 dark:border-ink-hairline rounded-3xl p-6 shadow-sm dark:shadow-none"
       >
         <div className="flex items-center gap-4">
           <div className="p-3 bg-rose-50 dark:bg-rosegold/10 text-rosegold rounded-2xl">
@@ -230,13 +230,13 @@ export default function JourneyView({
               <span className="text-2xl font-bold text-slate-800 dark:text-white">{totalCompletedCount}</span>
               <span className="text-slate-400 dark:text-slate-500 text-sm">/ {totalDaysCount} {textDict.days}</span>
             </div>
-            <div className="w-32 bg-rose-50 dark:bg-warmbrown h-1.5 rounded-full mt-1.5 overflow-hidden">
+            <div className="w-32 bg-rose-50 dark:bg-ink-hairline h-1.5 rounded-full mt-1.5 overflow-hidden">
               <div className="bg-rosegold h-full rounded-full" style={{ width: `${completionPercentage}%` }} />
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 border-t md:border-t-0 md:border-x border-rose-100/30 dark:border-rosegold/10 pt-4 md:pt-0 md:px-6">
+        <div className="flex items-center gap-4 border-t md:border-t-0 md:border-x border-rose-100/30 dark:border-ink-hairline pt-4 md:pt-0 md:px-6">
           <div className="p-3 bg-rose-50 dark:bg-rosegold/10 text-rosegold rounded-2xl">
             <TrendingUp className="h-6 w-6" />
           </div>
@@ -272,7 +272,7 @@ export default function JourneyView({
       </motion.div>
 
       {/* Chapter Illustrated Path Map */}
-      <div className="bg-gradient-to-b from-[#FAF8F5] to-white dark:from-[#251D1A] dark:to-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs relative overflow-hidden">
+      <div className="bg-gradient-to-b from-[#FAF8F5] to-white dark:bg-none! dark:bg-ink-raised! border border-rose-100/30 dark:border-ink-hairline rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs dark:shadow-none relative overflow-hidden">
         <div className="absolute top-0 right-0 h-40 w-40 bg-gradient-to-bl from-rosegold/5 to-transparent blur-2xl rounded-full" />
         
         <div className="text-center max-w-md mx-auto space-y-1 relative z-10">
@@ -304,8 +304,8 @@ export default function JourneyView({
                 <div 
                   className={`w-full p-5 sm:p-6 rounded-3xl border transition-all ${
                     isCompleted
-                      ? 'bg-rose-50/15 border-rosegold/20'
-                      : 'bg-white dark:bg-[#2C221E]/60 border-rose-100/20 dark:border-rosegold/5'
+                      ? 'bg-rose-50/15 dark:bg-rosegold-light/5 border-rosegold/20 dark:border-rosegold-light/30'
+                      : 'bg-white dark:bg-ink-raised border-rose-100/20 dark:border-ink-hairline'
                   }`}
                 >
                   <div className="flex justify-between items-start gap-4">
@@ -351,18 +351,18 @@ export default function JourneyView({
                           disabled={!isUnlocked}
                           className={`flex items-center gap-3 p-3 rounded-2xl border text-left transition-all relative overflow-hidden ${
                             isCompleted
-                              ? 'border-rosegold/30 bg-rose-50/10 dark:bg-rosegold/5 text-slate-800 dark:text-white'
+                              ? 'border-rosegold/30 dark:border-rosegold-light/30 bg-rose-50/10 dark:bg-rosegold-light/5 text-slate-800 dark:text-ink-text'
                               : isUnlocked
-                              ? 'border-rose-100/15 bg-white dark:bg-[#1E1715] hover:border-rosegold/50'
-                              : 'border-rose-100/5 bg-[#FAF8F5]/40 dark:bg-warmbrown-light/5 opacity-50 cursor-not-allowed'
+                              ? 'border-rose-100/15 dark:border-ink-hairline bg-white dark:bg-ink-raised hover:border-rosegold/50 dark:hover:border-rosegold-light/50'
+                              : 'border-rose-100/5 dark:border-ink-hairline bg-[#FAF8F5]/40 dark:bg-transparent opacity-50 cursor-not-allowed'
                           }`}
                         >
                           <div className={`h-8 w-8 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${
                             isCompleted
-                              ? 'bg-rosegold text-white'
+                              ? 'bg-rosegold text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light'
                               : isUnlocked
-                              ? 'bg-rose-50 dark:bg-rosegold/10 text-rosegold'
-                              : 'bg-slate-100 dark:bg-warmbrown text-slate-400'
+                              ? 'bg-rose-50 dark:bg-rosegold-light/10 text-rosegold dark:text-rosegold-light'
+                              : 'bg-slate-100 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-text-muted'
                           }`}>
                             {isCompleted ? <Check className="h-4 w-4 stroke-[3px]" /> : day.dayNumber}
                           </div>

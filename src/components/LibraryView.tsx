@@ -507,7 +507,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="bg-[#2C221E] dark:bg-[#1E1715] border border-rosegold/25 rounded-3xl overflow-hidden shadow-2xl p-4 sm:p-6 text-white space-y-4"
+            className="bg-[#2C221E] dark:bg-ink-raised border border-rosegold/25 dark:border-ink-hairline rounded-3xl overflow-hidden shadow-2xl dark:shadow-none p-4 sm:p-6 text-white dark:text-ink-text space-y-4"
           >
             <div className="flex justify-between items-center pb-2 border-b border-rose-100/10">
               <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#D4AF37] flex items-center gap-1.5">
@@ -753,7 +753,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
       </AnimatePresence>
 
       {/* Library Filter Panel (Search & Categorized Pills) */}
-      <div className="bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-3xl p-5 sm:p-6 space-y-6 shadow-rosegold">
+      <div className="bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-ink-hairline rounded-3xl p-5 sm:p-6 space-y-6 shadow-rosegold dark:shadow-none">
         
         {/* Search bar row */}
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
@@ -765,12 +765,12 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={trans.searchPlaceholder}
-              className="w-full bg-[#FAF8F5] dark:bg-warmbrown border border-rose-100/30 dark:border-rosegold/10 rounded-2xl pl-10 pr-4 py-3.5 text-xs sm:text-sm focus:outline-none focus:border-rosegold text-slate-800 dark:text-slate-100 placeholder-slate-400"
+              className="w-full bg-[#FAF8F5] dark:bg-transparent border border-rose-100/30 dark:border-0 dark:border-b dark:rounded-none dark:border-ink-hairline rounded-2xl pl-10 pr-4 py-3.5 text-xs sm:text-sm focus:outline-none focus:border-rosegold dark:focus:border-rosegold-light text-slate-800 dark:text-ink-text placeholder-slate-400"
             />
           </div>
 
           {/* Mini Stats box in filter row */}
-          <div className="flex gap-4 items-center self-end sm:self-auto shrink-0 bg-rose-50/20 dark:bg-warmbrown/20 border border-rose-100/20 dark:border-rosegold/5 p-3.5 rounded-2xl">
+          <div className="flex gap-4 items-center self-end sm:self-auto shrink-0 bg-rose-50/20 dark:bg-transparent border border-rose-100/20 dark:border-ink-hairline p-3.5 rounded-2xl">
             <div className="p-2 bg-rosegold/10 text-rosegold rounded-xl">
               <CheckCircle2 className="h-4 w-4" />
             </div>
@@ -797,8 +797,8 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                 onClick={() => setSelectedCategory(cat.key)}
                 className={`px-4 py-2.5 rounded-xl text-xs font-sans font-medium transition-all flex items-center gap-1.5 shrink-0 cursor-pointer border ${
                   isSelected
-                    ? 'bg-rosegold text-white border-rosegold shadow-md shadow-rosegold/15'
-                    : 'bg-[#FAF8F5]/40 dark:bg-warmbrown/10 border-rose-100/10 dark:border-rosegold/5 text-slate-600 dark:text-slate-300 hover:bg-[#FAF8F5]/80'
+                    ? 'bg-rosegold text-white border-rosegold shadow-md shadow-rosegold/15 dark:bg-transparent dark:text-rosegold-light dark:border-rosegold-light dark:shadow-none'
+                    : 'bg-[#FAF8F5]/40 dark:bg-transparent border-rose-100/10 dark:border-ink-hairline text-slate-600 dark:text-ink-text-muted hover:bg-[#FAF8F5]/80 dark:hover:bg-rosegold-light/5'
                 }`}
               >
                 {CatIcon && <CatIcon className="h-3.5 w-3.5" />}
@@ -833,7 +833,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
             {onTriggerSos && (
               <button
                 onClick={onTriggerSos}
-                className="px-8 py-3.5 rounded-2xl bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer shadow-rosegold hover:shadow-rosegold/40 inline-flex items-center gap-2"
+                className="px-8 py-3.5 rounded-2xl bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 text-xs font-sans font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer shadow-rosegold hover:shadow-rosegold/40 dark:shadow-none inline-flex items-center gap-2"
               >
                 <Heart className="h-4 w-4 fill-current" />
                 {trans.sosTrigger}
@@ -860,7 +860,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={() => handlePlayAsset(asset)}
-                    className="col-span-full flex items-center gap-2.5 px-4 py-3 bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-2xl cursor-pointer hover:border-rosegold/40 transition text-slate-600 dark:text-slate-300 hover:text-rosegold"
+                    className="col-span-full flex items-center gap-2.5 px-4 py-3 bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-ink-hairline rounded-2xl cursor-pointer hover:border-rosegold/40 dark:hover:border-rosegold-light transition text-slate-600 dark:text-ink-text-muted hover:text-rosegold dark:hover:text-rosegold-light"
                   >
                     <Play className="h-3.5 w-3.5 shrink-0" />
                     <span className="text-xs font-sans font-medium">{asset.title[lang] || asset.title['pt']}</span>
@@ -876,7 +876,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   onClick={() => handlePlayAsset(asset)}
-                  className="bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between group"
+                  className="bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-ink-hairline rounded-2xl overflow-hidden shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-none transition cursor-pointer flex flex-col justify-between group"
                 >
 
                   {/* Thumbnail Cover Area */}
@@ -951,7 +951,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                         className={`p-1.5 rounded-full border transition hover:scale-110 cursor-pointer ${
                           isCompleted
                             ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-                            : 'bg-slate-50 dark:bg-warmbrown text-slate-300 border-rose-100/10'
+                            : 'bg-slate-50 dark:bg-transparent text-slate-300 dark:text-ink-hairline border-rose-100/10 dark:border-ink-hairline'
                         }`}
                         title={trans.markCompleted}
                       >
@@ -966,7 +966,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
               );
             })
           ) : (
-            <div className="col-span-full py-16 bg-white dark:bg-[#2C221E] border border-rose-100/25 dark:border-rosegold/5 rounded-3xl text-center space-y-2">
+            <div className="col-span-full py-16 bg-white dark:bg-ink-raised border border-rose-100/25 dark:border-ink-hairline rounded-3xl text-center space-y-2">
               <AlertCircle className="h-8 w-8 text-slate-300 mx-auto" />
               <p className="text-xs sm:text-sm font-sans text-slate-500 dark:text-slate-400">
                 {trans.empty}
