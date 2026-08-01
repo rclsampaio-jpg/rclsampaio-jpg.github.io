@@ -288,8 +288,8 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
               {/* Header */}
               <div className="flex items-center justify-between p-5 border-b border-rose-100/20 dark:border-rosegold/10">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-rosegold to-[#A35D68] dark:bg-none dark:bg-ink flex items-center justify-center shrink-0 p-1.5 border dark:border-rosegold-light/40">
-                    <RenaSerIcon size={28} animate={false} />
+                  <div className="h-10 w-10 rounded-full overflow-hidden shrink-0 border-2 border-rosegold/40 dark:border-rosegold-light/40">
+                    <img src="/assets/images/minhafoto.jpg" alt="Renata" className="h-full w-full object-cover" />
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">{t.title}</h3>
@@ -309,8 +309,8 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                 {messages.map((msg, idx) => (
                   <div key={idx} className={`flex items-end gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     {msg.role === 'assistant' && (
-                      <span className="h-6 w-6 rounded-full bg-white dark:bg-ink border border-rose-100/40 dark:border-rosegold-light/30 flex items-center justify-center shrink-0 p-1">
-                        <RenaSerIcon size={16} animate={false} />
+                      <span className="h-6 w-6 rounded-full overflow-hidden shrink-0 border border-rose-100/40 dark:border-rosegold-light/30">
+                        <img src="/assets/images/minhafoto.jpg" alt="Renata" className="h-full w-full object-cover" />
                       </span>
                     )}
                     <div
@@ -326,8 +326,8 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                 ))}
                 {isLoading && (
                   <div className="flex items-end gap-2 justify-start">
-                    <span className="h-6 w-6 rounded-full bg-white dark:bg-ink border border-rose-100/40 dark:border-rosegold-light/30 flex items-center justify-center shrink-0 p-1">
-                      <RenaSerIcon size={16} animate={false} />
+                    <span className="h-6 w-6 rounded-full overflow-hidden shrink-0 border border-rose-100/40 dark:border-rosegold-light/30">
+                      <img src="/assets/images/minhafoto.jpg" alt="Renata" className="h-full w-full object-cover" />
                     </span>
                     <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm text-slate-400 font-sans">
                       •••
