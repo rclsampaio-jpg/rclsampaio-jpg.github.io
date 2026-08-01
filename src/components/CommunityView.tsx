@@ -110,7 +110,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         {/* Left: Community Core Portal Card */}
-        <div className="lg:col-span-7 bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-3xl overflow-hidden shadow-rosegold flex flex-col justify-between">
+        <div className="lg:col-span-7 bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-rosegold/10 rounded-3xl overflow-hidden shadow-rosegold flex flex-col justify-between">
           
           <div className="p-6 sm:p-8 space-y-4 flex-1 flex flex-col justify-between">
             <div className="space-y-3">
@@ -147,10 +147,10 @@ export default function CommunityView({ lang }: CommunityViewProps) {
         </div>
 
         {/* Right: Premium Mentoring Card */}
-        <div className="lg:col-span-5 bg-gradient-to-br from-warmbrown-light/40 to-[#2C221E] dark:from-[#2C221E] dark:to-[#1E1715] border border-rosegold/15 rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-rosegold relative overflow-hidden group">
-          
-          {/* Subtle Golden Glow */}
-          <div className="absolute -top-12 -right-12 h-36 w-36 bg-[#D4AF37]/5 blur-3xl rounded-full" />
+        <div className="lg:col-span-5 bg-gradient-to-br from-warmbrown-light/40 to-[#2C221E] dark:bg-ink-raised dark:from-ink-raised dark:to-ink-raised border border-rosegold/15 dark:border-ink-hairline rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-rosegold dark:shadow-none relative overflow-hidden group">
+
+          {/* Subtle Golden Glow — dark mode drops it, Luxo Contido stays flat */}
+          <div className="absolute -top-12 -right-12 h-36 w-36 bg-[#D4AF37]/5 blur-3xl rounded-full dark:hidden" />
           
           <div className="space-y-5 relative z-10">
             <div className="flex justify-between items-start">
@@ -200,7 +200,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
         </div>
 
         {/* Below VIP: Free Community Card */}
-        <div className="lg:col-span-7 bg-white dark:bg-[#2C221E] border border-rose-100/40 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 shadow-rosegold space-y-5">
+        <div className="lg:col-span-7 bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 shadow-rosegold space-y-5">
           <div className="flex flex-col sm:flex-row sm:items-center gap-5 justify-between">
             <div className="space-y-2">
               <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
@@ -226,7 +226,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
 
           {/* Uplifting Celebration Board */}
           {support.upliftMessage && (
-            <div className="bg-amber-50/50 dark:bg-[#1E1715]/40 border border-accentgold/25 dark:border-rosegold/10 p-5 rounded-2xl flex gap-3.5 items-start relative overflow-hidden">
+            <div className="bg-amber-50/50 dark:bg-ink-raised/40 border border-accentgold/25 dark:border-rosegold/10 p-5 rounded-2xl flex gap-3.5 items-start relative overflow-hidden">
               <div className="absolute top-0 left-0 w-1.5 h-full bg-accentgold" />
               <Sparkles className="h-5 w-5 text-accentgold shrink-0 mt-0.5 animate-pulse" />
               <div className="space-y-1 text-xs">

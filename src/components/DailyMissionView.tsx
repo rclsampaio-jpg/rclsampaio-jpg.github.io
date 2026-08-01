@@ -1081,7 +1081,7 @@ export default function DailyMissionView({
               exit={{ scale: 0.95, opacity: 0, y: 30 }}
               className="bg-[#FAF8F5] dark:bg-ink-raised max-w-lg w-full rounded-[2rem] p-8 sm:p-10 border border-rosegold/35 shadow-rosegold text-left relative overflow-hidden"
             >
-              <div className="absolute top-0 right-0 h-32 w-32 bg-gradient-to-bl from-rosegold/15 to-transparent blur-2xl rounded-full" />
+              <div className="absolute top-0 right-0 h-32 w-32 bg-gradient-to-bl from-rosegold/15 to-transparent blur-2xl rounded-full dark:hidden" />
               <button 
                 onClick={() => setShowSurpriseLetter(false)}
                 className="absolute top-6 right-6 p-2 text-slate-400 hover:text-rosegold transition cursor-pointer"
@@ -1185,14 +1185,14 @@ export default function DailyMissionView({
               className="rounded-[2rem] border border-rose-150/30 dark:border-ink-hairline bg-white/45 dark:bg-ink-raised backdrop-blur-md dark:backdrop-blur-none p-8 sm:p-10 text-center space-y-8 shadow-rosegold overflow-hidden relative"
             >
               {/* Sacred Friday background elements */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 h-44 w-44 bg-emerald-500/5 blur-3xl rounded-full" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 h-44 w-44 bg-emerald-500/5 blur-3xl rounded-full dark:hidden" />
               
               <div className="mx-auto max-w-md space-y-6 relative z-10">
                 <span className="text-[11px] uppercase font-sans tracking-[0.25em] text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1.5 rounded-full">
                   {textDict.sanctuaryTitle}
                 </span>
 
-                <div className="p-5 bg-emerald-50/40 dark:bg-[#202924]/30 rounded-2xl border border-emerald-500/10 max-w-sm mx-auto">
+                <div className="p-5 bg-emerald-50/40 dark:bg-ink-raised/30 rounded-2xl border border-emerald-500/10 max-w-sm mx-auto">
                   <p className="text-emerald-800 dark:text-emerald-400 italic font-medium font-display text-sm leading-relaxed">
                     "{textDict.restDayQuote}"
                   </p>
@@ -1344,7 +1344,7 @@ export default function DailyMissionView({
 
                   <button
                     onClick={handlePlayToggle}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-16 w-16 rounded-full bg-gradient-to-br from-rosegold to-[#A35D68] shadow-rosegold flex items-center justify-center text-white transition-transform duration-300 cursor-pointer hover:scale-105 ring-4 ring-[#FAF3EF] dark:ring-[#1E1715]"
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-16 w-16 rounded-full bg-gradient-to-br from-rosegold to-[#A35D68] shadow-rosegold flex items-center justify-center text-white transition-transform duration-300 cursor-pointer hover:scale-105 ring-4 ring-[#FAF3EF] dark:ring-ink-raised"
                   >
                     {isPlaying ? (
                       <Pause className="h-6 w-6 fill-current" />
@@ -1592,7 +1592,7 @@ export default function DailyMissionView({
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-[2rem] border border-amber-200/40 dark:border-amber-500/10 bg-[#FFFDF9] dark:bg-[#251E1C]/30 p-6 sm:p-8 shadow-rosegold space-y-5"
+                className="rounded-[2rem] border border-amber-200/40 dark:border-amber-500/10 bg-[#FFFDF9] dark:bg-ink-raised/30 p-6 sm:p-8 shadow-rosegold space-y-5"
               >
                 <div className="space-y-1.5">
                   <h3 className="text-sm font-bold text-slate-800 dark:text-amber-100 flex items-center gap-2 font-sans tracking-wide">

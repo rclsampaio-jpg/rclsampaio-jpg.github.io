@@ -83,7 +83,7 @@ export default function AdminUsersPanel() {
   return (
     <div className="space-y-6">
       <InviteAdminPanel />
-      <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
+      <div className="bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
       <div className="border-b border-rose-100/10 pb-4 flex items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">

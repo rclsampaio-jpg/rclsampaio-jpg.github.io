@@ -270,7 +270,7 @@ export default function ChapterMilestoneOverlay({
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.95, y: -15 }}
         transition={{ type: 'spring', damping: 25, stiffness: 180 }}
-        className="relative bg-white dark:bg-[#1E1715] max-w-2xl w-full rounded-3xl overflow-hidden shadow-2xl border border-rose-100/10 dark:border-rosegold/10 text-slate-900 dark:text-[#FAF8F5] flex flex-col h-full max-h-[90vh] md:max-h-[85vh]"
+        className="relative bg-white dark:bg-ink-raised max-w-2xl w-full rounded-3xl overflow-hidden shadow-2xl border border-rose-100/10 dark:border-rosegold/10 text-slate-900 dark:text-ink-text flex flex-col h-full max-h-[90vh] md:max-h-[85vh]"
       >
         {/* Subtle decorative elements matching Gold evolution */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-40" />
@@ -305,9 +305,9 @@ export default function ChapterMilestoneOverlay({
             <div className="space-y-6">
               
               {/* Elegant Message Quote */}
-              <div className="text-center py-4 bg-gradient-to-r from-rose-50/20 to-rose-100/5 dark:from-[#261D1A] dark:to-[#1E1715]/40 rounded-2xl border border-rose-100/10 dark:border-rosegold/5 px-6">
+              <div className="text-center py-4 bg-gradient-to-r from-rose-50/20 to-rose-100/5 dark:bg-ink-raised dark:from-ink-raised dark:to-ink-raised rounded-2xl border border-rose-100/10 dark:border-ink-hairline px-6">
                 <span className="text-3xl text-rosegold/30 font-serif block select-none">“</span>
-                <p className="text-lg font-serif italic text-slate-800 dark:text-[#E2C2BA] tracking-wide leading-relaxed -mt-3">
+                <p className="text-lg font-serif italic text-slate-800 dark:text-rosegold-light tracking-wide leading-relaxed -mt-3">
                   {adaptMessage(pickTone(chapter.message, lang, resolvedGuideStyle), grammarPreference, lang)}
                 </p>
               </div>
@@ -323,10 +323,10 @@ export default function ChapterMilestoneOverlay({
               </div>
 
               {/* Short Audio Ativation Player */}
-              <div className="p-4 bg-[#FAF8F5] dark:bg-[#251D1A] border border-rose-100/35 dark:border-rosegold/10 rounded-2xl space-y-3 shadow-xs">
+              <div className="p-4 bg-[#FAF8F5] dark:bg-ink-raised border border-rose-100/35 dark:border-rosegold/10 rounded-2xl space-y-3 shadow-xs">
                 <div className="flex items-center justify-between gap-4">
                   <div className="space-y-0.5">
-                    <h4 className="text-xs font-bold text-slate-800 dark:text-[#FAF8F5] uppercase tracking-wider flex items-center gap-1.5 font-sans">
+                    <h4 className="text-xs font-bold text-slate-800 dark:text-ink-text uppercase tracking-wider flex items-center gap-1.5 font-sans">
                       <Volume2 className="h-4 w-4 text-rosegold" />
                       {trans.audioTitle}
                     </h4>
@@ -387,7 +387,7 @@ export default function ChapterMilestoneOverlay({
             <div className="space-y-6">
               
               {/* Animation or Trophy banner */}
-              <div className="text-center py-6 bg-gradient-to-br from-amber-50/15 via-[#FAF8F5] to-amber-100/5 dark:from-[#2A201C] dark:via-[#1E1715] dark:to-[#221B19] rounded-2xl border border-accentgold/15 dark:border-[#D4AF37]/10 flex flex-col items-center space-y-3">
+              <div className="text-center py-6 bg-gradient-to-br from-amber-50/15 via-[#FAF8F5] to-amber-100/5 dark:bg-ink-raised dark:from-ink-raised dark:via-ink-raised dark:to-ink-raised rounded-2xl border border-accentgold/15 dark:border-rosegold-light/20 flex flex-col items-center space-y-3">
                 <div className="w-16 h-16 bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] rounded-full flex items-center justify-center animate-bounce shadow-inner">
                   <Award className="h-8 w-8 text-[#D4AF37]" />
                 </div>
@@ -402,7 +402,7 @@ export default function ChapterMilestoneOverlay({
               </div>
 
               {/* Identity Reinforcement Block */}
-              <div className="text-center py-3 bg-[#FAF8F5] dark:bg-[#251D1A] rounded-xl border border-rose-100/10 dark:border-rosegold/5 space-y-0.5">
+              <div className="text-center py-3 bg-[#FAF8F5] dark:bg-ink-raised rounded-xl border border-rose-100/10 dark:border-rosegold/5 space-y-0.5">
                 <span className="text-[10px] text-slate-400 dark:text-ink-text-muted uppercase tracking-widest font-bold">
                   Identity Shift
                 </span>
@@ -417,7 +417,7 @@ export default function ChapterMilestoneOverlay({
 
               {/* User Reflection Review */}
               {userReflection && (
-                <div className="space-y-2 bg-[#FAF8F5]/50 dark:bg-[#201917]/50 p-4 rounded-xl border border-rose-150/10">
+                <div className="space-y-2 bg-[#FAF8F5]/50 dark:bg-ink-raised/50 p-4 rounded-xl border border-rose-150/10">
                   <span className="text-[10px] font-sans text-slate-400 uppercase tracking-widest block font-bold">
                     {trans.yourReflection}
                   </span>
@@ -428,7 +428,7 @@ export default function ChapterMilestoneOverlay({
               )}
 
               {/* INTERACTIVE CELEBRATIONS & CONVERSATION */}
-              <div className="space-y-4 p-5 bg-[#FAF8F5] dark:bg-[#221B19] rounded-2xl border border-rose-100/10">
+              <div className="space-y-4 p-5 bg-[#FAF8F5] dark:bg-ink-raised rounded-2xl border border-rose-100/10">
                 
                 {/* Checkboxes: What surprised you this week? */}
                 <div className="space-y-2">
@@ -449,7 +449,7 @@ export default function ChapterMilestoneOverlay({
                           key={surpriseOpt}
                           className={`flex items-center gap-2.5 p-2 rounded-xl border text-xs cursor-pointer select-none transition ${
                             isChecked 
-                              ? 'bg-[#FAF8F5] dark:bg-[#1C1513] border-accentgold/30 text-slate-800 dark:text-ink-text' 
+                              ? 'bg-[#FAF8F5] dark:bg-ink-raised border-accentgold/30 text-slate-800 dark:text-ink-text' 
                               : 'bg-transparent border-transparent text-slate-500 dark:text-ink-text-muted hover:bg-rose-50/20'
                           }`}
                         >
@@ -521,7 +521,7 @@ export default function ChapterMilestoneOverlay({
                       value={futureSelfNote}
                       onChange={(e) => setFutureSelfNote(e.target.value)}
                       placeholder={trans.notePlaceholder}
-                      className="w-full text-xs bg-white dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-xl p-2.5 text-slate-700 dark:text-ink-text transition font-sans leading-relaxed"
+                      className="w-full text-xs bg-white dark:bg-ink-raised border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none rounded-xl p-2.5 text-slate-700 dark:text-ink-text transition font-sans leading-relaxed"
                     />
                     <div className="text-right text-[11px] text-slate-400 font-mono">
                       {futureSelfNote.length}/300
@@ -539,7 +539,7 @@ export default function ChapterMilestoneOverlay({
                   </span>
                   <div className="flex items-center justify-between gap-4">
                     <div>
-                      <h4 className="text-sm font-serif font-bold text-rosegold dark:text-[#E2C2BA] uppercase">
+                      <h4 className="text-sm font-serif font-bold text-rosegold dark:text-rosegold-light uppercase">
                         {nextChapter.title[lang]}
                       </h4>
                       <p className="text-xs text-slate-500 dark:text-ink-text-muted">
@@ -566,7 +566,7 @@ export default function ChapterMilestoneOverlay({
         </div>
 
         {/* Action Bottom Bar */}
-        <div className="p-6 bg-[#FAF8F5] dark:bg-[#231A18] border-t border-rose-100/20 dark:border-rosegold/10 flex items-center justify-end font-sans">
+        <div className="p-6 bg-[#FAF8F5] dark:bg-ink-raised border-t border-rose-100/20 dark:border-rosegold/10 flex items-center justify-end font-sans">
           <button
             onClick={() => {
               stopAudio();

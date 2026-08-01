@@ -99,21 +99,21 @@ export default function AnalyticsPanel() {
       {data && (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 p-5 rounded-2xl">
+            <div className="bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-rosegold/10 p-5 rounded-2xl">
               <span className="text-[10px] font-bold uppercase text-slate-400 block mb-1">Eventos registrados</span>
               <div className="text-2xl font-black text-slate-800 dark:text-white">{data.totals.totalEvents}</div>
             </div>
-            <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 p-5 rounded-2xl">
+            <div className="bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-rosegold/10 p-5 rounded-2xl">
               <span className="text-[10px] font-bold uppercase text-slate-400 block mb-1">Alunas que consumiram algo</span>
               <div className="text-2xl font-black text-slate-800 dark:text-white">{data.totals.uniqueUsers}</div>
             </div>
-            <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 p-5 rounded-2xl">
+            <div className="bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-rosegold/10 p-5 rounded-2xl">
               <span className="text-[10px] font-bold uppercase text-slate-400 block mb-1">Conteúdos diferentes tocados</span>
               <div className="text-2xl font-black text-slate-800 dark:text-white">{data.totals.uniqueAssets}</div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 p-6 rounded-2xl space-y-3">
+          <div className="bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-rosegold/10 p-6 rounded-2xl space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white border-b border-rose-100/10 pb-2">
               Conteúdos mais consumidos
             </h3>
@@ -137,7 +137,7 @@ export default function AnalyticsPanel() {
             )}
           </div>
 
-          <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 p-6 rounded-2xl space-y-3">
+          <div className="bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-rosegold/10 p-6 rounded-2xl space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white border-b border-rose-100/10 pb-2">
               Alunas mais engajadas
             </h3>

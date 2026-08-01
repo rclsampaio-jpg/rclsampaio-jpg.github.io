@@ -47,7 +47,7 @@ export default function DayCompletionOverlay({ dayNumber, lang, onClose }: DayCo
           exit={{ opacity: 0, scale: 0.9, y: 15 }}
           transition={{ type: 'spring', damping: 20, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
-          className="max-w-sm w-full bg-white dark:bg-[#2C221E] rounded-[2rem] p-8 text-center space-y-5 shadow-2xl border border-rosegold/15"
+          className="max-w-sm w-full bg-white dark:bg-ink-raised rounded-[2rem] p-8 text-center space-y-5 shadow-2xl border border-rosegold/15"
         >
           <motion.div
             animate={{ rotate: [0, -10, 10, -6, 0], scale: [1, 1.08, 1] }}

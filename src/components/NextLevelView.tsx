@@ -304,7 +304,7 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
 
           <div className="space-y-3 pt-2">
             {[truth1, truth2, truth3].map((truth, idx) => (
-              <div key={idx} className="flex items-start gap-3 bg-white dark:bg-[#2C221E] p-4 rounded-xl border border-rose-100/20 dark:border-rosegold/10">
+              <div key={idx} className="flex items-start gap-3 bg-white dark:bg-ink-raised p-4 rounded-xl border border-rose-100/20 dark:border-rosegold/10">
                 <CheckCircle2 className="h-5 w-5 text-rosegold shrink-0 mt-0.5" />
                 <p className="text-slate-700 dark:text-ink-text text-xs sm:text-sm font-sans font-medium">
                   {truth}
@@ -315,7 +315,7 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
         </div>
 
         {/* 4. Elite Mastermind Invitation / CTA */}
-        <div className="bg-gradient-to-br from-rose-50/20 to-[#FAF8F5]/30 dark:from-[#2C221E] dark:to-rosegold/5 border border-rose-100/30 dark:border-rosegold/10 rounded-3xl p-8 space-y-6">
+        <div className="bg-gradient-to-br from-rose-50/20 to-[#FAF8F5]/30 dark:bg-ink-raised dark:from-ink-raised dark:to-ink-raised border border-rose-100/30 dark:border-ink-hairline rounded-3xl p-8 space-y-6">
           <div className="flex items-center gap-2 text-rosegold">
             <Sparkles className="h-6 w-6 animate-pulse" />
             <h4 className="text-xs font-sans uppercase tracking-widest font-bold">

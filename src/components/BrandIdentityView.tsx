@@ -396,7 +396,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
       </div>
 
       {/* Tabs Menu Navigation */}
-      <div className="flex overflow-x-auto gap-2 p-1.5 bg-rose-50/20 dark:bg-[#1E1715]/40 border border-[#B76E79]/10 rounded-[1.8rem] scrollbar-none shadow-inner">
+      <div className="flex overflow-x-auto gap-2 p-1.5 bg-rose-50/20 dark:bg-ink-raised/40 border border-[#B76E79]/10 rounded-[1.8rem] scrollbar-none shadow-inner">
         {(Object.keys(dictionary.tabs) as TabId[]).map((tabKey) => (
           <button
             key={tabKey}
@@ -425,7 +425,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {/* TAB: Story & Concept */}
             {activeTab === 'story' && (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                <div className="lg:col-span-7 bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 sm:p-10 shadow-rosegold flex flex-col justify-between">
+                <div className="lg:col-span-7 bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 sm:p-10 shadow-rosegold flex flex-col justify-between">
                   <div className="space-y-6">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl">🌱</span>
@@ -460,7 +460,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   </div>
                 </div>
 
-                <div className="lg:col-span-5 bg-gradient-to-b from-[#FAF8F5] to-[#E8B4A0]/20 dark:from-[#2C221E] dark:to-[#1E1715] rounded-[2rem] border border-rose-100/20 p-8 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-rosegold min-h-[350px]">
+                <div className="lg:col-span-5 bg-gradient-to-b from-[#FAF8F5] to-[#E8B4A0]/20 dark:bg-ink-raised dark:from-ink-raised dark:to-ink-raised rounded-[2rem] border border-rose-100/20 dark:border-ink-hairline p-8 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-rosegold dark:shadow-none min-h-[350px]">
                   {/* Subtle radiating grid */}
                   <div className="absolute inset-0 bg-radial-grid opacity-10 pointer-events-none" />
                   
@@ -489,7 +489,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {activeTab === 'logo' && (
               <div className="space-y-8">
                 {/* Visualizer Frame Controls */}
-                <div className="bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-6 flex flex-col md:flex-row gap-6 items-center justify-between shadow-rosegold">
+                <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-6 flex flex-col md:flex-row gap-6 items-center justify-between shadow-rosegold">
                   <div className="flex flex-wrap items-center gap-4">
                     <span className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400">
                       {dictionary.logoSuite.renderStyle}:
@@ -563,7 +563,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                 {/* Secondary Horizontal & Stacked logo grid showcase */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Horizontal Logo Display */}
-                  <div className="bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
+                  <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
                     <div className="flex items-center justify-between border-b border-rose-100/10 pb-4">
                       <h3 className="text-sm font-sans font-bold uppercase tracking-wider text-slate-400">
                         {dictionary.logoSuite.horizontal}
@@ -576,7 +576,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                         <span>{copiedText === 'HorizontalLogo' ? dictionary.colors.copySuccess : 'Copy SVG'}</span>
                       </button>
                     </div>
-                    <div className="h-36 bg-[#FAF8F5] dark:bg-[#2C221E]/30 rounded-2xl border border-rose-100/10 flex items-center justify-center p-6">
+                    <div className="h-36 bg-[#FAF8F5] dark:bg-ink-raised/30 rounded-2xl border border-rose-100/10 flex items-center justify-center p-6">
                       {renderLogo(logoRenderStyle, 'horizontal')}
                     </div>
                     <p className="text-xs text-slate-500 dark:text-ink-text-muted text-center">
@@ -585,7 +585,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   </div>
 
                   {/* Stacked Logo Display */}
-                  <div className="bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
+                  <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
                     <div className="flex items-center justify-between border-b border-rose-100/10 pb-4">
                       <h3 className="text-sm font-sans font-bold uppercase tracking-wider text-slate-400">
                         {dictionary.logoSuite.stacked}
@@ -598,7 +598,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                         <span>{copiedText === 'StackedLogo' ? dictionary.colors.copySuccess : 'Copy SVG'}</span>
                       </button>
                     </div>
-                    <div className="h-44 bg-[#FAF8F5] dark:bg-[#2C221E]/30 rounded-2xl border border-rose-100/10 flex items-center justify-center p-6">
+                    <div className="h-44 bg-[#FAF8F5] dark:bg-ink-raised/30 rounded-2xl border border-rose-100/10 flex items-center justify-center p-6">
                       {renderLogo(logoRenderStyle, 'stacked')}
                     </div>
                     <p className="text-xs text-slate-500 dark:text-ink-text-muted text-center">
@@ -613,7 +613,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {activeTab === 'icon' && (
               <div className="space-y-8">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                  <div className="lg:col-span-5 bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 sm:p-10 shadow-rosegold flex flex-col justify-between space-y-6">
+                  <div className="lg:col-span-5 bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 sm:p-10 shadow-rosegold flex flex-col justify-between space-y-6">
                     <div className="space-y-4">
                       <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
                         {dictionary.appIcon.title}
@@ -683,7 +683,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                 </div>
 
                 {/* Ecosystem Positioning Section */}
-                <div className="bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-6">
+                <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-6">
                   <div className="space-y-2">
                     <h3 className="text-xl font-sans font-light tracking-tight text-slate-900 dark:text-white">
                       {dictionary.appIcon.mockupsTitle}
@@ -751,7 +751,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {/* TAB: Colors */}
             {activeTab === 'colors' && (
               <div className="space-y-8">
-                <div className="bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
+                <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
                   <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
                     {dictionary.colors.title}
                   </h3>
@@ -819,7 +819,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   ].map((color, idx) => (
                     <div 
                       key={idx}
-                      className="bg-white dark:bg-[#1E1715] rounded-3xl border border-rose-100/10 p-5 shadow-rosegold flex flex-col justify-between space-y-4"
+                      className="bg-white dark:bg-ink-raised rounded-3xl border border-rose-100/10 p-5 shadow-rosegold flex flex-col justify-between space-y-4"
                     >
                       <div className="space-y-2">
                         <div className={`h-24 w-full rounded-2xl ${color.bg} shadow-inner relative group overflow-hidden`}>
@@ -854,7 +854,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                 </div>
 
                 <div className="flex items-center gap-3 pt-4">
-                  <span className="px-3 py-1 rounded-full bg-[#EBB4A0]/15 text-[#B76E79] dark:text-[#EBB4A0] text-[10px] font-sans font-bold uppercase tracking-widest">
+                  <span className="px-3 py-1 rounded-full bg-[#EBB4A0]/15 text-[#B76E79] dark:text-rosegold-light text-[10px] font-sans font-bold uppercase tracking-widest">
                     Opção B
                   </span>
                   <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-500 dark:text-ink-text-muted">
@@ -879,7 +879,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   ].map((color, idx) => (
                     <div
                       key={`dark_${idx}`}
-                      className="bg-white dark:bg-[#1E1715] rounded-3xl border border-rose-100/10 p-5 shadow-rosegold flex flex-col justify-between space-y-4"
+                      className="bg-white dark:bg-ink-raised rounded-3xl border border-rose-100/10 p-5 shadow-rosegold flex flex-col justify-between space-y-4"
                     >
                       <div className="space-y-2">
                         <div className={`h-24 w-full rounded-2xl ${color.bg} shadow-inner relative group overflow-hidden`}>
@@ -895,7 +895,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                           <h4 className="text-xs font-sans font-bold text-slate-800 dark:text-ink-text line-clamp-1">
                             {color.name}
                           </h4>
-                          <span className="text-xs font-mono font-bold text-[#B76E79] dark:text-[#EBB4A0]">
+                          <span className="text-xs font-mono font-bold text-[#B76E79] dark:text-rosegold-light">
                             {color.hex}
                           </span>
                         </div>
@@ -914,7 +914,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                 {/* Simulated Foil finishes */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Embossed Paper Card */}
-                  <div className="bg-[#FAF8F5] dark:bg-[#1E1715]/40 border border-rose-100/10 p-8 rounded-[2rem] text-center space-y-6 relative overflow-hidden shadow-rosegold flex flex-col items-center justify-center h-56 select-none">
+                  <div className="bg-[#FAF8F5] dark:bg-ink-raised/40 border border-rose-100/10 p-8 rounded-[2rem] text-center space-y-6 relative overflow-hidden shadow-rosegold flex flex-col items-center justify-center h-56 select-none">
                     <div className="absolute inset-0 pointer-events-none shadow-inner opacity-45 bg-gradient-to-tr from-slate-500/5 via-transparent to-white/15" />
                     <div className="space-y-2 z-10">
                       <span className="text-[10px] font-sans font-bold text-slate-400 uppercase tracking-widest block">
@@ -951,7 +951,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {/* TAB: Typography */}
             {activeTab === 'typography' && (
               <div className="space-y-8">
-                <div className="bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
+                <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
                   <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
                     {dictionary.typography.title}
                   </h3>
@@ -962,7 +962,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {/* Font pairing guidelines */}
-                  <div className="bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-6">
+                  <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-6">
                     <div className="flex items-center gap-2">
                       <Type className="h-5 w-5 text-[#B76E79]" />
                       <h4 className="text-lg font-sans font-semibold text-slate-800 dark:text-ink-text">
@@ -1000,7 +1000,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   </div>
 
                   {/* Live Type playground */}
-                  <div className="bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-6 flex flex-col justify-between">
+                  <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-6 flex flex-col justify-between">
                     <div className="space-y-4">
                       <h4 className="text-sm font-sans font-bold uppercase tracking-wider text-slate-400">
                         {dictionary.typography.tryText}
@@ -1042,7 +1042,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {/* TAB: Geometry & Clear Space */}
             {activeTab === 'geometry' && (
               <div className="space-y-8">
-                <div className="bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
+                <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
                   <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
                     {dictionary.geometry.title}
                   </h3>
@@ -1053,7 +1053,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
                   {/* Schematic diagram */}
-                  <div className="lg:col-span-7 bg-[#FAF8F5] dark:bg-[#2C221E]/30 rounded-[2rem] border border-rose-100/15 p-8 flex flex-col justify-center items-center shadow-rosegold relative overflow-hidden min-h-[380px]">
+                  <div className="lg:col-span-7 bg-[#FAF8F5] dark:bg-ink-raised/30 rounded-[2rem] border border-rose-100/15 p-8 flex flex-col justify-center items-center shadow-rosegold relative overflow-hidden min-h-[380px]">
                     <span className="absolute top-4 left-4 bg-slate-900 text-white dark:bg-white dark:text-ink text-[10px] font-sans font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
                       {dictionary.geometry.clearSpaceTitle}
                     </span>
@@ -1077,7 +1077,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   </div>
 
                   {/* Numeric rules */}
-                  <div className="lg:col-span-5 bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 sm:p-10 shadow-rosegold flex flex-col justify-between space-y-6">
+                  <div className="lg:col-span-5 bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 sm:p-10 shadow-rosegold flex flex-col justify-between space-y-6">
                     <div className="space-y-4">
                       <h4 className="text-lg font-sans font-semibold text-slate-800 dark:text-ink-text">
                         {dictionary.geometry.minSizeTitle}
@@ -1094,8 +1094,8 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                         { icon: <Scissors className="h-5 w-5 text-[#D4AF37]" />, text: dictionary.geometry.printSize },
                         { icon: <Image className="h-5 w-5 text-[#E8B4A0]" />, text: dictionary.geometry.iconSize }
                       ].map((rule, idx) => (
-                        <div key={idx} className="flex items-center gap-3.5 p-4 bg-rose-50/15 dark:bg-[#130E0D]/50 border border-rose-100/10 rounded-2xl">
-                          <div className="p-2.5 rounded-xl bg-white dark:bg-[#1E1715] shadow-xs">
+                        <div key={idx} className="flex items-center gap-3.5 p-4 bg-rose-50/15 dark:bg-ink-raised border border-rose-100/10 dark:border-ink-hairline rounded-2xl">
+                          <div className="p-2.5 rounded-xl bg-white dark:bg-ink-raised shadow-xs">
                             {rule.icon}
                           </div>
                           <span className="text-xs font-sans font-semibold text-slate-700 dark:text-ink-text-muted leading-tight">
@@ -1112,7 +1112,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {/* TAB: Rules (Do's & Don'ts) */}
             {activeTab === 'rules' && (
               <div className="space-y-8">
-                <div className="bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
+                <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
                   <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
                     {dictionary.rules.title}
                   </h3>
@@ -1180,7 +1180,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {/* TAB: Mockups */}
             {activeTab === 'mockups' && (
               <div className="space-y-8">
-                <div className="bg-white dark:bg-[#1E1715] rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
+                <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
                   <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
                     {dictionary.mockups.title}
                   </h3>

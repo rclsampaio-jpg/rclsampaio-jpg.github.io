@@ -339,7 +339,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
     <div className="space-y-8 select-none">
       
       {/* Title Header with beautiful Rose Gold scrapbook binding feel */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#2C221E] border border-rose-100/30 dark:border-rosegold/10 p-6 rounded-3xl shadow-sm transition-all duration-300">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-ink-raised border border-rose-100/30 dark:border-rosegold/10 p-6 rounded-3xl shadow-sm transition-all duration-300">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="text-xs font-mono font-extrabold uppercase tracking-widest text-[#D4AF37] px-2 py-0.5 rounded-md bg-[#D4AF37]/10">
@@ -371,7 +371,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
           onClick={() => setActiveTab('timeline')}
           className={`px-4 py-2.5 text-xs font-sans font-extrabold uppercase tracking-wider rounded-t-xl border-t border-l border-r transition cursor-pointer shrink-0 ${
             activeTab === 'timeline'
-              ? 'bg-white dark:bg-[#2C221E] text-rosegold border-rose-100/30 dark:border-rosegold/10 font-black'
+              ? 'bg-white dark:bg-ink-raised text-rosegold border-rose-100/30 dark:border-rosegold/10 font-black'
               : 'bg-rose-50/20 dark:bg-warmbrown-light/5 text-slate-500 border-transparent hover:bg-rose-50/50'
           }`}
         >
@@ -382,7 +382,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
           onClick={() => setActiveTab('moodmap')}
           className={`px-4 py-2.5 text-xs font-sans font-extrabold uppercase tracking-wider rounded-t-xl border-t border-l border-r transition cursor-pointer shrink-0 ${
             activeTab === 'moodmap'
-              ? 'bg-white dark:bg-[#2C221E] text-rosegold border-rose-100/30 dark:border-rosegold/10 font-black'
+              ? 'bg-white dark:bg-ink-raised text-rosegold border-rose-100/30 dark:border-rosegold/10 font-black'
               : 'bg-rose-50/20 dark:bg-warmbrown-light/5 text-slate-500 border-transparent hover:bg-rose-50/50'
           }`}
         >
@@ -393,7 +393,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
           onClick={() => setActiveTab('chapters')}
           className={`px-4 py-2.5 text-xs font-sans font-extrabold uppercase tracking-wider rounded-t-xl border-t border-l border-r transition cursor-pointer shrink-0 ${
             activeTab === 'chapters'
-              ? 'bg-white dark:bg-[#2C221E] text-rosegold border-rose-100/30 dark:border-rosegold/10 font-black'
+              ? 'bg-white dark:bg-ink-raised text-rosegold border-rose-100/30 dark:border-rosegold/10 font-black'
               : 'bg-rose-50/20 dark:bg-warmbrown-light/5 text-slate-500 border-transparent hover:bg-rose-50/50'
           }`}
         >
@@ -404,7 +404,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
           onClick={() => setActiveTab('sos')}
           className={`px-4 py-2.5 text-xs font-sans font-extrabold uppercase tracking-wider rounded-t-xl border-t border-l border-r transition cursor-pointer shrink-0 ${
             activeTab === 'sos'
-              ? 'bg-white dark:bg-[#2C221E] text-rosegold border-rose-100/30 dark:border-rosegold/10 font-black'
+              ? 'bg-white dark:bg-ink-raised text-rosegold border-rose-100/30 dark:border-rosegold/10 font-black'
               : 'bg-rose-50/20 dark:bg-warmbrown-light/5 text-slate-500 border-transparent hover:bg-rose-50/50'
           }`}
         >
@@ -415,7 +415,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
           onClick={() => setActiveTab('tree')}
           className={`px-4 py-2.5 text-xs font-sans font-extrabold uppercase tracking-wider rounded-t-xl border-t border-l border-r transition cursor-pointer shrink-0 ${
             activeTab === 'tree'
-              ? 'bg-white dark:bg-[#2C221E] text-rosegold border-rose-100/30 dark:border-rosegold/10 font-black'
+              ? 'bg-white dark:bg-ink-raised text-rosegold border-rose-100/30 dark:border-rosegold/10 font-black'
               : 'bg-rose-50/20 dark:bg-warmbrown-light/5 text-slate-500 border-transparent hover:bg-rose-50/50'
           }`}
         >
@@ -424,7 +424,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
       </div>
 
       {/* Main Page Area */}
-      <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 shadow-sm">
+      <div className="bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 shadow-sm">
         <AnimatePresence mode="wait">
           
           {/* 1. TIMELINE OF MEMORIES */}
@@ -473,7 +473,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                       className="relative space-y-1 group"
                     >
                       {/* Left timeline dot */}
-                      <div className="absolute -left-10 top-0 w-8 h-8 rounded-full bg-[#FAF8F5] dark:bg-[#1E1715] border-2 border-rosegold flex items-center justify-center text-sm shadow-sm">
+                      <div className="absolute -left-10 top-0 w-8 h-8 rounded-full bg-[#FAF8F5] dark:bg-ink-raised border-2 border-rosegold flex items-center justify-center text-sm shadow-sm">
                         {m.emoji}
                       </div>
 
@@ -565,7 +565,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                       className={`relative aspect-square flex flex-col items-center justify-center rounded-2xl border transition cursor-pointer select-none ${
                         isCompleted 
                           ? `bg-gradient-to-br ${moodData.color} shadow-sm cursor-pointer`
-                          : 'bg-[#FAF8F5]/30 dark:bg-[#1E1715]/20 border-dashed border-rose-100/30 dark:border-rosegold/10 text-slate-300 dark:text-ink-text cursor-not-allowed'
+                          : 'bg-[#FAF8F5]/30 dark:bg-ink-raised/20 border-dashed border-rose-100/30 dark:border-rosegold/10 text-slate-300 dark:text-ink-text cursor-not-allowed'
                       }`}
                     >
                       <span className="text-[10px] font-mono font-bold absolute top-1.5 left-1.5 opacity-60">
@@ -595,7 +595,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                       initial={{ scale: 0.93, y: 20 }}
                       animate={{ scale: 1, y: 0 }}
                       exit={{ scale: 0.93, y: 20 }}
-                      className="bg-white dark:bg-[#1E1715] border border-rose-100/30 dark:border-rosegold/15 p-6 rounded-3xl shadow-2xl max-w-md w-full relative space-y-6 text-left"
+                      className="bg-white dark:bg-ink-raised border border-rose-100/30 dark:border-rosegold/15 p-6 rounded-3xl shadow-2xl max-w-md w-full relative space-y-6 text-left"
                     >
                       {/* Polaroid Aesthetic Frame */}
                       <div className="absolute top-0 right-0 h-24 w-24 bg-gradient-to-bl from-rosegold/10 to-transparent blur-xl rounded-full" />
@@ -616,7 +616,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                       <div className="space-y-4">
                         {/* Day Mission Title */}
                         <div className="space-y-0.5">
-                          <h4 className="text-sm font-sans uppercase font-bold text-slate-800 dark:text-[#FAF8F5]">
+                          <h4 className="text-sm font-sans uppercase font-bold text-slate-800 dark:text-ink-text">
                             {days.find(d => d.dayNumber === selectedDayMood)?.title[lang] || `Mission Day ${selectedDayMood}`}
                           </h4>
                           <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">
@@ -625,7 +625,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                         </div>
 
                         {/* Reflection Quote */}
-                        <div className="space-y-1 bg-[#FAF8F5]/80 dark:bg-[#1C1513] p-4 rounded-xl border border-rose-100/10">
+                        <div className="space-y-1 bg-[#FAF8F5]/80 dark:bg-ink-raised p-4 rounded-xl border border-rose-100/10">
                           <span className="text-[11px] font-sans text-slate-400 uppercase font-extrabold tracking-widest block">
                             {trans.polaroidReflection}
                           </span>
@@ -704,7 +704,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                         key={chapterId}
                         initial={{ opacity: 0, scale: 0.98 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="bg-[#FAF8F5]/80 dark:bg-[#1E1715] border border-rose-100/25 dark:border-rosegold/10 rounded-2xl p-5 space-y-4 relative shadow-xs overflow-hidden"
+                        className="bg-[#FAF8F5]/80 dark:bg-ink-raised border border-rose-100/25 dark:border-rosegold/10 rounded-2xl p-5 space-y-4 relative shadow-xs overflow-hidden"
                       >
                         <div className="absolute top-0 right-0 h-16 w-16 bg-gradient-to-bl from-accentgold/10 to-transparent blur-lg rounded-full" />
                         
@@ -747,7 +747,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
 
                           {/* Private Note Card */}
                           {r.futureSelfNote && (
-                            <div className="space-y-1 bg-white dark:bg-[#1C1513] border border-rose-100/10 rounded-xl p-3 font-serif italic text-slate-600 dark:text-ink-text-muted leading-relaxed">
+                            <div className="space-y-1 bg-white dark:bg-ink-raised border border-rose-100/10 rounded-xl p-3 font-serif italic text-slate-600 dark:text-ink-text-muted leading-relaxed">
                               <span className="font-sans not-italic font-bold text-slate-400 uppercase text-[11px] block mb-1">
                                 {trans.chapterCardNote}
                               </span>
@@ -791,7 +791,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                       key={idx}
                       initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-4 rounded-2xl bg-rose-50/15 dark:bg-[#1E1715] border border-rose-100/10 flex flex-col sm:flex-row justify-between sm:items-center gap-4 text-xs font-sans"
+                      className="p-4 rounded-2xl bg-rose-50/15 dark:bg-ink-raised border border-rose-100/10 flex flex-col sm:flex-row justify-between sm:items-center gap-4 text-xs font-sans"
                     >
                       <div className="space-y-1 max-w-lg">
                         <div className="flex items-center gap-2">
@@ -844,11 +844,11 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                   {trans.treeDesc}
                 </p>
 
-                <div className="p-5 rounded-3xl bg-[#FAF8F5]/80 dark:bg-[#1E1715] border border-rose-100/10">
+                <div className="p-5 rounded-3xl bg-[#FAF8F5]/80 dark:bg-ink-raised border border-rose-100/10">
                   <TreeOfRebirth completedCount={completedCount} lang={lang} />
                 </div>
 
-                <div className="p-4 rounded-2xl bg-[#FAF8F5]/80 dark:bg-[#1E1715] border border-rose-100/10 flex items-center gap-3">
+                <div className="p-4 rounded-2xl bg-[#FAF8F5]/80 dark:bg-ink-raised border border-rose-100/10 flex items-center gap-3">
                   <div className="text-2xl shrink-0">
                     {getVehicleEmoji(currentChapterId)}
                   </div>
@@ -856,7 +856,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                     <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block font-extrabold">
                       {trans.vehicleStage}
                     </span>
-                    <span className="text-xs font-bold text-slate-800 dark:text-[#FAF8F5]">
+                    <span className="text-xs font-bold text-slate-800 dark:text-ink-text">
                       {getVehicleDescription(currentChapterId)}
                     </span>
                   </div>

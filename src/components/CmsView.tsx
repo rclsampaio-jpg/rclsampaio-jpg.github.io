@@ -362,10 +362,10 @@ export default function CmsView({
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-[80vh] bg-slate-50 dark:bg-[#1E1715]/45 rounded-3xl overflow-hidden border border-rose-100/30 dark:border-rosegold/10 font-sans shadow-lg">
+    <div className="flex flex-col lg:flex-row min-h-[80vh] bg-slate-50 dark:bg-ink-raised/45 rounded-3xl overflow-hidden border border-rose-100/30 dark:border-rosegold/10 font-sans shadow-lg">
       
       {/* Studio Navigation Sidebar */}
-      <aside className="w-full lg:w-64 bg-white dark:bg-[#2C221E] p-6 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-rose-150/20 dark:border-rosegold/10">
+      <aside className="w-full lg:w-64 bg-white dark:bg-ink-raised p-6 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-rose-150/20 dark:border-rosegold/10">
         <div className="space-y-6">
           <div className="flex items-center gap-2.5 px-2">
             <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-rosegold to-accentgold flex items-center justify-center text-white font-extrabold shadow-sm">
@@ -533,7 +533,7 @@ export default function CmsView({
 
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white dark:bg-[#2C221E] p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
+              <div className="bg-white dark:bg-ink-raised p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
                 <div className="flex justify-between items-center text-slate-400 dark:text-ink-text-muted mb-2">
                   <span className="text-xs font-semibold uppercase tracking-wider">Jornadas Ativas</span>
                   <Compass className="h-5 w-5 text-rosegold" />
@@ -542,7 +542,7 @@ export default function CmsView({
                 <span className="text-[10px] text-slate-400">Total de programas cadastrados</span>
               </div>
 
-              <div className="bg-white dark:bg-[#2C221E] p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
+              <div className="bg-white dark:bg-ink-raised p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
                 <div className="flex justify-between items-center text-slate-400 dark:text-ink-text-muted mb-2">
                   <span className="text-xs font-semibold uppercase tracking-wider">Módulos/Capítulos</span>
                   <Layers className="h-5 w-5 text-rosegold" />
@@ -551,7 +551,7 @@ export default function CmsView({
                 <span className="text-[10px] text-slate-400">Pórticos de evolução de marcas</span>
               </div>
 
-              <div className="bg-white dark:bg-[#2C221E] p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
+              <div className="bg-white dark:bg-ink-raised p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
                 <div className="flex justify-between items-center text-slate-400 dark:text-ink-text-muted mb-2">
                   <span className="text-xs font-semibold uppercase tracking-wider">Aulas Ativas</span>
                   <Calendar className="h-5 w-5 text-rosegold" />
@@ -560,7 +560,7 @@ export default function CmsView({
                 <span className="text-[10px] text-slate-400">Desafios diários mapeados</span>
               </div>
 
-              <div className="bg-white dark:bg-[#2C221E] p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
+              <div className="bg-white dark:bg-ink-raised p-5 rounded-2xl border border-rose-100/20 dark:border-rosegold/10 shadow-xs">
                 <div className="flex justify-between items-center text-slate-400 dark:text-ink-text-muted mb-2">
                   <span className="text-xs font-semibold uppercase tracking-wider">Mídias em Biblioteca</span>
                   <Folder className="h-5 w-5 text-rosegold" />
@@ -571,7 +571,7 @@ export default function CmsView({
             </div>
 
             {/* Notion-style Board Section */}
-            <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/20 dark:border-rosegold/10 p-6 space-y-4">
+            <div className="bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/20 dark:border-rosegold/10 p-6 space-y-4">
               <div className="flex justify-between items-center border-b border-rose-50 dark:border-rosegold/5 pb-4">
                 <h3 className="text-md font-serif font-bold text-slate-800 dark:text-white uppercase">
                   Quadro de Jornadas de Transformação
@@ -688,7 +688,7 @@ export default function CmsView({
                 return (
                   <div className="space-y-6">
                     {/* Journey settings highlight card */}
-                    <div className="bg-white dark:bg-[#2C221E] border border-rose-100/25 dark:border-rosegold/10 rounded-2xl p-6 flex flex-col md:flex-row justify-between gap-6">
+                    <div className="bg-white dark:bg-ink-raised border border-rose-100/25 dark:border-rosegold/10 rounded-2xl p-6 flex flex-col md:flex-row justify-between gap-6">
                       <div className="flex gap-4">
                         <img 
                           src={activeJ.coverImage} 
@@ -741,7 +741,7 @@ export default function CmsView({
                       </div>
 
                       {journeyChs.length === 0 ? (
-                        <div className="bg-white dark:bg-[#2C221E] border border-dashed border-rose-150/40 p-8 rounded-2xl text-center text-xs text-slate-400">
+                        <div className="bg-white dark:bg-ink-raised border border-dashed border-rose-150/40 p-8 rounded-2xl text-center text-xs text-slate-400">
                           Nenhum capítulo cadastrado para esta jornada ainda. Clique acima para começar a construir a experiência!
                         </div>
                       ) : (
@@ -752,7 +752,7 @@ export default function CmsView({
                             return (
                               <div 
                                 key={ch.id}
-                                className="bg-white dark:bg-[#2C221E] border border-rose-100/25 dark:border-rosegold/10 rounded-2xl overflow-hidden shadow-xs"
+                                className="bg-white dark:bg-ink-raised border border-rose-100/25 dark:border-rosegold/10 rounded-2xl overflow-hidden shadow-xs"
                               >
                                 {/* Chapter header inside block */}
                                 <div className="bg-[#FAF8F5]/60 dark:bg-warmbrown-light/10 p-4 border-b border-rose-100/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -870,7 +870,7 @@ export default function CmsView({
 
             {/* Editing Journey details FORM */}
             {editingJourney && (
-              <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
+              <div className="bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
                 <div className="flex justify-between items-center border-b border-rose-100/10 pb-4">
                   <h3 className="text-md font-serif font-black uppercase text-slate-800 dark:text-white">
                     Editar Detalhes da Jornada ({editingJourney.id})
@@ -984,7 +984,7 @@ export default function CmsView({
 
             {/* Editing Chapter details FORM */}
             {editingChapter && (
-              <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
+              <div className="bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
                 <div className="flex justify-between items-center border-b border-rose-100/10 pb-4">
                   <h3 className="text-md font-serif font-black uppercase text-slate-800 dark:text-white">
                     Editar Detalhes do Capítulo
@@ -1082,7 +1082,7 @@ export default function CmsView({
 
             {/* Editing Day / Lesson details FORM */}
             {editingDay && (
-              <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
+              <div className="bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
                 <div className="flex justify-between items-center border-b border-rose-100/10 pb-4">
                   <h3 className="text-md font-serif font-black uppercase text-slate-800 dark:text-white">
                     Editar Lição (Dia {editingDay.dayNumber})
@@ -1242,7 +1242,7 @@ export default function CmsView({
             </div>
 
         {activeChannelTab === 'community' && (
-          <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
+          <div className="bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
@@ -1317,7 +1317,7 @@ export default function CmsView({
         )}
 
         {activeChannelTab === 'mentorship' && (
-          <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
+          <div className="bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
             <div className="border-b border-rose-100/10 pb-4">
               <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
                 <Heart className="h-5 w-5 text-rosegold" /> Módulo de Mentorias Privadas
@@ -1397,7 +1397,7 @@ export default function CmsView({
         )}
 
         {activeChannelTab === 'support' && (
-          <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
+          <div className="bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
             <div className="border-b border-rose-100/10 pb-4">
               <h1 className="text-xl font-serif font-bold text-slate-800 dark:text-white uppercase flex items-center gap-2">
                 <PhoneCall className="h-5 w-5 text-rosegold" /> Suporte & FAQs
@@ -1540,7 +1540,7 @@ export default function CmsView({
             </div>
 
             {editingAsset ? (
-              <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-4">
+              <div className="bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-4">
                 <h3 className="text-sm font-bold uppercase tracking-wide text-slate-800 dark:text-white">
                   {editingAsset.isCustom ? 'Editar' : 'Cadastrar'} Material
                 </h3>
@@ -1627,7 +1627,7 @@ export default function CmsView({
                 {library.map(asset => (
                   <div 
                     key={asset.id} 
-                    className="bg-white dark:bg-[#2C221E] border border-rose-100/10 dark:border-rosegold/5 p-4 rounded-xl flex justify-between gap-4"
+                    className="bg-white dark:bg-ink-raised border border-rose-100/10 dark:border-rosegold/5 p-4 rounded-xl flex justify-between gap-4"
                   >
                     <div>
                       <span className="text-[9px] font-mono font-bold text-rosegold uppercase bg-rose-50 dark:bg-warmbrown px-1.5 py-0.5 rounded">
@@ -1688,7 +1688,7 @@ export default function CmsView({
               </p>
             </div>
 
-            <div className="bg-white dark:bg-[#2C221E] rounded-2xl border border-red-200/40 dark:border-red-500/20 p-6 space-y-4">
+            <div className="bg-white dark:bg-ink-raised rounded-2xl border border-red-200/40 dark:border-red-500/20 p-6 space-y-4">
               <div className="flex items-start gap-3">
                 <AlertTriangle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
                 <div>

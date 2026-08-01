@@ -73,10 +73,10 @@ export default function RenaSerLogo({
       <div className={`flex items-center gap-3.5 select-none ${className}`}>
         <RenaSerIcon size={size} />
         <div className="flex flex-col">
-          <h1 className="text-xl sm:text-2xl font-display tracking-[0.22em] font-light uppercase leading-none text-slate-900 dark:text-[#FAF6F2]">
+          <h1 className="text-xl sm:text-2xl font-display tracking-[0.22em] font-light uppercase leading-none text-slate-900 dark:text-ink-text">
             Rena<span className="text-[#B76E79] font-medium">S</span>er
           </h1>
-          <span className="text-[7.5px] sm:text-[8px] tracking-[0.3em] font-sans uppercase text-slate-400 dark:text-[#EBB4A0] mt-1 font-semibold">
+          <span className="text-[7.5px] sm:text-[8px] tracking-[0.3em] font-sans uppercase text-slate-400 dark:text-rosegold-light mt-1 font-semibold">
             {tagline}
           </span>
         </div>
@@ -88,10 +88,10 @@ export default function RenaSerLogo({
   return (
     <div className={`flex flex-col items-center text-center select-none ${className}`}>
       <RenaSerIcon size={size * 1.2} />
-      <h1 className="text-2xl sm:text-3.5xl md:text-4xl font-display tracking-[0.26em] font-light uppercase leading-none mt-4 text-slate-900 dark:text-[#FAF6F2]">
+      <h1 className="text-2xl sm:text-3.5xl md:text-4xl font-display tracking-[0.26em] font-light uppercase leading-none mt-4 text-slate-900 dark:text-ink-text">
         Rena<span className="text-[#B76E79] font-normal">S</span>er
       </h1>
-      <p className="text-[9px] sm:text-[10px] tracking-[0.38em] font-sans uppercase text-slate-400 dark:text-[#EBB4A0] mt-3 font-semibold">
+      <p className="text-[9px] sm:text-[10px] tracking-[0.38em] font-sans uppercase text-slate-400 dark:text-rosegold-light mt-3 font-semibold">
         {tagline}
       </p>
     </div>
