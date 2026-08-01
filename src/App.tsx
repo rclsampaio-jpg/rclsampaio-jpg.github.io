@@ -1027,6 +1027,7 @@ function AppContent() {
                 onShowIntro={handleShowIntro}
                 onUpdateProgress={updateProgress}
                 onTriggerSos={() => setActiveTab('sos')}
+                isAdminUnlocked={isAdminUnlocked}
               />
             )}
 

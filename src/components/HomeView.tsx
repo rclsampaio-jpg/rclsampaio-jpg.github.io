@@ -137,6 +137,7 @@ interface HomeViewProps {
   onShowIntro?: (chapterId: number) => void;
   onUpdateProgress?: (updated: UserProgress) => void;
   onTriggerSos?: () => void;
+  isAdminUnlocked?: boolean;
 }
 
 export default function HomeView({
@@ -147,8 +148,13 @@ export default function HomeView({
   onLanguageChange,
   onShowIntro,
   onUpdateProgress,
-  onTriggerSos
+  onTriggerSos,
+  isAdminUnlocked
 }: HomeViewProps) {
+  // Admin-only: preview any of the 10 Árvore do Renascimento stages without
+  // touching real progress data (completionHistory drives streaks too).
+  // null = show the real progress as usual.
+  const [treeStagePreview, setTreeStagePreview] = useState<number | null>(null);
   // Computed lazily (not via useEffect) so the very first render already
   // knows whether onboarding is needed, otherwise this defaulted to
   // 'complete' for one frame, briefly flashing the normal Home screen
@@ -851,8 +857,48 @@ export default function HomeView({
         className="my-8 flex flex-col items-center justify-center relative z-20 w-full"
       >
         <div className="w-full max-w-[460px]">
-          <TreeOfRebirth completedCount={completedCount} lang={lang} />
+          <TreeOfRebirth completedCount={treeStagePreview ?? completedCount} lang={lang} />
         </div>
+
+        {isAdminUnlocked && (
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-1.5 max-w-[460px]">
+            <span className="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-ink-text-muted mr-1">
+              Testar fase:
+            </span>
+            {[
+              { label: '1', count: 1 },
+              { label: '2', count: 3 },
+              { label: '3', count: 8 },
+              { label: '4', count: 11 },
+              { label: '5', count: 14 },
+              { label: '6', count: 17 },
+              { label: '7', count: 20 },
+              { label: '8', count: 24 },
+              { label: '9', count: 28 },
+              { label: '10', count: 30 },
+            ].map(item => (
+              <button
+                key={item.count}
+                onClick={() => setTreeStagePreview(item.count)}
+                className={`px-2 py-1 rounded-lg text-[9px] font-mono border transition ${
+                  treeStagePreview === item.count
+                    ? 'bg-rosegold text-white border-rosegold dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light'
+                    : 'border-rose-100/30 dark:border-ink-hairline text-slate-500 dark:text-ink-text-muted hover:border-rosegold/50'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+            {treeStagePreview !== null && (
+              <button
+                onClick={() => setTreeStagePreview(null)}
+                className="px-2 py-1 rounded-lg text-[9px] font-mono uppercase text-rose-500 hover:text-rose-600"
+              >
+                Real
+              </button>
+            )}
+          </div>
+        )}
       </motion.div>
 
       {/* Bottom Section: Today's Promise & The Single Next Action */}
