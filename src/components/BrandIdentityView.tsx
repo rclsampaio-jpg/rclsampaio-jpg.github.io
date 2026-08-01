@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
+import {
   Sparkles, Check, Copy, Eye, Sliders, Type, Grid, Heart, HelpCircle,
   Smartphone, Monitor, Laptop, Image, Scissors, Info, Layout, Layers,
   ChevronRight, Compass, ArrowUpRight, Award, CornerDownRight, FileText, CheckCircle2, AlertCircle
 } from 'lucide-react';
+import EditableText from './editable/EditableText';
+import EditableImage from './editable/EditableImage';
 
 interface BrandIdentityViewProps {
   lang: 'pt' | 'en' | 'es';
@@ -279,11 +281,11 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
   // one actually used app-wide (LoginView, header, RenaSerLogo.tsx), not a
   // fabricated placeholder glyph.
   const renderGeometricIcon = (className: string, ..._unused: unknown[]) => (
-    <img
-      src="/assets/images/logo.png"
+    <EditableImage
+      contentKey="brandIdentity.logoImage"
+      fallback="/assets/images/logo.png"
       alt="RenaSer"
       className={`${className} object-contain`}
-      referrerPolicy="no-referrer"
     />
   );
 
@@ -381,17 +383,26 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             </div>
           </div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-light tracking-tight text-white leading-none">
-            {dictionary.title}
-          </h1>
-          
-          <p className="text-sm sm:text-base font-sans text-slate-300 tracking-wide font-light max-w-xl leading-relaxed">
-            {dictionary.subtitle}
-          </p>
+          <EditableText
+            contentKey="brandIdentity.title"
+            fallback={dictionary.title}
+            as="h1"
+            className="text-4xl sm:text-5xl md:text-6xl font-display font-light tracking-tight text-white leading-none"
+          />
 
-          <p className="text-xs sm:text-sm font-serif italic text-[#E8B4A0] leading-relaxed max-w-xl border-l-2 border-[#B76E79]/30 pl-4">
-            {dictionary.intro}
-          </p>
+          <EditableText
+            contentKey="brandIdentity.subtitle"
+            fallback={dictionary.subtitle}
+            as="p"
+            className="text-sm sm:text-base font-sans text-slate-300 tracking-wide font-light max-w-xl leading-relaxed"
+          />
+
+          <EditableText
+            contentKey="brandIdentity.intro"
+            fallback={dictionary.intro}
+            as="p"
+            className="text-xs sm:text-sm font-serif italic text-[#E8B4A0] leading-relaxed max-w-xl border-l-2 border-[#B76E79]/30 pl-4"
+          />
         </div>
       </div>
 
@@ -407,7 +418,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                 : 'text-slate-500 hover:text-[#B76E79] hover:bg-rose-50/50 dark:hover:bg-[#2C221E]/30'
             }`}
           >
-            {dictionary.tabs[tabKey]}
+            <EditableText contentKey={`brandIdentity.tabs.${tabKey}`} fallback={dictionary.tabs[tabKey]} as="span" />
           </button>
         ))}
       </div>
@@ -429,20 +440,23 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   <div className="space-y-6">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl">🌱</span>
-                      <h2 className="text-2xl sm:text-3xl font-display font-light text-slate-900 dark:text-white">
-                        {dictionary.philosophy.title}
-                      </h2>
+                      <EditableText
+                        contentKey="brandIdentity.philosophy.title"
+                        fallback={dictionary.philosophy.title}
+                        as="h2"
+                        className="text-2xl sm:text-3xl font-display font-light text-slate-900 dark:text-white"
+                      />
                     </div>
 
                     <div className="h-px bg-rose-100/10" />
 
                     <p className="text-base font-serif italic text-[#B76E79] tracking-wider uppercase font-light">
-                      "{dictionary.philosophy.tagline}"
+                      "<EditableText contentKey="brandIdentity.philosophy.tagline" fallback={dictionary.philosophy.tagline} as="span" />"
                     </p>
 
                     <div className="space-y-4 text-sm sm:text-base text-slate-600 dark:text-ink-muted leading-relaxed font-light font-sans">
-                      <p>{dictionary.philosophy.description1}</p>
-                      <p>{dictionary.philosophy.description2}</p>
+                      <EditableText contentKey="brandIdentity.philosophy.description1" fallback={dictionary.philosophy.description1} as="p" />
+                      <EditableText contentKey="brandIdentity.philosophy.description2" fallback={dictionary.philosophy.description2} as="p" />
                     </div>
                   </div>
 
@@ -492,7 +506,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                 <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-6 flex flex-col md:flex-row gap-6 items-center justify-between shadow-rosegold">
                   <div className="flex flex-wrap items-center gap-4">
                     <span className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400">
-                      {dictionary.logoSuite.renderStyle}:
+                      <EditableText contentKey="brandIdentity.logoSuite.renderStyle" fallback={dictionary.logoSuite.renderStyle} as="span" />:
                     </span>
                     <div className="flex gap-1.5 p-1 bg-rose-50/40 dark:bg-ink-raised/50 rounded-xl border border-rose-100/10">
                       {(['full', 'mono', 'gold', 'rosegold', 'embossed'] as const).map((style) => (
@@ -513,7 +527,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
 
                   <div className="flex flex-wrap items-center gap-4">
                     <span className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400">
-                      {dictionary.logoSuite.bgStyle}:
+                      <EditableText contentKey="brandIdentity.logoSuite.bgStyle" fallback={dictionary.logoSuite.bgStyle} as="span" />:
                     </span>
                     <div className="flex gap-1.5 p-1 bg-rose-50/40 dark:bg-ink-raised/50 rounded-xl border border-rose-100/10">
                       {(['light', 'dark', 'chocolate', 'grid'] as const).map((bg) => (
@@ -565,9 +579,12 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   {/* Horizontal Logo Display */}
                   <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
                     <div className="flex items-center justify-between border-b border-rose-100/10 pb-4">
-                      <h3 className="text-sm font-sans font-bold uppercase tracking-wider text-slate-400">
-                        {dictionary.logoSuite.horizontal}
-                      </h3>
+                      <EditableText
+                        contentKey="brandIdentity.logoSuite.horizontal"
+                        fallback={dictionary.logoSuite.horizontal}
+                        as="h3"
+                        className="text-sm font-sans font-bold uppercase tracking-wider text-slate-400"
+                      />
                       <button 
                         onClick={() => copyToClipboard('RenaSer', 'HorizontalLogo')}
                         className="text-xs text-slate-400 hover:text-[#B76E79] flex items-center gap-1 cursor-pointer"
@@ -579,17 +596,23 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                     <div className="h-36 bg-[#FAF8F5] dark:bg-ink-raised/30 rounded-2xl border border-rose-100/10 flex items-center justify-center p-6">
                       {renderLogo(logoRenderStyle, 'horizontal')}
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-ink-muted text-center">
-                      {dictionary.logoSuite.horizontalDesc}
-                    </p>
+                    <EditableText
+                      contentKey="brandIdentity.logoSuite.horizontalDesc"
+                      fallback={dictionary.logoSuite.horizontalDesc}
+                      as="p"
+                      className="text-xs text-slate-500 dark:text-ink-muted text-center"
+                    />
                   </div>
 
                   {/* Stacked Logo Display */}
                   <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
                     <div className="flex items-center justify-between border-b border-rose-100/10 pb-4">
-                      <h3 className="text-sm font-sans font-bold uppercase tracking-wider text-slate-400">
-                        {dictionary.logoSuite.stacked}
-                      </h3>
+                      <EditableText
+                        contentKey="brandIdentity.logoSuite.stacked"
+                        fallback={dictionary.logoSuite.stacked}
+                        as="h3"
+                        className="text-sm font-sans font-bold uppercase tracking-wider text-slate-400"
+                      />
                       <button 
                         onClick={() => copyToClipboard('RenaSer_Stacked', 'StackedLogo')}
                         className="text-xs text-slate-400 hover:text-[#B76E79] flex items-center gap-1 cursor-pointer"
@@ -601,9 +624,12 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                     <div className="h-44 bg-[#FAF8F5] dark:bg-ink-raised/30 rounded-2xl border border-rose-100/10 flex items-center justify-center p-6">
                       {renderLogo(logoRenderStyle, 'stacked')}
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-ink-muted text-center">
-                      {dictionary.logoSuite.stackedDesc}
-                    </p>
+                    <EditableText
+                      contentKey="brandIdentity.logoSuite.stackedDesc"
+                      fallback={dictionary.logoSuite.stackedDesc}
+                      as="p"
+                      className="text-xs text-slate-500 dark:text-ink-muted text-center"
+                    />
                   </div>
                 </div>
               </div>
@@ -615,13 +641,19 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
                   <div className="lg:col-span-5 bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 sm:p-10 shadow-rosegold flex flex-col justify-between space-y-6">
                     <div className="space-y-4">
-                      <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
-                        {dictionary.appIcon.title}
-                      </h3>
+                      <EditableText
+                        contentKey="brandIdentity.appIcon.title"
+                        fallback={dictionary.appIcon.title}
+                        as="h3"
+                        className="text-2xl font-display font-light text-slate-900 dark:text-white"
+                      />
                       <div className="h-px bg-rose-100/10" />
-                      <p className="text-sm text-slate-600 dark:text-ink-muted leading-relaxed font-light font-sans">
-                        {dictionary.appIcon.desc}
-                      </p>
+                      <EditableText
+                        contentKey="brandIdentity.appIcon.desc"
+                        fallback={dictionary.appIcon.desc}
+                        as="p"
+                        className="text-sm text-slate-600 dark:text-ink-muted leading-relaxed font-light font-sans"
+                      />
                     </div>
 
                     <div className="space-y-3">
@@ -685,12 +717,18 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                 {/* Ecosystem Positioning Section */}
                 <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-6">
                   <div className="space-y-2">
-                    <h3 className="text-xl font-sans font-light tracking-tight text-slate-900 dark:text-white">
-                      {dictionary.appIcon.mockupsTitle}
-                    </h3>
-                    <p className="text-xs text-slate-400">
-                      {dictionary.appIcon.mockupsDesc}
-                    </p>
+                    <EditableText
+                      contentKey="brandIdentity.appIcon.mockupsTitle"
+                      fallback={dictionary.appIcon.mockupsTitle}
+                      as="h3"
+                      className="text-xl font-sans font-light tracking-tight text-slate-900 dark:text-white"
+                    />
+                    <EditableText
+                      contentKey="brandIdentity.appIcon.mockupsDesc"
+                      fallback={dictionary.appIcon.mockupsDesc}
+                      as="p"
+                      className="text-xs text-slate-400"
+                    />
                   </div>
 
                   <div className="h-px bg-rose-100/10" />
@@ -752,12 +790,18 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {activeTab === 'colors' && (
               <div className="space-y-8">
                 <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
-                  <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
-                    {dictionary.colors.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted">
-                    {dictionary.colors.desc}
-                  </p>
+                  <EditableText
+                    contentKey="brandIdentity.colors.title"
+                    fallback={dictionary.colors.title}
+                    as="h3"
+                    className="text-2xl font-display font-light text-slate-900 dark:text-white"
+                  />
+                  <EditableText
+                    contentKey="brandIdentity.colors.desc"
+                    fallback={dictionary.colors.desc}
+                    as="p"
+                    className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted"
+                  />
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -952,12 +996,18 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {activeTab === 'typography' && (
               <div className="space-y-8">
                 <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
-                  <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
-                    {dictionary.typography.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted">
-                    {dictionary.typography.desc}
-                  </p>
+                  <EditableText
+                    contentKey="brandIdentity.typography.title"
+                    fallback={dictionary.typography.title}
+                    as="h3"
+                    className="text-2xl font-display font-light text-slate-900 dark:text-white"
+                  />
+                  <EditableText
+                    contentKey="brandIdentity.typography.desc"
+                    fallback={dictionary.typography.desc}
+                    as="p"
+                    className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -965,36 +1015,51 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-6">
                     <div className="flex items-center gap-2">
                       <Type className="h-5 w-5 text-[#B76E79]" />
-                      <h4 className="text-lg font-sans font-semibold text-slate-800 dark:text-ink-text">
-                        {dictionary.typography.fontPairing}
-                      </h4>
+                      <EditableText
+                        contentKey="brandIdentity.typography.fontPairing"
+                        fallback={dictionary.typography.fontPairing}
+                        as="h4"
+                        className="text-lg font-sans font-semibold text-slate-800 dark:text-ink-text"
+                      />
                     </div>
 
                     <div className="h-px bg-rose-100/10" />
 
                     <div className="space-y-6">
                       <div className="space-y-2">
-                        <span className="text-xs font-sans font-bold uppercase tracking-wider text-[#B76E79] block">
-                          {dictionary.typography.headingFont}
-                        </span>
+                        <EditableText
+                          contentKey="brandIdentity.typography.headingFont"
+                          fallback={dictionary.typography.headingFont}
+                          as="span"
+                          className="text-xs font-sans font-bold uppercase tracking-wider text-[#B76E79] block"
+                        />
                         <p className="text-3xl font-display italic text-slate-900 dark:text-white">
                           Cormorant Garamond
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans">
-                          {dictionary.typography.headingDesc}
-                        </p>
+                        <EditableText
+                          contentKey="brandIdentity.typography.headingDesc"
+                          fallback={dictionary.typography.headingDesc}
+                          as="p"
+                          className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
+                        />
                       </div>
 
                       <div className="space-y-2 pt-4 border-t border-rose-100/5">
-                        <span className="text-xs font-sans font-bold uppercase tracking-wider text-[#D4AF37] block">
-                          {dictionary.typography.bodyFont}
-                        </span>
+                        <EditableText
+                          contentKey="brandIdentity.typography.bodyFont"
+                          fallback={dictionary.typography.bodyFont}
+                          as="span"
+                          className="text-xs font-sans font-bold uppercase tracking-wider text-[#D4AF37] block"
+                        />
                         <p className="text-xl font-sans tracking-wide font-light text-slate-900 dark:text-white">
                           Inter
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans">
-                          {dictionary.typography.bodyDesc}
-                        </p>
+                        <EditableText
+                          contentKey="brandIdentity.typography.bodyDesc"
+                          fallback={dictionary.typography.bodyDesc}
+                          as="p"
+                          className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1002,9 +1067,12 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   {/* Live Type playground */}
                   <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-6 flex flex-col justify-between">
                     <div className="space-y-4">
-                      <h4 className="text-sm font-sans font-bold uppercase tracking-wider text-slate-400">
-                        {dictionary.typography.tryText}
-                      </h4>
+                      <EditableText
+                        contentKey="brandIdentity.typography.tryText"
+                        fallback={dictionary.typography.tryText}
+                        as="h4"
+                        className="text-sm font-sans font-bold uppercase tracking-wider text-slate-400"
+                      />
                       <input
                         type="text"
                         value={customTyposText}
@@ -1043,20 +1111,29 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {activeTab === 'geometry' && (
               <div className="space-y-8">
                 <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
-                  <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
-                    {dictionary.geometry.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted">
-                    {dictionary.geometry.desc}
-                  </p>
+                  <EditableText
+                    contentKey="brandIdentity.geometry.title"
+                    fallback={dictionary.geometry.title}
+                    as="h3"
+                    className="text-2xl font-display font-light text-slate-900 dark:text-white"
+                  />
+                  <EditableText
+                    contentKey="brandIdentity.geometry.desc"
+                    fallback={dictionary.geometry.desc}
+                    as="p"
+                    className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
                   {/* Schematic diagram */}
                   <div className="lg:col-span-7 bg-[#FAF8F5] dark:bg-ink-raised/30 rounded-[2rem] border border-rose-100/15 p-8 flex flex-col justify-center items-center shadow-rosegold relative overflow-hidden min-h-[380px]">
-                    <span className="absolute top-4 left-4 bg-slate-900 text-white dark:bg-white dark:text-ink text-[10px] font-sans font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
-                      {dictionary.geometry.clearSpaceTitle}
-                    </span>
+                    <EditableText
+                      contentKey="brandIdentity.geometry.clearSpaceTitle"
+                      fallback={dictionary.geometry.clearSpaceTitle}
+                      as="span"
+                      className="absolute top-4 left-4 bg-slate-900 text-white dark:bg-white dark:text-ink text-[10px] font-sans font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-xs"
+                    />
 
                     {/* Schematic grid representing padding based on 'S' */}
                     <div className="relative border border-[#B76E79]/35 p-16 rounded-xl flex flex-col items-center justify-center">
@@ -1079,28 +1156,37 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   {/* Numeric rules */}
                   <div className="lg:col-span-5 bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 sm:p-10 shadow-rosegold flex flex-col justify-between space-y-6">
                     <div className="space-y-4">
-                      <h4 className="text-lg font-sans font-semibold text-slate-800 dark:text-ink-text">
-                        {dictionary.geometry.minSizeTitle}
-                      </h4>
+                      <EditableText
+                        contentKey="brandIdentity.geometry.minSizeTitle"
+                        fallback={dictionary.geometry.minSizeTitle}
+                        as="h4"
+                        className="text-lg font-sans font-semibold text-slate-800 dark:text-ink-text"
+                      />
                       <div className="h-px bg-rose-100/10" />
-                      <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans">
-                        {dictionary.geometry.minSizeDesc}
-                      </p>
+                      <EditableText
+                        contentKey="brandIdentity.geometry.minSizeDesc"
+                        fallback={dictionary.geometry.minSizeDesc}
+                        as="p"
+                        className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
+                      />
                     </div>
 
                     <div className="space-y-4 pt-4">
                       {[
-                        { icon: <Smartphone className="h-5 w-5 text-[#B76E79]" />, text: dictionary.geometry.digitalSize },
-                        { icon: <Scissors className="h-5 w-5 text-[#D4AF37]" />, text: dictionary.geometry.printSize },
-                        { icon: <Image className="h-5 w-5 text-[#E8B4A0]" />, text: dictionary.geometry.iconSize }
-                      ].map((rule, idx) => (
-                        <div key={idx} className="flex items-center gap-3.5 p-4 bg-rose-50/15 dark:bg-ink-raised border border-rose-100/10 dark:border-ink-hairline rounded-2xl">
+                        { key: 'digitalSize', icon: <Smartphone className="h-5 w-5 text-[#B76E79]" />, text: dictionary.geometry.digitalSize },
+                        { key: 'printSize', icon: <Scissors className="h-5 w-5 text-[#D4AF37]" />, text: dictionary.geometry.printSize },
+                        { key: 'iconSize', icon: <Image className="h-5 w-5 text-[#E8B4A0]" />, text: dictionary.geometry.iconSize }
+                      ].map((rule) => (
+                        <div key={rule.key} className="flex items-center gap-3.5 p-4 bg-rose-50/15 dark:bg-ink-raised border border-rose-100/10 dark:border-ink-hairline rounded-2xl">
                           <div className="p-2.5 rounded-xl bg-white dark:bg-ink-raised shadow-xs">
                             {rule.icon}
                           </div>
-                          <span className="text-xs font-sans font-semibold text-slate-700 dark:text-ink-muted leading-tight">
-                            {rule.text}
-                          </span>
+                          <EditableText
+                            contentKey={`brandIdentity.geometry.${rule.key}`}
+                            fallback={rule.text}
+                            as="span"
+                            className="text-xs font-sans font-semibold text-slate-700 dark:text-ink-muted leading-tight"
+                          />
                         </div>
                       ))}
                     </div>
@@ -1113,12 +1199,18 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {activeTab === 'rules' && (
               <div className="space-y-8">
                 <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
-                  <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
-                    {dictionary.rules.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted">
-                    {dictionary.rules.desc}
-                  </p>
+                  <EditableText
+                    contentKey="brandIdentity.rules.title"
+                    fallback={dictionary.rules.title}
+                    as="h3"
+                    className="text-2xl font-display font-light text-slate-900 dark:text-white"
+                  />
+                  <EditableText
+                    contentKey="brandIdentity.rules.desc"
+                    fallback={dictionary.rules.desc}
+                    as="p"
+                    className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -1126,9 +1218,12 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   <div className="bg-emerald-500/5 border border-emerald-500/20 p-8 rounded-[2rem] shadow-rosegold space-y-6">
                     <div className="flex items-center gap-2.5 text-emerald-600">
                       <CheckCircle2 className="h-6 w-6" />
-                      <h4 className="text-lg font-sans font-bold uppercase tracking-wider">
-                        {dictionary.rules.dos}
-                      </h4>
+                      <EditableText
+                        contentKey="brandIdentity.rules.dos"
+                        fallback={dictionary.rules.dos}
+                        as="h4"
+                        className="text-lg font-sans font-bold uppercase tracking-wider"
+                      />
                     </div>
 
                     <div className="h-px bg-emerald-500/10" />
@@ -1152,9 +1247,12 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   <div className="bg-rose-500/5 border border-rose-500/20 p-8 rounded-[2rem] shadow-rosegold space-y-6">
                     <div className="flex items-center gap-2.5 text-rose-500">
                       <AlertCircle className="h-6 w-6" />
-                      <h4 className="text-lg font-sans font-bold uppercase tracking-wider">
-                        {dictionary.rules.donts}
-                      </h4>
+                      <EditableText
+                        contentKey="brandIdentity.rules.donts"
+                        fallback={dictionary.rules.donts}
+                        as="h4"
+                        className="text-lg font-sans font-bold uppercase tracking-wider"
+                      />
                     </div>
 
                     <div className="h-px bg-rose-500/10" />
@@ -1181,12 +1279,18 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
             {activeTab === 'mockups' && (
               <div className="space-y-8">
                 <div className="bg-white dark:bg-ink-raised rounded-[2rem] border border-rose-100/10 p-8 shadow-rosegold space-y-4">
-                  <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
-                    {dictionary.mockups.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted">
-                    {dictionary.mockups.desc}
-                  </p>
+                  <EditableText
+                    contentKey="brandIdentity.mockups.title"
+                    fallback={dictionary.mockups.title}
+                    as="h3"
+                    className="text-2xl font-display font-light text-slate-900 dark:text-white"
+                  />
+                  <EditableText
+                    contentKey="brandIdentity.mockups.desc"
+                    fallback={dictionary.mockups.desc}
+                    as="p"
+                    className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

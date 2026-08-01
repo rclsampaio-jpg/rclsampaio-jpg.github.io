@@ -14,6 +14,8 @@ import { MissionDay, Language, UserProgress, DayType } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
 import { adaptMessage, resolveGrammarPreference, ToneVariants } from '../utils/grammar';
 import { getLocalDateISO } from '../utils/date';
+import EditableText from './editable/EditableText';
+import EditableImage from './editable/EditableImage';
 
 // Onboarding/return-visit copy that varies by guideStyle. "inspirational"
 // preserves the original wording this content shipped with.
@@ -445,7 +447,7 @@ export default function HomeView({
                 onClick={handleNextOnboard}
                 className="mt-4 px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-[background-color,box-shadow] duration-300 shadow-rosegold hover:shadow-rosegold/40 cursor-pointer"
               >
-                {trans.getStarted}
+                <EditableText contentKey="home.onboarding.getStarted" fallback={trans.getStarted} as="span" />
               </motion.button>
             </motion.div>
           )}
@@ -464,12 +466,18 @@ export default function HomeView({
               </div>
               
               <div className="space-y-2">
-                <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
-                  {trans.languageTitle}
-                </h2>
-                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide">
-                  {trans.selectLanguage}
-                </p>
+                <EditableText
+                  contentKey="home.onboarding.languageTitle"
+                  fallback={trans.languageTitle}
+                  as="h2"
+                  className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight"
+                />
+                <EditableText
+                  contentKey="home.onboarding.selectLanguage"
+                  fallback={trans.selectLanguage}
+                  as="p"
+                  className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide"
+                />
               </div>
 
               <div className="grid grid-cols-1 gap-3 pt-2">
@@ -500,7 +508,7 @@ export default function HomeView({
                 onClick={handleNextOnboard}
                 className="w-full mt-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
-                <span>{trans.continue}</span>
+                <EditableText contentKey="home.onboarding.continue" fallback={trans.continue} as="span" />
                 <ArrowRight className="h-4 w-4" />
               </button>
             </motion.div>
@@ -520,12 +528,18 @@ export default function HomeView({
               </div>
 
               <div className="space-y-2 text-center">
-                <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
-                  {trans.nameStepTitle}
-                </h2>
-                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide">
-                  {trans.nameStepSubtitle}
-                </p>
+                <EditableText
+                  contentKey="home.onboarding.nameStepTitle"
+                  fallback={trans.nameStepTitle}
+                  as="h2"
+                  className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight"
+                />
+                <EditableText
+                  contentKey="home.onboarding.nameStepSubtitle"
+                  fallback={trans.nameStepSubtitle}
+                  as="p"
+                  className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide"
+                />
               </div>
 
               <input
@@ -542,7 +556,7 @@ export default function HomeView({
                 onClick={handleNextOnboard}
                 className="w-full mt-2 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
-                <span>{trans.continue}</span>
+                <EditableText contentKey="home.onboarding.continue" fallback={trans.continue} as="span" />
                 <ArrowRight className="h-4 w-4" />
               </button>
             </motion.div>
@@ -562,12 +576,18 @@ export default function HomeView({
               </div>
               
               <div className="space-y-2">
-                <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
-                  {lang === 'pt' ? 'Estilo de Orientação' : lang === 'es' ? 'Estilo de Orientación' : 'Guidance Style'}
-                </h2>
-                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide">
-                  {lang === 'pt' ? 'Como você gostaria que o RenaSer guiasse sua jornada?' : lang === 'es' ? '¿Cómo te gustaría que RenaSer guíe tu camino?' : 'How would you like RenaSer to guide your journey?'}
-                </p>
+                <EditableText
+                  contentKey="home.onboarding.guideStyleTitle"
+                  fallback={lang === 'pt' ? 'Estilo de Orientação' : lang === 'es' ? 'Estilo de Orientación' : 'Guidance Style'}
+                  as="h2"
+                  className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight"
+                />
+                <EditableText
+                  contentKey="home.onboarding.guideStyleSubtitle"
+                  fallback={lang === 'pt' ? 'Como você gostaria que o RenaSer guiasse sua jornada?' : lang === 'es' ? '¿Cómo te gustaría que RenaSer guíe tu camino?' : 'How would you like RenaSer to guide your journey?'}
+                  as="p"
+                  className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide"
+                />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-left">
@@ -602,10 +622,18 @@ export default function HomeView({
                         : 'bg-white/40 dark:bg-transparent border-rose-100/30 dark:border-ink-hairline text-slate-700 dark:text-ink-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/5'
                     }`}
                   >
-                    <span className="font-bold font-sans tracking-wide text-xs uppercase">{item.title}</span>
-                    <span className={`text-[10px] leading-relaxed font-sans ${selectedStyle === item.code ? 'text-rose-100' : 'text-slate-500 dark:text-ink-muted'}`}>
-                      {item.desc}
-                    </span>
+                    <EditableText
+                      contentKey={`home.onboarding.guideStyle.${item.code}.title`}
+                      fallback={item.title}
+                      as="span"
+                      className="font-bold font-sans tracking-wide text-xs uppercase"
+                    />
+                    <EditableText
+                      contentKey={`home.onboarding.guideStyle.${item.code}.desc`}
+                      fallback={item.desc}
+                      as="span"
+                      className={`text-[10px] leading-relaxed font-sans ${selectedStyle === item.code ? 'text-rose-100' : 'text-slate-500 dark:text-ink-muted'}`}
+                    />
                   </button>
                 ))}
               </div>
@@ -614,7 +642,7 @@ export default function HomeView({
                 onClick={handleNextOnboard}
                 className="w-full mt-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
-                <span>{trans.continue}</span>
+                <EditableText contentKey="home.onboarding.continue" fallback={trans.continue} as="span" />
                 <ArrowRight className="h-4 w-4" />
               </button>
             </motion.div>
@@ -634,12 +662,18 @@ export default function HomeView({
               </div>
               
               <div className="space-y-2">
-                <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
-                  {lang === 'pt' ? 'Como devemos falar?' : lang === 'es' ? '¿Cómo debemos hablarte?' : 'Pronoun Preference'}
-                </h2>
-                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide">
-                  {lang === 'pt' ? 'Escolha sua preferência gramatical para as mensagens personalizadas.' : lang === 'es' ? 'Elige tu preferencia gramatical para los mensajes personalizados.' : 'Choose your grammar address preference for personalized prompts.'}
-                </p>
+                <EditableText
+                  contentKey="home.onboarding.grammarTitle"
+                  fallback={lang === 'pt' ? 'Como devemos falar?' : lang === 'es' ? '¿Cómo debemos hablarte?' : 'Pronoun Preference'}
+                  as="h2"
+                  className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight"
+                />
+                <EditableText
+                  contentKey="home.onboarding.grammarSubtitle"
+                  fallback={lang === 'pt' ? 'Escolha sua preferência gramatical para as mensagens personalizadas.' : lang === 'es' ? 'Elige tu preferencia gramatical para los mensajes personalizados.' : 'Choose your grammar address preference for personalized prompts.'}
+                  as="p"
+                  className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide"
+                />
               </div>
 
               <div className="grid grid-cols-1 gap-3 pt-2">
@@ -672,7 +706,11 @@ export default function HomeView({
                 onClick={handleNextOnboard}
                 className="w-full mt-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
-                <span>{lang === 'pt' ? 'Confirmar Configurações' : lang === 'es' ? 'Confirmar Ajustes' : 'Confirm Preferences'}</span>
+                <EditableText
+                  contentKey="home.onboarding.confirmPreferences"
+                  fallback={lang === 'pt' ? 'Confirmar Configurações' : lang === 'es' ? 'Confirmar Ajustes' : 'Confirm Preferences'}
+                  as="span"
+                />
                 <ArrowRight className="h-4 w-4" />
               </button>
             </motion.div>
@@ -691,18 +729,24 @@ export default function HomeView({
                 <Award className="h-7 w-7" />
               </div>
               <div className="space-y-3">
-                <h1 className="text-3xl font-display font-light text-slate-900 dark:text-white leading-tight">
-                  {adaptMessage(HOME_TONE[lang].onboardingWelcome[selectedStyle], selectedGrammar, lang)}
-                </h1>
-                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed max-w-xs mx-auto">
-                  {HOME_TONE[lang].onboardingSub[selectedStyle]}
-                </p>
+                <EditableText
+                  contentKey="home.onboarding.welcomeTitle"
+                  fallback={adaptMessage(HOME_TONE[lang].onboardingWelcome[selectedStyle], selectedGrammar, lang)}
+                  as="h1"
+                  className="text-3xl font-display font-light text-slate-900 dark:text-white leading-tight"
+                />
+                <EditableText
+                  contentKey="home.onboarding.welcomeSub"
+                  fallback={HOME_TONE[lang].onboardingSub[selectedStyle]}
+                  as="p"
+                  className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed max-w-xs mx-auto"
+                />
               </div>
               <button
                 onClick={handleNextOnboard}
                 className="px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
-                {trans.continue}
+                <EditableText contentKey="home.onboarding.continue" fallback={trans.continue} as="span" />
               </button>
             </motion.div>
           )}
@@ -720,18 +764,28 @@ export default function HomeView({
                 <BookOpen className="h-7 w-7" />
               </div>
               <div className="space-y-3">
-                <h2 className="text-2xl font-display font-light text-slate-900 dark:text-white leading-tight">
-                  {adaptMessage(HOME_TONE[lang].introTitle[selectedStyle], selectedGrammar, lang)}
-                </h2>
-                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed max-w-sm mx-auto">
-                  {HOME_TONE[lang].introText[selectedStyle]}
-                </p>
+                <EditableText
+                  contentKey="home.onboarding.introTitle"
+                  fallback={adaptMessage(HOME_TONE[lang].introTitle[selectedStyle], selectedGrammar, lang)}
+                  as="h2"
+                  className="text-2xl font-display font-light text-slate-900 dark:text-white leading-tight"
+                />
+                <EditableText
+                  contentKey="home.onboarding.introText"
+                  fallback={HOME_TONE[lang].introText[selectedStyle]}
+                  as="p"
+                  className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed max-w-sm mx-auto"
+                />
               </div>
               <button
                 onClick={handleNextOnboard}
                 className="px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
-                {lang === 'pt' ? 'Entrar no Dashboard' : lang === 'es' ? 'Entrar al Panel' : 'Enter Dashboard'}
+                <EditableText
+                  contentKey="home.onboarding.enterDashboard"
+                  fallback={lang === 'pt' ? 'Entrar no Dashboard' : lang === 'es' ? 'Entrar al Panel' : 'Enter Dashboard'}
+                  as="span"
+                />
               </button>
             </motion.div>
           )}
@@ -820,16 +874,23 @@ export default function HomeView({
         className="text-center space-y-4 relative z-20"
       >
         <div className="space-y-1">
-          <span className="text-xs font-serif italic text-rosegold dark:text-rosegold-light">
-            {lighting.greeting}
-          </span>
+          <EditableText
+            contentKey={`home.dashboard.greeting.${lighting.id}`}
+            fallback={lighting.greeting}
+            as="span"
+            className="text-xs font-serif italic text-rosegold dark:text-rosegold-light"
+          />
           <h3 className="text-sm font-sans font-medium tracking-wide text-slate-800 dark:text-ink-text">
-            {prefGrammar === 'feminine' 
-              ? (lang === 'pt' ? 'Bem-vinda de volta' : lang === 'es' ? 'Bienvenida de vuelta' : 'Welcome back')
-              : prefGrammar === 'masculine'
-              ? (lang === 'pt' ? 'Bem-vindo de volta' : lang === 'es' ? 'Bienvenido de vuelta' : 'Welcome back')
-              : (lang === 'pt' ? 'Bem-vinde de volta' : lang === 'es' ? 'Bienvenide de vuelta' : 'Welcome back')
-            }, <span className="font-mono text-xs font-normal opacity-85 text-rosegold dark:text-rosegold-light">
+            <EditableText
+              contentKey={`home.dashboard.welcomeBack.${prefGrammar}`}
+              fallback={prefGrammar === 'feminine'
+                ? (lang === 'pt' ? 'Bem-vinda de volta' : lang === 'es' ? 'Bienvenida de vuelta' : 'Welcome back')
+                : prefGrammar === 'masculine'
+                ? (lang === 'pt' ? 'Bem-vindo de volta' : lang === 'es' ? 'Bienvenido de vuelta' : 'Welcome back')
+                : (lang === 'pt' ? 'Bem-vinde de volta' : lang === 'es' ? 'Bienvenide de vuelta' : 'Welcome back')
+              }
+              as="span"
+            />, <span className="font-mono text-xs font-normal opacity-85 text-rosegold dark:text-rosegold-light">
               {progress.displayName || (
                 prefGrammar === 'masculine'
                   ? (lang === 'pt' ? 'querido' : lang === 'es' ? 'querido' : 'friend')
@@ -841,7 +902,7 @@ export default function HomeView({
 
         <div className="space-y-1 pt-1">
           <h2 className="text-sm font-sans tracking-[0.2em] font-semibold text-rosegold dark:text-rosegold-light uppercase">
-            {trans.chapter} {chapter.id} • {adaptMessage(chapter.title[lang], prefGrammar, lang)}
+            <EditableText contentKey="home.dashboard.chapterLabel" fallback={trans.chapter} as="span" /> {chapter.id} • {adaptMessage(chapter.title[lang], prefGrammar, lang)}
           </h2>
           <p className="text-sm font-display italic text-slate-500/80 max-w-lg mx-auto leading-relaxed">
             "{chapter.theme[lang]}"
@@ -862,9 +923,12 @@ export default function HomeView({
 
         {isAdminUnlocked && (
           <div className="mt-4 flex flex-wrap items-center justify-center gap-1.5 max-w-[460px]">
-            <span className="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-ink-muted mr-1">
-              Testar fase:
-            </span>
+            <EditableText
+              contentKey="home.dashboard.admin.testPhaseLabel"
+              fallback="Testar fase:"
+              as="span"
+              className="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-ink-muted mr-1"
+            />
             {[
               { label: '1', count: 1 },
               { label: '2', count: 3 },
@@ -910,16 +974,19 @@ export default function HomeView({
       >
         {/* Today's Intention Quote */}
         <div className="space-y-3">
-          <span className="text-[10px] uppercase tracking-[0.25em] font-sans font-bold text-accentgold dark:text-rosegold-light block">
-            {lang === 'pt' ? 'Promessa de Hoje' : lang === 'es' ? 'La Promesa de Hoy' : "Today's Promise"}
-          </span>
+          <EditableText
+            contentKey="home.dashboard.todaysPromiseLabel"
+            fallback={lang === 'pt' ? 'Promessa de Hoje' : lang === 'es' ? 'La Promesa de Hoy' : "Today's Promise"}
+            as="span"
+            className="text-[10px] uppercase tracking-[0.25em] font-sans font-bold text-accentgold dark:text-rosegold-light block"
+          />
           <h1 className="text-2xl sm:text-3xl font-display font-light text-slate-900 dark:text-white leading-relaxed tracking-tight max-w-xl mx-auto">
             "{adaptMessage(currentDay.title[lang] || currentDay.title['pt'], prefGrammar, lang)}"
           </h1>
           <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
             {isRestDay ? (
               <span className="italic text-emerald-600 dark:text-emerald-400 font-sans tracking-wide">
-                🌿 {trans.restDesc}
+                🌿 <EditableText contentKey="home.dashboard.restDesc" fallback={trans.restDesc} as="span" />
               </span>
             ) : (
               <span className="font-sans tracking-wide">
@@ -944,17 +1011,30 @@ export default function HomeView({
                 : 'bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 shadow-rosegold hover:shadow-rosegold/40 dark:shadow-none cursor-pointer'
             }`}
           >
-            {isLocked ? trans.lockedTitle : isCompleted ? trans.reviewMission : trans.goMission}
+            <EditableText
+              contentKey={`home.dashboard.missionCta.${isLocked ? 'locked' : isCompleted ? 'review' : 'go'}`}
+              fallback={isLocked ? trans.lockedTitle : isCompleted ? trans.reviewMission : trans.goMission}
+              as="span"
+            />
           </motion.button>
 
           {/* Quick, reassuring, pressure-free micro-copy */}
           <span className="text-[10px] text-slate-400 dark:text-ink-muted font-sans tracking-wide leading-relaxed max-w-xs sm:max-w-md">
-            {isLocked
-              ? trans.waitingForTomorrow
-              : yesterdayIncomplete
-              ? (lang === 'pt' ? 'Sua vaga ficou guardada. Retome com tranquilidade.' : lang === 'es' ? 'Tu lugar te estaba esperando. Retoma con tranquilidad.' : 'We kept your place ready. Resume at your own pace.')
-              : (lang === 'pt' ? 'Um passo simples por dia, sem cobranças ou julgamento.' : lang === 'es' ? 'Un paso simple por día, sin culpas ni juicios.' : 'One simple daily step, free of judgment or guilt.')
-            }
+            {isLocked ? (
+              <EditableText contentKey="home.dashboard.waitingForTomorrow" fallback={trans.waitingForTomorrow} as="span" />
+            ) : yesterdayIncomplete ? (
+              <EditableText
+                contentKey="home.dashboard.resumeAtYourPace"
+                fallback={lang === 'pt' ? 'Sua vaga ficou guardada. Retome com tranquilidade.' : lang === 'es' ? 'Tu lugar te estaba esperando. Retoma con tranquilidad.' : 'We kept your place ready. Resume at your own pace.'}
+                as="span"
+              />
+            ) : (
+              <EditableText
+                contentKey="home.dashboard.dailyStepNoPressure"
+                fallback={lang === 'pt' ? 'Um passo simples por dia, sem cobranças ou julgamento.' : lang === 'es' ? 'Un paso simple por día, sin culpas ni juicios.' : 'One simple daily step, free of judgment or guilt.'}
+                as="span"
+              />
+            )}
           </span>
         </div>
 
@@ -969,7 +1049,7 @@ export default function HomeView({
             className="mx-auto flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rosegold hover:bg-[#A35D68] text-[10px] font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 cursor-pointer shadow-rosegold animate-pulse"
           >
             <Heart className="h-3.5 w-3.5 fill-current" />
-            {trans.sosTrigger}
+            <EditableText contentKey="home.dashboard.sosTrigger" fallback={trans.sosTrigger} as="span" />
           </button>
         )}
       </motion.div>

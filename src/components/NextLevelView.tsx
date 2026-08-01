@@ -7,6 +7,7 @@ import { motion } from 'motion/react';
 import { Award, Heart, Sparkles, Compass, CheckCircle2, Star, Share2, ExternalLink } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { resolveGuideStyle, ToneVariants } from '../utils/grammar';
+import EditableText from './editable/EditableText';
 
 interface NextLevelViewProps {
   progress: UserProgress;
@@ -220,12 +221,18 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
           <Award className="h-10 w-10 text-white" />
         </motion.div>
 
-        <h1 className="text-4xl sm:text-5xl font-display font-light tracking-tight text-slate-900 dark:text-white leading-tight">
-          {congratsHeading}
-        </h1>
-        <p className="text-sm sm:text-md text-slate-500 dark:text-ink-muted max-w-lg mx-auto font-sans">
-          {congratsSub}
-        </p>
+        <EditableText
+          contentKey="nextLevel.congratsHeading"
+          fallback={congratsHeading}
+          as="h1"
+          className="text-4xl sm:text-5xl font-display font-light tracking-tight text-slate-900 dark:text-white leading-tight"
+        />
+        <EditableText
+          contentKey="nextLevel.congratsSub"
+          fallback={congratsSub}
+          as="p"
+          className="text-sm sm:text-md text-slate-500 dark:text-ink-muted max-w-lg mx-auto font-sans"
+        />
 
         <div className="h-0.5 w-24 bg-gradient-to-r from-accentgold via-rosegold-light to-accentgold mx-auto mt-6" />
       </div>
@@ -248,12 +255,18 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
           </div>
 
           <div className="space-y-2">
-            <h3 className="text-lg sm:text-xl font-display tracking-widest text-accentgold font-bold uppercase">
-              {textDict.certificateTitle}
-            </h3>
-            <p className="text-rose-100/70 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed font-sans">
-              {textDict.certificateDesc}
-            </p>
+            <EditableText
+              contentKey="nextLevel.certificateTitle"
+              fallback={textDict.certificateTitle}
+              as="h3"
+              className="text-lg sm:text-xl font-display tracking-widest text-accentgold font-bold uppercase"
+            />
+            <EditableText
+              contentKey="nextLevel.certificateDesc"
+              fallback={textDict.certificateDesc}
+              as="p"
+              className="text-rose-100/70 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed font-sans"
+            />
           </div>
 
           {/* User Achievement Stats inside Certificate */}
@@ -262,27 +275,36 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
               <span className="block text-xl sm:text-2xl font-bold text-white font-mono">
                 {progress.completionHistory.length}/30
               </span>
-              <span className="text-[10px] text-rose-200/50 font-sans uppercase font-bold tracking-wider">
-                {textDict.statMissions}
-              </span>
+              <EditableText
+                contentKey="nextLevel.statMissions"
+                fallback={textDict.statMissions}
+                as="span"
+                className="text-[10px] text-rose-200/50 font-sans uppercase font-bold tracking-wider"
+              />
             </div>
-            
+
             <div className="text-center border-x border-rose-100/10">
               <span className="block text-xl sm:text-2xl font-bold text-accentgold font-mono">
                 {progress.longestStreak}
               </span>
-              <span className="text-[10px] text-rose-200/50 font-sans uppercase font-bold tracking-wider">
-                {textDict.statStreaks}
-              </span>
+              <EditableText
+                contentKey="nextLevel.statStreaks"
+                fallback={textDict.statStreaks}
+                as="span"
+                className="text-[10px] text-rose-200/50 font-sans uppercase font-bold tracking-wider"
+              />
             </div>
 
             <div className="text-center">
               <span className="block text-xl sm:text-2xl font-bold text-white font-mono">
                 {progress.favoriteHooks.length}
               </span>
-              <span className="text-[10px] text-rose-200/50 font-sans uppercase font-bold tracking-wider">
-                {textDict.statHooks}
-              </span>
+              <EditableText
+                contentKey="nextLevel.statHooks"
+                fallback={textDict.statHooks}
+                as="span"
+                className="text-[10px] text-rose-200/50 font-sans uppercase font-bold tracking-wider"
+              />
             </div>
           </div>
         </div>
@@ -292,23 +314,35 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         
         <div className="space-y-4">
-          <span className="text-[10px] uppercase font-sans tracking-widest text-rosegold font-bold block">
-            RenaSer Core Integration
-          </span>
-          <h3 className="text-xl font-display text-slate-800 dark:text-white">
-            {textDict.blueprintTitle}
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted leading-relaxed font-sans">
-            {blueprintIntro}
-          </p>
+          <EditableText
+            contentKey="nextLevel.coreIntegrationLabel"
+            fallback="RenaSer Core Integration"
+            as="span"
+            className="text-[10px] uppercase font-sans tracking-widest text-rosegold font-bold block"
+          />
+          <EditableText
+            contentKey="nextLevel.blueprintTitle"
+            fallback={textDict.blueprintTitle}
+            as="h3"
+            className="text-xl font-display text-slate-800 dark:text-white"
+          />
+          <EditableText
+            contentKey="nextLevel.blueprintIntro"
+            fallback={blueprintIntro}
+            as="p"
+            className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
+          />
 
           <div className="space-y-3 pt-2">
             {[truth1, truth2, truth3].map((truth, idx) => (
               <div key={idx} className="flex items-start gap-3 bg-white dark:bg-ink-raised p-4 rounded-xl border border-rose-100/20 dark:border-rosegold/10">
                 <CheckCircle2 className="h-5 w-5 text-rosegold shrink-0 mt-0.5" />
-                <p className="text-slate-700 dark:text-ink-text text-xs sm:text-sm font-sans font-medium">
-                  {truth}
-                </p>
+                <EditableText
+                  contentKey={`nextLevel.truth${idx + 1}`}
+                  fallback={truth}
+                  as="p"
+                  className="text-slate-700 dark:text-ink-text text-xs sm:text-sm font-sans font-medium"
+                />
               </div>
             ))}
           </div>
@@ -318,18 +352,27 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
         <div className="bg-gradient-to-br from-rose-50/20 to-[#FAF8F5]/30 dark:bg-ink-raised dark:from-ink-raised dark:to-ink-raised border border-rose-100/30 dark:border-ink-hairline rounded-3xl p-8 space-y-6">
           <div className="flex items-center gap-2 text-rosegold">
             <Sparkles className="h-6 w-6 animate-pulse" />
-            <h4 className="text-xs font-sans uppercase tracking-widest font-bold">
-              Elite Invitation
-            </h4>
+            <EditableText
+              contentKey="nextLevel.eliteInvitationLabel"
+              fallback="Elite Invitation"
+              as="h4"
+              className="text-xs font-sans uppercase tracking-widest font-bold"
+            />
           </div>
 
           <div className="space-y-2">
-            <h3 className="text-lg sm:text-xl font-display font-bold text-slate-900 dark:text-white leading-snug">
-              {textDict.ctaHeading}
-            </h3>
-            <p className="text-slate-500 dark:text-ink-muted text-xs sm:text-sm leading-relaxed font-sans">
-              {ctaDesc}
-            </p>
+            <EditableText
+              contentKey="nextLevel.ctaHeading"
+              fallback={textDict.ctaHeading}
+              as="h3"
+              className="text-lg sm:text-xl font-display font-bold text-slate-900 dark:text-white leading-snug"
+            />
+            <EditableText
+              contentKey="nextLevel.ctaDesc"
+              fallback={ctaDesc}
+              as="p"
+              className="text-slate-500 dark:text-ink-muted text-xs sm:text-sm leading-relaxed font-sans"
+            />
           </div>
 
           <a
@@ -338,7 +381,7 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
             rel="noopener noreferrer"
             className="w-full py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-xl text-xs font-sans font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-rosegold/20"
           >
-            <span>{textDict.ctaBtn}</span>
+            <EditableText contentKey="nextLevel.ctaBtn" fallback={textDict.ctaBtn} as="span" />
             <ExternalLink className="h-4 w-4" />
           </a>
         </div>

@@ -7,6 +7,7 @@ import { motion } from 'motion/react';
 import { Language } from '../types';
 import { Sparkles } from 'lucide-react';
 import ButterflyIcon from './ButterflyIcon';
+import EditableText from './editable/EditableText';
 
 interface TreeOfRebirthProps {
   completedCount: number;
@@ -292,21 +293,30 @@ export default function TreeOfRebirth({ completedCount, lang }: TreeOfRebirthPro
       {/* Description column */}
       <div className="flex-1 space-y-1.5 text-left">
         <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-sans font-extrabold uppercase tracking-widest text-rosegold px-2.5 py-0.5 rounded-full bg-rosegold/10 border border-rosegold/10">
-            {lang === 'pt' ? 'Árvore do Renascimento' : lang === 'es' ? 'Árbol del Renacimiento' : 'Tree of Rebirth'}
-          </span>
+          <EditableText
+            contentKey="treeOfRebirth.badgeLabel"
+            fallback={lang === 'pt' ? 'Árvore do Renascimento' : lang === 'es' ? 'Árbol del Renacimiento' : 'Tree of Rebirth'}
+            as="span"
+            className="text-[10px] font-sans font-extrabold uppercase tracking-widest text-rosegold px-2.5 py-0.5 rounded-full bg-rosegold/10 border border-rosegold/10"
+          />
           <span className="text-[10px] font-mono text-slate-400 dark:text-ink-muted font-bold">
             {lang === 'pt' ? 'Nível' : lang === 'es' ? 'Nivel' : 'Level'} {stage}/10
           </span>
         </div>
 
-        <h4 className="text-lg font-serif font-black uppercase text-slate-800 dark:text-white leading-tight">
-          {info.title[lang]}
-        </h4>
+        <EditableText
+          contentKey={`treeOfRebirth.stage${stage}.title`}
+          fallback={info.title[lang]}
+          as="h4"
+          className="text-lg font-serif font-black uppercase text-slate-800 dark:text-white leading-tight"
+        />
 
-        <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans">
-          {info.desc[lang]}
-        </p>
+        <EditableText
+          contentKey={`treeOfRebirth.stage${stage}.desc`}
+          fallback={info.desc[lang]}
+          as="p"
+          className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
+        />
 
         {/* Small interactive indicator */}
         <div className="pt-1 flex items-center gap-2">

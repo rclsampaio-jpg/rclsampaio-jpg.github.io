@@ -13,6 +13,7 @@ import { Language, UserProgress, MissionDay } from '../types';
 import MyTransformationView from './MyTransformationView';
 import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 import { supabase } from '../lib/supabase';
+import EditableText from './editable/EditableText';
 
 interface ProfileViewProps {
   lang: Language;
@@ -266,9 +267,12 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                 <Pencil className="h-3.5 w-3.5 text-[#D4AF37] opacity-60 group-hover:opacity-100 transition-opacity" />
               </button>
             )}
-            <p className="text-[10px] uppercase font-mono tracking-widest text-[#D4AF37] font-bold">
-              {trans.pioneiro}
-            </p>
+            <EditableText
+              contentKey="profileView.pioneiro"
+              fallback={trans.pioneiro}
+              as="p"
+              className="text-[10px] uppercase font-mono tracking-widest text-[#D4AF37] font-bold"
+            />
           </div>
 
         </div>
@@ -276,7 +280,12 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
         {/* Right Info: Stage Badge and Completion Percentage */}
         <div className="flex flex-col items-center md:items-end gap-2 shrink-0 relative z-10">
           <div className="text-center md:text-right">
-            <span className="text-[10px] text-slate-400 block uppercase tracking-widest">{trans.memberBadge}</span>
+            <EditableText
+              contentKey="profileView.memberBadge"
+              fallback={trans.memberBadge}
+              as="span"
+              className="text-[10px] text-slate-400 block uppercase tracking-widest"
+            />
             <span className="text-sm font-sans font-semibold text-accentgold flex items-center gap-1.5 justify-center md:justify-end mt-0.5">
               <Award className="h-4 w-4 animate-pulse" />
               {getBadgeTitle()}
@@ -286,7 +295,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
           {/* Mini progress tracker */}
           <div className="w-40 sm:w-48 space-y-1">
             <div className="flex justify-between text-[10px] font-mono text-slate-400">
-              <span>{trans.statsDays}</span>
+              <EditableText contentKey="profileView.statsDays" fallback={trans.statsDays} as="span" />
               <span>{completionPercentage}%</span>
             </div>
             <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -310,7 +319,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
               : 'border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
           }`}
         >
-          {trans.tabScrapbook}
+          <EditableText contentKey="profileView.tabScrapbook" fallback={trans.tabScrapbook} as="span" />
         </button>
         <button
           onClick={() => setActiveProfileSection('personalization')}
@@ -320,7 +329,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
               : 'border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
           }`}
         >
-          {trans.tabTuning}
+          <EditableText contentKey="profileView.tabTuning" fallback={trans.tabTuning} as="span" />
         </button>
       </div>
 
@@ -357,12 +366,18 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                   <Sliders className="h-4 w-4" />
                   ADAPTIVE COGNITIVE ENGINE
                 </span>
-                <h3 className="text-xl sm:text-2xl font-serif font-light text-slate-900 dark:text-white">
-                  {trans.tuningTitle}
-                </h3>
-                <p className="text-xs text-slate-500 dark:text-ink-muted max-w-2xl leading-relaxed">
-                  {trans.tuningDesc}
-                </p>
+                <EditableText
+                  contentKey="profileView.tuningTitle"
+                  fallback={trans.tuningTitle}
+                  as="h3"
+                  className="text-xl sm:text-2xl font-serif font-light text-slate-900 dark:text-white"
+                />
+                <EditableText
+                  contentKey="profileView.tuningDesc"
+                  fallback={trans.tuningDesc}
+                  as="p"
+                  className="text-xs text-slate-500 dark:text-ink-muted max-w-2xl leading-relaxed"
+                />
               </div>
 
               {/* Preferences Forms */}
@@ -370,9 +385,12 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                 
                 {/* 1. Guide Style */}
                 <div className="space-y-4">
-                  <label className="block text-xs font-bold text-slate-500 dark:text-ink-muted uppercase tracking-widest">
-                    {trans.voiceStyle}
-                  </label>
+                  <EditableText
+                    contentKey="profileView.voiceStyle"
+                    fallback={trans.voiceStyle}
+                    as="span"
+                    className="block text-xs font-bold text-slate-500 dark:text-ink-muted uppercase tracking-widest"
+                  />
 
                   <div className="space-y-2.5">
                     
@@ -388,12 +406,18 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                         <Heart className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text">
-                          {trans.gentleTitle}
-                        </h4>
-                        <p className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed">
-                          {trans.gentleDesc}
-                        </p>
+                        <EditableText
+                          contentKey="profileView.gentleTitle"
+                          fallback={trans.gentleTitle}
+                          as="h4"
+                          className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text"
+                        />
+                        <EditableText
+                          contentKey="profileView.gentleDesc"
+                          fallback={trans.gentleDesc}
+                          as="p"
+                          className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed"
+                        />
                       </div>
                     </button>
 
@@ -409,12 +433,18 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                         <Flame className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text">
-                          {trans.challengerTitle}
-                        </h4>
-                        <p className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed">
-                          {trans.challengerDesc}
-                        </p>
+                        <EditableText
+                          contentKey="profileView.challengerTitle"
+                          fallback={trans.challengerTitle}
+                          as="h4"
+                          className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text"
+                        />
+                        <EditableText
+                          contentKey="profileView.challengerDesc"
+                          fallback={trans.challengerDesc}
+                          as="p"
+                          className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed"
+                        />
                       </div>
                     </button>
 
@@ -430,12 +460,18 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                         <Compass className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text">
-                          {trans.strategicTitle}
-                        </h4>
-                        <p className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed">
-                          {trans.strategicDesc}
-                        </p>
+                        <EditableText
+                          contentKey="profileView.strategicTitle"
+                          fallback={trans.strategicTitle}
+                          as="h4"
+                          className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text"
+                        />
+                        <EditableText
+                          contentKey="profileView.strategicDesc"
+                          fallback={trans.strategicDesc}
+                          as="p"
+                          className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed"
+                        />
                       </div>
                     </button>
 
@@ -451,12 +487,18 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                         <Sparkles className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text">
-                          {trans.inspirationalTitle}
-                        </h4>
-                        <p className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed">
-                          {trans.inspirationalDesc}
-                        </p>
+                        <EditableText
+                          contentKey="profileView.inspirationalTitle"
+                          fallback={trans.inspirationalTitle}
+                          as="h4"
+                          className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text"
+                        />
+                        <EditableText
+                          contentKey="profileView.inspirationalDesc"
+                          fallback={trans.inspirationalDesc}
+                          as="p"
+                          className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed"
+                        />
                       </div>
                     </button>
 
@@ -466,9 +508,12 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
 
                 {/* 2. Grammar Alignment */}
                 <div className="space-y-4">
-                  <label className="block text-xs font-bold text-slate-500 dark:text-ink-muted uppercase tracking-widest">
-                    {trans.grammarTitle}
-                  </label>
+                  <EditableText
+                    contentKey="profileView.grammarTitle"
+                    fallback={trans.grammarTitle}
+                    as="span"
+                    className="block text-xs font-bold text-slate-500 dark:text-ink-muted uppercase tracking-widest"
+                  />
 
                   <div className="space-y-2.5">
                     
@@ -480,9 +525,12 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                           : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
-                      <span className="text-xs sm:text-sm font-medium text-slate-800 dark:text-ink-text">
-                        {trans.grammarFem}
-                      </span>
+                      <EditableText
+                        contentKey="profileView.grammarFem"
+                        fallback={trans.grammarFem}
+                        as="span"
+                        className="text-xs sm:text-sm font-medium text-slate-800 dark:text-ink-text"
+                      />
                       {grammarPreference === 'feminine' && (
                         <div className="p-1 bg-rosegold text-white rounded-full">
                           <Check className="h-3.5 w-3.5" />
@@ -498,9 +546,12 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                           : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
-                      <span className="text-xs sm:text-sm font-medium text-slate-800 dark:text-ink-text">
-                        {trans.grammarMasc}
-                      </span>
+                      <EditableText
+                        contentKey="profileView.grammarMasc"
+                        fallback={trans.grammarMasc}
+                        as="span"
+                        className="text-xs sm:text-sm font-medium text-slate-800 dark:text-ink-text"
+                      />
                       {grammarPreference === 'masculine' && (
                         <div className="p-1 bg-rosegold text-white rounded-full">
                           <Check className="h-3.5 w-3.5" />
@@ -514,9 +565,12 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                   <div className="pt-6">
                     <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40 rounded-2xl flex gap-2.5 items-start">
                       <Check className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <p className="text-[11px] text-emerald-700 dark:text-emerald-300 leading-relaxed font-sans">
-                        {trans.saveConfirm}
-                      </p>
+                      <EditableText
+                        contentKey="profileView.saveConfirm"
+                        fallback={trans.saveConfirm}
+                        as="p"
+                        className="text-[11px] text-emerald-700 dark:text-emerald-300 leading-relaxed font-sans"
+                      />
                     </div>
                   </div>
 

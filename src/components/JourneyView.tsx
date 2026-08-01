@@ -14,6 +14,7 @@ import { Language, DayType, UserProgress, Journey, Chapter, Day } from '../types
 import { getButterflyConfig } from '../data/chaptersData';
 import ButterflyIcon from './ButterflyIcon';
 import { getLocalDateISO } from '../utils/date';
+import EditableText from './editable/EditableText';
 
 import { 
   loadJourneysFromStorage, 
@@ -157,9 +158,12 @@ export default function JourneyView({
       
       {/* Journey Switcher Bar */}
       <div className="bg-white dark:bg-ink-raised border border-rose-100/30 dark:border-ink-hairline rounded-3xl p-6 shadow-xs dark:shadow-none">
-        <h4 className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-widest font-black mb-3 text-center sm:text-left">
-          {textDict.switchTitle}
-        </h4>
+        <EditableText
+          contentKey="journey.switcher.title"
+          fallback={textDict.switchTitle}
+          as="h4"
+          className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-widest font-black mb-3 text-center sm:text-left"
+        />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {journeys.map(j => {
             const isSelected = j.id === activeJourneyId;
@@ -186,12 +190,18 @@ export default function JourneyView({
                       <span className="h-2 w-2 rounded-full bg-rosegold animate-pulse" />
                     )}
                   </div>
-                  <h5 className="text-sm font-bold text-slate-800 dark:text-white mt-1 line-clamp-1">
-                    {j.title[lang] || j.title.pt}
-                  </h5>
-                  <p className="text-[10px] text-slate-400 dark:text-ink-muted line-clamp-2 mt-0.5 leading-relaxed">
-                    {j.subtitle[lang] || j.subtitle.pt}
-                  </p>
+                  <EditableText
+                    contentKey={`journey.journey.${j.id}.title`}
+                    fallback={j.title[lang] || j.title.pt}
+                    as="p"
+                    className="text-sm font-bold text-slate-800 dark:text-white mt-1 line-clamp-1"
+                  />
+                  <EditableText
+                    contentKey={`journey.journey.${j.id}.subtitle`}
+                    fallback={j.subtitle[lang] || j.subtitle.pt}
+                    as="p"
+                    className="text-[10px] text-slate-400 dark:text-ink-muted line-clamp-2 mt-0.5 leading-relaxed"
+                  />
                 </div>
 
                 <div className="w-full mt-3">
@@ -223,9 +233,12 @@ export default function JourneyView({
             <Calendar className="h-6 w-6" />
           </div>
           <div>
-            <h4 className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-wider font-semibold">
-              {textDict.statsTitle}
-            </h4>
+            <EditableText
+              contentKey="journey.stats.completedTitle"
+              fallback={textDict.statsTitle}
+              as="h4"
+              className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-wider font-semibold"
+            />
             <div className="flex items-baseline gap-1 mt-0.5">
               <span className="text-2xl font-bold text-slate-800 dark:text-white">{totalCompletedCount}</span>
               <span className="text-slate-400 dark:text-ink-muted text-sm">/ {totalDaysCount} {textDict.days}</span>
@@ -241,9 +254,12 @@ export default function JourneyView({
             <TrendingUp className="h-6 w-6" />
           </div>
           <div>
-            <h4 className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-wider font-semibold">
-              {textDict.streakTitle}
-            </h4>
+            <EditableText
+              contentKey="journey.stats.streakTitle"
+              fallback={textDict.streakTitle}
+              as="h4"
+              className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-wider font-semibold"
+            />
             <div className="flex items-baseline gap-1 mt-0.5">
               <span className="text-2xl font-bold text-slate-800 dark:text-white">{progress.currentStreak}</span>
               <span className="text-slate-400 dark:text-ink-muted text-sm">
@@ -258,9 +274,12 @@ export default function JourneyView({
             <Star className="h-6 w-6 text-rosegold" />
           </div>
           <div>
-            <h4 className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-wider font-semibold">
-              {textDict.longestStreak}
-            </h4>
+            <EditableText
+              contentKey="journey.stats.longestStreakTitle"
+              fallback={textDict.longestStreak}
+              as="h4"
+              className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-wider font-semibold"
+            />
             <div className="flex items-baseline gap-1 mt-0.5">
               <span className="text-2xl font-bold text-slate-800 dark:text-white">{progress.longestStreak}</span>
               <span className="text-slate-400 dark:text-ink-muted text-sm">
@@ -276,15 +295,24 @@ export default function JourneyView({
         <div className="absolute top-0 right-0 h-40 w-40 bg-gradient-to-bl from-rosegold/5 to-transparent blur-2xl rounded-full" />
         
         <div className="text-center max-w-md mx-auto space-y-1 relative z-10">
-          <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-rosegold">
-            {textDict.curriculum}
-          </span>
-          <h3 className="text-xl font-serif text-slate-800 dark:text-white font-black uppercase">
-            {activeJourney.title[lang] || activeJourney.title.pt}
-          </h3>
-          <p className="text-xs text-slate-400 dark:text-ink-muted font-sans">
-            {activeJourney.subtitle[lang] || activeJourney.subtitle.pt}
-          </p>
+          <EditableText
+            contentKey="journey.curriculum.label"
+            fallback={textDict.curriculum}
+            as="span"
+            className="text-[10px] font-sans font-bold uppercase tracking-widest text-rosegold"
+          />
+          <EditableText
+            contentKey={`journey.journey.${activeJourney.id}.headerTitle`}
+            fallback={activeJourney.title[lang] || activeJourney.title.pt}
+            as="h3"
+            className="text-xl font-serif text-slate-800 dark:text-white font-black uppercase"
+          />
+          <EditableText
+            contentKey={`journey.journey.${activeJourney.id}.headerSubtitle`}
+            fallback={activeJourney.subtitle[lang] || activeJourney.subtitle.pt}
+            as="p"
+            className="text-xs text-slate-400 dark:text-ink-muted font-sans"
+          />
         </div>
 
         <div className="flex flex-col items-center gap-2 py-4 relative z-10">
@@ -311,14 +339,25 @@ export default function JourneyView({
                   <div className="flex justify-between items-start gap-4">
                     <div>
                       <span className="text-[11px] font-mono font-black uppercase text-rosegold tracking-wider">
-                        Capítulo {index + 1} • {chapter.theme[lang] || chapter.theme.pt}
+                        Capítulo {index + 1} •{' '}
+                        <EditableText
+                          contentKey={`journey.chapter.${chapter.id}.theme`}
+                          fallback={chapter.theme[lang] || chapter.theme.pt}
+                          as="span"
+                        />
                       </span>
-                      <h4 className="text-base font-serif font-black uppercase text-slate-800 dark:text-white mt-0.5">
-                        {chapter.title[lang] || chapter.title.pt}
-                      </h4>
-                      <p className="text-xs text-slate-400 dark:text-ink-muted font-sans leading-relaxed mt-1">
-                        {chapter.description[lang] || chapter.description.pt}
-                      </p>
+                      <EditableText
+                        contentKey={`journey.chapter.${chapter.id}.title`}
+                        fallback={chapter.title[lang] || chapter.title.pt}
+                        as="h4"
+                        className="text-base font-serif font-black uppercase text-slate-800 dark:text-white mt-0.5"
+                      />
+                      <EditableText
+                        contentKey={`journey.chapter.${chapter.id}.description`}
+                        fallback={chapter.description[lang] || chapter.description.pt}
+                        as="p"
+                        className="text-xs text-slate-400 dark:text-ink-muted font-sans leading-relaxed mt-1"
+                      />
                     </div>
 
                     {/* Butterfly visual metamorphose badge */}
@@ -368,12 +407,18 @@ export default function JourneyView({
                           </div>
 
                           <div className="flex-1 min-w-0">
-                            <span className="text-[10px] uppercase tracking-wider font-bold block text-rosegold mb-0.5">
-                              {day.theme?.[lang] || day.theme?.pt || 'LIÇÃO'}
-                            </span>
-                            <h5 className="text-xs font-bold text-slate-800 dark:text-white truncate">
-                              {day.title?.[lang] || day.title?.pt || day.title}
-                            </h5>
+                            <EditableText
+                              contentKey={`journey.day.${day.id || day.dayNumber}.theme`}
+                              fallback={day.theme?.[lang] || day.theme?.pt || 'LIÇÃO'}
+                              as="span"
+                              className="text-[10px] uppercase tracking-wider font-bold block text-rosegold mb-0.5"
+                            />
+                            <EditableText
+                              contentKey={`journey.day.${day.id || day.dayNumber}.title`}
+                              fallback={day.title?.[lang] || day.title?.pt || day.title}
+                              as="p"
+                              className="text-xs font-bold text-slate-800 dark:text-white truncate"
+                            />
                           </div>
 
                           {!isUnlocked && (

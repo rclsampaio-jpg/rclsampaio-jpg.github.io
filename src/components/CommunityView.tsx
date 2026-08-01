@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { Language, CommunityConfig, FreeCommunityConfig, SupportConfig, MentoringConfig } from '../types';
 import { loadCommunityConfig, loadFreeCommunityConfig, loadSupportConfig, loadMentoringConfig } from '../data/ecosystemData';
+import EditableText from './editable/EditableText';
 
 interface CommunityViewProps {
   lang: Language;
@@ -117,7 +118,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#D4AF37] flex items-center gap-1.5">
                   <Users className="h-3.5 w-3.5" />
-                  {trans.communityTab}
+                  <EditableText contentKey="community.communityTab" fallback={trans.communityTab} as="span" />
                 </span>
                 {renderPlatformBadge(community.platform)}
               </div>
@@ -156,7 +157,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
             <div className="flex justify-between items-start">
               <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#D4AF37] flex items-center gap-1.5">
                 <Sparkles className="h-3.5 w-3.5" />
-                {trans.mentoringTab}
+                <EditableText contentKey="community.mentoringTab" fallback={trans.mentoringTab} as="span" />
               </span>
               <span className="text-[11px] bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-0.5 rounded font-mono font-bold uppercase tracking-widest border border-[#D4AF37]/15">
                 {mentoring.provider}
@@ -175,11 +176,11 @@ export default function CommunityView({ lang }: CommunityViewProps) {
             <div className="space-y-2 pt-2 text-xs font-sans text-slate-300">
               <div className="flex gap-2 items-center">
                 <div className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
-                <span>{trans.mentoringBullet1}</span>
+                <EditableText contentKey="community.mentoringBullet1" fallback={trans.mentoringBullet1} as="span" />
               </div>
               <div className="flex gap-2 items-center">
                 <div className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
-                <span>{trans.mentoringBullet2}</span>
+                <EditableText contentKey="community.mentoringBullet2" fallback={trans.mentoringBullet2} as="span" />
               </div>
             </div>
           </div>
@@ -219,7 +220,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
               className="shrink-0 py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-sans font-bold tracking-wider text-xs uppercase flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-lg shadow-emerald-600/15"
             >
               <MessageSquare className="h-4 w-4" />
-              <span>{trans.joinBtn}</span>
+              <EditableText contentKey="community.joinBtn" fallback={trans.joinBtn} as="span" />
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
           </div>
@@ -230,9 +231,12 @@ export default function CommunityView({ lang }: CommunityViewProps) {
               <div className="absolute top-0 left-0 w-1.5 h-full bg-accentgold" />
               <Sparkles className="h-5 w-5 text-accentgold shrink-0 mt-0.5 animate-pulse" />
               <div className="space-y-1 text-xs">
-                <span className="font-sans font-bold uppercase tracking-widest text-amber-700 dark:text-accentgold">
-                  {trans.upliftMessageHeader}
-                </span>
+                <EditableText
+                  contentKey="community.upliftMessageHeader"
+                  fallback={trans.upliftMessageHeader}
+                  as="span"
+                  className="font-sans font-bold uppercase tracking-widest text-amber-700 dark:text-accentgold"
+                />
                 <p className="text-slate-600 dark:text-ink-muted italic font-medium leading-relaxed">
                   "{support.upliftMessage[lang] || support.upliftMessage['pt']}"
                 </p>

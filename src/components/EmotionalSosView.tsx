@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Heart, Wind, ArrowLeft, ShieldCheck, Sparkles, HelpCircle, Headphones, RefreshCw, BookOpen, Moon, Waves, Zap } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, ToneVariants } from '../utils/grammar';
+import EditableText from './editable/EditableText';
 
 interface EmotionalSosViewProps {
   lang: Language;
@@ -635,12 +636,15 @@ export default function EmotionalSosView({
           className="flex items-center gap-2 text-xs font-sans text-ink-muted hover:text-ink-text transition duration-300 cursor-pointer"
         >
           <ArrowLeft className="h-4 w-4" />
-          <span>{localText.back}</span>
+          <EditableText contentKey="emotionalSos.back" fallback={localText.back} as="span" />
         </button>
 
-        <span className="text-[10px] font-mono tracking-widest text-rosegold-light uppercase font-bold">
-          Santuário de Apoio RenaSer
-        </span>
+        <EditableText
+          contentKey="emotionalSos.brandLabel"
+          fallback="Santuário de Apoio RenaSer"
+          as="span"
+          className="text-[10px] font-mono tracking-widest text-rosegold-light uppercase font-bold"
+        />
       </div>
 
       {/* MAIN CONTAINER BODY */}
@@ -659,15 +663,24 @@ export default function EmotionalSosView({
               className="space-y-3.5 sm:space-y-5 text-left"
             >
               <div className="space-y-1.5 text-center pb-1">
-                <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold-light font-bold block">
-                  Identificação do Sentimento
-                </span>
-                <h2 className="text-lg sm:text-2xl font-serif text-ink-text leading-snug">
-                  {localText.categoryTitle}
-                </h2>
-                <p className="text-[11px] sm:text-xs text-ink-muted">
-                  {localText.categoryDesc}
-                </p>
+                <EditableText
+                  contentKey="emotionalSos.categoryEyebrow"
+                  fallback="Identificação do Sentimento"
+                  as="span"
+                  className="text-[10px] uppercase font-mono tracking-widest text-rosegold-light font-bold block"
+                />
+                <EditableText
+                  contentKey="emotionalSos.categoryTitle"
+                  fallback={localText.categoryTitle}
+                  as="h2"
+                  className="text-lg sm:text-2xl font-serif text-ink-text leading-snug"
+                />
+                <EditableText
+                  contentKey="emotionalSos.categoryDesc"
+                  fallback={localText.categoryDesc}
+                  as="p"
+                  className="text-[11px] sm:text-xs text-ink-muted"
+                />
               </div>
 
               <div className="grid grid-cols-1 gap-2 sm:gap-2.5 max-w-md mx-auto">
@@ -700,12 +713,18 @@ export default function EmotionalSosView({
               className="space-y-3 sm:space-y-4 text-left"
             >
               <div className="space-y-1 text-center pb-0.5 shrink-0">
-                <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold-light font-bold block">
-                  {localText.techniqueEyebrow}
-                </span>
-                <h2 className="text-base sm:text-xl font-serif text-ink-text leading-snug lowercase">
-                  {localText.techniqueTitleFor}
-                </h2>
+                <EditableText
+                  contentKey="emotionalSos.techniqueEyebrow"
+                  fallback={localText.techniqueEyebrow}
+                  as="span"
+                  className="text-[10px] uppercase font-mono tracking-widest text-rosegold-light font-bold block"
+                />
+                <EditableText
+                  contentKey="emotionalSos.techniqueTitleFor"
+                  fallback={localText.techniqueTitleFor}
+                  as="h2"
+                  className="text-base sm:text-xl font-serif text-ink-text leading-snug lowercase"
+                />
               </div>
 
               {/* Only this list scrolls if it can't fit, header/footer of the
@@ -736,9 +755,12 @@ export default function EmotionalSosView({
                             <div className="flex items-center gap-2 flex-wrap">
                               <span className="text-sm font-serif text-ink-text">{tech.name}</span>
                               {isRecommended && (
-                                <span className="text-[9px] font-mono uppercase tracking-widest text-rosegold-light font-bold px-2 py-0.5 rounded-full bg-rosegold/10 border border-rosegold/20">
-                                  {localText.techniqueRecommended}
-                                </span>
+                                <EditableText
+                                  contentKey="emotionalSos.techniqueRecommended"
+                                  fallback={localText.techniqueRecommended}
+                                  as="span"
+                                  className="text-[9px] font-mono uppercase tracking-widest text-rosegold-light font-bold px-2 py-0.5 rounded-full bg-rosegold/10 border border-rosegold/20"
+                                />
                               )}
                             </div>
                             <p className="text-[11px] text-ink-muted font-sans">{tech.tagline}</p>
@@ -830,14 +852,14 @@ export default function EmotionalSosView({
                     onClick={handleStartBreathing}
                     className="w-full py-2.5 sm:py-3 ink-button-outline rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all duration-300 hover:bg-rosegold-light/10 cursor-pointer"
                   >
-                    {localText.breathingCta}
+                    <EditableText contentKey="emotionalSos.breathingCta" fallback={localText.breathingCta} as="span" />
                   </button>
                 ) : (
                   <button
                     onClick={handleStopBreathing}
                     className="w-full py-2.5 sm:py-3 bg-transparent border border-ink-hairline text-ink-muted rounded-2xl text-xs font-sans font-bold tracking-widest uppercase transition-all cursor-pointer"
                   >
-                    {localText.breathingStop}
+                    <EditableText contentKey="emotionalSos.breathingStop" fallback={localText.breathingStop} as="span" />
                   </button>
                 )}
 
@@ -851,11 +873,11 @@ export default function EmotionalSosView({
                         : 'bg-transparent border border-ink-hairline text-ink-muted hover:border-rosegold-light/30 hover:text-ink-text'
                     }`}
                   >
-                    {localText.breathingProceed}
+                    <EditableText contentKey="emotionalSos.breathingProceed" fallback={localText.breathingProceed} as="span" />
                   </button>
                   {cyclesCompleted < 1 && (
                     <p className="text-[11px] text-ink-muted mt-2 italic">
-                      {localText.breathingProceedHint}
+                      <EditableText contentKey="emotionalSos.breathingProceedHint" fallback={localText.breathingProceedHint} as="span" />
                     </p>
                   )}
                 </div>
@@ -864,7 +886,7 @@ export default function EmotionalSosView({
                   onClick={() => { setIsBreathing(false); setStage('techniqueSelect'); }}
                   className="text-[11px] text-ink-muted hover:text-rosegold-light underline-offset-4 hover:underline transition cursor-pointer"
                 >
-                  {localText.breathingChangeTechnique}
+                  <EditableText contentKey="emotionalSos.breathingChangeTechnique" fallback={localText.breathingChangeTechnique} as="span" />
                 </button>
               </div>
             </motion.div>
@@ -881,9 +903,12 @@ export default function EmotionalSosView({
               className="space-y-8 text-center"
             >
               <div className="space-y-1">
-                <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block">
-                  {localText.revealTitle}
-                </span>
+                <EditableText
+                  contentKey="emotionalSos.revealTitle"
+                  fallback={localText.revealTitle}
+                  as="span"
+                  className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block"
+                />
                 <h2 className="text-xl sm:text-2xl font-serif text-ink-text font-light uppercase">
                   {sosGuidance[selectedCategory as keyof typeof sosGuidance]?.title}
                 </h2>
@@ -899,9 +924,12 @@ export default function EmotionalSosView({
 
               {/* EVALUATION QUESTION */}
               <div className="space-y-4 pt-4 border-t border-ink-hairline max-w-sm mx-auto">
-                <p className="text-xs font-sans text-ink-muted font-bold uppercase tracking-wider">
-                  {localText.feedbackQ}
-                </p>
+                <EditableText
+                  contentKey="emotionalSos.feedbackQ"
+                  fallback={localText.feedbackQ}
+                  as="p"
+                  className="text-xs font-sans text-ink-muted font-bold uppercase tracking-wider"
+                />
 
                 <div className="grid grid-cols-2 gap-3">
                   <button
@@ -909,7 +937,7 @@ export default function EmotionalSosView({
                     className="py-3 px-4 ink-button-outline hover:bg-rosegold-light/10 text-xs font-sans font-extrabold tracking-wider uppercase rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     <ShieldCheck className="h-4 w-4" />
-                    <span>{localText.feedbackYes}</span>
+                    <EditableText contentKey="emotionalSos.feedbackYes" fallback={localText.feedbackYes} as="span" />
                   </button>
 
                   <button
@@ -917,7 +945,7 @@ export default function EmotionalSosView({
                     className="py-3 px-4 bg-transparent border border-ink-hairline hover:border-rosegold-light/30 text-ink-muted text-xs font-sans font-bold tracking-wider uppercase rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     <HelpCircle className="h-4 w-4" />
-                    <span>{localText.feedbackNo}</span>
+                    <EditableText contentKey="emotionalSos.feedbackNo" fallback={localText.feedbackNo} as="span" />
                   </button>
                 </div>
               </div>
@@ -938,9 +966,12 @@ export default function EmotionalSosView({
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-lg font-serif text-ink-text lowercase">
-                  Sintonização realizada
-                </h3>
+                <EditableText
+                  contentKey="emotionalSos.feedbackSuccessTitle"
+                  fallback="Sintonização realizada"
+                  as="h3"
+                  className="text-lg font-serif text-ink-text lowercase"
+                />
                 <p className="text-sm text-ink-text/85 leading-relaxed font-sans">
                   {adaptMessage(toneText[lang].feedbackSuccess[guideStyle], prefGrammar, lang)}
                 </p>
@@ -951,7 +982,7 @@ export default function EmotionalSosView({
                   onClick={onBackToMission}
                   className="px-6 py-3 ink-button-outline hover:bg-rosegold-light/10 rounded-xl text-xs font-sans font-bold tracking-widest uppercase transition cursor-pointer"
                 >
-                  Voltar para o Portal
+                  <EditableText contentKey="emotionalSos.backToPortal" fallback="Voltar para o Portal" as="span" />
                 </button>
               </div>
             </motion.div>
@@ -987,7 +1018,7 @@ export default function EmotionalSosView({
                     >
                       <span className="flex items-center gap-2">
                         <RefreshCw className="h-4 w-4 text-rosegold-light group-hover:rotate-180 transition duration-500" />
-                        <span>{localText.altOptionBreathing}</span>
+                        <EditableText contentKey="emotionalSos.altOptionBreathing" fallback={localText.altOptionBreathing} as="span" />
                       </span>
                       <span>→</span>
                     </button>
@@ -998,7 +1029,7 @@ export default function EmotionalSosView({
                     >
                       <span className="flex items-center gap-2">
                         <BookOpen className="h-4 w-4 text-rosegold-light" />
-                        <span>{localText.altOptionLetter}</span>
+                        <EditableText contentKey="emotionalSos.altOptionLetter" fallback={localText.altOptionLetter} as="span" />
                       </span>
                       <span>→</span>
                     </button>
@@ -1009,7 +1040,7 @@ export default function EmotionalSosView({
                     >
                       <span className="flex items-center gap-2">
                         <Headphones className="h-4 w-4 text-rosegold-light" />
-                        <span>{localText.altOptionPineal}</span>
+                        <EditableText contentKey="emotionalSos.altOptionPineal" fallback={localText.altOptionPineal} as="span" />
                       </span>
                       <span>→</span>
                     </button>
@@ -1024,12 +1055,18 @@ export default function EmotionalSosView({
                   className="space-y-6"
                 >
                   <div className="space-y-1 text-center">
-                    <span className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block">
-                      Refúgio Secreto
-                    </span>
-                    <h2 className="text-xl sm:text-2xl font-serif text-ink-text lowercase font-light">
-                      {localText.letterTitle}
-                    </h2>
+                    <EditableText
+                      contentKey="emotionalSos.letterEyebrow"
+                      fallback="Refúgio Secreto"
+                      as="span"
+                      className="text-[10px] uppercase font-mono tracking-widest text-rosegold font-bold block"
+                    />
+                    <EditableText
+                      contentKey="emotionalSos.letterTitle"
+                      fallback={localText.letterTitle}
+                      as="h2"
+                      className="text-xl sm:text-2xl font-serif text-ink-text lowercase font-light"
+                    />
                   </div>
 
                   {/* Deeply cozy letter typeset */}
@@ -1042,7 +1079,7 @@ export default function EmotionalSosView({
                       onClick={onBackToMission}
                       className="px-6 py-2.5 ink-button-outline hover:bg-rosegold-light/10 rounded-xl text-xs font-sans font-bold tracking-widest uppercase transition cursor-pointer"
                     >
-                      {localText.letterClose}
+                      <EditableText contentKey="emotionalSos.letterClose" fallback={localText.letterClose} as="span" />
                     </button>
                   </div>
                 </motion.div>

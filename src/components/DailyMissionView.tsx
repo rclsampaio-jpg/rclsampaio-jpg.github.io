@@ -16,6 +16,7 @@ import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, Gu
 import { getLocalDateISO } from '../utils/date';
 import { forceDownload } from '../utils/download';
 import { logEngagementEvent } from '../utils/engagement';
+import EditableText from './editable/EditableText';
 
 // Joins the 3 required promise-proof links into the single stored video-link string
 const LINK_SEPARATOR = '|||';
@@ -999,17 +1000,23 @@ export default function DailyMissionView({
           <div className="h-14 w-14 rounded-2xl bg-rose-50 dark:bg-rosegold/10 text-rosegold flex items-center justify-center mx-auto">
             <Lock className="h-6 w-6" />
           </div>
-          <h2 className="text-lg font-serif font-bold text-slate-800 dark:text-white">
-            {textDict.lockedTitle}
-          </h2>
-          <p className="text-sm text-slate-500 dark:text-ink-muted leading-relaxed">
-            {textDict.lockedDesc}
-          </p>
+          <EditableText
+            contentKey="dailyMission.lockedTitle"
+            fallback={textDict.lockedTitle}
+            as="h2"
+            className="text-lg font-serif font-bold text-slate-800 dark:text-white"
+          />
+          <EditableText
+            contentKey="dailyMission.lockedDesc"
+            fallback={textDict.lockedDesc}
+            as="p"
+            className="text-sm text-slate-500 dark:text-ink-muted leading-relaxed"
+          />
           <button
             onClick={onBackToHome}
             className="px-8 py-3 rounded-xl bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
           >
-            {textDict.backToHome}
+            <EditableText contentKey="dailyMission.backToHome" fallback={textDict.backToHome} as="span" />
           </button>
         </div>
 
@@ -1021,16 +1028,19 @@ export default function DailyMissionView({
               <Heart className="h-4.5 w-4.5 fill-current text-rosegold animate-pulse" />
             </div>
             <div className="min-w-0 flex-1">
-              <h4 className="text-xs font-bold text-slate-800 dark:text-ink-text font-sans tracking-wide leading-relaxed">
-                {textDict.sosHeading}
-              </h4>
+              <EditableText
+                contentKey="dailyMission.sosHeading"
+                fallback={textDict.sosHeading}
+                as="h4"
+                className="text-xs font-bold text-slate-800 dark:text-ink-text font-sans tracking-wide leading-relaxed"
+              />
             </div>
           </div>
           <button
             onClick={onTriggerSos}
             className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-rosegold hover:bg-[#A35D68] text-[10px] font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 cursor-pointer shadow-rosegold animate-pulse"
           >
-            {textDict.sosTrigger}
+            <EditableText contentKey="dailyMission.sosTrigger" fallback={textDict.sosTrigger} as="span" />
           </button>
         </div>
       </div>
@@ -1108,7 +1118,7 @@ export default function DailyMissionView({
                   onClick={() => setShowSurpriseLetter(false)}
                   className="px-6 py-3 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 text-xs font-sans font-bold uppercase tracking-[0.15em] rounded-xl shadow-rosegold dark:shadow-none transition-all cursor-pointer hover:scale-[1.02]"
                 >
-                  {textDict.closeLetter}
+                  <EditableText contentKey="dailyMission.closeLetter" fallback={textDict.closeLetter} as="span" />
                 </button>
               </div>
             </motion.div>
@@ -1126,14 +1136,14 @@ export default function DailyMissionView({
         <div className="space-y-3">
           <div className="flex flex-wrap items-center gap-2">
             <span className="px-3 py-1 bg-gradient-to-r from-rosegold to-rosegold-light text-[11px] uppercase font-sans tracking-[0.2em] rounded-full font-bold text-white shadow-rosegold">
-              {textDict.dailyMission} • {currentDay.dayNumber}/30
+              <EditableText contentKey="dailyMission.dailyMission" fallback={textDict.dailyMission} as="span" /> • {currentDay.dayNumber}/30
             </span>
             <span className="px-2.5 py-1 bg-rosegold/10 text-[11px] uppercase font-mono tracking-[0.25em] rounded-full border border-rosegold/15 font-semibold text-rosegold">
               {localizedPhase.title}
             </span>
             {isCompleted && (
               <span className="px-3 py-1 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-[11px] uppercase font-sans tracking-[0.2em] rounded-full border border-emerald-500/20 font-bold">
-                {textDict.completedBadge}
+                <EditableText contentKey="dailyMission.completedBadge" fallback={textDict.completedBadge} as="span" />
               </span>
             )}
           </div>
@@ -1189,18 +1199,21 @@ export default function DailyMissionView({
               
               <div className="mx-auto max-w-md space-y-6 relative z-10">
                 <span className="text-[11px] uppercase font-sans tracking-[0.25em] text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1.5 rounded-full">
-                  {textDict.sanctuaryTitle}
+                  <EditableText contentKey="dailyMission.sanctuaryTitle" fallback={textDict.sanctuaryTitle} as="span" />
                 </span>
 
                 <div className="p-5 bg-emerald-50/40 dark:bg-ink-raised/30 rounded-2xl border border-emerald-500/10 max-w-sm mx-auto">
                   <p className="text-emerald-800 dark:text-emerald-400 italic font-medium font-display text-sm leading-relaxed">
-                    "{textDict.restDayQuote}"
+                    "<EditableText contentKey="dailyMission.restDayQuote" fallback={textDict.restDayQuote} as="span" />"
                   </p>
                 </div>
 
-                <p className="text-slate-600 dark:text-ink-muted text-xs sm:text-sm leading-relaxed font-sans">
-                  {textDict.restDayDescription}
-                </p>
+                <EditableText
+                  contentKey="dailyMission.restDayDescription"
+                  fallback={textDict.restDayDescription}
+                  as="p"
+                  className="text-slate-600 dark:text-ink-muted text-xs sm:text-sm leading-relaxed font-sans"
+                />
 
                 {/* Interactive Calming Breathing Circle for Rest Sanctuary */}
                 <div className="py-6 flex flex-col items-center justify-center space-y-5">
@@ -1226,10 +1239,10 @@ export default function DailyMissionView({
                   </motion.div>
                   
                   <span className="text-[10px] font-sans tracking-[0.2em] text-emerald-600 dark:text-emerald-400 uppercase font-bold">
-                    {breathState === 'inhale' && textDict.inhale}
-                    {breathState === 'hold' && textDict.hold}
-                    {breathState === 'exhale' && textDict.exhale}
-                    {breathState === 'rest' && textDict.rest}
+                    {breathState === 'inhale' && <EditableText contentKey="dailyMission.inhale" fallback={textDict.inhale} as="span" />}
+                    {breathState === 'hold' && <EditableText contentKey="dailyMission.hold" fallback={textDict.hold} as="span" />}
+                    {breathState === 'exhale' && <EditableText contentKey="dailyMission.exhale" fallback={textDict.exhale} as="span" />}
+                    {breathState === 'rest' && <EditableText contentKey="dailyMission.rest" fallback={textDict.rest} as="span" />}
                   </span>
                 </div>
               </div>
@@ -1245,7 +1258,7 @@ export default function DailyMissionView({
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
-                    {textDict.hookTitle}
+                    <EditableText contentKey="dailyMission.hookTitle" fallback={textDict.hookTitle} as="span" />
                   </span>
 
                   <button
@@ -1255,12 +1268,12 @@ export default function DailyMissionView({
                     {copiedHook ? (
                       <>
                         <Check className="h-3.5 w-3.5 text-emerald-500" />
-                        <span className="text-emerald-500 font-bold">{textDict.copied}</span>
+                        <span className="text-emerald-500 font-bold"><EditableText contentKey="dailyMission.copied" fallback={textDict.copied} as="span" /></span>
                       </>
                     ) : (
                       <>
                         <Copy className="h-3.5 w-3.5" />
-                        <span>{textDict.copy}</span>
+                        <span><EditableText contentKey="dailyMission.copy" fallback={textDict.copy} as="span" /></span>
                       </>
                     )}
                   </button>
@@ -1292,7 +1305,8 @@ export default function DailyMissionView({
                 {/* Top row: label + favorite */}
                 <div className="flex items-start justify-between relative z-10">
                   <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-extrabold block">
-                    {textDict.step01} • {textDict.audioTitle}
+                    <EditableText contentKey="dailyMission.step01" fallback={textDict.step01} as="span" /> •{' '}
+                    <EditableText contentKey="dailyMission.audioTitle" fallback={textDict.audioTitle} as="span" />
                   </span>
                   <div className="flex items-center gap-1.5 shrink-0">
                     <button
@@ -1322,7 +1336,9 @@ export default function DailyMissionView({
                 {/* Title + duration */}
                 <div className="mt-3 space-y-1 relative z-10">
                   <h3 className="text-xl sm:text-2xl font-serif font-semibold text-slate-800 dark:text-ink-text">
-                    {audioCompleted ? textDict.audioFinished : adaptMessage(currentDay.title[lang] || currentDay.title['pt'], prefGrammar, lang)}
+                    {audioCompleted
+                      ? <EditableText contentKey="dailyMission.audioFinished" fallback={textDict.audioFinished} as="span" />
+                      : adaptMessage(currentDay.title[lang] || currentDay.title['pt'], prefGrammar, lang)}
                   </h3>
                   <span className="text-xs text-slate-400 dark:text-ink-muted font-sans block">
                     {formatTime(duration)}
@@ -1407,7 +1423,7 @@ export default function DailyMissionView({
                       <Info className="h-4.5 w-4.5" />
                     </div>
                     <span className="text-xs font-sans font-extrabold uppercase tracking-wider text-accentgold">
-                      {textDict.importantNoticeTitle}
+                      <EditableText contentKey="dailyMission.importantNoticeTitle" fallback={textDict.importantNoticeTitle} as="span" />
                     </span>
                   </div>
                   <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed font-sans whitespace-pre-line">
@@ -1418,7 +1434,7 @@ export default function DailyMissionView({
                     className="inline-flex items-center gap-2 px-5 py-3 bg-accentgold hover:brightness-105 text-slate-950 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer shadow-gold-accent"
                   >
                     <Download className="h-4 w-4" />
-                    {textDict.importantNoticeDownload}
+                    <EditableText contentKey="dailyMission.importantNoticeDownload" fallback={textDict.importantNoticeDownload} as="span" />
                   </button>
                 </motion.div>
               )}
@@ -1432,12 +1448,17 @@ export default function DailyMissionView({
               >
                 <div className="flex items-center justify-between pb-2 border-b border-rose-100/15 dark:border-ink-hairline">
                   <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
-                    {textDict.step02} • {textDict.hookShowcaseTitle}
+                    <EditableText contentKey="dailyMission.step02" fallback={textDict.step02} as="span" /> •{' '}
+                    <EditableText contentKey="dailyMission.hookShowcaseTitle" fallback={textDict.hookShowcaseTitle} as="span" />
                   </span>
                 </div>
 
                 <div className="flex gap-1.5 bg-rose-50/30 dark:bg-rosegold/5 p-1.5 rounded-xl">
-                  {[textDict.tabOpenLabel, textDict.tabDailyLabel, textDict.tabIdeaLabel].map((label, idx) => (
+                  {[
+                    { key: 'dailyMission.tabOpenLabel', label: textDict.tabOpenLabel },
+                    { key: 'dailyMission.tabDailyLabel', label: textDict.tabDailyLabel },
+                    { key: 'dailyMission.tabIdeaLabel', label: textDict.tabIdeaLabel }
+                  ].map(({ key, label }, idx) => (
                     <button
                       key={idx}
                       onClick={() => setActiveHookTab(idx)}
@@ -1447,16 +1468,19 @@ export default function DailyMissionView({
                           : 'text-slate-500 hover:text-rosegold hover:bg-rose-50/50'
                       }`}
                     >
-                      {label}
+                      <EditableText contentKey={key} fallback={label} as="span" />
                     </button>
                   ))}
                 </div>
 
                 {activeHookTab === 0 && (
                   <div className="space-y-3">
-                    <h4 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
-                      {textDict.openHookHeading}
-                    </h4>
+                    <EditableText
+                      contentKey="dailyMission.openHookHeading"
+                      fallback={textDict.openHookHeading}
+                      as="h4"
+                      className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans"
+                    />
                     <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
                       {actionHookOptions.map((option, idx) => (
                         <div
@@ -1473,12 +1497,12 @@ export default function DailyMissionView({
                             {copiedActionHookIndex === idx ? (
                               <>
                                 <Check className="h-3.5 w-3.5 text-emerald-500" />
-                                <span className="text-emerald-500">{textDict.copiedHookLabel}</span>
+                                <span className="text-emerald-500"><EditableText contentKey="dailyMission.copiedHookLabel" fallback={textDict.copiedHookLabel} as="span" /></span>
                               </>
                             ) : (
                               <>
                                 <Copy className="h-3.5 w-3.5" />
-                                <span>{textDict.copyHook}</span>
+                                <span><EditableText contentKey="dailyMission.copyHook" fallback={textDict.copyHook} as="span" /></span>
                               </>
                             )}
                           </button>
@@ -1492,7 +1516,7 @@ export default function DailyMissionView({
                   <div className="space-y-3">
                     {hookCategoryLabel && (
                       <h4 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
-                        {textDict.dailyHookHeadingPrefix} {hookCategoryLabel}
+                        <EditableText contentKey="dailyMission.dailyHookHeadingPrefix" fallback={textDict.dailyHookHeadingPrefix} as="span" /> {hookCategoryLabel}
                       </h4>
                     )}
                     {hookOptions.length > 0 ? (
@@ -1512,12 +1536,12 @@ export default function DailyMissionView({
                               {copiedHookOptionIndex === idx ? (
                                 <>
                                   <Check className="h-3.5 w-3.5 text-emerald-500" />
-                                  <span className="text-emerald-500">{textDict.copiedHookLabel}</span>
+                                  <span className="text-emerald-500"><EditableText contentKey="dailyMission.copiedHookLabel" fallback={textDict.copiedHookLabel} as="span" /></span>
                                 </>
                               ) : (
                                 <>
                                   <Copy className="h-3.5 w-3.5" />
-                                  <span>{textDict.copyHook}</span>
+                                  <span><EditableText contentKey="dailyMission.copyHook" fallback={textDict.copyHook} as="span" /></span>
                                 </>
                               )}
                             </button>
@@ -1525,21 +1549,30 @@ export default function DailyMissionView({
                         ))}
                       </div>
                     ) : (
-                      <p className="text-xs text-slate-500 dark:text-ink-muted italic font-sans p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-ink-hairline">
-                        {textDict.noDailyHookFallback}
-                      </p>
+                      <EditableText
+                        contentKey="dailyMission.noDailyHookFallback"
+                        fallback={textDict.noDailyHookFallback}
+                        as="p"
+                        className="text-xs text-slate-500 dark:text-ink-muted italic font-sans p-3.5 rounded-xl bg-rose-50/30 dark:bg-rosegold/5 border border-rose-100/10 dark:border-ink-hairline"
+                      />
                     )}
                   </div>
                 )}
 
                 {activeHookTab === 2 && (
                   <div className="space-y-3">
-                    <h4 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
-                      {textDict.ideaHeading}
-                    </h4>
-                    <p className="text-xs text-slate-500 dark:text-ink-muted font-sans">
-                      {textDict.ideaSubtitle}
-                    </p>
+                    <EditableText
+                      contentKey="dailyMission.ideaHeading"
+                      fallback={textDict.ideaHeading}
+                      as="h4"
+                      className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans"
+                    />
+                    <EditableText
+                      contentKey="dailyMission.ideaSubtitle"
+                      fallback={textDict.ideaSubtitle}
+                      as="p"
+                      className="text-xs text-slate-500 dark:text-ink-muted font-sans"
+                    />
                     <textarea
                       value={customHookIdea}
                       onChange={(e) => setCustomHookIdea(e.target.value)}
@@ -1560,7 +1593,8 @@ export default function DailyMissionView({
               >
                 <div className="flex items-center gap-2">
                   <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold bg-rose-50/50 dark:bg-rosegold/10 px-3 py-1 rounded-full uppercase font-extrabold">
-                    {textDict.step03} • {textDict.exposureTitle}
+                    <EditableText contentKey="dailyMission.step03" fallback={textDict.step03} as="span" /> •{' '}
+                    <EditableText contentKey="dailyMission.exposureTitle" fallback={textDict.exposureTitle} as="span" />
                   </span>
                 </div>
                 
@@ -1597,20 +1631,25 @@ export default function DailyMissionView({
                 <div className="space-y-1.5">
                   <h3 className="text-sm font-bold text-slate-800 dark:text-amber-100 flex items-center gap-2 font-sans tracking-wide">
                     <Sparkles className="h-4.5 w-4.5 text-accentgold animate-pulse" />
-                    {textDict.promisesTitle}
+                    <EditableText contentKey="dailyMission.promisesTitle" fallback={textDict.promisesTitle} as="span" />
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans">
-                    {textDict.promisesSubtitle}
-                  </p>
+                  <EditableText
+                    contentKey="dailyMission.promisesSubtitle"
+                    fallback={textDict.promisesSubtitle}
+                    as="p"
+                    className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
+                  />
                 </div>
 
                 <div className="space-y-3.5 pt-1">
                   {([
-                    { key: 'inertia' as const, label: textDict.promise1Label, desc: textDict.promise1 },
-                    { key: 'confidence' as const, label: textDict.promise2Label, desc: textDict.promise2 },
+                    { key: 'inertia' as const, labelKey: 'dailyMission.promise1Label', label: textDict.promise1Label, descKey: 'dailyMission.promise1', desc: textDict.promise1 },
+                    { key: 'confidence' as const, labelKey: 'dailyMission.promise2Label', label: textDict.promise2Label, descKey: 'dailyMission.promise2', desc: textDict.promise2 },
                     {
                       key: 'evidence' as const,
+                      labelKey: isStorySequenceDay ? 'dailyMission.promise3LabelStorySequence' : 'dailyMission.promise3Label',
                       label: isStorySequenceDay ? textDict.promise3LabelStorySequence : textDict.promise3Label,
+                      descKey: isStorySequenceDay ? 'dailyMission.promise3StorySequence' : 'dailyMission.promise3',
                       desc: isStorySequenceDay ? textDict.promise3StorySequence : textDict.promise3
                     }
                   ]).map((item) => (
@@ -1626,8 +1665,8 @@ export default function DailyMissionView({
                         className="mt-0.5 h-4.5 w-4.5 rounded-md text-rosegold border-slate-300 focus:ring-rosegold transition-all duration-300"
                       />
                       <div className="text-xs font-sans">
-                        <span className="font-semibold text-slate-700 dark:text-ink-text block">{item.label}</span>
-                        <span className="text-slate-500 dark:text-ink-muted block mt-1 leading-relaxed">{item.desc}</span>
+                        <EditableText contentKey={item.labelKey} fallback={item.label} as="span" className="font-semibold text-slate-700 dark:text-ink-text block" />
+                        <EditableText contentKey={item.descKey} fallback={item.desc} as="span" className="text-slate-500 dark:text-ink-muted block mt-1 leading-relaxed" />
                       </div>
                     </label>
                   ))}
@@ -1649,39 +1688,48 @@ export default function DailyMissionView({
           >
             <div>
               <h3 className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-[0.15em] mb-3.5 font-extrabold">
-                {isRestDay ? textDict.statusTitle : textDict.progressLockTitle}
+                {isRestDay
+                  ? <EditableText contentKey="dailyMission.statusTitle" fallback={textDict.statusTitle} as="span" />
+                  : <EditableText contentKey="dailyMission.progressLockTitle" fallback={textDict.progressLockTitle} as="span" />}
               </h3>
 
               {!isRestDay && (
                 <div className="space-y-3">
                   {/* Validation checkmark widgets */}
                   <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 p-4 rounded-xl shadow-xs">
-                    <span className="text-slate-600 dark:text-ink-muted font-semibold font-sans">{textDict.listenItem}</span>
+                    <EditableText contentKey="dailyMission.listenItem" fallback={textDict.listenItem} as="span" className="text-slate-600 dark:text-ink-muted font-semibold font-sans" />
                     <span className={`px-3 py-1 rounded-full text-[11px] font-sans font-bold uppercase tracking-wider ${
                       audioCompleted
                         ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
                         : 'bg-rose-50 dark:bg-rosegold/15 text-rosegold'
                     }`}>
-                      {audioCompleted ? textDict.completedStatus : textDict.pendingStatus}
+                      {audioCompleted
+                        ? <EditableText contentKey="dailyMission.completedStatus" fallback={textDict.completedStatus} as="span" />
+                        : <EditableText contentKey="dailyMission.pendingStatus" fallback={textDict.pendingStatus} as="span" />}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 p-4 rounded-xl shadow-xs">
-                    <span className="text-slate-600 dark:text-ink-muted font-semibold font-sans">{textDict.promisesItem}</span>
+                    <EditableText contentKey="dailyMission.promisesItem" fallback={textDict.promisesItem} as="span" className="text-slate-600 dark:text-ink-muted font-semibold font-sans" />
                     <span className={`px-3 py-1 rounded-full text-[11px] font-sans font-bold uppercase tracking-wider ${
                       allPromisesKept
                         ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
                         : 'bg-amber-500/15 text-accentgold'
                     }`}>
-                      {allPromisesKept ? textDict.completedStatus : textDict.pendingStatus}
+                      {allPromisesKept
+                        ? <EditableText contentKey="dailyMission.completedStatus" fallback={textDict.completedStatus} as="span" />
+                        : <EditableText contentKey="dailyMission.pendingStatus" fallback={textDict.pendingStatus} as="span" />}
                     </span>
                   </div>
 
                   {/* 3 mandatory recording links */}
                   <div className="space-y-2 pt-1">
-                    <p className="text-xs text-slate-500 dark:text-ink-muted font-sans">
-                      {textDict.recordingsLinkInstruction}
-                    </p>
+                    <EditableText
+                      contentKey="dailyMission.recordingsLinkInstruction"
+                      fallback={textDict.recordingsLinkInstruction}
+                      as="p"
+                      className="text-xs text-slate-500 dark:text-ink-muted font-sans"
+                    />
                     {([
                       { key: 'inertia' as const },
                       { key: 'confidence' as const },
@@ -1706,15 +1754,19 @@ export default function DailyMissionView({
             {!isRestDay && (
               <div className="space-y-4">
                 <label className="block text-xs font-sans text-rosegold uppercase font-extrabold tracking-wider">
-                  {isSeventhDayReflection ? textDict.reflection7Title : textDict.reflectionTitle}
+                  {isSeventhDayReflection
+                    ? <EditableText contentKey="dailyMission.reflection7Title" fallback={textDict.reflection7Title} as="span" />
+                    : <EditableText contentKey="dailyMission.reflectionTitle" fallback={textDict.reflectionTitle} as="span" />}
                 </label>
-                
+
                 {isSeventhDayReflection ? (
                   <div className="text-xs text-slate-500 dark:text-ink-muted space-y-2 p-4 rounded-2xl bg-amber-500/5 border border-accentgold/20 font-sans italic">
-                    <p className="font-bold text-accentgold not-italic uppercase tracking-widest text-[11px]">{localizedPhase.title} {textDict.reflectionMoment}</p>
-                    <p>{textDict.reflection7Q1}</p>
-                    <p>{textDict.reflection7Q2}</p>
-                    <p>{textDict.reflection7Q3}</p>
+                    <p className="font-bold text-accentgold not-italic uppercase tracking-widest text-[11px]">
+                      {localizedPhase.title} <EditableText contentKey="dailyMission.reflectionMoment" fallback={textDict.reflectionMoment} as="span" />
+                    </p>
+                    <p><EditableText contentKey="dailyMission.reflection7Q1" fallback={textDict.reflection7Q1} as="span" /></p>
+                    <p><EditableText contentKey="dailyMission.reflection7Q2" fallback={textDict.reflection7Q2} as="span" /></p>
+                    <p><EditableText contentKey="dailyMission.reflection7Q3" fallback={textDict.reflection7Q3} as="span" /></p>
                   </div>
                 ) : (
                   <p className="text-xs text-slate-500 dark:text-ink-muted italic leading-relaxed">
@@ -1734,7 +1786,7 @@ export default function DailyMissionView({
                 {reflectionInput.trim().length <= 3 && !isCompleted && (
                   <p className="text-[11px] text-[#D4AF37] flex items-center gap-1.5 font-sans font-medium">
                     <Info className="h-4 w-4 shrink-0" />
-                    {textDict.reflectionWarning}
+                    <EditableText contentKey="dailyMission.reflectionWarning" fallback={textDict.reflectionWarning} as="span" />
                   </p>
                 )}
 
@@ -1785,15 +1837,18 @@ export default function DailyMissionView({
               <div className="bg-[#FAF8F5] dark:bg-ink border border-emerald-500/20 rounded-3xl p-6 space-y-5 shadow-sm">
                 <div className="text-center space-y-1">
                   <span className="text-emerald-600 dark:text-emerald-400 font-extrabold text-[10px] block uppercase tracking-[0.2em] bg-emerald-500/10 px-3 py-1 rounded-full w-max mx-auto">
-                    🎉 {textDict.completedBadge}!
+                    🎉 <EditableText contentKey="dailyMission.completedBadge" fallback={textDict.completedBadge} as="span" />!
                   </span>
                 </div>
-                
+
                 {/* 3. The Identity Loop Statement */}
                 <div className="border-t border-b border-rose-100/10 py-4 text-left space-y-1.5">
-                  <span className="text-[11px] font-extrabold uppercase text-slate-400 tracking-[0.15em] block">
-                    {textDict.identityHeader}
-                  </span>
+                  <EditableText
+                    contentKey="dailyMission.identityHeader"
+                    fallback={textDict.identityHeader}
+                    as="span"
+                    className="text-[11px] font-extrabold uppercase text-slate-400 tracking-[0.15em] block"
+                  />
                   <p className="text-sm text-slate-700 dark:text-ink-text font-medium italic font-display leading-relaxed">
                     "{adaptMessage(identityPhrases[currentDay.dayNumber as keyof typeof identityPhrases]?.[lang] || 'You showed up today.', prefGrammar, lang)}"
                   </p>
@@ -1893,7 +1948,11 @@ export default function DailyMissionView({
                     : 'bg-rose-50/40 dark:bg-rosegold/5 text-slate-400 dark:text-ink-muted cursor-not-allowed border border-rose-100/10'
                 }`}
               >
-                <span>{isRestDay ? textDict.completeBtnRest : textDict.completeBtn}</span>
+                <span>
+                  {isRestDay
+                    ? <EditableText contentKey="dailyMission.completeBtnRest" fallback={textDict.completeBtnRest} as="span" />
+                    : <EditableText contentKey="dailyMission.completeBtn" fallback={textDict.completeBtn} as="span" />}
+                </span>
                 <ArrowRight className="h-4 w-4" />
               </button>
             )}
@@ -1901,7 +1960,7 @@ export default function DailyMissionView({
           </motion.div>
 
           {/* Quick Trigger Emotional SOS Banner */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
@@ -1912,16 +1971,19 @@ export default function DailyMissionView({
                 <Heart className="h-4.5 w-4.5 fill-current text-rosegold animate-pulse" />
               </div>
               <div className="min-w-0 flex-1">
-                <h4 className="text-xs font-bold text-slate-800 dark:text-ink-text font-sans tracking-wide leading-relaxed">
-                  {textDict.sosHeading}
-                </h4>
+                <EditableText
+                  contentKey="dailyMission.sosHeading"
+                  fallback={textDict.sosHeading}
+                  as="h4"
+                  className="text-xs font-bold text-slate-800 dark:text-ink-text font-sans tracking-wide leading-relaxed"
+                />
               </div>
             </div>
             <button
               onClick={onTriggerSos}
               className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-rosegold hover:bg-[#A35D68] text-[10px] font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 cursor-pointer shadow-rosegold animate-pulse"
             >
-              {textDict.sosTrigger}
+              <EditableText contentKey="dailyMission.sosTrigger" fallback={textDict.sosTrigger} as="span" />
             </button>
           </motion.div>
 

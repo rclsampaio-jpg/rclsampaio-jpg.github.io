@@ -6,6 +6,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { PartyPopper } from 'lucide-react';
 import { Language } from '../types';
+import EditableText from './editable/EditableText';
 
 interface DayCompletionOverlayProps {
   dayNumber: number;
@@ -57,9 +58,12 @@ export default function DayCompletionOverlay({ dayNumber, lang, onClose }: DayCo
             <PartyPopper className="h-8 w-8" />
           </motion.div>
 
-          <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-white tracking-tight">
-            {trans.heading}
-          </h2>
+          <EditableText
+            contentKey="dayCompletion.heading"
+            fallback={trans.heading}
+            as="h2"
+            className="text-2xl font-display font-bold text-slate-900 dark:text-white tracking-tight"
+          />
 
           <p className="text-sm text-slate-600 dark:text-ink-muted leading-relaxed">
             {trans.message}
@@ -69,7 +73,7 @@ export default function DayCompletionOverlay({ dayNumber, lang, onClose }: DayCo
             onClick={onClose}
             className="w-full py-3.5 rounded-2xl bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
           >
-            {trans.cta}
+            <EditableText contentKey="dayCompletion.cta" fallback={trans.cta} as="span" />
           </button>
         </motion.div>
       </motion.div>

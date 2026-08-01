@@ -9,6 +9,7 @@ import { Sparkles, Play, Pause, Volume2, ArrowRight, Award, Flame, CheckCircle, 
 import { Language, UserProgress } from '../types';
 import { Chapter, chapters } from '../data/chaptersData';
 import { adaptMessage, pickTone, resolveGuideStyle, ToneVariants } from '../utils/grammar';
+import EditableText from './editable/EditableText';
 
 interface ChapterMilestoneOverlayProps {
   type: 'intro' | 'completion';
@@ -290,12 +291,18 @@ export default function ChapterMilestoneOverlay({
             <span className={`text-[11px] font-sans tracking-widest font-extrabold uppercase px-3 py-1 rounded-full ${styles.bg}`}>
               {trans.chapter} {chapter.id}
             </span>
-            <h1 className={`text-4xl font-serif tracking-tight font-black uppercase mt-1 ${styles.text}`}>
-              {chapter.title[lang]}
-            </h1>
-            <p className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-widest font-semibold">
-              {chapter.theme[lang]}
-            </p>
+            <EditableText
+              contentKey={`journey.chapter.${chapter.id}.title`}
+              fallback={chapter.title[lang]}
+              as="h1"
+              className={`text-4xl font-serif tracking-tight font-black uppercase mt-1 ${styles.text}`}
+            />
+            <EditableText
+              contentKey={`journey.chapter.${chapter.id}.theme`}
+              fallback={chapter.theme[lang]}
+              as="p"
+              className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-widest font-semibold"
+            />
           </div>
 
           <div className="h-px bg-rose-100/20 dark:bg-rosegold/10 w-full" />
@@ -314,9 +321,12 @@ export default function ChapterMilestoneOverlay({
 
               {/* Reflection Statement */}
               <div className="space-y-2">
-                <h3 className="text-xs font-sans uppercase font-bold text-rosegold tracking-wider">
-                  {trans.reflectionTitle}
-                </h3>
+                <EditableText
+                  contentKey="journey.milestone.reflectionTitle"
+                  fallback={trans.reflectionTitle}
+                  as="h3"
+                  className="text-xs font-sans uppercase font-bold text-rosegold tracking-wider"
+                />
                 <p className="text-sm text-slate-600 dark:text-ink-muted leading-relaxed italic font-serif">
                   {adaptMessage(pickTone(chapter.reflection, lang, resolvedGuideStyle), grammarPreference, lang)}
                 </p>
@@ -328,11 +338,14 @@ export default function ChapterMilestoneOverlay({
                   <div className="space-y-0.5">
                     <h4 className="text-xs font-bold text-slate-800 dark:text-ink-text uppercase tracking-wider flex items-center gap-1.5 font-sans">
                       <Volume2 className="h-4 w-4 text-rosegold" />
-                      {trans.audioTitle}
+                      <EditableText contentKey="journey.milestone.audioTitle" fallback={trans.audioTitle} as="span" />
                     </h4>
-                    <p className="text-[11px] text-slate-400 dark:text-ink-muted">
-                      {trans.audioSubtitle}
-                    </p>
+                    <EditableText
+                      contentKey="journey.milestone.audioSubtitle"
+                      fallback={trans.audioSubtitle}
+                      as="p"
+                      className="text-[11px] text-slate-400 dark:text-ink-muted"
+                    />
                   </div>
 
                   <button
@@ -373,9 +386,12 @@ export default function ChapterMilestoneOverlay({
 
               {/* Expectations section */}
               <div className="space-y-2">
-                <h3 className="text-xs font-sans uppercase font-bold text-rosegold tracking-wider">
-                  {trans.expectationTitle}
-                </h3>
+                <EditableText
+                  contentKey="journey.milestone.expectationTitle"
+                  fallback={trans.expectationTitle}
+                  as="h3"
+                  className="text-xs font-sans uppercase font-bold text-rosegold tracking-wider"
+                />
                 <p className="text-xs text-slate-600 dark:text-ink-muted leading-relaxed font-sans">
                   {adaptMessage(pickTone(chapter.expectation, lang, resolvedGuideStyle), grammarPreference, lang)}
                 </p>
@@ -392,12 +408,18 @@ export default function ChapterMilestoneOverlay({
                   <Award className="h-8 w-8 text-[#D4AF37]" />
                 </div>
                 <div className="space-y-1">
-                  <h2 className="text-xl font-serif text-slate-800 dark:text-white">
-                    {trans.congratulations}
-                  </h2>
-                  <p className="text-xs text-slate-400 dark:text-ink-muted font-sans uppercase tracking-widest font-bold">
-                    {trans.phaseClosed}
-                  </p>
+                  <EditableText
+                    contentKey="journey.milestone.congratulations"
+                    fallback={trans.congratulations}
+                    as="h2"
+                    className="text-xl font-serif text-slate-800 dark:text-white"
+                  />
+                  <EditableText
+                    contentKey="journey.milestone.phaseClosed"
+                    fallback={trans.phaseClosed}
+                    as="p"
+                    className="text-xs text-slate-400 dark:text-ink-muted font-sans uppercase tracking-widest font-bold"
+                  />
                 </div>
               </div>
 
@@ -418,9 +440,12 @@ export default function ChapterMilestoneOverlay({
               {/* User Reflection Review */}
               {userReflection && (
                 <div className="space-y-2 bg-[#FAF8F5]/50 dark:bg-ink-raised/50 p-4 rounded-xl border border-rose-150/10">
-                  <span className="text-[10px] font-sans text-slate-400 uppercase tracking-widest block font-bold">
-                    {trans.yourReflection}
-                  </span>
+                  <EditableText
+                    contentKey="journey.milestone.yourReflection"
+                    fallback={trans.yourReflection}
+                    as="span"
+                    className="text-[10px] font-sans text-slate-400 uppercase tracking-widest block font-bold"
+                  />
                   <p className="text-xs text-slate-700 dark:text-ink-muted font-serif italic leading-relaxed">
                     "{userReflection}"
                   </p>
@@ -432,9 +457,12 @@ export default function ChapterMilestoneOverlay({
                 
                 {/* Checkboxes: What surprised you this week? */}
                 <div className="space-y-2">
-                  <h4 className="text-xs font-sans font-extrabold uppercase tracking-wider text-[#D4AF37]">
-                    {trans.qSurprised}
-                  </h4>
+                  <EditableText
+                    contentKey="journey.milestone.qSurprised"
+                    fallback={trans.qSurprised}
+                    as="h4"
+                    className="text-xs font-sans font-extrabold uppercase tracking-wider text-[#D4AF37]"
+                  />
                   <div className="space-y-1.5">
                     {([
                       lang === 'pt' ? "Minha própria voz" : lang === 'es' ? "Mi propia voz" : "My own voice",
@@ -474,9 +502,12 @@ export default function ChapterMilestoneOverlay({
 
                 {/* Tappable buttons: How do you feel right now? */}
                 <div className="space-y-2 pt-2 border-t border-rose-100/10">
-                  <h4 className="text-xs font-sans font-extrabold uppercase tracking-wider text-[#D4AF37]">
-                    {trans.qFeeling}
-                  </h4>
+                  <EditableText
+                    contentKey="journey.milestone.qFeeling"
+                    fallback={trans.qFeeling}
+                    as="h4"
+                    className="text-xs font-sans font-extrabold uppercase tracking-wider text-[#D4AF37]"
+                  />
                   <div className="grid grid-cols-2 gap-2">
                     {([
                       { key: 'beginning', label: lang === 'pt' ? '🌱 Estou apenas começando' : lang === 'es' ? '🌱 Estoy solo comenzando' : '🌱 I\'m just beginning' },
@@ -512,9 +543,12 @@ export default function ChapterMilestoneOverlay({
                     animate={{ opacity: 1, height: 'auto' }}
                     className="space-y-2 pt-2 border-t border-rose-100/10 overflow-hidden"
                   >
-                    <h4 className="text-xs font-sans font-extrabold uppercase tracking-wider text-[#D4AF37]">
-                      {trans.qFutureNote}
-                    </h4>
+                    <EditableText
+                      contentKey="journey.milestone.qFutureNote"
+                      fallback={trans.qFutureNote}
+                      as="h4"
+                      className="text-xs font-sans font-extrabold uppercase tracking-wider text-[#D4AF37]"
+                    />
                     <textarea
                       maxLength={300}
                       rows={3}
@@ -539,24 +573,36 @@ export default function ChapterMilestoneOverlay({
                   </span>
                   <div className="flex items-center justify-between gap-4">
                     <div>
-                      <h4 className="text-sm font-serif font-bold text-rosegold dark:text-rosegold-light uppercase">
-                        {nextChapter.title[lang]}
-                      </h4>
-                      <p className="text-xs text-slate-500 dark:text-ink-muted">
-                        {nextChapter.theme[lang]}
-                      </p>
+                      <EditableText
+                        contentKey={`journey.chapter.${nextChapter.id}.title`}
+                        fallback={nextChapter.title[lang]}
+                        as="h4"
+                        className="text-sm font-serif font-bold text-rosegold dark:text-rosegold-light uppercase"
+                      />
+                      <EditableText
+                        contentKey={`journey.chapter.${nextChapter.id}.theme`}
+                        fallback={nextChapter.theme[lang]}
+                        as="p"
+                        className="text-xs text-slate-500 dark:text-ink-muted"
+                      />
                     </div>
                     <ArrowRight className="h-4 w-4 text-accentgold shrink-0" />
                   </div>
                 </div>
               ) : (
                 <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/5 to-accentgold/10 border border-[#D4AF37]/30 text-center space-y-1">
-                  <h4 className="text-sm font-serif font-extrabold text-accentgold uppercase tracking-wider">
-                    {trans.enterRebirth}
-                  </h4>
-                  <p className="text-xs text-slate-500 dark:text-ink-muted">
-                    {trans.rebirthSub}
-                  </p>
+                  <EditableText
+                    contentKey="journey.milestone.enterRebirth"
+                    fallback={trans.enterRebirth}
+                    as="h4"
+                    className="text-sm font-serif font-extrabold text-accentgold uppercase tracking-wider"
+                  />
+                  <EditableText
+                    contentKey="journey.milestone.rebirthSub"
+                    fallback={trans.rebirthSub}
+                    as="p"
+                    className="text-xs text-slate-500 dark:text-ink-muted"
+                  />
                 </div>
               )}
 
@@ -580,7 +626,11 @@ export default function ChapterMilestoneOverlay({
               (type === 'completion' && !selectedFeeling) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
             }`}
           >
-            <span>{type === 'intro' ? trans.continue : trans.completeAndClose}</span>
+            <EditableText
+              contentKey={type === 'intro' ? 'journey.milestone.continueButton' : 'journey.milestone.completeAndCloseButton'}
+              fallback={type === 'intro' ? trans.continue : trans.completeAndClose}
+              as="span"
+            />
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>

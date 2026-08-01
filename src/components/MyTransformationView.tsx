@@ -12,6 +12,7 @@ import {
 import { Language, UserProgress, MissionDay } from '../types';
 import { getChapterForDay, chapters } from '../data/chaptersData';
 import TreeOfRebirth from './TreeOfRebirth';
+import EditableText from './editable/EditableText';
 
 interface MyTransformationViewProps {
   progress: UserProgress;
@@ -342,17 +343,26 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-ink-raised border border-rose-100/30 dark:border-rosegold/10 p-6 rounded-3xl shadow-sm transition-all duration-300">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-extrabold uppercase tracking-widest text-[#D4AF37] px-2 py-0.5 rounded-md bg-[#D4AF37]/10">
-              Scrapbook Private Archive
-            </span>
+            <EditableText
+              contentKey="myTransformation.archiveLabel"
+              fallback="Scrapbook Private Archive"
+              as="span"
+              className="text-xs font-mono font-extrabold uppercase tracking-widest text-[#D4AF37] px-2 py-0.5 rounded-md bg-[#D4AF37]/10"
+            />
             <Sparkles className="h-4 w-4 text-[#D4AF37] animate-pulse" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif text-slate-950 dark:text-white uppercase font-black tracking-tight">
-            {trans.title}
-          </h1>
-          <p className="text-xs text-slate-500 dark:text-ink-muted max-w-xl font-sans">
-            {trans.subtitle}
-          </p>
+          <EditableText
+            contentKey="myTransformation.title"
+            fallback={trans.title}
+            as="h1"
+            className="text-2xl sm:text-3xl font-serif text-slate-950 dark:text-white uppercase font-black tracking-tight"
+          />
+          <EditableText
+            contentKey="myTransformation.subtitle"
+            fallback={trans.subtitle}
+            as="p"
+            className="text-xs text-slate-500 dark:text-ink-muted max-w-xl font-sans"
+          />
         </div>
 
         {onBackToHome && (
@@ -360,7 +370,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
             onClick={onBackToHome}
             className="px-5 py-2.5 bg-rosegold hover:bg-[#A35D68] text-white text-xs uppercase tracking-widest font-bold rounded-xl transition cursor-pointer self-start md:self-center font-sans shadow-md"
           >
-            {trans.backHome}
+            <EditableText contentKey="myTransformation.backHome" fallback={trans.backHome} as="span" />
           </button>
         )}
       </div>
@@ -375,7 +385,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
               : 'bg-rose-50/20 dark:bg-warmbrown-light/5 text-slate-500 border-transparent hover:bg-rose-50/50'
           }`}
         >
-          {trans.tabTimeline}
+          <EditableText contentKey="myTransformation.tabTimeline" fallback={trans.tabTimeline} as="span" />
         </button>
 
         <button
@@ -386,7 +396,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
               : 'bg-rose-50/20 dark:bg-warmbrown-light/5 text-slate-500 border-transparent hover:bg-rose-50/50'
           }`}
         >
-          {trans.tabMood}
+          <EditableText contentKey="myTransformation.tabMood" fallback={trans.tabMood} as="span" />
         </button>
 
         <button
@@ -397,7 +407,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
               : 'bg-rose-50/20 dark:bg-warmbrown-light/5 text-slate-500 border-transparent hover:bg-rose-50/50'
           }`}
         >
-          {trans.tabChapters}
+          <EditableText contentKey="myTransformation.tabChapters" fallback={trans.tabChapters} as="span" />
         </button>
 
         <button
@@ -408,7 +418,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
               : 'bg-rose-50/20 dark:bg-warmbrown-light/5 text-slate-500 border-transparent hover:bg-rose-50/50'
           }`}
         >
-          {trans.tabSos}
+          <EditableText contentKey="myTransformation.tabSos" fallback={trans.tabSos} as="span" />
         </button>
 
         <button
@@ -419,7 +429,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
               : 'bg-rose-50/20 dark:bg-warmbrown-light/5 text-slate-500 border-transparent hover:bg-rose-50/50'
           }`}
         >
-          {trans.tabTree}
+          <EditableText contentKey="myTransformation.tabTree" fallback={trans.tabTree} as="span" />
         </button>
       </div>
 
@@ -438,9 +448,12 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
             >
               <div className="flex items-center gap-2 pb-2 border-b border-rose-100/20 dark:border-rosegold/10">
                 <Bookmark className="h-5 w-5 text-rosegold" />
-                <h2 className="text-lg font-serif text-slate-900 dark:text-white uppercase font-black">
-                  {trans.milestonesHeader}
-                </h2>
+                <EditableText
+                  contentKey="myTransformation.milestonesHeader"
+                  fallback={trans.milestonesHeader}
+                  as="h2"
+                  className="text-lg font-serif text-slate-900 dark:text-white uppercase font-black"
+                />
               </div>
 
               {progressInsight && (
@@ -460,7 +473,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
               {milestonesList.length === 0 ? (
                 <div className="text-center py-12 text-slate-400 dark:text-ink-muted italic text-sm max-w-sm mx-auto space-y-3">
                   <BookOpen className="h-10 w-10 text-slate-300 dark:text-ink-text mx-auto" />
-                  <p>{trans.empty}</p>
+                  <EditableText contentKey="myTransformation.emptyTimeline" fallback={trans.empty} as="p" />
                 </div>
               ) : (
                 <div className="relative border-l-2 border-rose-100/50 dark:border-rosegold/15 pl-6 ml-4 space-y-8 py-2 text-left">
@@ -512,13 +525,19 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
               <div className="space-y-1.5 text-left border-b border-rose-100/20 dark:border-rosegold/10 pb-4">
                 <div className="flex items-center gap-2">
                   <Smile className="h-5 w-5 text-rosegold" />
-                  <h2 className="text-lg font-serif text-slate-900 dark:text-white uppercase font-black">
-                    {trans.moodMapHeader}
-                  </h2>
+                  <EditableText
+                    contentKey="myTransformation.moodMapHeader"
+                    fallback={trans.moodMapHeader}
+                    as="h2"
+                    className="text-lg font-serif text-slate-900 dark:text-white uppercase font-black"
+                  />
                 </div>
-                <p className="text-xs text-slate-500 dark:text-ink-muted">
-                  {trans.moodMapDesc}
-                </p>
+                <EditableText
+                  contentKey="myTransformation.moodMapDesc"
+                  fallback={trans.moodMapDesc}
+                  as="p"
+                  className="text-xs text-slate-500 dark:text-ink-muted"
+                />
               </div>
 
               {/* Mood Color Legend */}
@@ -626,9 +645,12 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
 
                         {/* Reflection Quote */}
                         <div className="space-y-1 bg-[#FAF8F5]/80 dark:bg-ink-raised p-4 rounded-xl border border-rose-100/10">
-                          <span className="text-[11px] font-sans text-slate-400 uppercase font-extrabold tracking-widest block">
-                            {trans.polaroidReflection}
-                          </span>
+                          <EditableText
+                            contentKey="myTransformation.polaroidReflection"
+                            fallback={trans.polaroidReflection}
+                            as="span"
+                            className="text-[11px] font-sans text-slate-400 uppercase font-extrabold tracking-widest block"
+                          />
                           <p className="text-xs font-serif text-slate-700 dark:text-ink-muted italic leading-relaxed">
                             "{progress.reflections[selectedDayMood] || trans.noReflection}"
                           </p>
@@ -636,9 +658,12 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
 
                         {/* Video link */}
                         <div className="space-y-1">
-                          <span className="text-[11px] font-sans text-slate-400 uppercase font-extrabold tracking-widest block">
-                            {trans.polaroidVideo}
-                          </span>
+                          <EditableText
+                            contentKey="myTransformation.polaroidVideo"
+                            fallback={trans.polaroidVideo}
+                            as="span"
+                            className="text-[11px] font-sans text-slate-400 uppercase font-extrabold tracking-widest block"
+                          />
                           {progress.videoLinks[selectedDayMood] ? (
                             <a
                               href={progress.videoLinks[selectedDayMood]}
@@ -650,9 +675,12 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                               <span>{progress.videoLinks[selectedDayMood]}</span>
                             </a>
                           ) : (
-                            <p className="text-[11px] text-slate-400 italic">
-                              {trans.polaroidNoVideo}
-                            </p>
+                            <EditableText
+                              contentKey="myTransformation.polaroidNoVideo"
+                              fallback={trans.polaroidNoVideo}
+                              as="p"
+                              className="text-[11px] text-slate-400 italic"
+                            />
                           )}
                         </div>
                       </div>
@@ -662,7 +690,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                           onClick={() => setSelectedDayMood(null)}
                           className="px-5 py-2 bg-rosegold text-white text-xs font-sans uppercase tracking-widest font-bold rounded-xl cursor-pointer hover:bg-[#A35D68] transition"
                         >
-                          Close memory
+                          <EditableText contentKey="myTransformation.closeMemory" fallback="Close memory" as="span" />
                         </button>
                       </div>
                     </motion.div>
@@ -683,15 +711,18 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
             >
               <div className="flex items-center gap-2 pb-2 border-b border-rose-100/20 dark:border-rosegold/10">
                 <BookOpen className="h-5 w-5 text-rosegold" />
-                <h2 className="text-lg font-serif text-slate-900 dark:text-white uppercase font-black">
-                  {trans.chapterReflectionsTitle}
-                </h2>
+                <EditableText
+                  contentKey="myTransformation.chapterReflectionsTitle"
+                  fallback={trans.chapterReflectionsTitle}
+                  as="h2"
+                  className="text-lg font-serif text-slate-900 dark:text-white uppercase font-black"
+                />
               </div>
 
               {(!progress.chapterReflections || Object.keys(progress.chapterReflections).length === 0) ? (
                 <div className="text-center py-12 text-slate-400 dark:text-ink-muted italic text-sm max-w-sm mx-auto space-y-3">
                   <Bookmark className="h-10 w-10 text-slate-300 dark:text-ink-text mx-auto" />
-                  <p>{trans.noChapterReflections}</p>
+                  <EditableText contentKey="myTransformation.emptyChapterReflections" fallback={trans.noChapterReflections} as="p" />
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
@@ -722,9 +753,12 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                           {/* Surprises list */}
                           {r.selectedSurprises && r.selectedSurprises.length > 0 && (
                             <div className="space-y-1">
-                              <span className="font-bold text-slate-400 uppercase text-[11px] block">
-                                {trans.chapterCardSurprised}
-                              </span>
+                              <EditableText
+                                contentKey="myTransformation.chapterCardSurprised"
+                                fallback={trans.chapterCardSurprised}
+                                as="span"
+                                className="font-bold text-slate-400 uppercase text-[11px] block"
+                              />
                               <div className="flex flex-wrap gap-1.5 pt-0.5">
                                 {r.selectedSurprises.map((s, idx) => (
                                   <span key={idx} className="px-2 py-0.5 bg-rose-50 dark:bg-rosegold/10 text-rosegold border border-rose-100/5 rounded-md font-sans text-[10px]">
@@ -737,9 +771,12 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
 
                           {/* Feeling */}
                           <div className="space-y-0.5">
-                            <span className="font-bold text-slate-400 uppercase text-[11px] block">
-                              {trans.chapterCardFeeling}
-                            </span>
+                            <EditableText
+                              contentKey="myTransformation.chapterCardFeeling"
+                              fallback={trans.chapterCardFeeling}
+                              as="span"
+                              className="font-bold text-slate-400 uppercase text-[11px] block"
+                            />
                             <span className="text-xs font-semibold text-slate-700 dark:text-ink-text">
                               🌸 {r.selectedFeeling}
                             </span>
@@ -748,9 +785,12 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                           {/* Private Note Card */}
                           {r.futureSelfNote && (
                             <div className="space-y-1 bg-white dark:bg-ink-raised border border-rose-100/10 rounded-xl p-3 font-serif italic text-slate-600 dark:text-ink-muted leading-relaxed">
-                              <span className="font-sans not-italic font-bold text-slate-400 uppercase text-[11px] block mb-1">
-                                {trans.chapterCardNote}
-                              </span>
+                              <EditableText
+                                contentKey="myTransformation.chapterCardNote"
+                                fallback={trans.chapterCardNote}
+                                as="span"
+                                className="font-sans not-italic font-bold text-slate-400 uppercase text-[11px] block mb-1"
+                              />
                               "{r.futureSelfNote}"
                             </div>
                           )}
@@ -774,15 +814,18 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
             >
               <div className="flex items-center gap-2 pb-2 border-b border-rose-100/20 dark:border-rosegold/10">
                 <Heart className="h-5 w-5 text-rose-500 fill-current" />
-                <h2 className="text-lg font-serif text-slate-900 dark:text-white uppercase font-black">
-                  {trans.sosRecoveriesTitle}
-                </h2>
+                <EditableText
+                  contentKey="myTransformation.sosRecoveriesTitle"
+                  fallback={trans.sosRecoveriesTitle}
+                  as="h2"
+                  className="text-lg font-serif text-slate-900 dark:text-white uppercase font-black"
+                />
               </div>
 
               {(!progress.sosCheckins || progress.sosCheckins.length === 0) ? (
                 <div className="text-center py-12 text-slate-400 dark:text-ink-muted italic text-sm max-w-sm mx-auto space-y-3">
                   <Compass className="h-10 w-10 text-slate-300 dark:text-ink-text mx-auto" />
-                  <p>{trans.noSos}</p>
+                  <EditableText contentKey="myTransformation.emptySos" fallback={trans.noSos} as="p" />
                 </div>
               ) : (
                 <div className="space-y-4 text-left">
@@ -796,18 +839,21 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                       <div className="space-y-1 max-w-lg">
                         <div className="flex items-center gap-2">
                           <span className="font-extrabold text-rosegold dark:text-rosegold-light uppercase">
-                            {trans.sosDate} {s.date}
+                            <EditableText contentKey="myTransformation.sosDate" fallback={trans.sosDate} as="span" /> {s.date}
                           </span>
                         </div>
                         <p className="text-slate-600 dark:text-ink-muted font-serif italic text-sm">
-                          "{trans.sosAnxiety} {s.emotion}"
+                          "<EditableText contentKey="myTransformation.sosAnxiety" fallback={trans.sosAnxiety} as="span" /> {s.emotion}"
                         </p>
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-slate-400 text-[10px] uppercase font-bold">
-                          {trans.sosBreathing}
-                        </span>
+                        <EditableText
+                          contentKey="myTransformation.sosBreathing"
+                          fallback={trans.sosBreathing}
+                          as="span"
+                          className="text-slate-400 text-[10px] uppercase font-bold"
+                        />
                         <span className={`px-2.5 py-1 rounded-full text-[10px] uppercase font-extrabold border ${
                           s.breathingHelpful === 'Yes' || s.breathingHelpful === '✨ Yes'
                             ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'
@@ -834,15 +880,21 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
             >
               <div className="flex items-center gap-2 pb-2 border-b border-rose-100/20 dark:border-rosegold/10">
                 <Leaf className="h-5 w-5 text-emerald-500" />
-                <h2 className="text-lg font-serif text-slate-900 dark:text-white uppercase font-black">
-                  {trans.treeEvolutionTitle}
-                </h2>
+                <EditableText
+                  contentKey="myTransformation.treeEvolutionTitle"
+                  fallback={trans.treeEvolutionTitle}
+                  as="h2"
+                  className="text-lg font-serif text-slate-900 dark:text-white uppercase font-black"
+                />
               </div>
 
               <div className="space-y-6">
-                <p className="text-sm text-slate-600 dark:text-ink-muted leading-relaxed font-sans">
-                  {trans.treeDesc}
-                </p>
+                <EditableText
+                  contentKey="myTransformation.treeDesc"
+                  fallback={trans.treeDesc}
+                  as="p"
+                  className="text-sm text-slate-600 dark:text-ink-muted leading-relaxed font-sans"
+                />
 
                 <div className="p-5 rounded-3xl bg-[#FAF8F5]/80 dark:bg-ink-raised border border-rose-100/10">
                   <TreeOfRebirth completedCount={completedCount} lang={lang} />
@@ -853,9 +905,12 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                     {getVehicleEmoji(currentChapterId)}
                   </div>
                   <div className="space-y-0.5">
-                    <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block font-extrabold">
-                      {trans.vehicleStage}
-                    </span>
+                    <EditableText
+                      contentKey="myTransformation.vehicleStage"
+                      fallback={trans.vehicleStage}
+                      as="span"
+                      className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block font-extrabold"
+                    />
                     <span className="text-xs font-bold text-slate-800 dark:text-ink-text">
                       {getVehicleDescription(currentChapterId)}
                     </span>
