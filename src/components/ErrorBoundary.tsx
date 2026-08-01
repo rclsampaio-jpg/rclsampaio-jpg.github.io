@@ -32,17 +32,19 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
   }
 
   handleReload = () => {
-    // No need to reset this.state — the reload below replaces the whole
-    // page, so there's nothing left to re-render into.
-    window.location.reload();
+    // A plain reload() can still be served from cache and re-crash on the
+    // same stale bundle (this screen most often fires when a lazy chunk
+    // 404s because the deployed dist/ moved on since this tab loaded).
+    // Cache-busting the URL forces a real network fetch of the new index.html.
+    window.location.href = `${window.location.pathname}?_=${Date.now()}`;
   };
 
   render() {
     if (this.state.error) {
       return (
-        <div className="fixed inset-0 z-[999] bg-[#FAF8F5] dark:bg-[#1E1715] flex flex-col justify-center items-center p-6 text-center gap-4">
+        <div className="fixed inset-0 z-[999] bg-[#FAF8F5] dark:bg-ink flex flex-col justify-center items-center p-6 text-center gap-4">
           <p className="text-2xl">🦋</p>
-          <h1 className="text-lg font-serif font-medium text-slate-900 dark:text-white">
+          <h1 className="text-lg font-serif font-medium text-slate-900 dark:text-ink-text">
             Algo não carregou direito
           </h1>
           <p className="text-xs text-slate-500 dark:text-ink-text-muted max-w-xs">
@@ -50,7 +52,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
           </p>
           <button
             onClick={this.handleReload}
-            className="px-6 py-3 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer"
+            className="px-6 py-3 bg-rosegold dark:bg-transparent dark:border dark:border-rosegold-light hover:bg-[#A35D68] dark:hover:bg-rosegold-light/10 text-white dark:text-rosegold-light rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer"
           >
             Recarregar
           </button>
