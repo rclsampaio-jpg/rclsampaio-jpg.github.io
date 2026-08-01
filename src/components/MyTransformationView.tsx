@@ -178,7 +178,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
       case 'hopeful':
         return { emoji: '🤗', label: trans.moodHopeful, color: 'from-pink-400 to-rose-500 bg-rose-500/20 text-rosegold dark:text-rosegold-light border-rose-500/20' };
       case 'neutral':
-        return { emoji: '😐', label: trans.moodNeutral, color: 'from-slate-400 to-slate-500 bg-slate-500/20 text-slate-600 dark:text-ink-text-muted border-slate-500/20' };
+        return { emoji: '😐', label: trans.moodNeutral, color: 'from-slate-400 to-slate-500 bg-slate-500/20 text-slate-600 dark:text-ink-muted border-slate-500/20' };
       case 'heavy':
         return { emoji: '😔', label: trans.moodHeavy, color: 'from-blue-400 to-indigo-500 bg-indigo-500/20 text-indigo-600 dark:text-rosegold-light border-indigo-500/20' };
       case 'emotional':
@@ -350,7 +350,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
           <h1 className="text-2xl sm:text-3xl font-serif text-slate-950 dark:text-white uppercase font-black tracking-tight">
             {trans.title}
           </h1>
-          <p className="text-xs text-slate-500 dark:text-ink-text-muted max-w-xl font-sans">
+          <p className="text-xs text-slate-500 dark:text-ink-muted max-w-xl font-sans">
             {trans.subtitle}
           </p>
         </div>
@@ -451,14 +451,14 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                   <p className="text-sm text-slate-700 dark:text-ink-text italic leading-relaxed">
                     "{progressInsight.quote}"
                   </p>
-                  <p className="text-sm text-slate-600 dark:text-ink-text-muted leading-relaxed font-sans font-semibold">
+                  <p className="text-sm text-slate-600 dark:text-ink-muted leading-relaxed font-sans font-semibold">
                     {progressInsight.stats}
                   </p>
                 </div>
               )}
 
               {milestonesList.length === 0 ? (
-                <div className="text-center py-12 text-slate-400 dark:text-ink-text-muted italic text-sm max-w-sm mx-auto space-y-3">
+                <div className="text-center py-12 text-slate-400 dark:text-ink-muted italic text-sm max-w-sm mx-auto space-y-3">
                   <BookOpen className="h-10 w-10 text-slate-300 dark:text-ink-text mx-auto" />
                   <p>{trans.empty}</p>
                 </div>
@@ -490,7 +490,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                         {m.title}
                       </h3>
 
-                      <p className="text-xs text-slate-500 dark:text-ink-text-muted leading-relaxed font-sans max-w-xl italic">
+                      <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans max-w-xl italic">
                         "{m.desc}"
                       </p>
                     </motion.div>
@@ -516,7 +516,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                     {trans.moodMapHeader}
                   </h2>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-ink-text-muted">
+                <p className="text-xs text-slate-500 dark:text-ink-muted">
                   {trans.moodMapDesc}
                 </p>
               </div>
@@ -629,7 +629,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                           <span className="text-[11px] font-sans text-slate-400 uppercase font-extrabold tracking-widest block">
                             {trans.polaroidReflection}
                           </span>
-                          <p className="text-xs font-serif text-slate-700 dark:text-ink-text-muted italic leading-relaxed">
+                          <p className="text-xs font-serif text-slate-700 dark:text-ink-muted italic leading-relaxed">
                             "{progress.reflections[selectedDayMood] || trans.noReflection}"
                           </p>
                         </div>
@@ -689,7 +689,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
               </div>
 
               {(!progress.chapterReflections || Object.keys(progress.chapterReflections).length === 0) ? (
-                <div className="text-center py-12 text-slate-400 dark:text-ink-text-muted italic text-sm max-w-sm mx-auto space-y-3">
+                <div className="text-center py-12 text-slate-400 dark:text-ink-muted italic text-sm max-w-sm mx-auto space-y-3">
                   <Bookmark className="h-10 w-10 text-slate-300 dark:text-ink-text mx-auto" />
                   <p>{trans.noChapterReflections}</p>
                 </div>
@@ -747,7 +747,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
 
                           {/* Private Note Card */}
                           {r.futureSelfNote && (
-                            <div className="space-y-1 bg-white dark:bg-ink-raised border border-rose-100/10 rounded-xl p-3 font-serif italic text-slate-600 dark:text-ink-text-muted leading-relaxed">
+                            <div className="space-y-1 bg-white dark:bg-ink-raised border border-rose-100/10 rounded-xl p-3 font-serif italic text-slate-600 dark:text-ink-muted leading-relaxed">
                               <span className="font-sans not-italic font-bold text-slate-400 uppercase text-[11px] block mb-1">
                                 {trans.chapterCardNote}
                               </span>
@@ -780,7 +780,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
               </div>
 
               {(!progress.sosCheckins || progress.sosCheckins.length === 0) ? (
-                <div className="text-center py-12 text-slate-400 dark:text-ink-text-muted italic text-sm max-w-sm mx-auto space-y-3">
+                <div className="text-center py-12 text-slate-400 dark:text-ink-muted italic text-sm max-w-sm mx-auto space-y-3">
                   <Compass className="h-10 w-10 text-slate-300 dark:text-ink-text mx-auto" />
                   <p>{trans.noSos}</p>
                 </div>
@@ -799,7 +799,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
                             {trans.sosDate} {s.date}
                           </span>
                         </div>
-                        <p className="text-slate-600 dark:text-ink-text-muted font-serif italic text-sm">
+                        <p className="text-slate-600 dark:text-ink-muted font-serif italic text-sm">
                           "{trans.sosAnxiety} {s.emotion}"
                         </p>
                       </div>
@@ -840,7 +840,7 @@ export default function MyTransformationView({ progress, days, lang, onBackToHom
               </div>
 
               <div className="space-y-6">
-                <p className="text-sm text-slate-600 dark:text-ink-text-muted leading-relaxed font-sans">
+                <p className="text-sm text-slate-600 dark:text-ink-muted leading-relaxed font-sans">
                   {trans.treeDesc}
                 </p>
 

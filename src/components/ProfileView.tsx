@@ -360,7 +360,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                 <h3 className="text-xl sm:text-2xl font-serif font-light text-slate-900 dark:text-white">
                   {trans.tuningTitle}
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-ink-text-muted max-w-2xl leading-relaxed">
+                <p className="text-xs text-slate-500 dark:text-ink-muted max-w-2xl leading-relaxed">
                   {trans.tuningDesc}
                 </p>
               </div>
@@ -370,7 +370,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                 
                 {/* 1. Guide Style */}
                 <div className="space-y-4">
-                  <label className="block text-xs font-bold text-slate-500 dark:text-ink-text-muted uppercase tracking-widest">
+                  <label className="block text-xs font-bold text-slate-500 dark:text-ink-muted uppercase tracking-widest">
                     {trans.voiceStyle}
                   </label>
 
@@ -384,14 +384,14 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                           : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
-                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'gentle' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-text-muted'}`}>
+                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'gentle' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-muted'}`}>
                         <Heart className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
                         <h4 className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text">
                           {trans.gentleTitle}
                         </h4>
-                        <p className="text-[11px] text-slate-500 dark:text-ink-text-muted leading-relaxed">
+                        <p className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed">
                           {trans.gentleDesc}
                         </p>
                       </div>
@@ -405,14 +405,14 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                           : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
-                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'challenger' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-text-muted'}`}>
+                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'challenger' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-muted'}`}>
                         <Flame className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
                         <h4 className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text">
                           {trans.challengerTitle}
                         </h4>
-                        <p className="text-[11px] text-slate-500 dark:text-ink-text-muted leading-relaxed">
+                        <p className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed">
                           {trans.challengerDesc}
                         </p>
                       </div>
@@ -426,14 +426,14 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                           : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
-                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'strategic' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-text-muted'}`}>
+                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'strategic' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-muted'}`}>
                         <Compass className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
                         <h4 className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text">
                           {trans.strategicTitle}
                         </h4>
-                        <p className="text-[11px] text-slate-500 dark:text-ink-text-muted leading-relaxed">
+                        <p className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed">
                           {trans.strategicDesc}
                         </p>
                       </div>
@@ -447,14 +447,14 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
                           : 'border-rose-100/20 dark:border-ink-hairline hover:border-rose-150 dark:hover:border-rosegold-light/40'
                       }`}
                     >
-                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'inspirational' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-text-muted'}`}>
+                      <div className={`p-2 rounded-xl mt-0.5 ${guideStyle === 'inspirational' ? 'bg-rosegold text-white' : 'bg-slate-50 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-muted'}`}>
                         <Sparkles className="h-4 w-4" />
                       </div>
                       <div className="space-y-1">
                         <h4 className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-ink-text">
                           {trans.inspirationalTitle}
                         </h4>
-                        <p className="text-[11px] text-slate-500 dark:text-ink-text-muted leading-relaxed">
+                        <p className="text-[11px] text-slate-500 dark:text-ink-muted leading-relaxed">
                           {trans.inspirationalDesc}
                         </p>
                       </div>
@@ -466,7 +466,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
 
                 {/* 2. Grammar Alignment */}
                 <div className="space-y-4">
-                  <label className="block text-xs font-bold text-slate-500 dark:text-ink-text-muted uppercase tracking-widest">
+                  <label className="block text-xs font-bold text-slate-500 dark:text-ink-muted uppercase tracking-widest">
                     {trans.grammarTitle}
                   </label>
 

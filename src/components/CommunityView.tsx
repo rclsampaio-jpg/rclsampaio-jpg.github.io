@@ -124,7 +124,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
               <h2 className="text-2xl font-serif font-light text-slate-900 dark:text-white leading-tight">
                 {community.name[lang] || community.name['pt']}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-ink-text-muted leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-ink-muted leading-relaxed font-sans">
                 {community.description[lang] || community.description['pt']}
               </p>
             </div>
@@ -207,7 +207,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
                 <Users className="h-3.5 w-3.5" />
                 {freeCommunity.title[lang] || freeCommunity.title['pt']}
               </span>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-ink-text-muted leading-relaxed font-sans max-w-md">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-ink-muted leading-relaxed font-sans max-w-md">
                 {freeCommunity.description[lang] || freeCommunity.description['pt']}
               </p>
             </div>
@@ -233,7 +233,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
                 <span className="font-sans font-bold uppercase tracking-widest text-amber-700 dark:text-accentgold">
                   {trans.upliftMessageHeader}
                 </span>
-                <p className="text-slate-600 dark:text-ink-text-muted italic font-medium leading-relaxed">
+                <p className="text-slate-600 dark:text-ink-muted italic font-medium leading-relaxed">
                   "{support.upliftMessage[lang] || support.upliftMessage['pt']}"
                 </p>
               </div>

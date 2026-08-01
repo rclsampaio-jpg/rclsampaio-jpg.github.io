@@ -222,7 +222,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                   setShowHint(false);
                   localStorage.setItem('renaser_os_hint_seen', 'true');
                 }}
-                className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-slate-300 dark:bg-ink-hairline text-white dark:text-ink-text-muted flex items-center justify-center"
+                className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-slate-300 dark:bg-ink-hairline text-white dark:text-ink-muted flex items-center justify-center"
                 aria-label={t.send === 'Enviar' ? 'Fechar' : 'Close'}
               >
                 <X className="h-2.5 w-2.5" />
@@ -293,12 +293,12 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">{t.title}</h3>
-                    <p className="text-[10px] text-slate-400 dark:text-ink-text-muted font-sans">{t.subtitle}</p>
+                    <p className="text-[10px] text-slate-400 dark:text-ink-muted font-sans">{t.subtitle}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 rounded-full text-slate-400 dark:text-ink-text-muted hover:text-rosegold dark:hover:text-rosegold-light hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10 transition cursor-pointer"
+                  className="p-2 rounded-full text-slate-400 dark:text-ink-muted hover:text-rosegold dark:hover:text-rosegold-light hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10 transition cursor-pointer"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -329,7 +329,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                     <span className="h-6 w-6 rounded-full overflow-hidden shrink-0 border border-rose-100/40 dark:border-rosegold-light/30">
                       <img src={`/assets/images/minhafoto.jpg?v=${__BUILD_VERSION__}`} alt="Renata" className="h-full w-full object-cover" />
                     </span>
-                    <div className="bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm text-slate-400 dark:text-ink-text-muted font-sans">
+                    <div className="bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm text-slate-400 dark:text-ink-muted font-sans">
                       •••
                     </div>
                   </div>
@@ -355,7 +355,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   placeholder={t.placeholder}
-                  className="flex-1 text-sm bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 focus:ring-rosegold dark:focus:ring-rosegold-light rounded-xl px-4 py-3 text-slate-700 dark:text-ink-text placeholder:dark:text-ink-text-muted transition-all"
+                  className="flex-1 text-sm bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 focus:ring-rosegold dark:focus:ring-rosegold-light rounded-xl px-4 py-3 text-slate-700 dark:text-ink-text placeholder:dark:text-ink-muted transition-all"
                 />
                 <button
                   onClick={handleSend}

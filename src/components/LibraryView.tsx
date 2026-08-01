@@ -458,7 +458,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
         <h2 className="text-2xl sm:text-3xl font-serif font-light text-slate-900 dark:text-white">
           {trans.title}
         </h2>
-        <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-text-muted max-w-2xl leading-relaxed mx-auto md:mx-0">
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted max-w-2xl leading-relaxed mx-auto md:mx-0">
           {trans.subtitle}
         </p>
       </div>
@@ -469,7 +469,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
           hidden under every other category tab. */}
       {currentWeeklyVideo && (selectedCategory === 'all' || selectedCategory === 'videos') && (
         <div className="max-w-xl">
-          <h3 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-ink-text-muted mb-3">
+          <h3 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-ink-muted mb-3">
             {trans.weeklyVideoTitle}
           </h3>
           <a
@@ -494,7 +494,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
               </div>
             </div>
             <div className="p-4 bg-[#FAF8F5]/40 dark:bg-warmbrown/10 space-y-1.5">
-              <p className="text-xs text-slate-500 dark:text-ink-text-muted leading-relaxed">{trans.weeklyVideoDesc}</p>
+              <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">{trans.weeklyVideoDesc}</p>
             </div>
           </a>
         </div>
@@ -778,7 +778,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
               <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-[#D4AF37] block">
                 {trans.statsHeader}
               </span>
-              <span className="text-xs text-slate-600 dark:text-ink-text-muted block font-sans">
+              <span className="text-xs text-slate-600 dark:text-ink-muted block font-sans">
                 <strong>{completedIds.length}</strong> / {assets.length} integrated
               </span>
             </div>
@@ -798,7 +798,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                 className={`px-4 py-2.5 rounded-xl text-xs font-sans font-medium transition-all flex items-center gap-1.5 shrink-0 cursor-pointer border ${
                   isSelected
                     ? 'bg-rosegold text-white border-rosegold shadow-md shadow-rosegold/15 dark:bg-transparent dark:text-rosegold-light dark:border-rosegold-light dark:shadow-none'
-                    : 'bg-[#FAF8F5]/40 dark:bg-transparent border-rose-100/10 dark:border-ink-hairline text-slate-600 dark:text-ink-text-muted hover:bg-[#FAF8F5]/80 dark:hover:bg-rosegold-light/5'
+                    : 'bg-[#FAF8F5]/40 dark:bg-transparent border-rose-100/10 dark:border-ink-hairline text-slate-600 dark:text-ink-muted hover:bg-[#FAF8F5]/80 dark:hover:bg-rosegold-light/5'
                 }`}
               >
                 {CatIcon && <CatIcon className="h-3.5 w-3.5" />}
@@ -822,7 +822,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
             <h3 className="text-lg font-serif font-bold text-slate-800 dark:text-white">
               {trans.wellnessTitle}
             </h3>
-            <p className="text-sm text-slate-500 dark:text-ink-text-muted leading-relaxed text-left whitespace-pre-line">
+            <p className="text-sm text-slate-500 dark:text-ink-muted leading-relaxed text-left whitespace-pre-line">
               {trans.wellnessExplanation}
             </p>
           </div>
@@ -860,7 +860,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={() => handlePlayAsset(asset)}
-                    className="col-span-full flex items-center gap-2.5 px-4 py-3 bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-ink-hairline rounded-2xl cursor-pointer hover:border-rosegold/40 dark:hover:border-rosegold-light transition text-slate-600 dark:text-ink-text-muted hover:text-rosegold dark:hover:text-rosegold-light"
+                    className="col-span-full flex items-center gap-2.5 px-4 py-3 bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-ink-hairline rounded-2xl cursor-pointer hover:border-rosegold/40 dark:hover:border-rosegold-light transition text-slate-600 dark:text-ink-muted hover:text-rosegold dark:hover:text-rosegold-light"
                   >
                     <Play className="h-3.5 w-3.5 shrink-0" />
                     <span className="text-xs font-sans font-medium">{asset.title[lang] || asset.title['pt']}</span>
@@ -932,7 +932,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                       <h4 className="text-sm font-sans font-semibold text-slate-900 dark:text-white leading-snug group-hover:text-rosegold transition">
                         {asset.title[lang] || asset.title['pt']}
                       </h4>
-                      <p className="text-xs text-slate-500 dark:text-ink-text-muted leading-relaxed line-clamp-2">
+                      <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed line-clamp-2">
                         {asset.description[lang] || asset.description['pt']}
                       </p>
                     </div>
@@ -968,7 +968,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
           ) : (
             <div className="col-span-full py-16 bg-white dark:bg-ink-raised border border-rose-100/25 dark:border-ink-hairline rounded-3xl text-center space-y-2">
               <AlertCircle className="h-8 w-8 text-slate-300 mx-auto" />
-              <p className="text-xs sm:text-sm font-sans text-slate-500 dark:text-ink-text-muted">
+              <p className="text-xs sm:text-sm font-sans text-slate-500 dark:text-ink-muted">
                 {trans.empty}
               </p>
             </div>

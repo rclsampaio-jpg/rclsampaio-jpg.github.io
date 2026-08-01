@@ -223,7 +223,7 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
         <h1 className="text-4xl sm:text-5xl font-display font-light tracking-tight text-slate-900 dark:text-white leading-tight">
           {congratsHeading}
         </h1>
-        <p className="text-sm sm:text-md text-slate-500 dark:text-ink-text-muted max-w-lg mx-auto font-sans">
+        <p className="text-sm sm:text-md text-slate-500 dark:text-ink-muted max-w-lg mx-auto font-sans">
           {congratsSub}
         </p>
 
@@ -298,7 +298,7 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
           <h3 className="text-xl font-display text-slate-800 dark:text-white">
             {textDict.blueprintTitle}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-text-muted leading-relaxed font-sans">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted leading-relaxed font-sans">
             {blueprintIntro}
           </p>
 
@@ -327,7 +327,7 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
             <h3 className="text-lg sm:text-xl font-display font-bold text-slate-900 dark:text-white leading-snug">
               {textDict.ctaHeading}
             </h3>
-            <p className="text-slate-500 dark:text-ink-text-muted text-xs sm:text-sm leading-relaxed font-sans">
+            <p className="text-slate-500 dark:text-ink-muted text-xs sm:text-sm leading-relaxed font-sans">
               {ctaDesc}
             </p>
           </div>

@@ -54,7 +54,7 @@ export default function InviteGateView({ onUnlocked }: InviteGateViewProps) {
           <h2 className="text-lg font-serif font-medium text-slate-900 dark:text-white">
             Falta um passo
           </h2>
-          <p className="text-xs text-slate-500 dark:text-ink-text-muted">
+          <p className="text-xs text-slate-500 dark:text-ink-muted">
             Digite o código de convite que você recebeu para liberar seu acesso
           </p>
         </div>

@@ -295,7 +295,7 @@ export default function TreeOfRebirth({ completedCount, lang }: TreeOfRebirthPro
           <span className="text-[10px] font-sans font-extrabold uppercase tracking-widest text-rosegold px-2.5 py-0.5 rounded-full bg-rosegold/10 border border-rosegold/10">
             {lang === 'pt' ? 'Árvore do Renascimento' : lang === 'es' ? 'Árbol del Renacimiento' : 'Tree of Rebirth'}
           </span>
-          <span className="text-[10px] font-mono text-slate-400 dark:text-ink-text-muted font-bold">
+          <span className="text-[10px] font-mono text-slate-400 dark:text-ink-muted font-bold">
             {lang === 'pt' ? 'Nível' : lang === 'es' ? 'Nivel' : 'Level'} {stage}/10
           </span>
         </div>
@@ -304,7 +304,7 @@ export default function TreeOfRebirth({ completedCount, lang }: TreeOfRebirthPro
           {info.title[lang]}
         </h4>
 
-        <p className="text-xs text-slate-500 dark:text-ink-text-muted leading-relaxed font-sans">
+        <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans">
           {info.desc[lang]}
         </p>
 

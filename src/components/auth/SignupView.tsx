@@ -94,7 +94,7 @@ export default function SignupView({ inviteCodeFromUrl, onSwitchToLogin, onSignu
           <h2 className="text-lg font-serif font-medium text-slate-900 dark:text-white">
             Comece sua jornada
           </h2>
-          <p className="text-xs text-slate-500 dark:text-ink-text-muted">
+          <p className="text-xs text-slate-500 dark:text-ink-muted">
             Crie sua conta com o código de convite que você recebeu
           </p>
         </div>

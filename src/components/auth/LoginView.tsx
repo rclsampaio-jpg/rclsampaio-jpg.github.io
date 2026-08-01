@@ -53,7 +53,7 @@ export default function LoginView({ onSwitchToSignup }: LoginViewProps) {
             <h2 className="text-lg font-serif font-medium text-slate-900 dark:text-white">
               Esqueceu sua senha?
             </h2>
-            <p className="text-xs text-slate-500 dark:text-ink-text-muted">
+            <p className="text-xs text-slate-500 dark:text-ink-muted">
               {resetSent ? 'Enviamos um link para o seu email. Confira também a caixa de spam.' : 'Digite seu email e enviaremos um link para redefinir sua senha'}
             </p>
           </div>
@@ -123,7 +123,7 @@ export default function LoginView({ onSwitchToSignup }: LoginViewProps) {
           <h2 className="text-lg font-serif font-medium text-slate-900 dark:text-white">
             Bem-vinda de volta
           </h2>
-          <p className="text-xs text-slate-500 dark:text-ink-text-muted">
+          <p className="text-xs text-slate-500 dark:text-ink-muted">
             Continue sua jornada de 30 dias
           </p>
         </div>

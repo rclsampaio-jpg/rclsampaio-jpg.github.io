@@ -36,7 +36,7 @@ export default function ResetPasswordView() {
           <h2 className="text-lg font-serif font-medium text-slate-900 dark:text-white">
             Nova senha
           </h2>
-          <p className="text-xs text-slate-500 dark:text-ink-text-muted">
+          <p className="text-xs text-slate-500 dark:text-ink-muted">
             {done ? 'Senha atualizada com sucesso.' : 'Escolha uma nova senha para sua conta'}
           </p>
         </div>

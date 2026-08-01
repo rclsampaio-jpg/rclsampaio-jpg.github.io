@@ -337,7 +337,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
           <h1 className={`text-2xl font-display tracking-[0.25em] uppercase font-light leading-none mt-2 ${colorClass}`}>
             Rena{sSpan}er
           </h1>
-          <span className="text-[9px] tracking-[0.4em] font-sans uppercase text-[#E8B4A0] dark:text-ink-text-muted mt-1 block">
+          <span className="text-[9px] tracking-[0.4em] font-sans uppercase text-[#E8B4A0] dark:text-ink-muted mt-1 block">
             {dictionary.philosophy.tagline}
           </span>
         </div>
@@ -350,7 +350,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
         <h1 className={`text-4xl sm:text-5xl md:text-6xl font-display tracking-[0.28em] uppercase font-light text-center leading-normal select-none ${colorClass}`}>
           Rena{sSpan}er
         </h1>
-        <p className="text-[10px] sm:text-xs tracking-[0.35em] font-sans uppercase text-[#E8B4A0] dark:text-ink-text-muted mt-4 font-light text-center">
+        <p className="text-[10px] sm:text-xs tracking-[0.35em] font-sans uppercase text-[#E8B4A0] dark:text-ink-muted mt-4 font-light text-center">
           {dictionary.philosophy.tagline}
         </p>
       </div>
@@ -440,7 +440,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                       "{dictionary.philosophy.tagline}"
                     </p>
 
-                    <div className="space-y-4 text-sm sm:text-base text-slate-600 dark:text-ink-text-muted leading-relaxed font-light font-sans">
+                    <div className="space-y-4 text-sm sm:text-base text-slate-600 dark:text-ink-muted leading-relaxed font-light font-sans">
                       <p>{dictionary.philosophy.description1}</p>
                       <p>{dictionary.philosophy.description2}</p>
                     </div>
@@ -579,7 +579,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                     <div className="h-36 bg-[#FAF8F5] dark:bg-ink-raised/30 rounded-2xl border border-rose-100/10 flex items-center justify-center p-6">
                       {renderLogo(logoRenderStyle, 'horizontal')}
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-ink-text-muted text-center">
+                    <p className="text-xs text-slate-500 dark:text-ink-muted text-center">
                       {dictionary.logoSuite.horizontalDesc}
                     </p>
                   </div>
@@ -601,7 +601,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                     <div className="h-44 bg-[#FAF8F5] dark:bg-ink-raised/30 rounded-2xl border border-rose-100/10 flex items-center justify-center p-6">
                       {renderLogo(logoRenderStyle, 'stacked')}
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-ink-text-muted text-center">
+                    <p className="text-xs text-slate-500 dark:text-ink-muted text-center">
                       {dictionary.logoSuite.stackedDesc}
                     </p>
                   </div>
@@ -619,7 +619,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                         {dictionary.appIcon.title}
                       </h3>
                       <div className="h-px bg-rose-100/10" />
-                      <p className="text-sm text-slate-600 dark:text-ink-text-muted leading-relaxed font-light font-sans">
+                      <p className="text-sm text-slate-600 dark:text-ink-muted leading-relaxed font-light font-sans">
                         {dictionary.appIcon.desc}
                       </p>
                     </div>
@@ -755,7 +755,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
                     {dictionary.colors.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-text-muted">
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted">
                     {dictionary.colors.desc}
                   </p>
                 </div>
@@ -764,7 +764,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   <span className="px-3 py-1 rounded-full bg-rosegold/10 text-rosegold text-[10px] font-sans font-bold uppercase tracking-widest">
                     Opção A
                   </span>
-                  <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-500 dark:text-ink-text-muted">
+                  <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-500 dark:text-ink-muted">
                     Modo Claro — Glam Acolhedor
                   </h4>
                 </div>
@@ -845,7 +845,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                       <div className="space-y-2 pt-3 border-t border-rose-100/10 text-[10px] font-mono text-slate-500">
                         <div><span className="font-sans font-bold text-slate-400">RGB:</span> {color.rgb}</div>
                         <div><span className="font-sans font-bold text-slate-400">CMYK:</span> {color.cmyk}</div>
-                        <p className="font-sans italic leading-relaxed pt-2 border-t border-rose-100/5 text-slate-400 dark:text-ink-text-muted">
+                        <p className="font-sans italic leading-relaxed pt-2 border-t border-rose-100/5 text-slate-400 dark:text-ink-muted">
                           {color.desc}
                         </p>
                       </div>
@@ -857,11 +857,11 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   <span className="px-3 py-1 rounded-full bg-[#EBB4A0]/15 text-[#B76E79] dark:text-rosegold-light text-[10px] font-sans font-bold uppercase tracking-widest">
                     Opção B
                   </span>
-                  <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-500 dark:text-ink-text-muted">
+                  <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-500 dark:text-ink-muted">
                     Modo Escuro — Luxo Contido
                   </h4>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-ink-text-muted max-w-2xl -mt-2">
+                <p className="text-xs text-slate-500 dark:text-ink-muted max-w-2xl -mt-2">
                   {lang === 'pt'
                     ? 'Um único acento (rosegold-light) em vez do par rosegold+dourado do modo claro — restrição é o que separa "luxo contido" de "modo claro invertido". Superfícies planas, sem vidro nem gradiente.'
                     : lang === 'es'
@@ -903,7 +903,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                       <div className="space-y-2 pt-3 border-t border-rose-100/10 text-[10px] font-mono text-slate-500">
                         <div><span className="font-sans font-bold text-slate-400">RGB:</span> {color.rgb}</div>
                         <div><span className="font-sans font-bold text-slate-400">Token:</span> {color.token}</div>
-                        <p className="font-sans italic leading-relaxed pt-2 border-t border-rose-100/5 text-slate-400 dark:text-ink-text-muted">
+                        <p className="font-sans italic leading-relaxed pt-2 border-t border-rose-100/5 text-slate-400 dark:text-ink-muted">
                           {color.desc}
                         </p>
                       </div>
@@ -955,7 +955,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
                     {dictionary.typography.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-text-muted">
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted">
                     {dictionary.typography.desc}
                   </p>
                 </div>
@@ -980,7 +980,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                         <p className="text-3xl font-display italic text-slate-900 dark:text-white">
                           Cormorant Garamond
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-ink-text-muted leading-relaxed font-sans">
+                        <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans">
                           {dictionary.typography.headingDesc}
                         </p>
                       </div>
@@ -992,7 +992,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                         <p className="text-xl font-sans tracking-wide font-light text-slate-900 dark:text-white">
                           Inter
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-ink-text-muted leading-relaxed font-sans">
+                        <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans">
                           {dictionary.typography.bodyDesc}
                         </p>
                       </div>
@@ -1046,7 +1046,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
                     {dictionary.geometry.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-text-muted">
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted">
                     {dictionary.geometry.desc}
                   </p>
                 </div>
@@ -1083,7 +1083,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                         {dictionary.geometry.minSizeTitle}
                       </h4>
                       <div className="h-px bg-rose-100/10" />
-                      <p className="text-xs text-slate-500 dark:text-ink-text-muted leading-relaxed font-sans">
+                      <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans">
                         {dictionary.geometry.minSizeDesc}
                       </p>
                     </div>
@@ -1098,7 +1098,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                           <div className="p-2.5 rounded-xl bg-white dark:bg-ink-raised shadow-xs">
                             {rule.icon}
                           </div>
-                          <span className="text-xs font-sans font-semibold text-slate-700 dark:text-ink-text-muted leading-tight">
+                          <span className="text-xs font-sans font-semibold text-slate-700 dark:text-ink-muted leading-tight">
                             {rule.text}
                           </span>
                         </div>
@@ -1116,7 +1116,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
                     {dictionary.rules.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-text-muted">
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted">
                     {dictionary.rules.desc}
                   </p>
                 </div>
@@ -1133,7 +1133,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
 
                     <div className="h-px bg-emerald-500/10" />
 
-                    <ul className="space-y-4 text-xs sm:text-sm text-slate-600 dark:text-ink-text-muted font-sans leading-relaxed list-none">
+                    <ul className="space-y-4 text-xs sm:text-sm text-slate-600 dark:text-ink-muted font-sans leading-relaxed list-none">
                       {[
                         lang === 'pt' ? "✓ Escrever RenaSer exatamente assim, com 'S' maiúsculo sutil." : "✓ Write RenaSer exactly as shown, with the capital 'S'.",
                         lang === 'pt' ? "✓ Utilizar o 'S' geométrico como ícone independente premium." : "✓ Use the geometric ribbon 'S' as the standalone iconic hallmark.",
@@ -1159,7 +1159,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
 
                     <div className="h-px bg-rose-500/10" />
 
-                    <ul className="space-y-4 text-xs sm:text-sm text-slate-600 dark:text-ink-text-muted font-sans leading-relaxed list-none">
+                    <ul className="space-y-4 text-xs sm:text-sm text-slate-600 dark:text-ink-muted font-sans leading-relaxed list-none">
                       {[
                         lang === 'pt' ? "✗ Nunca use lótus, mandalas ou símbolos de coaching genéricos." : "✗ Never use generic wellness icons (such as lotus flowers or wings).",
                         lang === 'pt' ? "✗ Não crie gradientes coloridos baratos ou sombras exageradas." : "✗ Avoid cheap neon gradients or excessive heavy drop shadows.",
@@ -1184,7 +1184,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                   <h3 className="text-2xl font-display font-light text-slate-900 dark:text-white">
                     {dictionary.mockups.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-text-muted">
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted">
                     {dictionary.mockups.desc}
                   </p>
                 </div>

@@ -55,7 +55,7 @@ export default function InviteAdminPanel() {
         <h3 className="text-base font-serif font-medium text-slate-900 dark:text-white">
           Convites
         </h3>
-        <p className="text-xs text-slate-500 dark:text-ink-text-muted">
+        <p className="text-xs text-slate-500 dark:text-ink-muted">
           Gere um código de convite para uma nova assinante.
         </p>
       </div>
@@ -73,7 +73,7 @@ export default function InviteAdminPanel() {
       {lastCode && (
         <div className="space-y-3 pt-2 border-t border-rose-100/30 dark:border-rosegold/10">
           <div>
-            <p className="text-xs text-slate-500 dark:text-ink-text-muted mb-1">Código</p>
+            <p className="text-xs text-slate-500 dark:text-ink-muted mb-1">Código</p>
             <div className="flex items-center gap-2">
               <code className="text-sm text-slate-800 dark:text-ink-text">{lastCode}</code>
               <button
@@ -85,7 +85,7 @@ export default function InviteAdminPanel() {
             </div>
           </div>
           <div>
-            <p className="text-xs text-slate-500 dark:text-ink-text-muted mb-1">Link pronto</p>
+            <p className="text-xs text-slate-500 dark:text-ink-muted mb-1">Link pronto</p>
             <div className="flex items-center gap-2">
               <code className="text-sm text-slate-800 dark:text-ink-text truncate">{inviteLink}</code>
               <button

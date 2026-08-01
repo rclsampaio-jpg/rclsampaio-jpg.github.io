@@ -160,7 +160,7 @@ export default function SettingsView({
           {textDict.signOutBtn}
         </button>
         {syncStatus !== 'idle' && (
-          <p className={`text-[11px] flex items-center gap-1.5 ${syncStatus === 'error' ? 'text-rose-500' : 'text-slate-400 dark:text-ink-text-muted'}`}>
+          <p className={`text-[11px] flex items-center gap-1.5 ${syncStatus === 'error' ? 'text-rose-500' : 'text-slate-400 dark:text-ink-muted'}`}>
             <span className={`h-1.5 w-1.5 rounded-full ${syncStatus === 'syncing' ? 'bg-amber-400 animate-pulse' : syncStatus === 'error' ? 'bg-rose-500' : 'bg-emerald-500'}`} />
             {SYNC_LABEL[syncStatus][lang]}
           </p>
@@ -190,7 +190,7 @@ export default function SettingsView({
                 className={`py-3.5 px-4 rounded-2xl border text-xs font-sans font-medium transition flex items-center justify-center gap-2 cursor-pointer ${
                   isActive 
                     ? 'bg-rosegold border-rosegold text-white shadow-md dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none' 
-                    : 'bg-warmwhite dark:bg-transparent border-slate-200/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-text-muted'
+                    : 'bg-warmwhite dark:bg-transparent border-slate-200/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-muted'
                 }`}
               >
                 <span>{langObj.label}</span>
@@ -216,7 +216,7 @@ export default function SettingsView({
 
         {/* Part A: Mentor Guidance Style */}
         <div className="space-y-3">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-ink-text-muted">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-ink-muted">
             {lang === 'pt' ? 'Estilo de Orientação do Mentor' : lang === 'es' ? 'Estilo de Orientación de Mentor' : 'Mentor Guidance Style'}
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -234,11 +234,11 @@ export default function SettingsView({
                   className={`p-3.5 rounded-2xl border text-left transition cursor-pointer flex flex-col gap-0.5 ${
                     isSelected 
                       ? 'bg-rosegold border-rosegold text-white shadow-md shadow-rosegold/10 dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none' 
-                      : 'bg-warmwhite dark:bg-transparent border-slate-200/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-text-muted'
+                      : 'bg-warmwhite dark:bg-transparent border-slate-200/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-muted'
                   }`}
                 >
                   <span className="text-xs font-sans font-semibold tracking-wide">{styleObj.title}</span>
-                  <span className={`text-[10px] ${isSelected ? 'text-rose-100' : 'text-slate-400 dark:text-ink-text-muted'}`}>{styleObj.desc}</span>
+                  <span className={`text-[10px] ${isSelected ? 'text-rose-100' : 'text-slate-400 dark:text-ink-muted'}`}>{styleObj.desc}</span>
                 </button>
               );
             })}
@@ -247,7 +247,7 @@ export default function SettingsView({
 
         {/* Part B: Address Pronouns */}
         <div className="space-y-3">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-ink-text-muted">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-ink-muted">
             {lang === 'pt' ? 'Gênero Gramatical (Forma de Tratamento)' : lang === 'es' ? 'Preferencia de Tratamiento' : 'Grammar & Address'}
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -263,7 +263,7 @@ export default function SettingsView({
                   className={`py-3 px-4 rounded-2xl border text-xs font-sans font-semibold transition flex items-center justify-center gap-2 cursor-pointer ${
                     isSelected 
                       ? 'bg-[#D4AF37] border-[#D4AF37] text-slate-950 font-bold shadow-md shadow-amber-500/10 dark:bg-transparent dark:text-accentgold dark:shadow-none' 
-                      : 'bg-warmwhite dark:bg-transparent border-slate-200/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-text-muted'
+                      : 'bg-warmwhite dark:bg-transparent border-slate-200/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-muted'
                   }`}
                 >
                   <span>{grammarObj.label}</span>
@@ -294,7 +294,7 @@ export default function SettingsView({
             className={`py-3.5 px-4 rounded-2xl border text-xs font-sans font-medium transition flex items-center justify-center gap-2 cursor-pointer ${
               theme === 'light'
                 ? 'bg-rosegold border-rosegold text-white shadow-md dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
-                : 'bg-warmwhite dark:bg-transparent border-slate-250/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-text-muted'
+                : 'bg-warmwhite dark:bg-transparent border-slate-250/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-muted'
             }`}
           >
             <Sun className="h-4 w-4" />
@@ -306,7 +306,7 @@ export default function SettingsView({
             className={`py-3.5 px-4 rounded-2xl border text-xs font-sans font-medium transition flex items-center justify-center gap-2 cursor-pointer ${
               theme === 'dark'
                 ? 'bg-gradient-to-r from-rosegold to-rosegold-light border-rosegold text-white shadow-md shadow-rosegold/20 dark:bg-none dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
-                : 'bg-warmwhite dark:bg-transparent border-slate-200/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-text-muted'
+                : 'bg-warmwhite dark:bg-transparent border-slate-200/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-muted'
             }`}
           >
             <Moon className="h-4 w-4 text-accentgold" />
@@ -379,7 +379,7 @@ export default function SettingsView({
           </h3>
         </div>
 
-        <p className="text-xs text-slate-500 dark:text-ink-text-muted leading-relaxed max-w-lg">
+        <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed max-w-lg">
           {textDict.resetProgressWarning}
         </p>
 

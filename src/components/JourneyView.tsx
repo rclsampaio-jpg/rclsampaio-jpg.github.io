@@ -157,7 +157,7 @@ export default function JourneyView({
       
       {/* Journey Switcher Bar */}
       <div className="bg-white dark:bg-ink-raised border border-rose-100/30 dark:border-ink-hairline rounded-3xl p-6 shadow-xs dark:shadow-none">
-        <h4 className="text-xs font-sans text-slate-400 dark:text-ink-text-muted uppercase tracking-widest font-black mb-3 text-center sm:text-left">
+        <h4 className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-widest font-black mb-3 text-center sm:text-left">
           {textDict.switchTitle}
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -189,7 +189,7 @@ export default function JourneyView({
                   <h5 className="text-sm font-bold text-slate-800 dark:text-white mt-1 line-clamp-1">
                     {j.title[lang] || j.title.pt}
                   </h5>
-                  <p className="text-[10px] text-slate-400 dark:text-ink-text-muted line-clamp-2 mt-0.5 leading-relaxed">
+                  <p className="text-[10px] text-slate-400 dark:text-ink-muted line-clamp-2 mt-0.5 leading-relaxed">
                     {j.subtitle[lang] || j.subtitle.pt}
                   </p>
                 </div>
@@ -223,12 +223,12 @@ export default function JourneyView({
             <Calendar className="h-6 w-6" />
           </div>
           <div>
-            <h4 className="text-xs font-sans text-slate-400 dark:text-ink-text-muted uppercase tracking-wider font-semibold">
+            <h4 className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-wider font-semibold">
               {textDict.statsTitle}
             </h4>
             <div className="flex items-baseline gap-1 mt-0.5">
               <span className="text-2xl font-bold text-slate-800 dark:text-white">{totalCompletedCount}</span>
-              <span className="text-slate-400 dark:text-ink-text-muted text-sm">/ {totalDaysCount} {textDict.days}</span>
+              <span className="text-slate-400 dark:text-ink-muted text-sm">/ {totalDaysCount} {textDict.days}</span>
             </div>
             <div className="w-32 bg-rose-50 dark:bg-ink-hairline h-1.5 rounded-full mt-1.5 overflow-hidden">
               <div className="bg-rosegold h-full rounded-full" style={{ width: `${completionPercentage}%` }} />
@@ -241,12 +241,12 @@ export default function JourneyView({
             <TrendingUp className="h-6 w-6" />
           </div>
           <div>
-            <h4 className="text-xs font-sans text-slate-400 dark:text-ink-text-muted uppercase tracking-wider font-semibold">
+            <h4 className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-wider font-semibold">
               {textDict.streakTitle}
             </h4>
             <div className="flex items-baseline gap-1 mt-0.5">
               <span className="text-2xl font-bold text-slate-800 dark:text-white">{progress.currentStreak}</span>
-              <span className="text-slate-400 dark:text-ink-text-muted text-sm">
+              <span className="text-slate-400 dark:text-ink-muted text-sm">
                 {progress.currentStreak === 1 ? 'dia' : 'dias'}
               </span>
             </div>
@@ -258,12 +258,12 @@ export default function JourneyView({
             <Star className="h-6 w-6 text-rosegold" />
           </div>
           <div>
-            <h4 className="text-xs font-sans text-slate-400 dark:text-ink-text-muted uppercase tracking-wider font-semibold">
+            <h4 className="text-xs font-sans text-slate-400 dark:text-ink-muted uppercase tracking-wider font-semibold">
               {textDict.longestStreak}
             </h4>
             <div className="flex items-baseline gap-1 mt-0.5">
               <span className="text-2xl font-bold text-slate-800 dark:text-white">{progress.longestStreak}</span>
-              <span className="text-slate-400 dark:text-ink-text-muted text-sm">
+              <span className="text-slate-400 dark:text-ink-muted text-sm">
                 {progress.longestStreak === 1 ? 'dia' : 'dias'}
               </span>
             </div>
@@ -282,7 +282,7 @@ export default function JourneyView({
           <h3 className="text-xl font-serif text-slate-800 dark:text-white font-black uppercase">
             {activeJourney.title[lang] || activeJourney.title.pt}
           </h3>
-          <p className="text-xs text-slate-400 dark:text-ink-text-muted font-sans">
+          <p className="text-xs text-slate-400 dark:text-ink-muted font-sans">
             {activeJourney.subtitle[lang] || activeJourney.subtitle.pt}
           </p>
         </div>
@@ -316,7 +316,7 @@ export default function JourneyView({
                       <h4 className="text-base font-serif font-black uppercase text-slate-800 dark:text-white mt-0.5">
                         {chapter.title[lang] || chapter.title.pt}
                       </h4>
-                      <p className="text-xs text-slate-400 dark:text-ink-text-muted font-sans leading-relaxed mt-1">
+                      <p className="text-xs text-slate-400 dark:text-ink-muted font-sans leading-relaxed mt-1">
                         {chapter.description[lang] || chapter.description.pt}
                       </p>
                     </div>
@@ -362,7 +362,7 @@ export default function JourneyView({
                               ? 'bg-rosegold text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light'
                               : isUnlocked
                               ? 'bg-rose-50 dark:bg-rosegold-light/10 text-rosegold dark:text-rosegold-light'
-                              : 'bg-slate-100 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-text-muted'
+                              : 'bg-slate-100 dark:bg-transparent dark:border dark:border-ink-hairline text-slate-400 dark:text-ink-muted'
                           }`}>
                             {isCompleted ? <Check className="h-4 w-4 stroke-[3px]" /> : day.dayNumber}
                           </div>
@@ -377,7 +377,7 @@ export default function JourneyView({
                           </div>
 
                           {!isUnlocked && (
-                            <Lock className="h-3 w-3 text-slate-300 dark:text-ink-text-muted shrink-0" />
+                            <Lock className="h-3 w-3 text-slate-300 dark:text-ink-muted shrink-0" />
                           )}
                         </button>
                       );

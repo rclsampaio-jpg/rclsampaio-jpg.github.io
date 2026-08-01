@@ -47,7 +47,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
           <h1 className="text-lg font-serif font-medium text-slate-900 dark:text-ink-text">
             Algo não carregou direito
           </h1>
-          <p className="text-xs text-slate-500 dark:text-ink-text-muted max-w-xs">
+          <p className="text-xs text-slate-500 dark:text-ink-muted max-w-xs">
             Isso não deveria ter acontecido. Recarregue a página — seu progresso está salvo.
           </p>
           <button

@@ -467,7 +467,7 @@ export default function HomeView({
                 <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
                   {trans.languageTitle}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans tracking-wide">
+                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide">
                   {trans.selectLanguage}
                 </p>
               </div>
@@ -484,7 +484,7 @@ export default function HomeView({
                     className={`flex items-center justify-between p-4.5 rounded-2xl border text-sm font-semibold transition-all duration-300 cursor-pointer ${
                       lang === item.code
                         ? 'bg-rosegold border-rosegold text-white shadow-rosegold dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
-                        : 'bg-white/40 dark:bg-transparent border-rose-100/30 dark:border-ink-hairline text-slate-700 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/5'
+                        : 'bg-white/40 dark:bg-transparent border-rose-100/30 dark:border-ink-hairline text-slate-700 dark:text-ink-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/5'
                     }`}
                   >
                     <span className="flex items-center gap-3">
@@ -523,7 +523,7 @@ export default function HomeView({
                 <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
                   {trans.nameStepTitle}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans tracking-wide">
+                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide">
                   {trans.nameStepSubtitle}
                 </p>
               </div>
@@ -565,7 +565,7 @@ export default function HomeView({
                 <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
                   {lang === 'pt' ? 'Estilo de Orientação' : lang === 'es' ? 'Estilo de Orientación' : 'Guidance Style'}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans tracking-wide">
+                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide">
                   {lang === 'pt' ? 'Como você gostaria que o RenaSer guiasse sua jornada?' : lang === 'es' ? '¿Cómo te gustaría que RenaSer guíe tu camino?' : 'How would you like RenaSer to guide your journey?'}
                 </p>
               </div>
@@ -599,11 +599,11 @@ export default function HomeView({
                     className={`p-5 rounded-2xl border text-sm transition-all duration-300 text-left cursor-pointer flex flex-col gap-1.5 hover:scale-[1.02] active:scale-[0.98] h-full ${
                       selectedStyle === item.code
                         ? 'bg-rosegold border-rosegold text-white shadow-rosegold dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
-                        : 'bg-white/40 dark:bg-transparent border-rose-100/30 dark:border-ink-hairline text-slate-700 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/5'
+                        : 'bg-white/40 dark:bg-transparent border-rose-100/30 dark:border-ink-hairline text-slate-700 dark:text-ink-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/5'
                     }`}
                   >
                     <span className="font-bold font-sans tracking-wide text-xs uppercase">{item.title}</span>
-                    <span className={`text-[10px] leading-relaxed font-sans ${selectedStyle === item.code ? 'text-rose-100' : 'text-slate-500 dark:text-ink-text-muted'}`}>
+                    <span className={`text-[10px] leading-relaxed font-sans ${selectedStyle === item.code ? 'text-rose-100' : 'text-slate-500 dark:text-ink-muted'}`}>
                       {item.desc}
                     </span>
                   </button>
@@ -637,7 +637,7 @@ export default function HomeView({
                 <h2 className="text-2xl font-display font-medium text-slate-900 dark:text-white tracking-tight">
                   {lang === 'pt' ? 'Como devemos falar?' : lang === 'es' ? '¿Cómo debemos hablarte?' : 'Pronoun Preference'}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans tracking-wide">
+                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans tracking-wide">
                   {lang === 'pt' ? 'Escolha sua preferência gramatical para as mensagens personalizadas.' : lang === 'es' ? 'Elige tu preferencia gramatical para los mensajes personalizados.' : 'Choose your grammar address preference for personalized prompts.'}
                 </p>
               </div>
@@ -659,7 +659,7 @@ export default function HomeView({
                     className={`flex items-center justify-between p-4.5 rounded-2xl border text-sm font-semibold transition-all duration-300 cursor-pointer hover:scale-[1.01] ${
                       selectedGrammar === item.code
                         ? 'bg-rosegold border-rosegold text-white shadow-rosegold dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
-                        : 'bg-white/40 dark:bg-transparent border-rose-100/30 dark:border-ink-hairline text-slate-700 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/5'
+                        : 'bg-white/40 dark:bg-transparent border-rose-100/30 dark:border-ink-hairline text-slate-700 dark:text-ink-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/5'
                     }`}
                   >
                     <span className="font-sans tracking-wide">{item.label}</span>
@@ -694,7 +694,7 @@ export default function HomeView({
                 <h1 className="text-3xl font-display font-light text-slate-900 dark:text-white leading-tight">
                   {adaptMessage(HOME_TONE[lang].onboardingWelcome[selectedStyle], selectedGrammar, lang)}
                 </h1>
-                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans leading-relaxed max-w-xs mx-auto">
+                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed max-w-xs mx-auto">
                   {HOME_TONE[lang].onboardingSub[selectedStyle]}
                 </p>
               </div>
@@ -723,7 +723,7 @@ export default function HomeView({
                 <h2 className="text-2xl font-display font-light text-slate-900 dark:text-white leading-tight">
                   {adaptMessage(HOME_TONE[lang].introTitle[selectedStyle], selectedGrammar, lang)}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-ink-text-muted font-sans leading-relaxed max-w-sm mx-auto">
+                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed max-w-sm mx-auto">
                   {HOME_TONE[lang].introText[selectedStyle]}
                 </p>
               </div>
@@ -862,7 +862,7 @@ export default function HomeView({
 
         {isAdminUnlocked && (
           <div className="mt-4 flex flex-wrap items-center justify-center gap-1.5 max-w-[460px]">
-            <span className="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-ink-text-muted mr-1">
+            <span className="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-ink-muted mr-1">
               Testar fase:
             </span>
             {[
@@ -883,7 +883,7 @@ export default function HomeView({
                 className={`px-2 py-1 rounded-lg text-[9px] font-mono border transition ${
                   treeStagePreview === item.count
                     ? 'bg-rosegold text-white border-rosegold dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light'
-                    : 'border-rose-100/30 dark:border-ink-hairline text-slate-500 dark:text-ink-text-muted hover:border-rosegold/50'
+                    : 'border-rose-100/30 dark:border-ink-hairline text-slate-500 dark:text-ink-muted hover:border-rosegold/50'
                 }`}
               >
                 {item.label}
@@ -938,7 +938,7 @@ export default function HomeView({
             disabled={isLocked}
             className={`px-12 py-4.5 rounded-2xl text-xs font-sans font-bold uppercase tracking-[0.2em] shadow-lg transition-all duration-300 ${
               isLocked
-                ? 'bg-slate-100 dark:bg-transparent text-slate-400 dark:text-ink-text-muted border border-rose-100/10 dark:border-ink-hairline cursor-not-allowed shadow-none'
+                ? 'bg-slate-100 dark:bg-transparent text-slate-400 dark:text-ink-muted border border-rose-100/10 dark:border-ink-hairline cursor-not-allowed shadow-none'
                 : isCompleted
                 ? 'bg-rose-50/60 dark:bg-transparent text-rosegold dark:text-rosegold-light hover:bg-rose-100/80 dark:hover:bg-rosegold-light/10 shadow-sm dark:shadow-none border border-rose-100/30 dark:border-rosegold-light cursor-pointer'
                 : 'bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 shadow-rosegold hover:shadow-rosegold/40 dark:shadow-none cursor-pointer'
@@ -948,7 +948,7 @@ export default function HomeView({
           </motion.button>
 
           {/* Quick, reassuring, pressure-free micro-copy */}
-          <span className="text-[10px] text-slate-400 dark:text-ink-text-muted font-sans tracking-wide leading-relaxed max-w-xs sm:max-w-md">
+          <span className="text-[10px] text-slate-400 dark:text-ink-muted font-sans tracking-wide leading-relaxed max-w-xs sm:max-w-md">
             {isLocked
               ? trans.waitingForTomorrow
               : yesterdayIncomplete
