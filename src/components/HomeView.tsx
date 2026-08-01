@@ -820,7 +820,7 @@ export default function HomeView({
         className="text-center space-y-4 relative z-20"
       >
         <div className="space-y-1">
-          <span className="text-xs font-serif italic text-rosegold dark:text-[#E8B4A0]">
+          <span className="text-xs font-serif italic text-rosegold dark:text-rosegold-light">
             {lighting.greeting}
           </span>
           <h3 className="text-sm font-sans font-medium tracking-wide text-slate-800 dark:text-ink-text">
@@ -829,7 +829,7 @@ export default function HomeView({
               : prefGrammar === 'masculine'
               ? (lang === 'pt' ? 'Bem-vindo de volta' : lang === 'es' ? 'Bienvenido de vuelta' : 'Welcome back')
               : (lang === 'pt' ? 'Bem-vinde de volta' : lang === 'es' ? 'Bienvenide de vuelta' : 'Welcome back')
-            }, <span className="font-mono text-xs font-normal opacity-85 text-rosegold dark:text-[#E8B4A0]">
+            }, <span className="font-mono text-xs font-normal opacity-85 text-rosegold dark:text-rosegold-light">
               {progress.displayName || (
                 prefGrammar === 'masculine'
                   ? (lang === 'pt' ? 'querido' : lang === 'es' ? 'querido' : 'friend')

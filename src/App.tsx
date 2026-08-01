@@ -572,10 +572,10 @@ function AppContent() {
 
   if (showOpeningSplash) {
     return (
-      <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-[#1E1715] flex flex-col justify-center items-center p-6 text-center select-none overflow-hidden transition-colors duration-500">
-        {/* Soft Ambient Gold Blurs */}
-        <div className="absolute top-1/3 left-1/3 h-96 w-96 bg-rosegold/5 dark:bg-rosegold/10 blur-3xl rounded-full" />
-        <div className="absolute bottom-1/3 right-1/3 h-96 w-96 bg-accentgold/5 dark:bg-accentgold/10 blur-3xl rounded-full" />
+      <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-ink flex flex-col justify-center items-center p-6 text-center select-none overflow-hidden transition-colors duration-500">
+        {/* Soft Ambient Gold Blurs — dark mode drops them, Luxo Contido stays flat */}
+        <div className="absolute top-1/3 left-1/3 h-96 w-96 bg-rosegold/5 dark:hidden blur-3xl rounded-full" />
+        <div className="absolute bottom-1/3 right-1/3 h-96 w-96 bg-accentgold/5 dark:hidden blur-3xl rounded-full" />
 
         {/* Elegant Natural Butterfly Crossing slowly */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
@@ -641,11 +641,11 @@ function AppContent() {
     }[lang];
 
     return (
-      <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-[#1E1715] text-slate-900 dark:text-[#FAF8F5] flex flex-col justify-center items-center p-6 text-center select-none overflow-hidden transition-colors duration-500">
-        
-        {/* Soft Background Blur Spots */}
-        <div className="absolute top-1/4 left-1/4 h-80 w-80 bg-rosegold/5 dark:bg-rosegold/10 blur-3xl rounded-full" />
-        <div className="absolute bottom-1/4 right-1/4 h-80 w-80 bg-accentgold/5 dark:bg-accentgold/10 blur-3xl rounded-full" />
+      <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-ink text-slate-900 dark:text-ink-text flex flex-col justify-center items-center p-6 text-center select-none overflow-hidden transition-colors duration-500">
+
+        {/* Soft Background Blur Spots — dropped in dark mode, Luxo Contido stays flat */}
+        <div className="absolute top-1/4 left-1/4 h-80 w-80 bg-rosegold/5 dark:hidden blur-3xl rounded-full" />
+        <div className="absolute bottom-1/4 right-1/4 h-80 w-80 bg-accentgold/5 dark:hidden blur-3xl rounded-full" />
 
         {/* Gentle Fluttering Butterfly crossing the screen */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
@@ -1197,7 +1197,7 @@ function AppContent() {
         />
 
         {/* Ecosystem Bottom Navigation Bar */}
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-md bg-white/95 dark:bg-[#2C221E]/95 backdrop-blur-md border border-rose-100/40 dark:border-rosegold/15 py-2.5 px-4 rounded-full shadow-2xl flex items-center justify-around">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-md bg-white/95 dark:bg-ink-raised backdrop-blur-md dark:backdrop-blur-none border border-rose-100/40 dark:border-ink-hairline py-2.5 px-4 rounded-full shadow-2xl dark:shadow-none flex items-center justify-around">
           <button
             onClick={() => setActiveTab('home')}
             className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
@@ -1277,7 +1277,7 @@ function AppContent() {
       </main>
 
       {/* Minimalistic Craft Footer */}
-      <footer className="py-8 border-t border-rose-100/10 dark:border-rosegold/5 bg-[#FAF6F2] dark:bg-[#3A2A24] text-center text-xs text-slate-400 dark:text-ink-text-muted font-sans select-none">
+      <footer className="py-8 border-t border-rose-100/10 dark:border-ink-hairline bg-[#FAF6F2] dark:bg-ink text-center text-xs text-slate-400 dark:text-ink-text-muted font-sans select-none">
         <p className="tracking-wide">© 2026 RenaSer • {taglines[lang]} • Craftsmanship &amp; Editorial Intent</p>
       </footer>
 
