@@ -17,6 +17,10 @@ interface RenataOSChatProps {
   progress: UserProgress;
   currentDayNumber: number;
   onOpenSos: () => void;
+  // True outside the Home tab — shrinks the FAB to just the logo + "IA"
+  // badge (no text label) so it stays out of the way of each screen's own
+  // content instead of taking up a full pill's worth of space everywhere.
+  compact?: boolean;
 }
 
 interface ChatMessage {
@@ -110,7 +114,7 @@ const HINT_BY_LANG: Record<Language, string> = {
   es: 'Soy una IA, pregúntame lo que sea 💬'
 };
 
-export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenSos }: RenataOSChatProps) {
+export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenSos, compact = false }: RenataOSChatProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -235,22 +239,29 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
             setShowHint(false);
             localStorage.setItem('renaser_os_hint_seen', 'true');
           }}
-          className="relative flex items-center gap-2.5 pl-3 pr-4 py-2.5 sm:pr-5 rounded-full shadow-lg transition-all border bg-gradient-to-br from-rosegold to-[#A35D68] text-white border-rosegold/40 dark:bg-none dark:bg-ink-raised dark:border-rosegold-light"
+          layout
+          transition={{ layout: { duration: 0.25, ease: 'easeInOut' } }}
+          className={`relative flex items-center rounded-full shadow-lg transition-colors border bg-gradient-to-br from-rosegold to-[#A35D68] text-white border-rosegold/40 dark:bg-none dark:bg-ink-raised dark:border-rosegold-light ${
+            compact ? 'p-2' : 'gap-2.5 pl-3 pr-4 py-2.5 sm:pr-5'
+          }`}
         >
           <motion.span
             className="absolute inset-0 rounded-full border-2 border-rosegold-light/60"
             animate={{ scale: [1, 1.25, 1], opacity: [0.6, 0, 0.6] }}
             transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
           />
-          <span className="relative h-8 w-8 rounded-full bg-white/90 dark:bg-transparent flex items-center justify-center shrink-0 overflow-hidden">
+          <span className={`relative rounded-full bg-white/90 dark:bg-transparent flex items-center justify-center shrink-0 overflow-hidden ${compact ? 'h-8 w-8' : 'h-8 w-8'}`}>
             <RenaSerIcon size={22} animate={false} />
           </span>
-          <span className="relative text-xs font-mono font-bold uppercase tracking-wider">
-            {t.title}
-          </span>
+          {!compact && (
+            <span className="relative text-xs font-mono font-bold uppercase tracking-wider">
+              {t.title}
+            </span>
+          )}
           {/* "AI" badge, mirrors the VIP-badge pattern used on the profile
               avatar — makes it obvious at a glance this is an AI feature,
-              not just a generic action button. */}
+              not just a generic action button. Always shown, including
+              compact mode, since that's the whole point of the shrink. */}
           <span className="absolute -top-1.5 -left-1.5 bg-[#D4AF37] text-slate-950 text-[9px] font-mono font-black px-1.5 py-0.5 rounded-full border-2 border-white dark:border-ink shadow-sm">
             IA
           </span>

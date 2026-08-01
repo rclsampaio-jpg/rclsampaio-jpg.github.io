@@ -1183,6 +1183,7 @@ function AppContent() {
           progress={progress}
           currentDayNumber={focusedDayNumber}
           onOpenSos={() => setActiveTab('sos')}
+          compact={activeTab !== 'home'}
         />
 
         {/* Ecosystem Bottom Navigation Bar */}
