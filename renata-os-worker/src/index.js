@@ -102,9 +102,12 @@ const OPENROUTER_MODELS = {
   primary: 'google/gemma-4-26b-a4b-it:free',
   fallback: 'openai/gpt-oss-20b:free',
   // Used only when the user attaches an image/PDF — the text-only free
-  // models above can't read attachments. Gemini 2.0 Flash's free tier on
-  // OpenRouter supports both vision and PDF file input.
-  vision: 'google/gemini-2.0-flash-exp:free'
+  // models above can't read attachments. Llama 3.2 Vision's free tier on
+  // OpenRouter supports image input, and the file-parser plugin handles
+  // PDF text extraction before the model ever sees the file. Qwen2-VL is
+  // the fallback if the primary vision model is overloaded/unavailable.
+  vision: 'meta-llama/llama-3.2-11b-vision-instruct:free',
+  visionFallback: 'qwen/qwen2.5-vl-32b-instruct:free'
 };
 
 // Attachments are processed in-memory for a single reply and never
@@ -327,7 +330,17 @@ async function getAIReplyWithAttachment(systemPrompt, history, userMessage, atta
     content.push({ type: 'image_url', image_url: { url: attachment.dataUrl } });
   }
 
-  return callOpenRouter(OPENROUTER_MODELS.vision, systemPrompt, history, content, env, extraBody);
+  try {
+    return await callOpenRouter(OPENROUTER_MODELS.vision, systemPrompt, history, content, env, extraBody);
+  } catch (primaryError) {
+    try {
+      return await callOpenRouter(OPENROUTER_MODELS.visionFallback, systemPrompt, history, content, env, extraBody);
+    } catch (fallbackError) {
+      throw new Error(
+        `Both vision models failed. Primary: ${primaryError.message}. Fallback: ${fallbackError.message}`
+      );
+    }
+  }
 }
 
 export default {
