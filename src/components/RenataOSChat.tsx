@@ -104,16 +104,36 @@ const GREETING_BY_TONE: Record<Language, ToneVariants> = {
   }
 };
 
+const HINT_BY_LANG: Record<Language, string> = {
+  pt: 'Sou uma IA, pergunte qualquer coisa 💬',
+  en: "I'm an AI, ask me anything 💬",
+  es: 'Soy una IA, pregúntame lo que sea 💬'
+};
+
 export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenSos }: RenataOSChatProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  // First-visit hint bubble so the floating button reads as "AI chat" at a
+  // glance instead of a mystery icon — shown once, dismissed on first open
+  // or automatically after a few seconds, remembered via localStorage so it
+  // doesn't nag on every visit.
+  const [showHint, setShowHint] = useState(() => !localStorage.getItem('renaser_os_hint_seen'));
 
   const t = trans[lang];
   const prefGrammar = resolveGrammarPreference(progress.grammarPreference);
   const guideStyle = resolveGuideStyle(progress.guideStyle);
+
+  useEffect(() => {
+    if (!showHint) return;
+    const timer = setTimeout(() => {
+      setShowHint(false);
+      localStorage.setItem('renaser_os_hint_seen', 'true');
+    }, 6000);
+    return () => clearTimeout(timer);
+  }, [showHint]);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -178,12 +198,43 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
 
   return (
     <>
-      {/* Floating action button, replaces the old floating SOS button */}
-      <div className="fixed bottom-24 right-6 z-40 sm:bottom-28">
+      {/* Floating action button, replaces the old floating SOS button.
+          Sits well above the mobile bottom nav pill (which lives at
+          bottom-6, roughly 70-80px tall) so the two don't read as one
+          crowded cluster. */}
+      <div className="fixed bottom-28 right-4 z-40 sm:bottom-32 sm:right-6 flex flex-col items-end gap-2">
+        <AnimatePresence>
+          {showHint && !isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 6, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 6, scale: 0.95 }}
+              className="relative max-w-[190px] bg-white dark:bg-ink-raised text-slate-700 dark:text-ink-text text-xs font-sans px-3.5 py-2.5 rounded-2xl rounded-br-sm shadow-lg border border-rose-100/40 dark:border-ink-hairline"
+            >
+              {HINT_BY_LANG[lang]}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowHint(false);
+                  localStorage.setItem('renaser_os_hint_seen', 'true');
+                }}
+                className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-slate-300 dark:bg-ink-hairline text-white dark:text-ink-text-muted flex items-center justify-center"
+                aria-label={t.send === 'Enviar' ? 'Fechar' : 'Close'}
+              >
+                <X className="h-2.5 w-2.5" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setIsOpen(true);
+            setShowHint(false);
+            localStorage.setItem('renaser_os_hint_seen', 'true');
+          }}
           className="relative flex items-center gap-2.5 pl-3 pr-4 py-2.5 sm:pr-5 rounded-full shadow-lg transition-all border bg-gradient-to-br from-rosegold to-[#A35D68] text-white border-rosegold/40 dark:bg-none dark:bg-ink-raised dark:border-rosegold-light"
         >
           <motion.span
@@ -194,8 +245,14 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
           <span className="relative h-8 w-8 rounded-full bg-white/90 dark:bg-transparent flex items-center justify-center shrink-0 overflow-hidden">
             <RenaSerIcon size={22} animate={false} />
           </span>
-          <span className="relative text-xs font-mono font-bold uppercase tracking-wider hidden sm:inline">
+          <span className="relative text-xs font-mono font-bold uppercase tracking-wider">
             {t.title}
+          </span>
+          {/* "AI" badge, mirrors the VIP-badge pattern used on the profile
+              avatar — makes it obvious at a glance this is an AI feature,
+              not just a generic action button. */}
+          <span className="absolute -top-1.5 -left-1.5 bg-[#D4AF37] text-slate-950 text-[9px] font-mono font-black px-1.5 py-0.5 rounded-full border-2 border-white dark:border-ink shadow-sm">
+            IA
           </span>
         </motion.button>
       </div>
