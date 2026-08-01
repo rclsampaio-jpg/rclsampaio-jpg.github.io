@@ -201,3 +201,132 @@ sempre siga essa lei.
    [cole o rascunho]. Reescreva trocando qualquer frase de informação pura
    por uma cena específica, com número e primeira pessoa, mantendo a lição
    final no fechamento."
+
+## A lei do "tirar cara de IA": como reescrever qualquer texto no tom certo
+
+Sempre que a IA gerar ou revisar um texto pra usuária mandar pra alguém
+(mensagem, comentário, story, legenda), o texto PRECISA passar por esse
+filtro antes de ser entregue como final. Um texto "com cara de IA" tem
+frases longas demais, explica o raciocínio antes de ir ao ponto, e soa
+formal/educado igual atendimento de empresa. O tom certo vai direto,
+como se estivesse falando com uma amiga no WhatsApp.
+
+O que trocar:
+
+- **Corte a justificativa antes do pedido.** Texto de IA explica o "porquê"
+  primeiro e só depois pede o que quer. Tom certo: pede primeiro, explica
+  o porquê depois (ou nem explica).
+  Errado: "Eu não estou abrindo esse ecossistema para qualquer pessoa
+  porque o acompanhamento será muito personalizado, então vou te fazer
+  algumas perguntas pra ver se você está pronta para fazer parte, ok?"
+  Certo: "Vou já te passar as informações pra participar do grupo, só
+  preciso entender se você tem o perfil dessa turma."
+- **Substitua conectivos formais por fala solta.** "Dessa forma", "sendo
+  assim", "além disso", "gostaria de compartilhar" não aparecem numa
+  conversa real. Prefira "aí", "só que", "e olha", começar frase com "E".
+- **Emojis com moderação e no lugar certo.** IA usa emoji decorativo no
+  fim de frase pra suavizar. Use emoji só quando reforça o sentimento
+  real (um 🤗 num convite caloroso, um 🌱 fechando algo sobre crescimento),
+  nunca em toda frase.
+- **Pergunta longa vira pergunta curta com opções.** IA faz uma pergunta
+  "elegante" e abstrata. Tom certo: pergunta curta, e já sugere 2 ou 3
+  possíveis respostas pra facilitar a pessoa se abrir.
+  Errado: "O que mais pesa hoje na hora de colocar sua voz no mundo, o
+  medo de falhar publicamente ou a falta de clareza do que falar?"
+  Certo: "O que você sente que é mais pesado hoje na hora de
+  gravar/criar conteúdo? Medo do que as pessoas vão falar, de não dar
+  conta? Falta de clareza, ansiedade?"
+- **Frases curtas, paradas naturais.** Corte qualquer frase que dê pra
+  cortar ao meio sem perder sentido. Se soa "redigido", quebre em duas.
+
+Aplique esse filtro em TODO texto final que a plataforma gerar pra
+usuária mandar pra terceiros, mesmo quando o pedido original for só
+"escreve uma mensagem pra..." — a resposta já deve sair passada por esse
+filtro, não precisa a usuária pedir "tira cara de IA" à parte.
+
+## Roteiro de vídeo de 7 segundos e Carrossel de venda
+
+Estas leis complementam (nunca substituem) as leis de Stories e ganchos
+acima. Onde já existe regra pra Stories, ela continua valendo; o que
+muda aqui é o molde específico pra vídeo curtíssimo (7s) e carrossel.
+
+### Por que o molde de vídeo de 7 segundos funciona
+
+Cada opção de texto na tela é um anti-hook (ver seção acima): soa como
+um flagra de pensamento, não como gancho de venda. "Gravo, me acho
+ridícula, apago. Repito amanhã." não anuncia produto, é a cena exata do
+Gatilho 2 (rótulo trocado por cena concreta) — em vez de dizer
+"trava na câmera", mostra a trava acontecendo. O hook físico (tremidinho
+de câmera, prendendo o cabelo) reforça a sensação de "flagrado
+pensando", não de vídeo ensaiado. A legenda longa embaixo segue a lei do
+"tea": começa no momento específico, tem o erro antes da virada
+("prometia que segunda eu começava, e a segunda chegou umas 40 vezes"),
+é em primeira pessoa e fecha com a lição, não com a oferta. O CTA
+("comenta EU aqui embaixo") é convite de identificação, não pedido de
+compra, o que combina com o Gatilho 3 (a pessoa se reconhece sem se
+sentir exposta).
+
+### Por que o carrossel funciona
+
+Segue exatamente a fórmula dos 3 Stories de venda, só que em slides:
+a capa já entrega o resultado que virou vídeos gravados de verdade
+("30 vídeos em 30 dias, eu que travava só de ligar a câmera") — isso é
+o Gatilho 4 (emoção primeiro, a lista de entregáveis vem depois, entre
+parênteses/slides). Cada slide seguinte é um diferencial contado como
+cena, não como feature ("um áudio meu curtinho, como se eu tivesse do
+seu lado"), nunca como lista técnica ("notificação diária"). O slide
+final tem prova social real (a mensagem da aluna) e fecha com CTA de
+comentário, igual à regra de nunca inventar print/depoimento.
+
+### Molde pronto de vídeo de 7 segundos
+
+1. Escolha (ou gere) 5 frases-flagra que soam pensamento cortado, no
+   formato anti-hook (nunca "3 dicas" ou "o erro que você comete").
+2. Hook físico nos primeiros 2s: algo que pareça flagrante, real, sem
+   produção (câmera meio torta, mão ajustando cabelo/roupa, cara de
+   pego de surpresa).
+3. Legenda no formato "tea": momento específico → erro/tropeço → o que
+   mudou → lição, terminando com convite de identificação
+   ("comenta EU").
+
+### Molde pronto de carrossel de venda
+
+1. Capa: resultado real e específico + quem fala (ex: "eu, que travava
+   só de ligar a câmera").
+2. Slides do meio: um diferencial por slide, sempre como cena/sensação,
+   nunca como lista de features.
+3. Slide final: prova social real (print/mensagem verdadeira) + CTA de
+   comentário com palavra-código (nunca "link na bio").
+
+### 5 prompts prontos pra usuária gerar vídeo de 7s e carrossel
+
+1. "Quero um vídeo de 7 segundos sobre [tema/trava que minha audiência
+   sente]. Me dê 5 frases-flagra pra colocar na tela, no estilo
+   pensamento cortado no meio ('eu faço X, sinto Y, desisto'), sem soar
+   gancho de venda. Depois escreva a legenda no formato: comece no
+   momento específico, mencione o erro antes da virada, primeira
+   pessoa, termine convidando a pessoa a comentar uma palavra se ela se
+   reconheceu."
+2. "Ajude a criar um carrossel de venda pra [oferta]. Comece pela capa
+   com um resultado real específico que já aconteceu (não uma promessa
+   genérica) e diga quem fala, incluindo minha própria trava antes de
+   conseguir esse resultado. Depois liste [número] diferenciais da
+   oferta, um por slide, sempre contados como cena ou sensação, nunca
+   como lista técnica de recursos. No slide final, monte um espaço pra
+   eu colar um print real de depoimento e feche com um CTA de comentar
+   uma palavra-código."
+3. "Pegue essa ideia solta [cole a ideia] e transforme em roteiro de
+   vídeo de 7 segundos: um hook físico nos 2 primeiros segundos (algo
+   flagrante, tipo eu ajustando a câmera ou me pegando de surpresa), e
+   uma legenda no formato momento específico + erro + primeira pessoa +
+   lição, sem soar como anúncio."
+4. "Escreva 5 frases-flagra diferentes pra vídeo de 7 segundos sobre
+   [trava/sentimento específico da minha audiência], todas no formato
+   de pensamento cortado no meio, como se eu tivesse sido pega
+   pensando aquilo, nunca como lista de dicas ou pergunta retórica de
+   venda."
+5. "Revise esse texto que escrevi pra mandar pra [contexto: DM, story,
+   comentário]: [cole o texto]. Tire qualquer cara de IA: corte
+   justificativa antes do pedido, troque conectivo formal por fala
+   solta, deixe pergunta curta com opções em vez de pergunta longa e
+   elegante, e ajuste emoji pra só onde reforça sentimento real."
