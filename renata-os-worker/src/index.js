@@ -339,8 +339,10 @@ async function getAIReplyWithAttachment(systemPrompt, history, userMessage, atta
     // OpenRouter's /endpoints API); one of them (Darkbloom) silently
     // returns an empty reply for image input despite claiming image
     // support, while Google AI Studio (the real Gemini backend) handles
-    // it correctly. Pin to that provider for image requests specifically.
-    extraBody.provider = { order: ['google-ai-studio'], allow_fallbacks: false };
+    // it correctly. Prefer that provider for image requests, but still
+    // allow falling back to Darkbloom if Google AI Studio's free pool is
+    // rate-limited (429) — a shot at Darkbloom beats failing outright.
+    extraBody.provider = { order: ['google-ai-studio', 'darkbloom'], allow_fallbacks: true };
   }
 
   return callOpenRouter(OPENROUTER_MODELS.vision, systemPrompt, history, content, env, extraBody);
