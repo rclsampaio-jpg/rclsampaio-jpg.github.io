@@ -7,22 +7,33 @@ import { useState, useRef, ChangeEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   User, Award, Star, Flame, Settings, Sparkles, Sliders,
-  HelpCircle, Check, ArrowRight, BookOpen, Compass, Shield, Heart, Camera
+  HelpCircle, Check, ArrowRight, BookOpen, Compass, Shield, Heart, Camera, Pencil
 } from 'lucide-react';
 import { Language, UserProgress, MissionDay } from '../types';
 import MyTransformationView from './MyTransformationView';
 import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
+import { supabase } from '../lib/supabase';
 
 interface ProfileViewProps {
   lang: Language;
   progress: UserProgress;
   days: MissionDay[];
   onUpdateProgress: (newProgress: UserProgress) => void;
+  userId?: string;
 }
 
-export default function ProfileView({ lang, progress, days, onUpdateProgress }: ProfileViewProps) {
+export default function ProfileView({ lang, progress, days, onUpdateProgress, userId }: ProfileViewProps) {
   const [activeProfileSection, setActiveProfileSection] = useState<'scrapbook' | 'personalization'>('scrapbook');
   const avatarInputRef = useRef<HTMLInputElement | null>(null);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [nameDraft, setNameDraft] = useState(progress.displayName || '');
+
+  const handleSaveName = () => {
+    const trimmed = nameDraft.trim();
+    onUpdateProgress({ ...progress, displayName: trimmed || null });
+    setIsEditingName(false);
+  };
 
   // Load personalization presets or defaults
   const guideStyle = progress.guideStyle || 'gentle';
@@ -34,27 +45,49 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
     const reader = new FileReader();
     reader.onload = () => {
       const rawDataUrl = reader.result as string;
-      // Photos straight from a phone camera can be several MB as a data URL,
-      // which silently blows past the localStorage quota (~5-10MB per
-      // origin, shared with the rest of the app's saved data) and fails to
-      // persist on reload even though it looks fine for the rest of the
-      // session. Downscale to a small square avatar before storing.
+      // Downscale to a small square avatar before uploading — phone camera
+      // photos can be several MB, no reason to ship that much to Storage.
       const img = new Image();
-      img.onload = () => {
+      img.onload = async () => {
         const size = 256;
         const canvas = document.createElement('canvas');
         canvas.width = size;
         canvas.height = size;
         const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          onUpdateProgress({ ...progress, avatarUrl: rawDataUrl });
-          return;
-        }
+        if (!ctx) return;
         const scale = Math.max(size / img.width, size / img.height);
         const drawWidth = img.width * scale;
         const drawHeight = img.height * scale;
         ctx.drawImage(img, (size - drawWidth) / 2, (size - drawHeight) / 2, drawWidth, drawHeight);
-        onUpdateProgress({ ...progress, avatarUrl: canvas.toDataURL('image/jpeg', 0.85) });
+
+        canvas.toBlob(async (blob) => {
+          if (!blob) return;
+          // No signed-in userId (shouldn't happen behind the app's auth
+          // gate) — fall back to storing the image inline rather than
+          // silently dropping the upload.
+          if (!userId) {
+            onUpdateProgress({ ...progress, avatarUrl: canvas.toDataURL('image/jpeg', 0.85) });
+            return;
+          }
+          setIsUploadingAvatar(true);
+          // Path is prefixed with the user's own id, matching the Storage
+          // RLS policies in supabase/migrations/0009_avatars_storage.sql —
+          // each user can only write under their own folder.
+          const path = `${userId}/avatar.jpg`;
+          const { error } = await supabase.storage
+            .from('avatars')
+            .upload(path, blob, { contentType: 'image/jpeg', upsert: true });
+          setIsUploadingAvatar(false);
+          if (error) {
+            console.error('Avatar upload failed:', error);
+            onUpdateProgress({ ...progress, avatarUrl: canvas.toDataURL('image/jpeg', 0.85) });
+            return;
+          }
+          const { data } = supabase.storage.from('avatars').getPublicUrl(path);
+          // Cache-bust so the new photo shows immediately instead of the
+          // previous one still cached under the same public URL.
+          onUpdateProgress({ ...progress, avatarUrl: `${data.publicUrl}?v=${Date.now()}` });
+        }, 'image/jpeg', 0.85);
       };
       img.src = rawDataUrl;
     };
@@ -193,8 +226,12 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
             ) : (
               <User className="h-10 w-10 text-rosegold-light" />
             )}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-              <Camera className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className={`absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center ${isUploadingAvatar ? 'bg-black/50' : ''}`}>
+              {isUploadingAvatar ? (
+                <div className="h-5 w-5 border-2 border-white/70 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Camera className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+              )}
             </div>
             <div className="absolute -bottom-1 -right-1 bg-[#D4AF37] text-slate-950 p-1 rounded-full text-[11px] font-bold">
               VIP
@@ -202,9 +239,33 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress }: 
           </button>
 
           <div className="space-y-1">
-            <h3 className="text-xl sm:text-2xl font-serif font-light text-amber-50">
-              {progress.displayName || (lang === 'pt' ? 'Estrela RenaSer' : lang === 'es' ? 'Estrella RenaSer' : 'RenaSer Star')}
-            </h3>
+            {isEditingName ? (
+              <div className="flex items-center gap-2">
+                <input
+                  autoFocus
+                  value={nameDraft}
+                  onChange={(e) => setNameDraft(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleSaveName();
+                    if (e.key === 'Escape') { setNameDraft(progress.displayName || ''); setIsEditingName(false); }
+                  }}
+                  maxLength={40}
+                  placeholder={lang === 'pt' ? 'Seu nome' : lang === 'es' ? 'Tu nombre' : 'Your name'}
+                  className="text-xl sm:text-2xl font-serif font-light text-amber-50 bg-white/10 border border-[#D4AF37]/50 rounded-lg px-2 py-0.5 outline-none focus:border-[#D4AF37] w-40 sm:w-52"
+                />
+                <button onClick={handleSaveName} className="p-1.5 rounded-full bg-[#D4AF37] text-slate-950 hover:brightness-110 transition">
+                  <Check className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => { setNameDraft(progress.displayName || ''); setIsEditingName(true); }}
+                className="group flex items-center gap-2 text-xl sm:text-2xl font-serif font-light text-amber-50 hover:text-white transition"
+              >
+                {progress.displayName || (lang === 'pt' ? 'Estrela RenaSer' : lang === 'es' ? 'Estrella RenaSer' : 'RenaSer Star')}
+                <Pencil className="h-3.5 w-3.5 text-[#D4AF37] opacity-60 group-hover:opacity-100 transition-opacity" />
+              </button>
+            )}
             <p className="text-[10px] uppercase font-mono tracking-widest text-[#D4AF37] font-bold">
               {trans.pioneiro}
             </p>

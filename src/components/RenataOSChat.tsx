@@ -5,8 +5,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, X, Send, HeartHandshake } from 'lucide-react';
+import { X, Send, HeartHandshake } from 'lucide-react';
 import { Language, UserProgress } from '../types';
+import { RenaSerIcon } from './RenaSerLogo';
 import { RENATA_OS_ENDPOINT } from '../config';
 import { supabase } from '../lib/supabase';
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, ToneVariants } from '../utils/grammar';
@@ -183,10 +184,17 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 p-4 sm:px-5 sm:py-3.5 rounded-full shadow-lg transition-all border bg-gradient-to-br from-rosegold to-[#A35D68] text-white border-rosegold/40"
+          className="relative flex items-center gap-2.5 pl-3 pr-4 py-2.5 sm:pr-5 rounded-full shadow-lg transition-all border bg-gradient-to-br from-rosegold to-[#A35D68] text-white border-rosegold/40 dark:bg-none dark:bg-ink-raised dark:border-rosegold-light"
         >
-          <Sparkles className="h-5 w-5" />
-          <span className="text-xs font-mono font-bold uppercase tracking-wider hidden sm:inline">
+          <motion.span
+            className="absolute inset-0 rounded-full border-2 border-rosegold-light/60"
+            animate={{ scale: [1, 1.25, 1], opacity: [0.6, 0, 0.6] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <span className="relative h-8 w-8 rounded-full bg-white/90 dark:bg-transparent flex items-center justify-center shrink-0 overflow-hidden">
+            <RenaSerIcon size={22} animate={false} />
+          </span>
+          <span className="relative text-xs font-mono font-bold uppercase tracking-wider hidden sm:inline">
             {t.title}
           </span>
         </motion.button>
@@ -212,8 +220,8 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
               {/* Header */}
               <div className="flex items-center justify-between p-5 border-b border-rose-100/20 dark:border-rosegold/10">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-rosegold to-[#A35D68] flex items-center justify-center text-white shrink-0">
-                    <Sparkles className="h-5 w-5" />
+                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-rosegold to-[#A35D68] dark:bg-none dark:bg-ink flex items-center justify-center shrink-0 p-1.5 border dark:border-rosegold-light/40">
+                    <RenaSerIcon size={28} animate={false} />
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">{t.title}</h3>
@@ -231,20 +239,31 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
               {/* Messages */}
               <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-3">
                 {messages.map((msg, idx) => (
-                  <div
-                    key={idx}
-                    className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm font-sans leading-relaxed ${
-                      msg.role === 'user'
-                        ? 'ml-auto bg-rosegold text-white rounded-br-sm'
-                        : 'mr-auto bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 text-slate-700 dark:text-slate-200 rounded-bl-sm'
-                    }`}
-                  >
-                    {msg.text}
+                  <div key={idx} className={`flex items-end gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    {msg.role === 'assistant' && (
+                      <span className="h-6 w-6 rounded-full bg-white dark:bg-ink border border-rose-100/40 dark:border-rosegold-light/30 flex items-center justify-center shrink-0 p-1">
+                        <RenaSerIcon size={16} animate={false} />
+                      </span>
+                    )}
+                    <div
+                      className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm font-sans leading-relaxed ${
+                        msg.role === 'user'
+                          ? 'bg-rosegold text-white rounded-br-sm'
+                          : 'bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 text-slate-700 dark:text-slate-200 rounded-bl-sm'
+                      }`}
+                    >
+                      {msg.text}
+                    </div>
                   </div>
                 ))}
                 {isLoading && (
-                  <div className="mr-auto bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm text-slate-400 font-sans">
-                    •••
+                  <div className="flex items-end gap-2 justify-start">
+                    <span className="h-6 w-6 rounded-full bg-white dark:bg-ink border border-rose-100/40 dark:border-rosegold-light/30 flex items-center justify-center shrink-0 p-1">
+                      <RenaSerIcon size={16} animate={false} />
+                    </span>
+                    <div className="bg-white dark:bg-[#2C221E] border border-rose-100/20 dark:border-rosegold/10 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm text-slate-400 font-sans">
+                      •••
+                    </div>
                   </div>
                 )}
               </div>
