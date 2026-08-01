@@ -378,7 +378,7 @@ export default function HomeView({
     // header and bottom nav visibly showing around it. A portal escapes
     // that ancestor entirely, so `fixed inset-0` covers the true viewport.
     return createPortal(
-      <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-[#1E1715] text-slate-900 dark:text-[#FAF8F5] flex flex-col justify-center items-center p-8 sm:p-12 text-center select-none transition-colors duration-500 paper-ivory">
+      <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-ink text-slate-900 dark:text-ink-text flex flex-col justify-center items-center p-8 sm:p-12 text-center select-none transition-colors duration-500 paper-ivory">
         {/* Ambient atmospheric backdrop light */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-rosegold/10 dark:bg-rosegold/5 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDuration: '6s' }} />
 
@@ -437,7 +437,7 @@ export default function HomeView({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleNextOnboard}
-                className="mt-4 px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-[background-color,box-shadow] duration-300 shadow-rosegold hover:shadow-rosegold/40 cursor-pointer"
+                className="mt-4 px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-[background-color,box-shadow] duration-300 shadow-rosegold hover:shadow-rosegold/40 cursor-pointer"
               >
                 {trans.getStarted}
               </motion.button>
@@ -451,7 +451,7 @@ export default function HomeView({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-8 max-w-md w-full relative z-10 p-8 glass-premium rounded-[2.5rem] shadow-rosegold"
+              className="space-y-8 max-w-md w-full relative z-10 p-8 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none!"
             >
               <div className="p-3 bg-rosegold/10 text-rosegold rounded-2xl w-12 h-12 mx-auto flex items-center justify-center border border-rosegold/15">
                 <Settings className="h-5 w-5" />
@@ -477,8 +477,8 @@ export default function HomeView({
                     onClick={() => onLanguageChange(item.code as Language)}
                     className={`flex items-center justify-between p-4.5 rounded-2xl border text-sm font-semibold transition-all duration-300 cursor-pointer ${
                       lang === item.code
-                        ? 'bg-rosegold border-rosegold text-white shadow-rosegold'
-                        : 'bg-white/40 dark:bg-warmbrown-light/40 border-rose-100/30 dark:border-rosegold/10 text-slate-700 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/5'
+                        ? 'bg-rosegold border-rosegold text-white shadow-rosegold dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
+                        : 'bg-white/40 dark:bg-transparent border-rose-100/30 dark:border-ink-hairline text-slate-700 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/5'
                     }`}
                   >
                     <span className="flex items-center gap-3">
@@ -492,7 +492,7 @@ export default function HomeView({
 
               <button
                 onClick={handleNextOnboard}
-                className="w-full mt-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full mt-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>{trans.continue}</span>
                 <ArrowRight className="h-4 w-4" />
@@ -507,7 +507,7 @@ export default function HomeView({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-8 max-w-md w-full relative z-10 p-8 glass-premium rounded-[2.5rem] shadow-rosegold"
+              className="space-y-8 max-w-md w-full relative z-10 p-8 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none!"
             >
               <div className="p-3 bg-rosegold/10 text-rosegold rounded-2xl w-12 h-12 mx-auto flex items-center justify-center border border-rosegold/15">
                 <User className="h-5 w-5" />
@@ -529,12 +529,12 @@ export default function HomeView({
                 onKeyDown={(e) => e.key === 'Enter' && handleNextOnboard()}
                 placeholder={trans.namePlaceholder}
                 autoFocus
-                className="w-full text-center bg-white/60 dark:bg-warmbrown-light/40 border border-rose-100/30 dark:border-rosegold/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-2xl p-4 text-sm font-sans text-slate-800 dark:text-slate-100 transition-all duration-300"
+                className="w-full text-center bg-white/60 dark:bg-transparent border border-rose-100/30 dark:border-0 dark:border-b dark:rounded-none dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 dark:focus:ring-0 focus:ring-rosegold rounded-2xl p-4 text-sm font-sans text-slate-800 dark:text-ink-text transition-all duration-300"
               />
 
               <button
                 onClick={handleNextOnboard}
-                className="w-full mt-2 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full mt-2 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>{trans.continue}</span>
                 <ArrowRight className="h-4 w-4" />
@@ -549,7 +549,7 @@ export default function HomeView({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-8 max-w-lg w-full relative z-10 p-8 sm:p-10 glass-premium rounded-[2.5rem] shadow-rosegold"
+              className="space-y-8 max-w-lg w-full relative z-10 p-8 sm:p-10 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none!"
             >
               <div className="p-3 bg-rosegold/10 text-rosegold rounded-2xl w-12 h-12 mx-auto flex items-center justify-center border border-rosegold/15">
                 <Sparkles className="h-5 w-5" />
@@ -592,8 +592,8 @@ export default function HomeView({
                     onClick={() => setSelectedStyle(item.code as any)}
                     className={`p-5 rounded-2xl border text-sm transition-all duration-300 text-left cursor-pointer flex flex-col gap-1.5 hover:scale-[1.02] active:scale-[0.98] h-full ${
                       selectedStyle === item.code
-                        ? 'bg-rosegold border-rosegold text-white shadow-rosegold'
-                        : 'bg-white/40 dark:bg-warmbrown-light/40 border-rose-100/30 dark:border-rosegold/10 text-slate-700 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/5'
+                        ? 'bg-rosegold border-rosegold text-white shadow-rosegold dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
+                        : 'bg-white/40 dark:bg-transparent border-rose-100/30 dark:border-ink-hairline text-slate-700 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/5'
                     }`}
                   >
                     <span className="font-bold font-sans tracking-wide text-xs uppercase">{item.title}</span>
@@ -606,7 +606,7 @@ export default function HomeView({
 
               <button
                 onClick={handleNextOnboard}
-                className="w-full mt-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full mt-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>{trans.continue}</span>
                 <ArrowRight className="h-4 w-4" />
@@ -621,7 +621,7 @@ export default function HomeView({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-8 max-w-md w-full relative z-10 p-8 glass-premium rounded-[2.5rem] shadow-rosegold"
+              className="space-y-8 max-w-md w-full relative z-10 p-8 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none!"
             >
               <div className="p-3 bg-rosegold/10 text-rosegold rounded-2xl w-12 h-12 mx-auto flex items-center justify-center border border-rosegold/15">
                 <Compass className="h-5 w-5" />
@@ -652,8 +652,8 @@ export default function HomeView({
                     onClick={() => setSelectedGrammar(item.code as 'feminine' | 'masculine')}
                     className={`flex items-center justify-between p-4.5 rounded-2xl border text-sm font-semibold transition-all duration-300 cursor-pointer hover:scale-[1.01] ${
                       selectedGrammar === item.code
-                        ? 'bg-rosegold border-rosegold text-white shadow-rosegold'
-                        : 'bg-white/40 dark:bg-warmbrown-light/40 border-rose-100/30 dark:border-rosegold/10 text-slate-700 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/5'
+                        ? 'bg-rosegold border-rosegold text-white shadow-rosegold dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
+                        : 'bg-white/40 dark:bg-transparent border-rose-100/30 dark:border-ink-hairline text-slate-700 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/5'
                     }`}
                   >
                     <span className="font-sans tracking-wide">{item.label}</span>
@@ -664,7 +664,7 @@ export default function HomeView({
 
               <button
                 onClick={handleNextOnboard}
-                className="w-full mt-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full mt-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>{lang === 'pt' ? 'Confirmar Configurações' : lang === 'es' ? 'Confirmar Ajustes' : 'Confirm Preferences'}</span>
                 <ArrowRight className="h-4 w-4" />
@@ -679,7 +679,7 @@ export default function HomeView({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-8 max-w-md flex flex-col items-center relative z-10 p-8 glass-premium rounded-[2.5rem] shadow-rosegold"
+              className="space-y-8 max-w-md flex flex-col items-center relative z-10 p-8 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none!"
             >
               <div className="w-16 h-16 bg-rosegold/10 border border-rosegold/15 text-rosegold rounded-[1.5rem] flex items-center justify-center">
                 <Award className="h-7 w-7" />
@@ -694,7 +694,7 @@ export default function HomeView({
               </div>
               <button
                 onClick={handleNextOnboard}
-                className="px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                className="px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 {trans.continue}
               </button>
@@ -708,7 +708,7 @@ export default function HomeView({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-8 max-w-md flex flex-col items-center relative z-10 p-8 glass-premium rounded-[2.5rem] shadow-rosegold"
+              className="space-y-8 max-w-md flex flex-col items-center relative z-10 p-8 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none!"
             >
               <div className="w-16 h-16 bg-rosegold/10 border border-rosegold/15 text-rosegold rounded-[1.5rem] flex items-center justify-center">
                 <BookOpen className="h-7 w-7" />
@@ -723,7 +723,7 @@ export default function HomeView({
               </div>
               <button
                 onClick={handleNextOnboard}
-                className="px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                className="px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 {lang === 'pt' ? 'Entrar no Dashboard' : lang === 'es' ? 'Entrar al Panel' : 'Enter Dashboard'}
               </button>
@@ -742,7 +742,7 @@ export default function HomeView({
     if (hour >= 6 && hour < 12) {
       return {
         id: 'morning',
-        bg: 'bg-radial from-[#FAF3E7] via-[#FAF8F5] to-[#FAF8F5] dark:from-[#2A1E1A] dark:via-[#1E1715] dark:to-[#1E1715]',
+        bg: 'bg-radial from-[#FAF3E7] via-[#FAF8F5] to-[#FAF8F5] dark:bg-ink! dark:bg-none!',
         glow1: 'bg-gradient-to-tr from-[#E6C594]/20 to-[#E8B4A0]/20',
         glow2: 'bg-gradient-to-br from-[#D4AF37]/10 to-transparent',
         greeting: {
@@ -754,7 +754,7 @@ export default function HomeView({
     } else if (hour >= 12 && hour < 18) {
       return {
         id: 'afternoon',
-        bg: 'bg-radial from-[#FAF8F5] via-[#FAF8F5] to-[#FAF8F5] dark:from-[#221C1A] dark:via-[#1E1715] dark:to-[#1E1715]',
+        bg: 'bg-radial from-[#FAF8F5] via-[#FAF8F5] to-[#FAF8F5] dark:bg-ink! dark:bg-none!',
         glow1: 'bg-gradient-to-tr from-rose-500/5 to-slate-500/5',
         glow2: 'bg-gradient-to-br from-[#E6C594]/5 to-transparent',
         greeting: {
@@ -766,7 +766,7 @@ export default function HomeView({
     } else {
       return {
         id: 'evening',
-        bg: 'bg-radial from-[#FAF5F2] via-[#FAF8F5] to-[#FAF8F5] dark:from-[#251916] dark:via-[#1E1715] dark:to-[#1E1715]',
+        bg: 'bg-radial from-[#FAF5F2] via-[#FAF8F5] to-[#FAF8F5] dark:bg-ink! dark:bg-none!',
         glow1: 'bg-gradient-to-tr from-[#DE8E7B]/15 to-[#FAF5F2]/0',
         glow2: 'bg-gradient-to-br from-[#D4AF37]/15 to-transparent',
         greeting: {
@@ -782,10 +782,13 @@ export default function HomeView({
   const bConfig = getButterflyConfig(currentDay.dayNumber);
 
   return (
-    <div className={`relative min-h-[82vh] flex flex-col justify-between p-8 sm:p-14 rounded-[2.5rem] overflow-hidden transition-all duration-1000 select-none ${lighting.bg} border border-rose-100/20 dark:border-rosegold/10 shadow-rosegold`}>
+    <div className={`relative min-h-[82vh] flex flex-col justify-between p-8 sm:p-14 rounded-[2.5rem] overflow-hidden transition-all duration-1000 select-none ${lighting.bg} border border-rose-100/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none`}>
       {/* 1. Emotional Ambient Lighting Blurs - Warm and atmospheric */}
-      <div className={`absolute top-10 left-10 h-[400px] w-[400px] blur-[100px] rounded-full animate-pulse pointer-events-none ${lighting.glow1}`} style={{ animationDuration: '9s' }} />
-      <div className={`absolute bottom-10 right-10 h-[400px] w-[400px] blur-[100px] rounded-full animate-pulse pointer-events-none ${lighting.glow2}`} style={{ animationDuration: '11s' }} />
+      {/* Dark mode drops the atmospheric blur glows — Opção B — Luxo
+          Contido is deliberately flat, no glass/gradient (see
+          BrandIdentityView → Paleta & Materiais). */}
+      <div className={`absolute top-10 left-10 h-[400px] w-[400px] blur-[100px] rounded-full animate-pulse pointer-events-none dark:hidden ${lighting.glow1}`} style={{ animationDuration: '9s' }} />
+      <div className={`absolute bottom-10 right-10 h-[400px] w-[400px] blur-[100px] rounded-full animate-pulse pointer-events-none dark:hidden ${lighting.glow2}`} style={{ animationDuration: '11s' }} />
 
       {/* Floating butterflies if meaningful stage */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
@@ -889,10 +892,10 @@ export default function HomeView({
             disabled={isLocked}
             className={`px-12 py-4.5 rounded-2xl text-xs font-sans font-bold uppercase tracking-[0.2em] shadow-lg transition-all duration-300 ${
               isLocked
-                ? 'bg-slate-100 dark:bg-warmbrown text-slate-400 dark:text-slate-500 border border-rose-100/10 dark:border-rosegold/5 cursor-not-allowed shadow-none'
+                ? 'bg-slate-100 dark:bg-transparent text-slate-400 dark:text-ink-text-muted border border-rose-100/10 dark:border-ink-hairline cursor-not-allowed shadow-none'
                 : isCompleted
-                ? 'bg-rose-50/60 dark:bg-rosegold/10 text-rosegold dark:text-rosegold-light hover:bg-rose-100/80 shadow-sm border border-rose-100/30 dark:border-rosegold/10 cursor-pointer'
-                : 'bg-rosegold hover:bg-[#A35D68] text-white shadow-rosegold hover:shadow-rosegold/40 cursor-pointer'
+                ? 'bg-rose-50/60 dark:bg-transparent text-rosegold dark:text-rosegold-light hover:bg-rose-100/80 dark:hover:bg-rosegold-light/10 shadow-sm dark:shadow-none border border-rose-100/30 dark:border-rosegold-light cursor-pointer'
+                : 'bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 shadow-rosegold hover:shadow-rosegold/40 dark:shadow-none cursor-pointer'
             }`}
           >
             {isLocked ? trans.lockedTitle : isCompleted ? trans.reviewMission : trans.goMission}

@@ -698,10 +698,12 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#1E1715] text-slate-900 dark:text-[#FAF8F5] font-sans flex flex-col selection:bg-rosegold/10 selection:text-rosegold transition-colors duration-350 butterfly-bg">
-      
-      {/* Brand Elegant Top Header bar */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#2C221E]/90 backdrop-blur-md border-b border-rose-100/30 dark:border-rosegold/10 shadow-rosegold">
+    <div className="min-h-screen bg-[#FAF8F5] dark:bg-ink text-slate-900 dark:text-ink-text font-sans flex flex-col selection:bg-rosegold/10 selection:text-rosegold transition-colors duration-350 butterfly-bg">
+
+      {/* Brand Elegant Top Header bar. Dark mode: flat ink surface, no
+          blur/glass (Opção B — Luxo Contido, see BrandIdentityView →
+          Paleta & Materiais). */}
+      <header className="sticky top-0 z-40 bg-white/90 dark:bg-ink-raised backdrop-blur-md dark:backdrop-blur-none border-b border-rose-100/30 dark:border-ink-hairline shadow-rosegold dark:shadow-none">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
           
           {/* Logo Brand Frame */}
@@ -715,8 +717,8 @@ function AppContent() {
               onClick={() => setActiveTab('home')}
               className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
                 activeTab === 'home' 
-                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25' 
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
+                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25 dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none' 
+                  : 'text-slate-600 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10'
               }`}
             >
               {labels.home}
@@ -726,8 +728,8 @@ function AppContent() {
               onClick={() => setActiveTab('mission')}
               className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
                 activeTab === 'mission' 
-                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25' 
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
+                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25 dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
+                  : 'text-slate-600 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10'
               }`}
             >
               {labels.mission}
@@ -737,8 +739,8 @@ function AppContent() {
               onClick={() => setActiveTab('journey')}
               className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
                 activeTab === 'journey' 
-                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25' 
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
+                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25 dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
+                  : 'text-slate-600 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10'
               }`}
             >
               {labels.journey}
@@ -748,8 +750,8 @@ function AppContent() {
               onClick={() => setActiveTab('community')}
               className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
                 activeTab === 'community' 
-                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25' 
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
+                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25 dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
+                  : 'text-slate-600 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10'
               }`}
             >
               {labels.community}
@@ -795,20 +797,20 @@ function AppContent() {
 
             {isAdminUnlocked && (
               <>
-                <span className="h-5 w-px bg-rose-100 dark:bg-rosegold/20 mx-2" />
+                <span className="h-5 w-px bg-rose-100 dark:bg-ink-hairline mx-2" />
                 <button
                   onClick={() => setActiveTab('cms')}
                   className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
                     activeTab === 'cms'
-                      ? 'bg-[#2C221E] dark:bg-rosegold text-white shadow-sm'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-rose-50/50 dark:hover:bg-rosegold/10'
+                      ? 'bg-[#2C221E] text-white shadow-sm dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
+                      : 'text-slate-600 dark:text-ink-text-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10'
                   }`}
                 >
                   {labels.cms}
                 </button>
                 <button
                   onClick={handleAdminLock}
-                  className="p-2 rounded-xl text-slate-400 hover:text-rosegold hover:bg-rose-50/30 dark:hover:bg-rosegold/10 transition"
+                  className="p-2 rounded-xl text-slate-400 dark:text-ink-text-muted hover:text-rosegold dark:hover:text-rosegold-light hover:bg-rose-50/30 dark:hover:bg-rosegold-light/10 transition"
                   title={lang === 'pt' ? 'Sair do modo admin' : lang === 'es' ? 'Salir del modo admin' : 'Exit admin mode'}
                 >
                   <Lock className="h-4 w-4" />
@@ -820,8 +822,8 @@ function AppContent() {
               onClick={() => setActiveTab('settings')}
               className={`p-2 rounded-xl transition ${
                 activeTab === 'settings'
-                  ? 'bg-rosegold/15 text-rosegold dark:bg-rosegold/20 dark:text-rosegold-light'
-                  : 'text-slate-500 dark:text-slate-400 hover:bg-rose-50/30 dark:hover:bg-rosegold/10 hover:text-slate-800'
+                  ? 'bg-rosegold/15 text-rosegold dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light'
+                  : 'text-slate-500 dark:text-ink-text-muted hover:bg-rose-50/30 dark:hover:bg-rosegold-light/10 hover:text-slate-800 dark:hover:text-ink-text'
               }`}
               title="Settings"
             >
@@ -832,7 +834,7 @@ function AppContent() {
             {!isAdminUnlocked && (
               <button
                 onClick={() => setShowAdminPrompt(true)}
-                className="p-2 rounded-xl text-slate-300 dark:text-slate-700 hover:text-slate-400 transition opacity-50 hover:opacity-100"
+                className="p-2 rounded-xl text-slate-300 dark:text-ink-hairline hover:text-slate-400 dark:hover:text-ink-text-muted transition opacity-50 hover:opacity-100"
                 title=" "
               >
                 <Lock className="h-3 w-3" />
@@ -844,7 +846,7 @@ function AppContent() {
           <div className="lg:hidden flex items-center gap-2">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl border border-rose-150/40 dark:border-rosegold/10 text-slate-700 dark:text-slate-300 bg-white dark:bg-warmbrown shadow-sm"
+              className="p-2.5 rounded-xl border border-rose-150/40 dark:border-ink-hairline text-slate-700 dark:text-ink-text bg-white dark:bg-ink-raised shadow-sm dark:shadow-none"
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -860,47 +862,47 @@ function AppContent() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white dark:bg-[#2C221E] border-b border-rose-100/40 dark:border-rosegold/10 overflow-hidden shadow-lg"
+            className="lg:hidden bg-white dark:bg-ink-raised border-b border-rose-100/40 dark:border-ink-hairline overflow-hidden shadow-lg dark:shadow-none"
           >
             <div className="px-4 py-4 space-y-2 flex flex-col font-sans text-sm">
               <button
                 onClick={() => { setActiveTab('home'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'home' ? 'bg-rosegold text-white font-bold' : 'text-slate-700 dark:text-slate-300'}`}
+                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'home' ? 'bg-rosegold text-white font-bold dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light' : 'text-slate-700 dark:text-ink-text-muted'}`}
               >
                 {labels.home}
               </button>
 
               <button
                 onClick={() => { setActiveTab('mission'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'mission' ? 'bg-rosegold text-white font-bold' : 'text-slate-700 dark:text-slate-300'}`}
+                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'mission' ? 'bg-rosegold text-white font-bold dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light' : 'text-slate-700 dark:text-ink-text-muted'}`}
               >
                 {labels.mission}
               </button>
-              
+
               <button
                 onClick={() => { setActiveTab('journey'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'journey' ? 'bg-rosegold text-white font-bold' : 'text-slate-700 dark:text-slate-300'}`}
+                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'journey' ? 'bg-rosegold text-white font-bold dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light' : 'text-slate-700 dark:text-ink-text-muted'}`}
               >
                 {labels.journey}
               </button>
 
               <button
                 onClick={() => { setActiveTab('community'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'community' ? 'bg-rosegold text-white font-bold' : 'text-slate-700 dark:text-slate-300'}`}
+                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'community' ? 'bg-rosegold text-white font-bold dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light' : 'text-slate-700 dark:text-ink-text-muted'}`}
               >
                 {labels.community}
               </button>
 
               <button
                 onClick={() => { setActiveTab('library'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'library' ? 'bg-rosegold text-white font-bold' : 'text-slate-700 dark:text-slate-300'}`}
+                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'library' ? 'bg-rosegold text-white font-bold dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light' : 'text-slate-700 dark:text-ink-text-muted'}`}
               >
                 {labels.library}
               </button>
 
               <button
                 onClick={() => { setActiveTab('profile'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'profile' ? 'bg-rosegold text-white font-bold' : 'text-slate-700 dark:text-slate-300'}`}
+                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'profile' ? 'bg-rosegold text-white font-bold dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light' : 'text-slate-700 dark:text-ink-text-muted'}`}
               >
                 {labels.profile}
               </button>
@@ -910,8 +912,8 @@ function AppContent() {
                 disabled={!isNextLevelUnlocked}
                 className={`w-full py-2.5 px-4 text-left rounded-xl flex items-center justify-between transition ${
                   isNextLevelUnlocked
-                    ? 'bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 font-bold'
-                    : 'text-slate-300 dark:text-slate-600 bg-slate-50 dark:bg-warmbrown-light/10 cursor-not-allowed'
+                    ? 'bg-amber-100 dark:bg-transparent dark:border dark:border-amber-400/60 text-amber-800 dark:text-amber-300 font-bold'
+                    : 'text-slate-300 dark:text-ink-hairline bg-slate-50 dark:bg-transparent cursor-not-allowed'
                 }`}
               >
                 <span>{labels.nextlevel}</span>
@@ -920,7 +922,7 @@ function AppContent() {
 
               <button
                 onClick={() => { setActiveTab('settings'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl ${activeTab === 'settings' ? 'bg-slate-900 text-white font-bold' : 'text-slate-700'}`}
+                className={`w-full py-2.5 px-4 text-left rounded-xl ${activeTab === 'settings' ? 'bg-slate-900 dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light text-white font-bold' : 'text-slate-700 dark:text-ink-text-muted'}`}
               >
                 {labels.settings}
               </button>
@@ -929,13 +931,13 @@ function AppContent() {
                 <>
                   <button
                     onClick={() => { setActiveTab('cms'); setMobileMenuOpen(false); }}
-                    className={`w-full py-2.5 px-4 text-left rounded-xl ${activeTab === 'cms' ? 'bg-slate-900 text-white font-bold' : 'text-slate-700'}`}
+                    className={`w-full py-2.5 px-4 text-left rounded-xl ${activeTab === 'cms' ? 'bg-slate-900 dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light text-white font-bold' : 'text-slate-700 dark:text-ink-text-muted'}`}
                   >
                     {labels.cms}
                   </button>
                   <button
                     onClick={() => { handleAdminLock(); setMobileMenuOpen(false); }}
-                    className="w-full py-2.5 px-4 text-left rounded-xl text-slate-400 text-xs"
+                    className="w-full py-2.5 px-4 text-left rounded-xl text-slate-400 dark:text-ink-text-muted text-xs"
                   >
                     {lang === 'pt' ? 'Sair do modo admin' : lang === 'es' ? 'Salir del modo admin' : 'Exit admin mode'}
                   </button>
@@ -945,7 +947,7 @@ function AppContent() {
               {!isAdminUnlocked && (
                 <button
                   onClick={() => setShowAdminPrompt(true)}
-                  className="w-full py-2 px-4 text-left text-[10px] text-slate-300 dark:text-slate-700"
+                  className="w-full py-2 px-4 text-left text-[10px] text-slate-300 dark:text-ink-hairline"
                 >
                   ·
                 </button>
@@ -963,11 +965,11 @@ function AppContent() {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="bg-[#FAF8F5] dark:bg-[#1E1715] max-w-sm w-full rounded-3xl p-8 border border-rosegold/20 shadow-rosegold space-y-4"
+              className="bg-[#FAF8F5] dark:bg-ink-raised max-w-sm w-full rounded-3xl p-8 border border-rosegold/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none space-y-4"
             >
               <div className="flex items-center gap-2">
-                <Lock className="h-4 w-4 text-rosegold" />
-                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 font-sans">
+                <Lock className="h-4 w-4 text-rosegold dark:text-rosegold-light" />
+                <h3 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
                   {lang === 'pt' ? 'Acesso Admin' : lang === 'es' ? 'Acceso Admin' : 'Admin Access'}
                 </h3>
               </div>
@@ -978,7 +980,7 @@ function AppContent() {
                 onChange={(e) => { setAdminPassInput(e.target.value); setAdminPassError(false); }}
                 onKeyDown={(e) => e.key === 'Enter' && handleAdminUnlock()}
                 placeholder={lang === 'pt' ? 'Senha' : lang === 'es' ? 'Contraseña' : 'Passphrase'}
-                className="w-full text-sm bg-white dark:bg-[#130E0D] border border-rose-100/20 dark:border-rosegold/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3 text-slate-700 dark:text-slate-200"
+                className="w-full text-sm bg-white dark:bg-transparent dark:border-0 dark:border-b dark:rounded-none border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 dark:focus:ring-0 focus:ring-rosegold rounded-xl p-3 text-slate-700 dark:text-ink-text"
               />
               {adminPassError && (
                 <p className="text-[11px] text-red-500 font-sans">
@@ -994,7 +996,7 @@ function AppContent() {
                 </button>
                 <button
                   onClick={handleAdminUnlock}
-                  className="px-5 py-2 bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider rounded-xl transition cursor-pointer"
+                  className="px-5 py-2 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 text-xs font-sans font-bold uppercase tracking-wider rounded-xl transition cursor-pointer"
                 >
                   {lang === 'pt' ? 'Entrar' : lang === 'es' ? 'Entrar' : 'Enter'}
                 </button>
