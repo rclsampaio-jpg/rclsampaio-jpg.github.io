@@ -202,11 +202,21 @@ function AppContent() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Daily Gate Splash Screen State
+  // Daily Gate Splash Screen State — was resetting on every page refresh
+  // (not just once per day as intended), which for an already-onboarded
+  // user reads as "the whole app restarting" every time they reload.
+  // Persist the dismissal per calendar day so refreshing later the same
+  // day doesn't show it again.
+  const dailyGateDismissKey = `renaser_daily_gate_dismissed_${getLocalDateISO()}`;
   const [hasDismissedDailyGate, setHasDismissedDailyGate] = useState(() => {
     const isOnboarded = localStorage.getItem('renaser_onboarded') === 'true';
-    return !isOnboarded; // If not onboarded yet, show onboarding first. Else, show daily gate (hasDismissed = false).
+    if (!isOnboarded) return true; // If not onboarded yet, show onboarding first, not this gate.
+    return localStorage.getItem(dailyGateDismissKey) === 'true';
   });
+  const dismissDailyGate = () => {
+    setHasDismissedDailyGate(true);
+    localStorage.setItem(dailyGateDismissKey, 'true');
+  };
 
   // Sync theme with document class list
   useEffect(() => {
@@ -699,7 +709,7 @@ function AppContent() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => setHasDismissedDailyGate(true)}
+              onClick={dismissDailyGate}
               className="w-full sm:w-auto px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white text-xs uppercase font-sans tracking-widest font-bold rounded-2xl shadow-lg shadow-rosegold/20 transition-all cursor-pointer"
             >
               {gateText.button}
