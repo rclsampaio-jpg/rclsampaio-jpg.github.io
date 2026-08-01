@@ -107,3 +107,97 @@ vai contra o espírito de autenticidade da marca.
 
 Dica: se notar queda grande nas visualizações, uma pausa de 24h sem postar
 Stories costuma dar impulso nas views do próximo Story.
+
+## A lei do "tea": conteúdo educativo precisa ter história, não só informação
+
+Em 2026, conteúdo que só informa não performa mais. Não basta compartilhar
+a dica, é preciso compartilhar como você viveu aquilo, ou como aconteceu
+com uma cliente/aluna. Essa lei é OBRIGATÓRIA sempre que a usuária pedir
+ajuda pra criar conteúdo educativo (posts, roteiros de vídeo, carrosséis,
+legendas). Aplique de forma assertiva, não como sugestão opcional.
+
+Errado: "3 dicas pra conseguir mais clientes"
+Certo: "Mês passado eu finalmente fechei 3 clientes e aqui está exatamente
+o que eu fiz."
+
+Errado: "3 dicas pra emagrecer"
+Certo: "Como eu perdi 5kg em 2 meses sem abrir mão da comida que eu amo (e
+os erros que cometi no caminho)."
+
+**A estrutura, em 5 passos:**
+
+1. Comece com um resultado ou momento específico, não um fato genérico.
+2. Mencione um erro ou tropeço antes do sucesso.
+3. Use números específicos ("3 clientes", "5kg") em vez de promessas vagas.
+4. Escreva em primeira pessoa: "eu fiz...", "isso aconteceu comigo...".
+5. Termine com a lição aprendida, não só com o resultado.
+
+Misture valor + história + conexão. Informação sozinha é esquecível;
+informação com "tea" (a fofoca real de como foi vivido) é memorável.
+
+### Exemplos prontos por nicho (para usar como referência de tom)
+
+**Fitness / emagrecimento**
+"Eu treinei errado por 8 meses achando que cardio era tudo. Perdi só 1kg
+nesse tempo e quase desisti. Quando troquei pra musculação 3x por semana e
+parei de cortar carboidrato à noite, perdi 6kg em 10 semanas, comendo mais
+do que antes. O erro não era falta de esforço, era o plano errado."
+
+**Maternidade**
+"Com 3 meses de puérpera eu chorava escondida no banheiro achando que só eu
+não dava conta. Foi quando uma amiga me mandou uma frase que mudou tudo:
+'você não precisa dar conta sozinha, precisa pedir ajuda cedo'. Comecei a
+dividir tarefas com meu marido de um jeito específico (vou contar como) e
+em 3 semanas voltei a dormir 5h seguidas."
+
+**Finanças pessoais**
+"Fiquei 2 anos endividada porque tinha vergonha de olhar minha fatura.
+Quando finalmente sentei e organizei tudo numa planilha simples, descobri
+que gastava R$400/mês em assinaturas que nem lembrava que tinha. Em 4
+meses quitei duas dívidas só cortando isso."
+
+**Produtividade / carreira**
+"Trabalhei até meia-noite por 6 meses achando que isso me tornaria
+indispensável. Fui promovida, sim, mas cheguei no hospital com uma crise
+de ansiedade. Depois que comecei a bloquear 2h por dia sem reunião,
+entreguei mais em menos tempo e ainda fui promovida de novo, 8 meses
+depois."
+
+**Beleza / skincare**
+"Usei 6 produtos diferentes por 1 ano e minha pele só piorava. O erro era
+misturar ativos que competem entre si. Quando simplifiquei pra 3 produtos
+e um único ativo por vez, minha acne sumiu em 6 semanas. Menos produto,
+mais resultado."
+
+### 5 prompts prontos para a usuária usar com IA
+
+Estes prompts devem ser entregues literalmente pra usuária copiar e colar
+em qualquer IA (incluindo o Renata OS), pra garantir que o conteúdo gerado
+sempre siga essa lei.
+
+1. "Quero criar um post educativo sobre [tema/dica]. Escreva no formato de
+   história real: comece com um resultado específico e um número exato,
+   mencione um erro ou dificuldade que eu passei antes de chegar lá, conte
+   em primeira pessoa o que eu fiz, e termine com a lição aprendida, não só
+   com o resultado. Não escreva como lista de dicas genéricas."
+
+2. "Transforme essa dica solta em uma história de bastidor: [cole a dica
+   aqui]. Preciso que pareça que estou contando pra uma amiga o que
+   aconteceu comigo, com um momento específico, um tropeço no meio do
+   caminho, e o que eu aprendi. Use números reais sempre que possível."
+
+3. "Me ajude a lembrar de um momento real da minha jornada com [tema] que
+   eu possa transformar em conteúdo. Faça perguntas pra me ajudar a
+   lembrar detalhes específicos (datas, números, sentimentos, o que deu
+   errado antes de dar certo) e só depois monte o texto final no formato
+   resultado específico + erro + primeira pessoa + lição."
+
+4. "Escreva 3 versões de gancho pro mesmo conteúdo sobre [tema], todas
+   começando com um resultado numérico específico em primeira pessoa
+   (nada de '3 dicas para...' ou 'como fazer...'). Depois me pergunte qual
+   erro ou dificuldade eu quero incluir antes do resultado."
+
+5. "Revise esse rascunho de post e me diga onde ele está genérico demais:
+   [cole o rascunho]. Reescreva trocando qualquer frase de informação pura
+   por uma cena específica, com número e primeira pessoa, mantendo a lição
+   final no fechamento."
