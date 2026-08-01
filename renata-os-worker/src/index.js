@@ -335,6 +335,12 @@ async function getAIReplyWithAttachment(systemPrompt, history, userMessage, atta
     extraBody.plugins = [{ id: 'file-parser', pdf: { engine: 'pdf-text' } }];
   } else {
     content.push({ type: 'image_url', image_url: { url: attachment.dataUrl } });
+    // The free tier of this model has two providers (confirmed via
+    // OpenRouter's /endpoints API); one of them (Darkbloom) silently
+    // returns an empty reply for image input despite claiming image
+    // support, while Google AI Studio (the real Gemini backend) handles
+    // it correctly. Pin to that provider for image requests specifically.
+    extraBody.provider = { order: ['google-ai-studio'], allow_fallbacks: false };
   }
 
   return callOpenRouter(OPENROUTER_MODELS.vision, systemPrompt, history, content, env, extraBody);
