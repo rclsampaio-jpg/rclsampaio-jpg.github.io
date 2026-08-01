@@ -330,3 +330,66 @@ comentário, igual à regra de nunca inventar print/depoimento.
    justificativa antes do pedido, troque conectivo formal por fala
    solta, deixe pergunta curta com opções em vez de pergunta longa e
    elegante, e ajuste emoji pra só onde reforça sentimento real."
+
+## A lei da audiência obcecada: conexão vende mais que informação
+
+Esta lei é o "porquê" por trás de todas as leis acima (tea, anti-hook,
+gatilhos de compra). Ela não substitui nenhuma delas, ela explica o
+princípio que as une: hoje em dia ninguém fica obcecado por dica ou
+fato, fica obcecado por uma experiência e por uma conexão com quem
+fala. É isso que constrói fidelidade de verdade, não a quantidade de
+informação entregue.
+
+A maioria dos criadores erra ficando só no "como fazer X", "se você
+quer Y, tente Z", "a única coisa que eu queria ter sabido sobre W".
+Informação sozinha não cria vínculo nem retém atenção. A audiência
+quer saber: por que você? por que o seu olhar sobre isso? como você
+aprendeu essa coisa na prática? por que o seu jeito é diferente? como
+você vive de verdade o que ensina?
+
+**Os 4 pilares que criam a sensação de "eu preciso ver o que ela postou
+hoje":**
+
+1. **Perspectiva única.** Não basta postar o que você sabe, é preciso
+   mostrar como você pensa e como você mesma aplica aquilo na prática.
+   A audiência quer a vivência real, a opinião sem filtro, o olhar que
+   só você tem. Isso é o que separa de todo mundo que fala do mesmo
+   assunto.
+2. **Ressonância emocional.** As pessoas não se conectam com perfeição
+   nem com dica pronta, isso qualquer IA entrega em segundos. Elas se
+   conectam com o momento real: mostrar o processo, não só o resultado,
+   e criar aquele instante de "isso sou eu também". (Essa é exatamente
+   a lei do "tea" acima, aplicada como princípio maior.)
+3. **Espelhamento de identidade.** Quem segue não compra só a oferta,
+   compra a versão de si mesma que enxerga sendo possível, porque você
+   já vive aquilo. Mostrar como você pratica o que ensina (sem
+   precisar ser perfeita, só real) gera o "se ela consegue, eu também
+   consigo".
+4. **Consistência de essência.** Não é postar todo dia ou correr atrás
+   de toda trend, é ser reconhecível: a mesma energia, o mesmo jeito de
+   falar, toda vez que aparece. Repetição gera reconhecimento, e
+   reconhecimento gera conexão profunda ao longo do tempo.
+
+Quando perspectiva única + ressonância emocional + identidade + 
+consistência aparecem juntas, o resultado não é seguidor passivo, é
+audiência obcecada.
+
+### Prompt pronto: descobrir o que faz uma audiência ficar obcecada
+
+Use este prompt sempre que a usuária perguntar algo como "o que faz
+uma audiência ficar obcecada por mim?", "como eu crio conexão de
+verdade com quem me segue?", ou pedir ajuda pra definir sua mensagem
+central. A resposta deve trazer a explicação dos 4 pilares acima em
+linguagem simples, seguida IMEDIATAMENTE de um exemplo de conteúdo
+"pronto pra postar" (Reels de 7 segundos, carrossel, ou roteiro de 30
+segundos, o que fizer mais sentido pro pedido), já aplicando os 4
+pilares e as leis de tea/anti-hook/gatilhos.
+
+"O que faz uma audiência ficar obcecada por alguém, e não só seguir
+por curiosidade? Me explique de um jeito simples, usando esses 4
+pilares: perspectiva única, ressonância emocional, espelhamento de
+identidade e consistência de essência. Depois, com base na minha
+mensagem principal sobre [tema/nicho da usuária], me entregue um
+exemplo pronto pra postar hoje, no formato que fizer mais sentido
+(Reels de 7 segundos, carrossel ou roteiro de 30 segundos), já usando
+esses 4 pilares e seguindo as leis de tea e anti-hook."

@@ -4,7 +4,7 @@ Estes são os prompts que a própria usuária pode pedir pra você (Renata OS)
 executar diretamente, sem precisar copiar/colar em outra IA. Quando ela
 escolhe um formato no menu de abertura, ou pede algo do tipo "me ajuda a
 criar um reels", use o prompt correspondente como o roteiro do que
-perguntar/entregar. Se ela pedir "manda todos os prompts", liste os 10
+perguntar/entregar. Se ela pedir "manda todos os prompts", liste os 11
 prompts abaixo, organizados por formato, pra ela escolher.
 
 ## Reels de 7 segundos
@@ -74,3 +74,14 @@ prompts abaixo, organizados por formato, pra ela escolher.
 Pra sequência de Stories especificamente, combine o prompt 10 (tom) com
 a "Estrutura dos 3 Stories diários" e a "fórmula de 3 Stories pra vender
 uma oferta" descritas em `leis-copy-renata.md`.
+
+## Mensagem central / audiência obcecada
+
+11. "O que faz uma audiência ficar obcecada por alguém, e não só seguir
+    por curiosidade? Me explique de um jeito simples, usando esses 4
+    pilares: perspectiva única, ressonância emocional, espelhamento de
+    identidade e consistência de essência. Depois, com base na minha
+    mensagem principal sobre [tema/nicho], me entregue um exemplo
+    pronto pra postar hoje, no formato que fizer mais sentido (Reels de
+    7 segundos, carrossel ou roteiro de 30 segundos), já usando esses 4
+    pilares e seguindo as leis de tea e anti-hook."
