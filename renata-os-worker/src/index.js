@@ -101,13 +101,20 @@ ${REFERENCIAS_CONTEXT}`
 const OPENROUTER_MODELS = {
   primary: 'google/gemma-4-26b-a4b-it:free',
   fallback: 'openai/gpt-oss-20b:free',
-  // Used only when the user attaches an image/PDF — the text-only free
-  // models above can't read attachments. Llama 3.2 Vision's free tier on
-  // OpenRouter supports image input, and the file-parser plugin handles
-  // PDF text extraction before the model ever sees the file. Qwen2-VL is
-  // the fallback if the primary vision model is overloaded/unavailable.
-  vision: 'meta-llama/llama-3.2-11b-vision-instruct:free',
-  visionFallback: 'qwen/qwen2.5-vl-32b-instruct:free'
+  // Used when the user attaches an image/PDF. Verified directly against
+  // OpenRouter's /models/{id}/endpoints API (2026-08-01): the dedicated
+  // free vision models (Llama 3.2 Vision, Qwen2.5-VL, Gemma 3, Mistral
+  // Small 3.1, Qwen3-VL) all currently have an EMPTY endpoints array on
+  // OpenRouter, meaning no provider actually serves them despite the
+  // model page existing — that's the root cause of the 404 "No endpoints
+  // found" errors. The primary text model above, by contrast, genuinely
+  // supports image input (architecture.input_modalities includes
+  // "image") and has two live, healthy free endpoints (Darkbloom, Google
+  // AI Studio) confirmed via the same endpoints API, so it doubles as
+  // the vision model too. PDF input doesn't need vision capability at
+  // all — the file-parser plugin extracts PDF text before it reaches
+  // the model.
+  vision: 'google/gemma-4-26b-a4b-it:free'
 };
 
 // Attachments are processed in-memory for a single reply and never
@@ -330,17 +337,7 @@ async function getAIReplyWithAttachment(systemPrompt, history, userMessage, atta
     content.push({ type: 'image_url', image_url: { url: attachment.dataUrl } });
   }
 
-  try {
-    return await callOpenRouter(OPENROUTER_MODELS.vision, systemPrompt, history, content, env, extraBody);
-  } catch (primaryError) {
-    try {
-      return await callOpenRouter(OPENROUTER_MODELS.visionFallback, systemPrompt, history, content, env, extraBody);
-    } catch (fallbackError) {
-      throw new Error(
-        `Both vision models failed. Primary: ${primaryError.message}. Fallback: ${fallbackError.message}`
-      );
-    }
-  }
+  return callOpenRouter(OPENROUTER_MODELS.vision, systemPrompt, history, content, env, extraBody);
 }
 
 export default {
