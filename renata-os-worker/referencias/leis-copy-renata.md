@@ -241,7 +241,7 @@ O que trocar:
 
 Aplique esse filtro em TODO texto final que a plataforma gerar pra
 usuária mandar pra terceiros, mesmo quando o pedido original for só
-"escreve uma mensagem pra..." — a resposta já deve sair passada por esse
+"escreve uma mensagem pra...": a resposta já deve sair passada por esse
 filtro, não precisa a usuária pedir "tira cara de IA" à parte.
 
 ## Roteiro de vídeo de 7 segundos e Carrossel de venda
@@ -255,7 +255,7 @@ muda aqui é o molde específico pra vídeo curtíssimo (7s) e carrossel.
 Cada opção de texto na tela é um anti-hook (ver seção acima): soa como
 um flagra de pensamento, não como gancho de venda. "Gravo, me acho
 ridícula, apago. Repito amanhã." não anuncia produto, é a cena exata do
-Gatilho 2 (rótulo trocado por cena concreta) — em vez de dizer
+Gatilho 2 (rótulo trocado por cena concreta): em vez de dizer
 "trava na câmera", mostra a trava acontecendo. O hook físico (tremidinho
 de câmera, prendendo o cabelo) reforça a sensação de "flagrado
 pensando", não de vídeo ensaiado. A legenda longa embaixo segue a lei do
@@ -270,7 +270,7 @@ sentir exposta).
 
 Segue exatamente a fórmula dos 3 Stories de venda, só que em slides:
 a capa já entrega o resultado que virou vídeos gravados de verdade
-("30 vídeos em 30 dias, eu que travava só de ligar a câmera") — isso é
+("30 vídeos em 30 dias, eu que travava só de ligar a câmera"), isso é
 o Gatilho 4 (emoção primeiro, a lista de entregáveis vem depois, entre
 parênteses/slides). Cada slide seguinte é um diferencial contado como
 cena, não como feature ("um áudio meu curtinho, como se eu tivesse do
@@ -438,6 +438,26 @@ seca e ativa (ex: "não me faltava técnica, eu tinha medo de ser vista e
 julgada"), valide isso especificamente, dizendo por que a frase curta
 funciona melhor (mais ação, menos explicação), reforçando que o
 instinto dela de cortar enfeite é o caminho certo.
+
+**6. Troque verbo fraco por verbo com mais força, quando o resto da frase
+sustentar.** Ex: "o movimento cura o medo" vira "o movimento destrói o
+medo": "cura" é passivo/gradual, "destrói" é ativo e definitivo, e
+combina mais com o tom de virada da marca.
+
+**7. Suavize certeza absoluta com "pode" quando a promessa for grande
+demais pra garantir igual pra todo mundo.** Ex: "é o único que te
+destrava de verdade" vira "é o único que pode te destravar de verdade",
+mantendo a força da frase sem prometer resultado garantido pra qualquer
+leitora.
+
+**8. Puxe a motivação do vaidoso pro propósito.** Se o rascunho original
+(seu ou gerado por IA) apoia a virada da história em "ser vista",
+"aparecer", "ter atenção", questione se o motivo real dela é mais fundo,
+tipo ajudar/impactar quem lê, não só ser notada. Ex: "meu desejo de ser
+vista é maior que meu medo de errar" vira "meu desejo de impactar a vida
+das pessoas com a minha história é maior do que o meu medo de errar".
+Isso é o mesmo instinto do ponto 2 (achar o eixo emocional real), mas
+aplicado especificamente à frase de motivação/virada do texto.
 
 Aplique esse filtro em primeiro lugar (antes de gerar qualquer versão
 nova), a não ser que a usuária peça explicitamente uma versão
