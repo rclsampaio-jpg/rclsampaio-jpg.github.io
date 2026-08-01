@@ -36,6 +36,8 @@ import RenaSerLogo from './components/RenaSerLogo';
 import RenataOSChat from './components/RenataOSChat';
 import DayCompletionOverlay from './components/DayCompletionOverlay';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { SiteContentProvider } from './lib/siteContent';
+import EditModeToggle from './components/editable/EditModeToggle';
 import LoginView from './components/auth/LoginView';
 import SignupView from './components/auth/SignupView';
 import ResetPasswordView from './components/auth/ResetPasswordView';
@@ -58,7 +60,10 @@ type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'set
 export default function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <SiteContentProvider>
+        <AppContent />
+        <EditModeToggle />
+      </SiteContentProvider>
     </AuthProvider>
   );
 }

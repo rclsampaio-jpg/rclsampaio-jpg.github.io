@@ -15,6 +15,8 @@ import { loadLibraryAssets, saveLibraryAssets, loadSupportConfig } from '../data
 import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 import { forceDownload } from '../utils/download';
 import { logEngagementEvent } from '../utils/engagement';
+import EditableText from './editable/EditableText';
+import EditableImage from './editable/EditableImage';
 
 const MEETING_VIDEOS: { number: number; url: string }[] = [
   { number: 1, url: 'https://youtu.be/5-L65XQ8ZME' },
@@ -829,9 +831,12 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
           "Vídeos" tab content, shown under "Todos" and "Vídeos". */}
       {(selectedCategory === 'all' || selectedCategory === 'videos') && (
         <div className="max-w-xl">
-          <h3 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-ink-muted mb-3">
-            {trans.meetingsTitle}
-          </h3>
+          <EditableText
+            contentKey="library.meetingsTitle"
+            fallback={trans.meetingsTitle}
+            as="h3"
+            className="text-xs font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-ink-muted mb-3"
+          />
           <div className="space-y-2">
             {MEETING_VIDEOS.map((meeting) => (
               <a
@@ -842,9 +847,12 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                 onClick={() => logEngagementEvent('library_video', `encontro_${meeting.number}`)}
                 className="block px-4 py-3 bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-ink-hairline rounded-2xl hover:border-rosegold/40 dark:hover:border-rosegold-light transition group"
               >
-                <p className="text-sm font-sans font-medium text-slate-700 dark:text-ink-text group-hover:text-rosegold dark:group-hover:text-rosegold-light">
-                  Encontro {meeting.number}
-                </p>
+                <EditableText
+                  contentKey={`library.meeting.${meeting.number}.label`}
+                  fallback={`Encontro ${meeting.number}`}
+                  as="p"
+                  className="text-sm font-sans font-medium text-slate-700 dark:text-ink-text group-hover:text-rosegold dark:group-hover:text-rosegold-light"
+                />
                 <p className="text-xs text-slate-400 dark:text-ink-muted mt-0.5 truncate">
                   {meeting.url}
                 </p>
@@ -925,11 +933,11 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
 
                   {/* Thumbnail Cover Area */}
                   <div className="relative aspect-video w-full overflow-hidden bg-warmbrown">
-                    <img
-                      src={asset.coverImage || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80'}
+                    <EditableImage
+                      contentKey={`library.asset.${asset.id}.coverImage`}
+                      fallback={asset.coverImage || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80'}
                       alt={asset.title[lang] || asset.title['pt']}
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                      referrerPolicy="no-referrer"
                     />
 
                     {/* Gradient Overlay */}
@@ -973,12 +981,18 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                   {/* Body Info */}
                   <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                     <div className="space-y-1.5">
-                      <h4 className="text-sm font-sans font-semibold text-slate-900 dark:text-white leading-snug group-hover:text-rosegold transition">
-                        {asset.title[lang] || asset.title['pt']}
-                      </h4>
-                      <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed line-clamp-2">
-                        {asset.description[lang] || asset.description['pt']}
-                      </p>
+                      <EditableText
+                        contentKey={`library.asset.${asset.id}.title`}
+                        fallback={asset.title[lang] || asset.title['pt']}
+                        as="h4"
+                        className="text-sm font-sans font-semibold text-slate-900 dark:text-white leading-snug group-hover:text-rosegold transition"
+                      />
+                      <EditableText
+                        contentKey={`library.asset.${asset.id}.description`}
+                        fallback={asset.description[lang] || asset.description['pt']}
+                        as="p"
+                        className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed line-clamp-2"
+                      />
                     </div>
 
                     {/* Bottom Status Row */}
