@@ -337,25 +337,37 @@ async function getAIReply(systemPrompt, history, userMessage, env) {
   }
 }
 
-// Same idea as getAIReply, but for a message that includes an attached
-// image or PDF: builds a multimodal content array and always routes to the
-// vision-capable model, since the text-only free models can't read either.
-async function getAIReplyWithAttachment(systemPrompt, history, userMessage, attachment, env) {
+// Same idea as getAIReply, but for a message that includes one or more
+// attached images/PDFs: builds a multimodal content array and always
+// routes to the vision-capable model, since the text-only free models
+// can't read either.
+async function getAIReplyWithAttachments(systemPrompt, history, userMessage, attachmentList, env) {
   const content = [];
   if (userMessage) content.push({ type: 'text', text: userMessage });
 
   const extraBody = {};
-  if (attachment.mime === 'application/pdf') {
-    content.push({
-      type: 'file',
-      file: { filename: attachment.name || 'documento.pdf', file_data: attachment.dataUrl }
-    });
+  let hasPdf = false;
+  let hasImage = false;
+  for (const attachment of attachmentList) {
+    if (attachment.mime === 'application/pdf') {
+      hasPdf = true;
+      content.push({
+        type: 'file',
+        file: { filename: attachment.name || 'documento.pdf', file_data: attachment.dataUrl }
+      });
+    } else {
+      hasImage = true;
+      content.push({ type: 'image_url', image_url: { url: attachment.dataUrl } });
+    }
+  }
+
+  if (hasPdf) {
     // Free, text-extraction-only parsing engine (no per-page OCR cost) —
     // enough for real text PDFs, which covers what a course/creator app
     // realistically gets sent.
     extraBody.plugins = [{ id: 'file-parser', pdf: { engine: 'pdf-text' } }];
-  } else {
-    content.push({ type: 'image_url', image_url: { url: attachment.dataUrl } });
+  }
+  if (hasImage) {
     // The free tier of this model has two providers (confirmed via
     // OpenRouter's /endpoints API); one of them (Darkbloom) silently
     // returns an empty reply for image input despite claiming image
@@ -400,15 +412,28 @@ export default {
       return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers });
     }
 
-    const { message, lang, context, attachment } = body || {};
-    if ((!message || typeof message !== 'string') && !attachment) {
+    const { message, lang, context, attachment, attachments: attachmentsInput } = body || {};
+    // Accept the new `attachments` array, but still fall back to the old
+    // single `attachment` field so an unrefreshed frontend build keeps
+    // working during rollout.
+    const rawAttachments = Array.isArray(attachmentsInput)
+      ? attachmentsInput
+      : attachment
+        ? [attachment]
+        : [];
+    if ((!message || typeof message !== 'string') && rawAttachments.length === 0) {
       return new Response(JSON.stringify({ error: 'Missing message' }), { status: 400, headers });
     }
 
     const langKeyEarly = ['pt', 'en', 'es'].includes(lang) ? lang : 'pt';
-    let validAttachment = null;
-    if (attachment) {
-      const { mime, dataUrl, name } = attachment;
+    const MAX_ATTACHMENTS = 4;
+    if (rawAttachments.length > MAX_ATTACHMENTS) {
+      const err = { pt: 'Só dá pra enviar até 4 arquivos de uma vez.', en: 'You can only send up to 4 files at once.', es: 'Solo puedes enviar hasta 4 archivos a la vez.' }[langKeyEarly];
+      return new Response(JSON.stringify({ reply: err }), { status: 200, headers });
+    }
+    const validAttachments = [];
+    for (const att of rawAttachments) {
+      const { mime, dataUrl, name } = att || {};
       const isImage = typeof mime === 'string' && mime.startsWith('image/');
       const isPdf = mime === 'application/pdf';
       const tooBig = typeof dataUrl === 'string' && dataUrl.length > MAX_ATTACHMENT_BYTES;
@@ -420,7 +445,7 @@ export default {
         const err = { pt: 'Esse arquivo é grande demais. Tenta um arquivo menor.', en: 'That file is too large. Try a smaller one.', es: 'Ese archivo es demasiado grande. Intenta con uno más pequeño.' }[langKeyEarly];
         return new Response(JSON.stringify({ reply: err }), { status: 200, headers });
       }
-      validAttachment = { mime, dataUrl, name: typeof name === 'string' ? name : undefined };
+      validAttachments.push({ mime, dataUrl, name: typeof name === 'string' ? name : undefined });
     }
 
     // Uses the request's own RLS-scoped client (authenticated as this
@@ -456,8 +481,8 @@ export default {
 
     let reply;
     try {
-      reply = validAttachment
-        ? await getAIReplyWithAttachment(systemPrompt, history, messageText, validAttachment, env)
+      reply = validAttachments.length > 0
+        ? await getAIReplyWithAttachments(systemPrompt, history, messageText, validAttachments, env)
         : await getAIReply(systemPrompt, history, messageText, env);
     } catch (err) {
       // Mensagem amigável, sem vazar o erro técnico (que vai só nos logs
@@ -475,8 +500,8 @@ export default {
     // see MAX_ATTACHMENT_BYTES comment above) — history just remembers that
     // one was sent, so future replies in the same conversation still make
     // sense without needing the image/PDF bytes again.
-    const historyText = messageText || (validAttachment
-      ? { pt: '[enviou um arquivo para análise]', en: '[sent a file for analysis]', es: '[envió un archivo para análisis]' }[langKey]
+    const historyText = messageText || (validAttachments.length > 0
+      ? { pt: '[enviou arquivo(s) para análise]', en: '[sent file(s) for analysis]', es: '[envió archivo(s) para análisis]' }[langKey]
       : '');
     await saveExchange(supabase, user.id, historyText, reply);
 
