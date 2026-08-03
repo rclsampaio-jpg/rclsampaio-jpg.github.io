@@ -143,6 +143,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
   const [attachmentError, setAttachmentError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   // First-visit hint bubble so the floating button reads as "AI chat" at a
   // glance instead of a mystery icon — shown once, dismissed on first open
   // or automatically after a few seconds, remembered via localStorage so it
@@ -212,6 +213,9 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
     setInput('');
     setAttachment(null);
     setAttachmentError(null);
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
 
     if (!RENATA_OS_ENDPOINT) {
       setMessages((prev) => [...prev, { role: 'assistant', text: t.notConfigured }]);
@@ -427,7 +431,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                     {attachmentError && <span className="text-red-500">{attachmentError}</span>}
                   </div>
                 )}
-                <div className="flex items-center gap-2">
+                <div className="flex items-end gap-2">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -443,13 +447,26 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                   >
                     <Plus className="h-4 w-4" />
                   </button>
-                  <input
-                    type="text"
+                  <textarea
+                    ref={textareaRef}
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                    onChange={(e) => {
+                      setInput(e.target.value);
+                      const el = textareaRef.current;
+                      if (el) {
+                        el.style.height = 'auto';
+                        el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSend();
+                      }
+                    }}
                     placeholder={t.placeholder}
-                    className="flex-1 text-sm bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 focus:ring-rosegold dark:focus:ring-rosegold-light rounded-xl px-4 py-3 text-slate-700 dark:text-ink-text placeholder:dark:text-ink-muted transition-all"
+                    rows={1}
+                    className="flex-1 text-sm bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 focus:ring-rosegold dark:focus:ring-rosegold-light rounded-xl px-4 py-3 text-slate-700 dark:text-ink-text placeholder:dark:text-ink-muted transition-[border-color,box-shadow] resize-none max-h-40 overflow-y-auto"
                   />
                   <button
                     onClick={handleSend}
