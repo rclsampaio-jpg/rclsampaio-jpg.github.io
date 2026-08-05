@@ -430,9 +430,10 @@
 
     <!-- STEP 13: submit -->
     <div class="step" data-step>
-      <p class="question">Pronto. É isso que eu precisava saber sobre você.</p>
-      <div class="nav"><button type="submit" class="btn-primario">Quero ver a oferta &rarr;</button></div>
+      <p class="question" id="submitQuestion">Pronto. É isso que eu precisava saber sobre você.</p>
+      <div class="nav"><button type="submit" class="btn-primario" id="submitBtn">Quero ver a oferta &rarr;</button></div>
       <button type="button" class="btn-voltar back-btn" style="display:block; margin:8px auto 0">voltar</button>
+      <p class="error-msg" id="submitError">Deu ruim no envio, tenta de novo? &#128536;</p>
     </div>
 
   </form>
@@ -540,6 +541,32 @@
       if (current === steps.length - 1) return;
       setTimeout(goNext, 60);
     }
+  });
+
+  var quizForm = document.getElementById('quizForm');
+  quizForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var submitBtn = document.getElementById('submitBtn');
+    var submitError = document.getElementById('submitError');
+    submitError.classList.remove('show');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+
+    fetch(quizForm.action, {
+      method: 'POST',
+      body: new FormData(quizForm),
+      headers: { 'Accept': 'application/json' }
+    }).then(function (response) {
+      if (response.ok) {
+        window.location.href = 'https://renaser.renatacaroline.com.br/bemvinda/';
+      } else {
+        throw new Error('submit failed');
+      }
+    }).catch(function () {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Quero ver a oferta →';
+      submitError.classList.add('show');
+    });
   });
 
   showStep(0);
