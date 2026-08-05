@@ -306,7 +306,7 @@
     <div class="step" data-step>
       <p class="qnum">02</p>
       <p class="question">Qual o seu melhor email? <span class="req">*</span></p>
-      <div class="field"><input type="email" name="Email" required autocomplete="email" enterkeyhint="next"></div>
+      <div class="field"><input type="email" name="Email de contato" id="f_email" required autocomplete="email" enterkeyhint="next"></div>
       <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
       <button type="button" class="btn-voltar back-btn" style="display:block; margin:8px auto 0">voltar</button>
       <span class="enter-hint">pressione Enter &crarr;</span>
@@ -512,7 +512,7 @@
   }
 
   document.querySelectorAll('.next-btn').forEach(function (btn) {
-    btn.addEventListener('click', goNext);
+    btn.addEventListener('click', function () { setTimeout(goNext, 60); });
   });
   document.querySelectorAll('.back-btn').forEach(function (btn) {
     btn.addEventListener('click', goBack);
@@ -532,13 +532,13 @@
     var tag = document.activeElement.tagName;
     if (tag === 'TEXTAREA' && !e.shiftKey) {
       e.preventDefault();
-      goNext();
+      setTimeout(goNext, 60);
       return;
     }
     if (tag === 'INPUT' && document.activeElement.type !== 'radio') {
       e.preventDefault();
       if (current === steps.length - 1) return;
-      goNext();
+      setTimeout(goNext, 60);
     }
   });
 
