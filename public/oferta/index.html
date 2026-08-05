@@ -229,9 +229,9 @@
 
   .prova-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-    max-width: 520px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 640px;
     margin: 32px auto 0;
   }
   .prova-grid figure {
@@ -253,6 +253,9 @@
   }
   @media (max-width: 480px) {
     .prova-grid { grid-template-columns: 1fr; max-width: 280px; }
+  }
+  @media (min-width: 481px) and (max-width: 640px) {
+    .prova-grid { grid-template-columns: repeat(2, 1fr); max-width: 420px; }
   }
 
   /* ---------- TURMA / DATA ---------- */
@@ -486,6 +489,10 @@
       <figure>
         <img src="prova-gilcilene.jpg" alt="Print de comentário recebido por Gilcilene, aluna da Turma 1, dizendo que o post dela a impactou">
         <figcaption>Gilcilene, Turma 1: o comentário que ela recebeu depois de postar com autenticidade.</figcaption>
+      </figure>
+      <figure>
+        <img src="prova-pamela.jpg" alt="Print de conversa com Pâmela, aluna da Turma 1, sobre contar uma experiência real pra gerar conexão">
+        <figcaption>Pâmela, Turma 1: se empolgou gravando e contou uma experiência real pra gerar conexão.</figcaption>
       </figure>
     </div>
   </section>
