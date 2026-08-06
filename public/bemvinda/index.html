@@ -239,6 +239,61 @@
   .checklist b { font-weight: 600; }
   .checklist span.muted { color: var(--text-muted); }
 
+  /* ---------- VSL ---------- */
+  .vsl-section { margin-bottom: 40px; }
+  .vsl-wrap {
+    max-width: 360px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(58, 42, 36, 0.18);
+  }
+  .vsl-wrap video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    background: #000;
+  }
+  .vsl-placeholder {
+    aspect-ratio: 9 / 16;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: linear-gradient(165deg, var(--accent) 0%, var(--accent-soft) 100%);
+    color: #fff8f5;
+  }
+  .vsl-placeholder .vsl-play {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  .vsl-placeholder p {
+    font-family: -apple-system, "Segoe UI", "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  #investPrices.locked { filter: blur(7px); pointer-events: none; user-select: none; }
+  .lock-hint {
+    display: none;
+    text-align: center;
+    margin: 14px 0 0;
+    font-family: -apple-system, "Segoe UI", "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size: 12.5px;
+    color: rgba(255, 248, 245, 0.85);
+  }
+  .lock-hint.show { display: block; }
+  #ctaBtn.locked { opacity: 0.45; pointer-events: none; }
+
   /* ---------- PROVA SOCIAL (VÍDEO) ---------- */
   .prova-video {
     display: block;
@@ -468,9 +523,20 @@
     <p class="eyebrow" id="eyebrowMonth">Turma de Agosto</p>
     <h1>Seu próximo nível<br>é público.</h1>
     <p class="subhead">&hellip;e sozinha, você só vai até onde sua identidade atual já te levou.</p>
-    <p class="sub">Você já fez o trabalho interno. Já sabe o que precisa saber, já viveu o processo. Só falta uma coisa: mostrar isso pro mundo com segurança, sem o sistema nervoso disparar toda vez que você aparece.</p>
-    <p class="sub">Na turma de julho, uma aluna quase saiu do grupo no primeiro dia, achando que era sobre postar mais. Uma semana depois, já sem nenhuma trava de aparecer e postando com constância, começou a impactar a vida de pessoas desconhecidas. Uma delas escreveu: "você botou pra fora o que estava preso em mim." A turma de agosto já está se formando, e vai ser um enorme prazer ter você nela com a gente &#10024;</p>
+    <p class="sub">Assiste os próximos minutos, eu vou te mostrar exatamente por que você trava, e o que realmente destrava isso.</p>
   </div>
+
+  <section class="vsl-section">
+    <div class="vsl-wrap" id="vslWrap">
+      <!-- Quando o vídeo estiver gravado: trocar por
+           <video id="vslVideo" src="vsl.mp4" poster="vsl-poster.jpg" controls playsinline preload="metadata"></video>
+           e remover o .vsl-placeholder abaixo. -->
+      <div class="vsl-placeholder">
+        <span class="vsl-play">&#9658;</span>
+        <p>Vídeo em produção</p>
+      </div>
+    </div>
+  </section>
 
   <div class="rule"></div>
 
@@ -583,7 +649,7 @@
     <div class="invest">
       <h2>Escolha como fazer o seu início</h2>
       <p class="sub">Sem taxa oculta. É o custo de 3 meses de acompanhamento real, não de uma sessão avulsa.</p>
-      <div class="options">
+      <div class="options" id="investPrices">
         <div class="option destaque">
           <p class="k">Parcelado</p>
           <p class="v">12x <span class="cents">R$</span>103,11</p>
@@ -593,6 +659,7 @@
           <p class="v">R$997</p>
         </div>
       </div>
+      <p class="lock-hint" id="priceLockHint">Assista o vídeo acima até o fim pra destravar os valores</p>
     </div>
   </section>
 
@@ -645,6 +712,34 @@
       validade.classList.add('encerrada');
     }
   }
+})();
+
+(function () {
+  var vslVideo = document.getElementById('vslVideo');
+  if (!vslVideo) return; // vídeo ainda não gravado, gate desativado, tudo visível normalmente
+
+  var UNLOCK_AT = 0.7; // libera preço e CTA aos 70% do vídeo assistido
+  var prices = document.getElementById('investPrices');
+  var hint = document.getElementById('priceLockHint');
+  var cta = document.getElementById('ctaBtn');
+
+  prices.classList.add('locked');
+  hint.classList.add('show');
+  cta.classList.add('locked');
+
+  function unlock() {
+    prices.classList.remove('locked');
+    hint.classList.remove('show');
+    cta.classList.remove('locked');
+    vslVideo.removeEventListener('timeupdate', onTimeUpdate);
+  }
+
+  function onTimeUpdate() {
+    if (vslVideo.duration && vslVideo.currentTime / vslVideo.duration >= UNLOCK_AT) unlock();
+  }
+
+  vslVideo.addEventListener('timeupdate', onTimeUpdate);
+  vslVideo.addEventListener('ended', unlock);
 })();
 </script>
 
