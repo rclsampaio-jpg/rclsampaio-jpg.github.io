@@ -171,6 +171,7 @@
     border: 1px solid var(--hairline);
     border-radius: 14px;
     overflow: hidden;
+    transform: translateZ(0);
   }
   .formato .cell {
     background: var(--bg-panel);
@@ -532,7 +533,7 @@
     <p class="vsl-lockmsg" id="vslLockMsg">O restante da página libera enquanto você assiste.</p>
   </section>
 
-  <div class="rule gated" id="gatedContent">
+  <div class="gated" id="gatedContent">
 
   <section>
     <p class="label">O formato</p>
@@ -725,6 +726,7 @@
     if (unlocked) return;
     unlocked = true;
     gated.classList.remove('gated');
+    void gated.offsetHeight; // força o Safari a repintar o layout, evita sobreposição visual no mobile
     lockMsg.classList.remove('show');
   }
 
