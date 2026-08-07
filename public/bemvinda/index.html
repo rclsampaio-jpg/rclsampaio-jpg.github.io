@@ -529,7 +529,7 @@
     <div class="vsl-wrap" id="vslWrap">
       <video id="vslVideo" src="vsl.mp4" poster="vsl-poster.jpg" controls playsinline preload="metadata" controlsList="nofullscreen noremoteplayback noplaybackrate" disablepictureinpicture></video>
     </div>
-    <p class="vsl-lockmsg" id="vslLockMsg">O restante da página libera quando o vídeo terminar.</p>
+    <p class="vsl-lockmsg" id="vslLockMsg">O restante da página libera enquanto você assiste.</p>
   </section>
 
   <div class="rule gated" id="gatedContent">
@@ -716,8 +716,17 @@
   var gated = document.getElementById('gatedContent');
   var lockMsg = document.getElementById('vslLockMsg');
   var maxWatched = 0;
+  var UNLOCK_AT = 0.7; // libera a página aos 70% do vídeo assistido
+  var unlocked = false;
 
   lockMsg.classList.add('show');
+
+  function unlock() {
+    if (unlocked) return;
+    unlocked = true;
+    gated.classList.remove('gated');
+    lockMsg.classList.remove('show');
+  }
 
   // trava de avanço: não deixa pular pra frente do ponto máximo já assistido
   vslVideo.addEventListener('timeupdate', function () {
@@ -726,6 +735,7 @@
     } else {
       maxWatched = Math.max(maxWatched, vslVideo.currentTime);
     }
+    if (vslVideo.duration && vslVideo.currentTime / vslVideo.duration >= UNLOCK_AT) unlock();
   });
   vslVideo.addEventListener('seeking', function () {
     if (vslVideo.currentTime > maxWatched + 0.5) {
@@ -733,10 +743,7 @@
     }
   });
 
-  vslVideo.addEventListener('ended', function () {
-    gated.classList.remove('gated');
-    lockMsg.classList.remove('show');
-  });
+  vslVideo.addEventListener('ended', unlock);
 })();
 </script>
 
