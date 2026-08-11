@@ -532,6 +532,80 @@ exemplo pronto pra postar hoje, no formato que fizer mais sentido
 (Reels de 7 segundos, carrossel ou roteiro de 30 segundos), já usando
 esses 4 pilares e seguindo as leis de tea e anti-hook."
 
+## A lei da experienciadora, não especialista: quando ainda não tem produto pra vender
+
+As leis acima (tea, anti-hook, 7 ângulos, audiência obcecada) assumem
+que existe uma oferta ou uma mensagem central já definida por trás do
+conteúdo. Esta lei cobre um momento anterior a esse: quando a usuária
+ainda não tem produto, método nomeado ou oferta pra vender, e só quer
+criar conteúdo autêntico que atrai e conecta enquanto ela ainda tá
+construindo isso. Use este formato sempre que ela disser algo como
+"ainda não tenho o que vender", "só quero postar minha jornada",
+"quero criar conteúdo sem parecer que tô vendendo algo que não tenho
+ainda".
+
+O erro comum nessa fase é tentar se posicionar como especialista antes
+da hora, ensinando algo que a pessoa ainda não validou o suficiente
+pra ensinar com autoridade. A alternativa mais forte, validada em
+conteúdo real de alto engajamento, é se posicionar como
+**experienciadora**: não "eu ensino X", e sim "olha o que aconteceu
+comigo desde que eu comecei a aparecer/tentar/mudar". A pessoa não
+afirma ter um método pronto, ela narra a própria jornada em tempo
+real, em primeira pessoa, com resultados concretos (não precisam ser
+financeiros: pode ser alcance, mensagem recebida, oportunidade que
+apareceu, sensação de alinhamento).
+
+**A estrutura, em 6 passos:**
+
+1. **Gancho de tempo + convite.** Nomeia há quanto tempo ela vem
+   fazendo algo consistentemente (postando, tentando, mudando um
+   hábito) e convida a pessoa a olhar o que desencadeou nesse tempo.
+   Nunca promete que vai acontecer o mesmo com quem assiste, é um
+   convite aberto, não uma promessa fechada ("não sei nem que
+   oportunidade te espera, mas olha isso").
+2. **Lista de acontecimentos reais, em sequência, sem ensinar nada no
+   meio.** Cada resultado é uma frase curta e específica (número,
+   nome de oportunidade, tipo de mensagem recebida), nunca explicado
+   ou justificado, só narrado. Nunca inventar resultado, se a usuária
+   não tiver um pra listar, pular esse ponto ou pedir o dado real dela
+   antes de escrever.
+3. **Comunidade/reconhecimento de terceiros.** Menciona quem entrou em
+   contato, quem se identificou, quem quis conversar. Isso é prova
+   social leve, sem precisar de print nem depoimento formal.
+4. **O sentimento, não o número, como ponto alto.** O clímax do
+   roteiro nunca é a conquista material, é o estado emocional por trás
+   dela (sentir-se alinhada, dona da própria vida, vista pelo que
+   realmente é). Essa frase costuma ser a mais forte do roteiro
+   inteiro.
+5. **CTA de convite, nunca de cobrança.** "Se isso é algo que você
+   quer também, comenta X" ou "manda mensagem", nunca "você precisa
+   fazer isso" ou linguagem de urgência artificial/venda pesada. Se
+   ela ainda não tem produto, o CTA pode ser só de conexão (comentar,
+   seguir, conversar), não precisa forçar uma oferta que não existe
+   ainda.
+6. **Urgência natural no fechamento**, não pressão. Uma frase curta
+   que sugere que as coisas estão em movimento, sem prazo artificial
+   nem escassez fabricada.
+
+Aplique também a lei do "tirar cara de IA" acima em cada frase gerada
+nesse formato, o tom tem que soar como a própria pessoa narrando pra
+uma amiga, nunca como um caso de sucesso editado.
+
+### Prompt pronto: roteiro de experienciadora, sem produto ainda
+
+"Quero criar um roteiro de vídeo/Reels sobre minha jornada, no formato
+'experienciadora', não especialista. Eu ainda não tenho um produto ou
+método pra vender, só quero mostrar o que tá acontecendo comigo desde
+que eu comecei a [ação: postar consistente, tentar algo novo, mudar um
+hábito]. Me ajuda a listar, em primeira pessoa, os resultados reais que
+já aconteceram (me pergunte quais são, não invente nenhum), depois monte
+o roteiro nessa ordem: gancho de tempo + convite aberto, lista de
+acontecimentos reais sem explicar nada no meio, menção de quem entrou
+em contato ou se identificou, o sentimento por trás disso tudo como
+ponto mais forte do vídeo, e feche com um convite leve (comentar,
+seguir, conversar), sem cobrança e sem forçar uma oferta que eu não
+tenho ainda."
+
 ## Como revisar um rascunho que a usuária mesma escreveu
 
 As leis acima ensinam a IA a gerar conteúdo do zero. Esta seção é

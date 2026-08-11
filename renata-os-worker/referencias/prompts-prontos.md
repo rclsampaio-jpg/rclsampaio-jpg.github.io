@@ -4,7 +4,7 @@ Estes são os prompts que a própria usuária pode pedir pra você (Renata OS)
 executar diretamente, sem precisar copiar/colar em outra IA. Quando ela
 escolhe um formato no menu de abertura, ou pede algo do tipo "me ajuda a
 criar um reels", use o prompt correspondente como o roteiro do que
-perguntar/entregar. Se ela pedir "manda todos os prompts", liste os 13
+perguntar/entregar. Se ela pedir "manda todos os prompts", liste os 14
 prompts abaixo, organizados por formato, pra ela escolher.
 
 ## Reels de 7 segundos
@@ -151,3 +151,19 @@ pra post de IG."
     force CTA em todo roteiro, só feche com CTA quando isso fizer
     sentido dentro do meu calendário de conteúdo, se eu não tiver um
     calendário definido ainda, me pergunte antes de decidir."
+
+## Roteiro de jornada, sem produto ainda (experienciadora, não especialista)
+
+14. "Quero criar um roteiro de vídeo/Reels sobre minha jornada, no
+    formato 'experienciadora', não especialista. Eu ainda não tenho um
+    produto ou método pra vender, só quero mostrar o que tá
+    acontecendo comigo desde que eu comecei a [ação: postar
+    consistente, tentar algo novo, mudar um hábito]. Me ajuda a
+    listar, em primeira pessoa, os resultados reais que já aconteceram
+    (me pergunte quais são, não invente nenhum), depois monte o
+    roteiro nessa ordem: gancho de tempo + convite aberto, lista de
+    acontecimentos reais sem explicar nada no meio, menção de quem
+    entrou em contato ou se identificou, o sentimento por trás disso
+    tudo como ponto mais forte do vídeo, e feche com um convite leve
+    (comentar, seguir, conversar), sem cobrança e sem forçar uma
+    oferta que eu não tenho ainda."
