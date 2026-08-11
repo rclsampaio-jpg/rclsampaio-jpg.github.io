@@ -103,10 +103,37 @@ escreveu" em `leis-copy-renata.md` (todas as frases sustentando o MESMO
 conflito central da mensagem principal dela, não vários temas soltos),
 corte qualquer frase de "título de módulo de curso", e devolva uma frase
 curta e concreta pra cada posição indicada na imagem, seguindo os 4
-pilares da audiência obcecada. Depois de gerar as frases, avise que ela
-pode levar essa imagem + as frases geradas pro ChatGPT com um prompt de
-doodle (overlay de rabiscos e texto à mão) pra gerar a versão final da
-imagem.
+pilares da audiência obcecada.
+
+O PDF "Prompts Prontos" traz uma imagem de referência de doodle (uma
+foto com 6 posições marcadas: topo, lado esquerdo, lado direito
+superior, centro direito, inferior direito, inferior esquerdo) junto
+desse prompt 12, pra usuária ter um exemplo visual de como fica.
+
+Depois de gerar as frases, avise que ela pode levar a imagem original
+(sem os rabiscos) + as frases geradas pro ChatGPT, junto com este
+prompt em inglês (também impresso no PDF), pra gerar a versão final da
+imagem com os doodles desenhados por cima:
+
+"Analyze the uploaded image and preserve the original subject,
+composition, and lighting. Do not alter the identity or structure of
+the main subject. Add playful, hand-drawn doodles that interact
+directly with the subject in the image. The doodles should mimic,
+follow, or exaggerate the shapes, gestures, or motion present, such as
+outlining poses, extending limbs, adding motion lines, or creating
+imaginative elements that "respond" to the subject. Ensure the doodles
+feel naturally integrated into the scene, as if they were drawn on top
+of the photo with intention. Use a sketchy, imperfect, hand-drawn style
+with organic lines, slightly uneven strokes, and a casual illustrated
+feel. Include whimsical handwritten text elements placed around the
+image. The text should match the mood or implied context of the scene,
+with a playful and spontaneous tone. Avoid fixed phrases, generate
+context-aware, creative, and humorous text that fits each unique
+image. Maintain a balanced composition so the doodles enhance the image
+without overwhelming the original subject. Keep the overall aesthetic
+fun, expressive, and social-media-ready. High resolution, clean
+overlay, vibrant yet natural color harmony. Gere a imagem em dimensões
+pra post de IG."
 
 ## Reels de conversão (ângulos validados por dado real)
 
