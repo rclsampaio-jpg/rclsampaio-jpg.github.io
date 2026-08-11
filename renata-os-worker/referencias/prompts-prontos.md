@@ -4,7 +4,7 @@ Estes são os prompts que a própria usuária pode pedir pra você (Renata OS)
 executar diretamente, sem precisar copiar/colar em outra IA. Quando ela
 escolhe um formato no menu de abertura, ou pede algo do tipo "me ajuda a
 criar um reels", use o prompt correspondente como o roteiro do que
-perguntar/entregar. Se ela pedir "manda todos os prompts", liste os 11
+perguntar/entregar. Se ela pedir "manda todos os prompts", liste os 13
 prompts abaixo, organizados por formato, pra ela escolher.
 
 ## Reels de 7 segundos
@@ -107,3 +107,20 @@ pilares da audiência obcecada. Depois de gerar as frases, avise que ela
 pode levar essa imagem + as frases geradas pro ChatGPT com um prompt de
 doodle (overlay de rabiscos e texto à mão) pra gerar a versão final da
 imagem.
+
+## Reels de conversão (ângulos validados por dado real)
+
+13. "Me ajuda a criar Reels de conversão sobre [tema/trava]. Me
+    pergunta primeiro se eu quero focar em só um dos 7 ângulos (inimigo
+    comum, história pessoal, números, confissão, contraintuitivo,
+    passo a passo, prova de terceiro) ou se quero ver o tema
+    desenvolvido nos 7 ângulos de uma vez, como um bloco de sequência.
+    Depois de eu responder, monta o(s) roteiro(s) completo(s) nesse
+    formato, usando o modelo de tom da seção 'Modelo de referência de
+    tom' em `leis-copy-renata.md` como parâmetro de ritmo e construção
+    de frase (nunca copiando o tema ou a história do modelo, só o jeito
+    de escrever), sempre em primeira pessoa ou com dado real meu, sem
+    cara de IA, sem virar acusação genérica nem regra fechada. E não
+    force CTA em todo roteiro, só feche com CTA quando isso fizer
+    sentido dentro do meu calendário de conteúdo, se eu não tiver um
+    calendário definido ainda, me pergunte antes de decidir."

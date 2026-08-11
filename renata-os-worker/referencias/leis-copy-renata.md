@@ -331,6 +331,144 @@ comentário, igual à regra de nunca inventar print/depoimento.
    solta, deixe pergunta curta com opções em vez de pergunta longa e
    elegante, e ajuste emoji pra só onde reforça sentimento real."
 
+## Os 7 ângulos de Reels de conversão (variação validada por dado real)
+
+As leis de anti-hook acima continuam sendo o padrão geral, pra quando a
+usuária não tem uma história ou dado específico em mãos ainda. Mas
+existe um segundo formato, validado com dado real de performance (não
+teoria): Reels de conversão que abrem com uma frase mais direta,
+construída em cima de uma trava específica e real, não uma dor genérica.
+Use este formato quando a usuária quiser um Reels que venda/converta de
+verdade, com mais gancho de confronto do que o anti-hook casual permite,
+OU quando ela mesma tiver uma história pessoal forte pra contar.
+
+Regra de tom, obrigatória pra qualquer um dos 7 ângulos abaixo: nunca
+vire regra genérica nem aponte o dedo pra quem lê. O ângulo mais
+confrontador (inimigo comum) fala de um padrão comum, nunca "você faz
+isso porque você é assim", é sempre uma hipótese oferecida com leveza,
+nunca uma acusação fechada. Se a usuária não tiver certeza da resposta
+sobre si mesma, a IA nunca deve afirmar como verdade absoluta.
+
+Os 7 ângulos, todos válidos, escolha o que combinar com o que a
+usuária tem pra contar (não force sempre o mesmo):
+
+1. **Inimigo comum.** Nomeia um padrão/crença que trava muita gente,
+   sem apontar pra quem lê como culpada. Formato: "Você não [ação]
+   porque [medo específico, paradoxal, meio inconfessável]" — nunca
+   dor genérica tipo "medo de julgamento". Ex.: "Você não cria
+   conteúdo porque tem medo de ter a vida fácil". Só use esse ângulo
+   quando o medo for específico e contraintuitivo, senão vira acusação
+   vazia. Roteiro: gancho → mecanismo (por que isso acontece, em voz
+   alta) → medo real por trás do medo aparente → virada → CTA curto,
+   se o calendário pedir CTA nesse vídeo (ver "Regra de CTA" abaixo).
+2. **História pessoal.** A usuária conta algo que viveu de verdade, em
+   primeira pessoa, sem generalizar pra quem assiste. Segue a lei do
+   "tea": momento específico → erro/trava real → o que mudou → lição.
+   Nunca fecha em "e é isso que também trava você", deixa a
+   identificação acontecer sozinha.
+3. **Números.** Abre com um resultado ou dado numérico real e exato
+   (nunca inventado), sem prometer o mesmo resultado pra quem assiste.
+   Segue a fórmula "Depois de [resultado] em [tempo], aqui está o que
+   eu queria ter sabido antes."
+4. **Confissão.** Revela algo que a usuária normalmente não diria em
+   público (um erro, uma vergonha, uma dúvida), em tom de desabafo, não
+   de lição pronta. É a versão mais "anti-hook" dos 7 ângulos, soa
+   como flagra de pensamento.
+5. **Contraintuitivo.** Desafia uma crença popular do nicho ("todo
+   mundo te ensinou X, mas..."), sempre com a experiência real da
+   usuária como prova, nunca como afirmação abstrata sem lastro.
+6. **Passo a passo.** Ensina o "como fazer" de algo específico, mas
+   ainda envolto na lei do "tea" (contextualiza com a própria
+   experiência antes de ensinar), nunca uma lista técnica seca.
+7. **Prova visual / de terceiro.** Mostra ou menciona a história de
+   outra pessoa (aluna, cliente, referência) como prova, sempre real,
+   nunca inventada ou composta, e sempre com a permissão/contexto
+   verdadeiro de quem viveu aquilo.
+
+A legenda embaixo do vídeo, em qualquer um dos 7 ângulos, é um eco curto
+de identificação (tipo "eu sei disso porque foi comigo também"), nunca
+tenta recontar a história toda de novo.
+
+**Regra de CTA:** nem todo Reels precisa fechar com CTA. Peso de CTA se
+decide pelo calendário de conteúdo que a Renata OS já monta pra usuária
+(mistura de vídeos de atração, conexão e conversão), não por hábito. Se
+não houver calendário definido na conversa, pergunte antes de decidir,
+não assuma que todo roteiro fecha em "comenta X" ou peça pra clicar no
+link.
+
+### Modelo de referência de tom (usar como parâmetro de voz, nunca copiar o tema)
+
+Os dois blocos abaixo são roteiros reais já aprovados, cobrindo os
+7 ângulos aplicados a dois temas diferentes. Servem de parâmetro de
+tom/ritmo/construção de frase pra qualquer roteiro novo gerado nesse
+formato, nunca como texto pra reaproveitar o tema ou a história em si
+(que são específicos da usuária). Repare no padrão comum entre os dois
+blocos: frase curta, gancho na primeira linha, uma pergunta retórica no
+meio pra guiar o raciocínio em voz alta, nunca terminar em lista, e CTA
+variando de peso (às vezes objetivo, às vezes ausente).
+
+**Bloco 1 — Sequência "Você não cria conteúdo porque..."**
+
+1. Confissão — vídeo bom que vira prova contra você
+Você só não posta porque acha que baixa visualização prova que você não é boa o suficiente. Por que isso dói tanto? Porque você separou o desempenho do vídeo do seu valor real, errado. Quando ninguém assiste, parece prova pública de que você não tem tanto a oferecer assim. O medo não é o vídeo não bombar. É isso virar prova contra você. Ninguém cresce sem deixar a versão antiga morrer, inclusive a versão sua que trava. Comenta HISTÓRIA que eu te mostro como sair disso.
+
+2. Números — focando na pessoa errada
+Eu tinha 1.030 seguidores. Postei um vídeo que eu achava horrível, com medo de julgamento. Duas pessoas comentaram coisa ruim. Doze mil visualizações depois, quatrocentas pessoas novas me seguindo. Você tá com medo de duas pessoas e deixando de encontrar as quatrocentas que pensam igual você. Você tá focando na pessoa errada. Comenta HISTÓRIA.
+
+3. Contraintuitivo — o medo de mudar
+Você não trava por falta de conteúdo bom. Trava porque, se você aparecer de verdade, sua vida muda, e mudar dá medo tanto quanto ficar igual. Ninguém fala isso, falam de roteiro, de horário, de hashtag. O medo não é aparecer. É não ter mais desculpa depois que aparecer. Comenta HISTÓRIA que eu te conto o resto.
+
+4. Confissão — sete sextas de desculpa
+Eu cancelei gravação sete sextas seguidas. Toda vez inventava um motivo diferente. Por que eu fazia isso? Porque cancelar dói menos do que gravar e não gostar do resultado, cancelar parece decisão, travar parece fraqueza. O medo não era a câmera. Era descobrir que talvez eu não tivesse tanto a dizer quanto eu achava. Na oitava sexta eu gravei mesmo com medo. Foi o primeiro vídeo que passou de mil visualizações. Comenta HISTÓRIA se você também troca trava por desculpa.
+
+5. Inimigo comum — a frase que não resolve
+Todo guru fala que criar conteúdo é só postar e não ligar pro julgamento. Isso não resolve nada, e eu vou te dizer por quê. Essa frase fala com a sua cabeça. O que te trava não decide na cabeça, decide no corpo, antes de você pensar. Por isso você lê, concorda, e no dia seguinte trava igual. O que muda isso não é uma frase, é repetição controlada até o corpo parar de tratar isso como perigo. Comenta HISTÓRIA que eu te explico como isso funciona.
+
+6. Passo a passo — o medo sai depois, não antes
+Toda mulher que trava acha que precisa resolver o medo primeiro pra depois postar. Fiz assim por um ano e meio e não resolvi nada. O medo não sai antes, ele sai depois, de tanto você postar mesmo com ele. Por isso o processo não começa com "supere o medo", começa com direção diária, um passo de cada vez, pra você postar apesar do medo até ele enfraquecer. Quando o corpo repete a ação vezes suficientes sem o perigo acontecer de verdade, ele para de disparar o alarme. Comenta HISTÓRIA que eu detalho os passos.
+
+7. Prova visual — menos de 24 horas
+Você acha que precisa de milhares de seguidores pra alguém confiar em você. A Bruna tinha menos de 24 horas de conta ativa quando fechou a primeira venda. [Gravar: print real da conversa dela, ou reação de alguém comentando o Reels]. Não foi alcance. Foi ela aparecer de verdade, com medo, e postar assim mesmo. Comenta HISTÓRIA que eu mostro como ela fez.
+
+**Bloco 2 — Sequência "O 1 milhão de visualizações que me travou"**
+
+1. Confissão — o problema que vem depois do resultado
+Meu vídeo passou de 1 milhão de visualizações. E foi exatamente isso que me travou. Por que isso acontece? Porque todo mundo acha que viralizar resolve o problema, ninguém fala que viralizar cria um problema novo: agora tem gente de verdade esperando o próximo vídeo, e você não sabe se aquela mensagem era mesmo o que você queria dizer. O medo não foi ter viralizado. Foi descobrir que eu não tinha estrutura pra sustentar o que aquilo trouxe. Fiquei dias sem conseguir gravar de novo, perdi o momentum inteiro por não saber o que fazer com o próprio resultado. Comenta HISTÓRIA que eu conto o que eu fiz pra voltar.
+
+2. Contraintuitivo — o problema começou depois de viralizar
+Todo mundo acha que o problema é não viralizar. O meu problema começou depois que eu viralizei. Um vídeo passou de 1 milhão de views. Em vez de continuar, eu travei, ansiedade, dúvida se aquela era mesmo a mensagem que eu queria entregar, dias parada sem gravar nada. Ninguém te prepara pro resultado, só te preparam pra tentar chegar nele. O que me tirou disso não foi esperar a ansiedade passar. Foi ter uma estrutura pronta pra próxima gravação, mesmo sem saber se eu estava "pronta". Comenta HISTÓRIA que eu te mostro essa estrutura.
+
+3. Inimigo comum — ninguém ensina o depois
+Todo guru fala que o objetivo é viralizar. Ninguém fala o que fazer depois que viraliza. Eu vivi isso. 1 milhão de visualizações, e em vez de me impulsionar, me paralisou. Fiquei dias sem gravar, questionando se aquela mensagem era mesmo minha ou só um acidente de algoritmo. O problema não é a falta de alcance. É ninguém te ensinar a sustentar o alcance quando ele chega. Comenta HISTÓRIA que eu te explico como sustentar sem travar.
+
+4. Passo a passo — direção diária, não decisão diária
+Depois de 1 milhão de visualizações eu passei dias sem conseguir gravar de novo. Isso quase acabou com meu momentum inteiro. O que me tirou de lá não foi força de vontade, foi ter alguém me dizendo exatamente o que gravar naquele dia, sem eu ter que decidir sozinha em cima da ansiedade. Direção diária, não decisão diária, essa é a diferença entre travar de novo ou continuar. Comenta HISTÓRIA que eu detalho como isso funciona.
+
+5. Números — quando o resultado é maior que a estrutura
+1 milhão de visualizações em um vídeo só. Zero vídeos gravados nos 6 dias seguintes. A conta não fecha à toa, não é proporção de esforço, é o tamanho do resultado que assustou mais do que animou. Quando o resultado é maior que a estrutura que você tem pra sustentar ele, o corpo trava, não importa o número. O que resolveu não foi esperar a coragem voltar. Foi ter um próximo passo definido antes de precisar decidir sozinha. Comenta HISTÓRIA que eu mostro esse próximo passo.
+
+6. História pessoal, em cena — o aperto no peito
+Eu lembro exatamente onde eu tava quando vi o número passar de 1 milhão. Peguei o celular, li os comentários, fechei o aplicativo e não abri de novo por dias. Não foi alegria, foi um aperto no peito, tipo "e agora, o que eu faço com isso". Todo mundo espera que viralizar seja só a parte boa. Ninguém me preparou pro depois, só pro antes. Levei uma semana pra entender que eu não precisava saber a resposta certa, só precisava gravar o próximo vídeo. Comenta HISTÓRIA que eu conto como voltei a gravar.
+
+7. Prova visual — o dia que devia ter sido o melhor
+[Gravar: print da notificação do vídeo passando de 1 milhão, ou tela de insights do Instagram daquele dia]. Isso aqui foi o dia que devia ter sido o melhor da minha carreira online. Foi o dia que eu mais travei. Não é sobre alcançar o resultado. É sobre saber o que fazer quando ele chega maior do que você esperava. Comenta HISTÓRIA que eu explico o que fazer nesse momento.
+
+### Prompt pronto: gerar ângulo de Reels de conversão
+
+"Me ajuda a criar Reels de conversão sobre [tema/trava]. Me pergunta
+primeiro se eu quero focar em só um dos 7 ângulos (inimigo comum,
+história pessoal, números, confissão, contraintuitivo, passo a passo,
+prova de terceiro) ou se quero ver o tema desenvolvido nos 7 ângulos de
+uma vez, como um bloco de sequência. Depois de eu responder, monta o(s)
+roteiro(s) completo(s) nesse formato, usando o modelo de tom da seção
+'Modelo de referência de tom' como parâmetro de ritmo e construção de
+frase (nunca copiando o tema ou a história do modelo, só o jeito de
+escrever), sempre em primeira pessoa ou com dado real meu, sem cara de
+IA, sem virar acusação genérica nem regra fechada. E não force CTA em
+todo roteiro, só feche com CTA quando isso fizer sentido dentro do meu
+calendário de conteúdo, se eu não tiver um calendário definido ainda,
+me pergunte antes de decidir."
+
 ## A lei da audiência obcecada: conexão vende mais que informação
 
 Esta lei é o "porquê" por trás de todas as leis acima (tea, anti-hook,
