@@ -165,9 +165,9 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
       es: 'Prompts Listos para Usar en Renata OS (IA)'
     },
     description: {
-      pt: 'Os 12 prompts prontos pra pedir conteúdo direto pra Renata OS: cole o tema entre colchetes e mande, ela entrega o conteúdo pronto.',
-      en: 'The 12 ready-made prompts to request content directly from Renata OS: fill in the topic and send, she delivers the finished content.',
-      es: 'Los 12 prompts listos para pedir contenido directo a Renata OS: completa el tema entre corchetes y envíalo, ella entrega el contenido listo.'
+      pt: 'Os 13 prompts prontos pra pedir conteúdo direto pra Renata OS: cole o tema entre colchetes e mande, ela entrega o conteúdo pronto.',
+      en: 'The 13 ready-made prompts to request content directly from Renata OS: fill in the topic and send, she delivers the finished content.',
+      es: 'Los 13 prompts listos para pedir contenido directo a Renata OS: completa el tema entre corchetes y envíalo, ella entrega el contenido listo.'
     },
     category: 'pdfs',
     mediaUrl: '/assets/docs/prompts-prontos-renata-os.pdf',
@@ -180,7 +180,7 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs, acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '20';
+const ECOSYSTEM_CONFIG_VERSION = '21';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');
