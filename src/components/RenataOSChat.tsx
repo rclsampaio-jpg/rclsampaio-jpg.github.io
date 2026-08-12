@@ -248,6 +248,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
     const errorMessage = adaptMessage(pickTone(ERROR_BY_TONE, lang, guideStyle), prefGrammar, lang);
 
     setIsLoading(true);
+    let bubbleStarted = false;
     try {
       const { data: sessionData } = await supabase.auth.getSession();
       const accessToken = sessionData.session?.access_token;
@@ -276,11 +277,43 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
             : {})
         })
       });
-      if (!response.ok) throw new Error('Bad response');
-      const data = await response.json();
-      setMessages((prev) => [...prev, { role: 'assistant', text: data.reply || errorMessage }]);
+      if (!response.ok || !response.body) throw new Error('Bad response');
+
+      // The Worker streams the reply as plain text now (token by token when
+      // it can), so the bubble grows live instead of the "•••" indicator
+      // sitting there for however long the free-tier model takes to finish
+      // the whole reply. Push an empty assistant message first, then keep
+      // rewriting its text as chunks arrive.
+      let accumulated = '';
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        accumulated += decoder.decode(value, { stream: true });
+        if (!bubbleStarted) {
+          bubbleStarted = true;
+          setIsLoading(false);
+          setMessages((prev) => [...prev, { role: 'assistant', text: accumulated }]);
+        } else {
+          setMessages((prev) => {
+            const next = [...prev];
+            next[next.length - 1] = { role: 'assistant', text: accumulated };
+            return next;
+          });
+        }
+      }
+
+      if (!bubbleStarted) {
+        setMessages((prev) => [...prev, { role: 'assistant', text: errorMessage }]);
+      }
     } catch {
-      setMessages((prev) => [...prev, { role: 'assistant', text: errorMessage }]);
+      // Mid-stream failures still leave a partial bubble on screen (the
+      // reader loop above already wrote what arrived before it broke), so
+      // only append a fresh error bubble if nothing ever started rendering.
+      if (!bubbleStarted) {
+        setMessages((prev) => [...prev, { role: 'assistant', text: errorMessage }]);
+      }
     } finally {
       setIsLoading(false);
     }
