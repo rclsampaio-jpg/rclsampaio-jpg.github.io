@@ -584,10 +584,10 @@ function getDailyMessage(dayNumber: number, lang: Language): string {
   return messages[messageNumber - 1];
 }
 
-// Step 3 "daily exposure action" plan. Days 1-7 (welcome week) are Stories-only,
-// no Reels obligation, mirrors the 7 support-video scripts. Days 8-30 rotate
-// through a fixed weekly combo of formats (never a single repeated format),
-// keyed by the real calendar weekday (DayType), with Wednesday alternating
+// Step 3 "daily exposure action" plan. Same weekly combo grid runs all 30
+// days, no special-cased Week 1, rotating through a fixed set of formats
+// (never a single repeated format), keyed by the real calendar weekday
+// (DayType), with Wednesday alternating
 // between two combos depending on which week of the journey it falls in.
 interface DailyPlan {
   title: string;
@@ -596,7 +596,6 @@ interface DailyPlan {
 }
 
 const DAILY_PLAN_COPY: Record<Language, {
-  welcome: (i: number) => DailyPlan;
   monday: DailyPlan;
   tuesday: DailyPlan;
   wednesdayOdd: DailyPlan;
@@ -607,19 +606,6 @@ const DAILY_PLAN_COPY: Record<Language, {
   sunday: DailyPlan;
 }> = {
   pt: {
-    welcome: (i) => ({
-      title: 'Hoje é Story real. Sem editar, sem esperar o momento perfeito',
-      bullets: [
-        'Resolva toda pendência antes de gravar: celular carregado, espaço de armazenamento liberado, ou simplesmente aceite sua pior versão',
-        'Grave e poste pelo menos 1 Story real hoje',
-        'Grave e poste um segundo Story contando mais um pouco'
-      ],
-      promises: [
-        { label: 'Resolvi minhas pendências (ou aceitei minha pior versão)', desc: 'Celular carregado, espaço de armazenamento liberado, sem desculpa no meio do caminho' },
-        { label: `Postei um Story real hoje (Dia ${i})`, desc: 'Sem editar, sem regravar até ficar "bonito"' },
-        { label: 'Postei um segundo Story hoje', desc: 'Contando mais um pouco, sem cobrar perfeição' }
-      ]
-    }),
     monday: {
       title: 'Segunda: 2 Reels + 1 vídeo de 7 segundos (mínimo 3 posts hoje)',
       bullets: [
@@ -720,19 +706,6 @@ const DAILY_PLAN_COPY: Record<Language, {
     }
   },
   en: {
-    welcome: (i) => ({
-      title: 'Real Story today. No editing, no waiting for the perfect moment',
-      bullets: [
-        'Clear every excuse before recording: phone charged, storage space freed up, or just accept your worst version',
-        'Record and post at least 1 real Story today',
-        'Record and post a second Story saying a bit more'
-      ],
-      promises: [
-        { label: 'I resolved my pending excuses (or accepted my worst version)', desc: 'Phone charged, storage space freed up, no excuse left in the way' },
-        { label: `I posted a real Story today (Day ${i})`, desc: 'No editing, no re-recording until it looks "good"' },
-        { label: 'I posted a second Story today', desc: 'Saying a bit more, no demand for perfection' }
-      ]
-    }),
     monday: {
       title: 'Monday: 2 Reels + 1 seven-second video (minimum 3 posts today)',
       bullets: [
@@ -833,19 +806,6 @@ const DAILY_PLAN_COPY: Record<Language, {
     }
   },
   es: {
-    welcome: (i) => ({
-      title: 'Story real hoy. Sin editar, sin esperar el momento perfecto',
-      bullets: [
-        'Resuelve todo pendiente antes de grabar: celular cargado, espacio de almacenamiento liberado, o simplemente acepta tu peor versión',
-        'Graba y publica al menos 1 Story real hoy',
-        'Graba y publica un segundo Story contando un poco más'
-      ],
-      promises: [
-        { label: 'Resolví mis pendientes (o acepté mi peor versión)', desc: 'Celular cargado, espacio de almacenamiento liberado, sin excusa en el medio' },
-        { label: `Publiqué un Story real hoy (Día ${i})`, desc: 'Sin editar, sin regrabar hasta que "quede bien"' },
-        { label: 'Publiqué un segundo Story hoy', desc: 'Contando un poco más, sin exigirme perfección' }
-      ]
-    }),
     monday: {
       title: 'Lunes: 2 Reels + 1 video de 7 segundos (mínimo 3 publicaciones hoy)',
       bullets: [
@@ -949,8 +909,6 @@ const DAILY_PLAN_COPY: Record<Language, {
 
 function getDailyPlan(dayNumber: number, lang: Language, startDate?: string | null): DailyPlan {
   const copy = DAILY_PLAN_COPY[lang] || DAILY_PLAN_COPY.pt;
-  if (dayNumber <= 7) return copy.welcome(dayNumber);
-
   const type = getDayType(dayNumber, startDate);
   const weekNumber = Math.ceil(dayNumber / 7);
   const isEvenWeek = weekNumber % 2 === 0;
@@ -1043,7 +1001,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '15';
+const DAYS_CONTENT_VERSION = '16';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
