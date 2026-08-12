@@ -507,6 +507,10 @@ export default function DailyMissionView({
   // templateData.ts). isRestDay is kept only as a rendering hook the
   // surrounding JSX still references, always false now.
   const isRestDay = false;
+  // Tuesday, from Day 8 onward, is the batch-production day (no recording
+  // obligation): the 3 link boxes swap for a single free-text field, still
+  // stored in promiseLinks.inertia so it counts toward progress the same way.
+  const isBatchProductionDay = currentDay.dayNumber > 7 && currentDay.type === DayType.Truth;
   const isFavorite = progress.favoriteHooks.includes(currentDay.dayNumber);
 
   const currentPhaseId = getPhaseId(currentDay.dayNumber);
@@ -822,6 +826,8 @@ export default function DailyMissionView({
       listenItem: '1. Ouvir a Mensagem da Renata',
       promisesItem: '2. Gravações de Hoje',
       recordingsLinkInstruction: 'Cole aqui o link dos 3 posts de hoje',
+      batchProductionInstruction: 'Hoje não precisa de link. Registre aqui o que você organizou ou produziu (ideias, roteiros, conteúdo gravado pra usar depois)',
+      batchProductionPlaceholder: 'Ex: gerei 5 roteiros de Reels na Renata OS, deixei 3 vídeos de 7s já gravados pra quarta...',
       completedStatus: 'Concluído',
       pendingStatus: 'Pendente',
       reflectionMoment: 'Momento de Reflexão:',
@@ -909,6 +915,8 @@ export default function DailyMissionView({
       listenItem: "1. Listen to Renata's Message",
       promisesItem: "2. Today's Recordings",
       recordingsLinkInstruction: "Paste the link to today's 3 posts here",
+      batchProductionInstruction: "No link needed today. Log what you organized or produced (ideas, scripts, content recorded for later)",
+      batchProductionPlaceholder: 'E.g.: generated 5 Reels scripts on Renata OS, pre-recorded 3 seven-second videos for Wednesday...',
       completedStatus: 'Completed',
       pendingStatus: 'Pending',
       reflectionMoment: 'Reflection Moment:',
@@ -996,6 +1004,8 @@ export default function DailyMissionView({
       listenItem: '1. Escuchar el Mensaje de Renata',
       promisesItem: '2. Grabaciones de Hoy',
       recordingsLinkInstruction: 'Pega aquí el enlace de tus 3 publicaciones de hoy',
+      batchProductionInstruction: 'Hoy no necesitas enlace. Registra aquí lo que organizaste o produjiste (ideas, guiones, contenido grabado para usar después)',
+      batchProductionPlaceholder: 'Ej: generé 5 guiones de Reels en la Renata OS, dejé 3 videos de 7s ya grabados para el miércoles...',
       completedStatus: 'Completado',
       pendingStatus: 'Pendiente',
       reflectionMoment: 'Momento de Reflexión:',
@@ -1779,30 +1789,50 @@ export default function DailyMissionView({
                     </span>
                   </div>
 
-                  {/* 3 mandatory recording links */}
-                  <div className="space-y-2 pt-1">
-                    <EditableText
-                      contentKey="dailyMission.recordingsLinkInstruction"
-                      fallback={textDict.recordingsLinkInstruction}
-                      as="p"
-                      className="text-xs text-slate-500 dark:text-ink-muted font-sans"
-                    />
-                    {([
-                      { key: 'inertia' as const },
-                      { key: 'confidence' as const },
-                      { key: 'evidence' as const }
-                    ]).map((item, idx) => (
-                      <input
-                        key={item.key}
-                        type="url"
-                        value={promiseLinks[item.key]}
-                        disabled={isCompleted}
-                        onChange={(e) => setPromiseLinks(p => ({ ...p, [item.key]: e.target.value }))}
-                        placeholder={`${textDict.linkRequiredPlaceholder} (${idx + 1}/3)`}
-                        className="w-full text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-ink-text transition-all duration-300 shadow-xs"
+                  {/* Batch-production day: single free-text log instead of 3 links */}
+                  {isBatchProductionDay ? (
+                    <div className="space-y-2 pt-1">
+                      <EditableText
+                        contentKey="dailyMission.batchProductionInstruction"
+                        fallback={textDict.batchProductionInstruction}
+                        as="p"
+                        className="text-xs text-slate-500 dark:text-ink-muted font-sans"
                       />
-                    ))}
-                  </div>
+                      <textarea
+                        value={promiseLinks.inertia}
+                        disabled={isCompleted}
+                        onChange={(e) => setPromiseLinks(p => ({ ...p, inertia: e.target.value }))}
+                        placeholder={textDict.batchProductionPlaceholder}
+                        rows={3}
+                        className="w-full text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-ink-text transition-all duration-300 shadow-xs resize-none"
+                      />
+                    </div>
+                  ) : (
+                    /* 3 mandatory recording links */
+                    <div className="space-y-2 pt-1">
+                      <EditableText
+                        contentKey="dailyMission.recordingsLinkInstruction"
+                        fallback={textDict.recordingsLinkInstruction}
+                        as="p"
+                        className="text-xs text-slate-500 dark:text-ink-muted font-sans"
+                      />
+                      {([
+                        { key: 'inertia' as const },
+                        { key: 'confidence' as const },
+                        { key: 'evidence' as const }
+                      ]).map((item, idx) => (
+                        <input
+                          key={item.key}
+                          type="url"
+                          value={promiseLinks[item.key]}
+                          disabled={isCompleted}
+                          onChange={(e) => setPromiseLinks(p => ({ ...p, [item.key]: e.target.value }))}
+                          placeholder={`${textDict.linkRequiredPlaceholder} (${idx + 1}/3)`}
+                          className="w-full text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 focus:border-rosegold focus:outline-none focus:ring-1 focus:ring-rosegold rounded-xl p-3.5 text-slate-700 dark:text-ink-text transition-all duration-300 shadow-xs"
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
