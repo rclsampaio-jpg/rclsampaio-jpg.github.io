@@ -608,15 +608,16 @@ const DAILY_PLAN_COPY: Record<Language, {
 }> = {
   pt: {
     welcome: (i) => ({
-      title: 'Hoje é semana de acolhimento, sem Reels ainda',
+      title: 'Hoje é Story real. Sem editar, sem esperar o momento perfeito',
       bullets: [
-        'Poste pelo menos 1 Story real hoje, sem editar, sem se preocupar com estética',
-        'Se sentir confortável, poste um segundo Story contando um pouco mais'
+        'Resolva toda pendência antes de gravar: celular carregado, espaço de armazenamento liberado, ou simplesmente aceite sua pior versão',
+        'Grave e poste pelo menos 1 Story real hoje',
+        'Grave e poste um segundo Story contando mais um pouco'
       ],
       promises: [
-        { label: 'Resolvi minhas pendências (ou aceitei minha pior versão)', desc: 'Carreguei o celular, arrumei o cantinho, ou simplesmente decidi aparecer do jeito que eu tô' },
+        { label: 'Resolvi minhas pendências (ou aceitei minha pior versão)', desc: 'Celular carregado, espaço de armazenamento liberado, sem desculpa no meio do caminho' },
         { label: `Postei um Story real hoje (Dia ${i})`, desc: 'Sem editar, sem regravar até ficar "bonito"' },
-        { label: 'Ouvi o vídeo de apoio de hoje', desc: 'Ou o áudio da Renata, se ainda não tiver vídeo pra hoje' }
+        { label: 'Postei um segundo Story hoje', desc: 'Contando mais um pouco, sem cobrar perfeição' }
       ]
     }),
     monday: {
@@ -720,15 +721,16 @@ const DAILY_PLAN_COPY: Record<Language, {
   },
   en: {
     welcome: (i) => ({
-      title: "It's welcome week, no Reels yet",
+      title: 'Real Story today. No editing, no waiting for the perfect moment',
       bullets: [
-        'Post at least 1 real Story today, no editing, no worrying about polish',
-        'If you feel comfortable, post a second Story saying a bit more'
+        'Clear every excuse before recording: phone charged, storage space freed up, or just accept your worst version',
+        'Record and post at least 1 real Story today',
+        'Record and post a second Story saying a bit more'
       ],
       promises: [
-        { label: 'I resolved my pending excuses (or accepted my worst version)', desc: 'Charged my phone, set up my corner, or just decided to show up as I am' },
+        { label: 'I resolved my pending excuses (or accepted my worst version)', desc: 'Phone charged, storage space freed up, no excuse left in the way' },
         { label: `I posted a real Story today (Day ${i})`, desc: 'No editing, no re-recording until it looks "good"' },
-        { label: "I listened to today's support video", desc: "Or Renata's audio, if there's no video for today yet" }
+        { label: 'I posted a second Story today', desc: 'Saying a bit more, no demand for perfection' }
       ]
     }),
     monday: {
@@ -832,15 +834,16 @@ const DAILY_PLAN_COPY: Record<Language, {
   },
   es: {
     welcome: (i) => ({
-      title: 'Es la semana de acogida, todavía sin Reels',
+      title: 'Story real hoy. Sin editar, sin esperar el momento perfecto',
       bullets: [
-        'Publica al menos 1 Story real hoy, sin editar, sin preocuparte por la estética',
-        'Si te sientes cómoda, publica un segundo Story contando un poco más'
+        'Resuelve todo pendiente antes de grabar: celular cargado, espacio de almacenamiento liberado, o simplemente acepta tu peor versión',
+        'Graba y publica al menos 1 Story real hoy',
+        'Graba y publica un segundo Story contando un poco más'
       ],
       promises: [
-        { label: 'Resolví mis pendientes (o acepté mi peor versión)', desc: 'Cargué el celular, organicé mi rincón, o simplemente decidí aparecer como estoy' },
+        { label: 'Resolví mis pendientes (o acepté mi peor versión)', desc: 'Celular cargado, espacio de almacenamiento liberado, sin excusa en el medio' },
         { label: `Publiqué un Story real hoy (Día ${i})`, desc: 'Sin editar, sin regrabar hasta que "quede bien"' },
-        { label: 'Escuché el video de apoyo de hoy', desc: 'O el audio de Renata, si todavía no hay video para hoy' }
+        { label: 'Publiqué un segundo Story hoy', desc: 'Contando un poco más, sin exigirme perfección' }
       ]
     }),
     monday: {
@@ -1040,7 +1043,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '14';
+const DAYS_CONTENT_VERSION = '15';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
