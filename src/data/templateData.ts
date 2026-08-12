@@ -609,14 +609,14 @@ const DAILY_PLAN_COPY: Record<Language, {
     monday: {
       title: 'Segunda: 2 Reels + 1 vídeo de 7 segundos (mínimo 3 posts hoje)',
       bullets: [
-        'Grave e poste um Reels de até 30 segundos',
-        'Grave e poste um Reels de até 90 segundos',
-        'Grave e poste 1 vídeo de 7 segundos, com b-roll e gancho forte na legenda'
+        'Grave e poste um Reels de até 30 segundos (prompt 4 a 7 da Renata OS se precisar de roteiro)',
+        'Grave e poste um Reels de até 90 segundos (prompt 4 a 7 da Renata OS se precisar de roteiro)',
+        'Grave e poste 1 vídeo de 7 segundos, com b-roll e gancho forte na legenda (prompt 1 a 3 da Renata OS se precisar de ideia)'
       ],
       promises: [
-        { label: 'Postei o Reels de até 30 segundos', desc: 'Um dos hooks disponíveis pra hoje' },
-        { label: 'Postei o Reels de até 90 segundos', desc: 'Pode usar Trial Reels se já tiver 200+ seguidores' },
-        { label: 'Postei o vídeo de 7 segundos', desc: 'B-roll + legenda com gancho forte, sem precisar falar' }
+        { label: 'Postei o Reels de até 30 segundos', desc: 'Prompt 4 a 7 se precisar de roteiro, um dos hooks disponíveis pra hoje' },
+        { label: 'Postei o Reels de até 90 segundos', desc: 'Prompt 4 a 7 se precisar de roteiro. Pode usar Trial Reels se já tiver 200+ seguidores' },
+        { label: 'Postei o vídeo de 7 segundos', desc: 'Prompt 1 a 3 se precisar de ideia. B-roll + legenda com gancho forte' }
       ]
     },
     tuesday: {
@@ -634,11 +634,11 @@ const DAILY_PLAN_COPY: Record<Language, {
     wednesdayOdd: {
       title: 'Quarta: 3 vídeos de 7 segundos + sequência de Stories',
       bullets: [
-        'Grave e poste 3 vídeos de 7 segundos (b-roll + gancho forte na legenda)',
-        'Grave e poste uma sequência de Stories sobre o seu dia ou seu aprendizado recente'
+        'Grave e poste 3 vídeos de 7 segundos (prompt 1 a 3 da Renata OS se precisar de ideia)',
+        'Grave e poste uma sequência de Stories sobre o seu dia ou seu aprendizado recente (fórmula de Stories da Renata OS se precisar de roteiro)'
       ],
       promises: [
-        { label: 'Postei os 3 vídeos de 7 segundos', desc: 'Aproveitando o que já produziu em lote na terça' },
+        { label: 'Postei os 3 vídeos de 7 segundos', desc: 'Prompt 1 a 3 se precisar de ideia, aproveitando o que já produziu em lote na terça' },
         { label: 'Postei a sequência de Stories', desc: 'Contando um pedaço real do seu processo' },
         { label: 'Escolhi o melhor gancho pros 3 vídeos', desc: 'Da vitrine de hooks da semana' }
       ]
@@ -658,12 +658,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     thursday: {
       title: 'Quinta: Carrossel + vídeo B-roll de 7 segundos',
       bullets: [
-        'Monte e poste um Carrossel de venda ou educativo',
-        'Grave e poste 1 vídeo B-roll de 7 segundos, com gancho forte na legenda'
+        'Monte e poste um Carrossel de venda ou educativo (prompt 8 da Renata OS se precisar de roteiro)',
+        'Grave e poste 1 vídeo B-roll de 7 segundos, com gancho forte na legenda (prompt 1 a 3 da Renata OS se precisar de ideia)'
       ],
       promises: [
-        { label: 'Postei o Carrossel', desc: 'Capa com resultado real, um diferencial por slide' },
-        { label: 'Postei o vídeo B-roll de 7 segundos', desc: 'Gancho forte direto na legenda' },
+        { label: 'Postei o Carrossel', desc: 'Prompt 8 se precisar de roteiro. Capa com resultado real, um diferencial por slide' },
+        { label: 'Postei o vídeo B-roll de 7 segundos', desc: 'Prompt 1 a 3 se precisar de ideia. Gancho forte direto na legenda' },
         { label: 'Escolhi o gancho de hoje', desc: 'Da vitrine de hooks da semana' }
       ]
     },
@@ -696,12 +696,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     sunday: {
       title: 'Domingo: Carrossel + Reels de 30 segundos',
       bullets: [
-        'Monte e poste um Carrossel de venda ou educativo',
-        'Grave e poste um Reels de até 30 segundos'
+        'Monte e poste um Carrossel de venda ou educativo (prompt 8 da Renata OS se precisar de roteiro)',
+        'Grave e poste um Reels de até 30 segundos (prompt 4 a 7 da Renata OS se precisar de roteiro)'
       ],
       promises: [
-        { label: 'Postei o Carrossel', desc: 'Capa com resultado real, um diferencial por slide' },
-        { label: 'Postei o Reels de 30 segundos', desc: 'Pode usar Trial Reels se já tiver 200+ seguidores' },
+        { label: 'Postei o Carrossel', desc: 'Prompt 8 se precisar de roteiro. Capa com resultado real, um diferencial por slide' },
+        { label: 'Postei o Reels de 30 segundos', desc: 'Prompt 4 a 7 se precisar de roteiro. Pode usar Trial Reels se já tiver 200+ seguidores' },
         { label: 'Escolhi o gancho de hoje', desc: 'Da vitrine de hooks da semana' }
       ]
     }
@@ -710,14 +710,14 @@ const DAILY_PLAN_COPY: Record<Language, {
     monday: {
       title: 'Monday: 2 Reels + 1 seven-second video (minimum 3 posts today)',
       bullets: [
-        'Record and post a Reels up to 30 seconds long',
-        'Record and post a Reels up to 90 seconds long',
-        'Record and post 1 seven-second video, with b-roll and a strong caption hook'
+        'Record and post a Reels up to 30 seconds long (Renata OS prompt 4-7 if you need a script)',
+        'Record and post a Reels up to 90 seconds long (Renata OS prompt 4-7 if you need a script)',
+        'Record and post 1 seven-second video, with b-roll and a strong caption hook (Renata OS prompt 1-3 if you need an idea)'
       ],
       promises: [
-        { label: 'Posted the up-to-30-second Reels', desc: "One of today's available hooks" },
-        { label: 'Posted the up-to-90-second Reels', desc: 'Can use Trial Reels if you already have 200+ followers' },
-        { label: 'Posted the seven-second video', desc: 'B-roll + strong caption hook, no talking needed' }
+        { label: 'Posted the up-to-30-second Reels', desc: "Prompt 4-7 if you need a script, one of today's available hooks" },
+        { label: 'Posted the up-to-90-second Reels', desc: 'Prompt 4-7 if you need a script. Can use Trial Reels if you already have 200+ followers' },
+        { label: 'Posted the seven-second video', desc: 'Prompt 1-3 if you need an idea. B-roll + strong caption hook' }
       ]
     },
     tuesday: {
@@ -735,11 +735,11 @@ const DAILY_PLAN_COPY: Record<Language, {
     wednesdayOdd: {
       title: 'Wednesday: 3 seven-second videos + a Stories sequence',
       bullets: [
-        'Record and post 3 seven-second videos (b-roll + strong caption hook)',
-        'Record and post a Stories sequence about your day or a recent takeaway'
+        'Record and post 3 seven-second videos (Renata OS prompt 1-3 if you need an idea)',
+        'Record and post a Stories sequence about your day or a recent takeaway (Renata OS Stories formula if you need a script)'
       ],
       promises: [
-        { label: 'Posted the 3 seven-second videos', desc: "Building on what you batch-produced on Tuesday" },
+        { label: 'Posted the 3 seven-second videos', desc: "Prompt 1-3 if you need an idea, building on what you batch-produced on Tuesday" },
         { label: 'Posted the Stories sequence', desc: 'Telling a real piece of your process' },
         { label: 'Picked the best hook for the 3 videos', desc: "From this week's hook showcase" }
       ]
@@ -759,12 +759,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     thursday: {
       title: 'Thursday: Carousel + seven-second b-roll video',
       bullets: [
-        'Build and post a sales or educational Carousel',
-        'Record and post 1 seven-second b-roll video, with a strong caption hook'
+        'Build and post a sales or educational Carousel (Renata OS prompt 8 if you need a script)',
+        'Record and post 1 seven-second b-roll video, with a strong caption hook (Renata OS prompt 1-3 if you need an idea)'
       ],
       promises: [
-        { label: 'Posted the Carousel', desc: 'Cover with a real result, one differentiator per slide' },
-        { label: 'Posted the seven-second b-roll video', desc: 'Strong hook straight in the caption' },
+        { label: 'Posted the Carousel', desc: 'Prompt 8 if you need a script. Cover with a real result, one differentiator per slide' },
+        { label: 'Posted the seven-second b-roll video', desc: 'Prompt 1-3 if you need an idea. Strong hook straight in the caption' },
         { label: "Picked today's hook", desc: "From this week's hook showcase" }
       ]
     },
@@ -797,12 +797,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     sunday: {
       title: 'Sunday: Carousel + 30-second Reels',
       bullets: [
-        'Build and post a sales or educational Carousel',
-        'Record and post a Reels up to 30 seconds long'
+        'Build and post a sales or educational Carousel (Renata OS prompt 8 if you need a script)',
+        'Record and post a Reels up to 30 seconds long (Renata OS prompt 4-7 if you need a script)'
       ],
       promises: [
-        { label: 'Posted the Carousel', desc: 'Cover with a real result, one differentiator per slide' },
-        { label: 'Posted the 30-second Reels', desc: 'Can use Trial Reels if you already have 200+ followers' },
+        { label: 'Posted the Carousel', desc: 'Prompt 8 if you need a script. Cover with a real result, one differentiator per slide' },
+        { label: 'Posted the 30-second Reels', desc: 'Prompt 4-7 if you need a script. Can use Trial Reels if you already have 200+ followers' },
         { label: "Picked today's hook", desc: "From this week's hook showcase" }
       ]
     }
@@ -811,14 +811,14 @@ const DAILY_PLAN_COPY: Record<Language, {
     monday: {
       title: 'Lunes: 2 Reels + 1 video de 7 segundos (mínimo 3 publicaciones hoy)',
       bullets: [
-        'Graba y publica un Reels de hasta 30 segundos',
-        'Graba y publica un Reels de hasta 90 segundos',
-        'Graba y publica 1 video de 7 segundos, con b-roll y un gancho fuerte en la descripción'
+        'Graba y publica un Reels de hasta 30 segundos (prompt 4 a 7 de la Renata OS si necesitas guión)',
+        'Graba y publica un Reels de hasta 90 segundos (prompt 4 a 7 de la Renata OS si necesitas guión)',
+        'Graba y publica 1 video de 7 segundos, con b-roll y un gancho fuerte en la descripción (prompt 1 a 3 de la Renata OS si necesitas una idea)'
       ],
       promises: [
-        { label: 'Publiqué el Reels de hasta 30 segundos', desc: 'Uno de los ganchos disponibles para hoy' },
-        { label: 'Publiqué el Reels de hasta 90 segundos', desc: 'Puedes usar Trial Reels si ya tienes 200+ seguidores' },
-        { label: 'Publiqué el video de 7 segundos', desc: 'B-roll + gancho fuerte en la descripción, sin necesidad de hablar' }
+        { label: 'Publiqué el Reels de hasta 30 segundos', desc: 'Prompt 4 a 7 si necesitas guión, uno de los ganchos disponibles para hoy' },
+        { label: 'Publiqué el Reels de hasta 90 segundos', desc: 'Prompt 4 a 7 si necesitas guión. Puedes usar Trial Reels si ya tienes 200+ seguidores' },
+        { label: 'Publiqué el video de 7 segundos', desc: 'Prompt 1 a 3 si necesitas una idea. B-roll + gancho fuerte en la descripción' }
       ]
     },
     tuesday: {
@@ -836,11 +836,11 @@ const DAILY_PLAN_COPY: Record<Language, {
     wednesdayOdd: {
       title: 'Miércoles: 3 videos de 7 segundos + secuencia de Stories',
       bullets: [
-        'Graba y publica 3 videos de 7 segundos (b-roll + gancho fuerte en la descripción)',
-        'Graba y publica una secuencia de Stories sobre tu día o tu aprendizaje reciente'
+        'Graba y publica 3 videos de 7 segundos (prompt 1 a 3 de la Renata OS si necesitas una idea)',
+        'Graba y publica una secuencia de Stories sobre tu día o tu aprendizaje reciente (fórmula de Stories de la Renata OS si necesitas guión)'
       ],
       promises: [
-        { label: 'Publiqué los 3 videos de 7 segundos', desc: 'Aprovechando lo que ya produjiste en lote el martes' },
+        { label: 'Publiqué los 3 videos de 7 segundos', desc: 'Prompt 1 a 3 si necesitas una idea, aprovechando lo que ya produjiste en lote el martes' },
         { label: 'Publiqué la secuencia de Stories', desc: 'Contando un fragmento real de tu proceso' },
         { label: 'Elegí el mejor gancho para los 3 videos', desc: 'De la vitrina de ganchos de la semana' }
       ]
@@ -860,12 +860,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     thursday: {
       title: 'Jueves: Carrusel + video B-roll de 7 segundos',
       bullets: [
-        'Arma y publica un Carrusel de venta o educativo',
-        'Graba y publica 1 video B-roll de 7 segundos, con gancho fuerte en la descripción'
+        'Arma y publica un Carrusel de venta o educativo (prompt 8 de la Renata OS si necesitas guión)',
+        'Graba y publica 1 video B-roll de 7 segundos, con gancho fuerte en la descripción (prompt 1 a 3 de la Renata OS si necesitas una idea)'
       ],
       promises: [
-        { label: 'Publiqué el Carrusel', desc: 'Portada con resultado real, un diferencial por diapositiva' },
-        { label: 'Publiqué el video B-roll de 7 segundos', desc: 'Gancho fuerte directo en la descripción' },
+        { label: 'Publiqué el Carrusel', desc: 'Prompt 8 si necesitas guión. Portada con resultado real, un diferencial por diapositiva' },
+        { label: 'Publiqué el video B-roll de 7 segundos', desc: 'Prompt 1 a 3 si necesitas una idea. Gancho fuerte directo en la descripción' },
         { label: 'Elegí el gancho de hoy', desc: 'De la vitrina de ganchos de la semana' }
       ]
     },
@@ -898,12 +898,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     sunday: {
       title: 'Domingo: Carrusel + Reels de 30 segundos',
       bullets: [
-        'Arma y publica un Carrusel de venta o educativo',
-        'Graba y publica un Reels de hasta 30 segundos'
+        'Arma y publica un Carrusel de venta o educativo (prompt 8 de la Renata OS si necesitas guión)',
+        'Graba y publica un Reels de hasta 30 segundos (prompt 4 a 7 de la Renata OS si necesitas guión)'
       ],
       promises: [
-        { label: 'Publiqué el Carrusel', desc: 'Portada con resultado real, un diferencial por diapositiva' },
-        { label: 'Publiqué el Reels de 30 segundos', desc: 'Puedes usar Trial Reels si ya tienes 200+ seguidores' },
+        { label: 'Publiqué el Carrusel', desc: 'Prompt 8 si necesitas guión. Portada con resultado real, un diferencial por diapositiva' },
+        { label: 'Publiqué el Reels de 30 segundos', desc: 'Prompt 4 a 7 si necesitas guión. Puedes usar Trial Reels si ya tienes 200+ seguidores' },
         { label: 'Elegí el gancho de hoy', desc: 'De la vitrina de ganchos de la semana' }
       ]
     }
@@ -1004,7 +1004,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '18';
+const DAYS_CONTENT_VERSION = '19';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
