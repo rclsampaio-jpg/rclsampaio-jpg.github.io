@@ -416,11 +416,11 @@ function getAudioUrlForDay(dayNumber: number): string {
 // "Encontros" videos. Placeholder links below until she records the real
 // ones — swap the URL per day and the preview thumbnail updates itself.
 const DAILY_VIDEO_FILES: Record<number, string> = {
-  1: '',
-  2: '',
-  3: '',
-  4: '',
-  5: '',
+  1: 'https://youtu.be/Tekm-ET1ezU',
+  2: 'https://youtu.be/sZAzyeICwnM',
+  3: 'https://youtu.be/L3UH4DKYh6Q',
+  4: 'https://youtu.be/mr3Pgg1k0j0',
+  5: 'https://youtu.be/Bxk-WYWt1xM',
   6: '',
   7: ''
 };
@@ -1004,7 +1004,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '19';
+const DAYS_CONTENT_VERSION = '20';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
