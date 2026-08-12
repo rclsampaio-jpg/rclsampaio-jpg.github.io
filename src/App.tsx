@@ -122,7 +122,10 @@ function AppContent() {
   // without re-unlocking would be confusing; it always falls back to Home.
   const VALID_TAB_IDS: TabId[] = ['home', 'mission', 'journey', 'sos', 'nextlevel', 'transformation', 'community', 'library', 'profile', 'settings'];
   const [activeTab, setActiveTabState] = useState<TabId>(() => {
-    const stored = localStorage.getItem('renaser_active_tab') as TabId | null;
+    // sessionStorage (not localStorage) on purpose: a reload/refresh within
+    // the same open session resumes on the same tab, but fully closing and
+    // reopening the app (a new session) always lands back on Home.
+    const stored = sessionStorage.getItem('renaser_active_tab') as TabId | null;
     return stored && VALID_TAB_IDS.includes(stored) ? stored : 'home';
   });
   // Refreshing the page used to always drop the user back on Home even if
@@ -130,7 +133,7 @@ function AppContent() {
   // where they left off instead of feeling like lost progress.
   const setActiveTab = (tab: TabId) => {
     setActiveTabState(tab);
-    localStorage.setItem('renaser_active_tab', tab);
+    sessionStorage.setItem('renaser_active_tab', tab);
   };
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
