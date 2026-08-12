@@ -742,6 +742,9 @@ export default function DailyMissionView({
     return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
   };
   const showDailyVideo = currentDay.dayNumber <= 7 && !!localizedContent.videoUrl;
+  // Days 1-7 skip the daily audio (the support video replaces it), so the
+  // Passo 01/02/03 numbering shifts down by one for that first week.
+  const showDailyAudio = currentDay.dayNumber > 7;
   const dailyVideoThumbnail = getYouTubeThumbnail(localizedContent.videoUrl);
 
   const hookOptions = getHookOptionsForDay(currentDay.dayNumber, lang, progress.journeyStartDate);
@@ -1018,6 +1021,9 @@ export default function DailyMissionView({
       skipBack: 'Retroceder 10s',
     }
   }[lang];
+
+  const stepLabelExposure = showDailyAudio ? textDict.step02 : textDict.step01;
+  const stepLabelHook = showDailyAudio ? textDict.step03 : textDict.step02;
 
   // A newly-unlocked day waits for the real next calendar day, except a
   // completion late at night (before LATE_NIGHT_UNLOCK_CUTOFF_HOUR) is
@@ -1359,7 +1365,8 @@ export default function DailyMissionView({
                 </motion.div>
               )}
 
-              {/* STEP 1: Calming Audio Session */}
+              {/* STEP 1: Calming Audio Session (days 8+ only, see showDailyAudio) */}
+              {showDailyAudio && (
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -1480,6 +1487,7 @@ export default function DailyMissionView({
                   </button>
                 </div>
               </motion.div>
+              )}
 
               {/* Day 1 only: important-notice callout for the hook/anti-hook
                   reference document, positioned right before Step 2 since
@@ -1521,7 +1529,7 @@ export default function DailyMissionView({
               >
                 <div className="flex items-center gap-2">
                   <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold bg-rose-50/50 dark:bg-rosegold/10 px-3 py-1 rounded-full uppercase font-extrabold">
-                    <EditableText contentKey="dailyMission.step02" fallback={textDict.step02} as="span" /> •{' '}
+                    {stepLabelExposure} •{' '}
                     <EditableText contentKey="dailyMission.exposureTitle" fallback={textDict.exposureTitle} as="span" />
                   </span>
                 </div>
@@ -1558,7 +1566,7 @@ export default function DailyMissionView({
               >
                 <div className="flex items-center justify-between pb-2 border-b border-rose-100/15 dark:border-ink-hairline">
                   <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
-                    <EditableText contentKey="dailyMission.step03" fallback={textDict.step03} as="span" /> •{' '}
+                    {stepLabelHook} •{' '}
                     <EditableText contentKey="dailyMission.hookShowcaseTitle" fallback={textDict.hookShowcaseTitle} as="span" />
                   </span>
                 </div>

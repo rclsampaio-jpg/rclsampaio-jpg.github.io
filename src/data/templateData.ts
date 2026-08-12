@@ -392,18 +392,21 @@ export function getHookCategoryLabel(dayNumber: number, lang: Language, startDat
 
 // Real recorded daily audio, one file per day, added incrementally.
 // Days not listed here fall back to the placeholder ambience sound below.
+// Days 1-7 no longer play a daily audio (replaced by the support video,
+// see DAILY_VIDEO_FILES below) — the 11 already-recorded audios were
+// pushed forward 7 days so none of the recordings were discarded.
 const DAILY_AUDIO_FILES: Record<number, string> = {
-  1: '/assets/audio/dia-01.mp3',
-  2: '/assets/audio/dia-02.mp3',
-  3: '/assets/audio/dia-03.mp3',
-  4: '/assets/audio/dia-04.mp3',
-  5: '/assets/audio/dia-05.mp3',
-  6: '/assets/audio/dia-06.mp3',
-  7: '/assets/audio/dia-07.mp3',
-  8: '/assets/audio/dia-08.mp3',
-  9: '/assets/audio/dia-09.mp3',
-  10: '/assets/audio/dia-10.mp3',
-  11: '/assets/audio/dia-11.mp3'
+  8: '/assets/audio/dia-01.mp3',
+  9: '/assets/audio/dia-02.mp3',
+  10: '/assets/audio/dia-03.mp3',
+  11: '/assets/audio/dia-04.mp3',
+  12: '/assets/audio/dia-05.mp3',
+  13: '/assets/audio/dia-06.mp3',
+  14: '/assets/audio/dia-07.mp3',
+  15: '/assets/audio/dia-08.mp3',
+  16: '/assets/audio/dia-09.mp3',
+  17: '/assets/audio/dia-10.mp3',
+  18: '/assets/audio/dia-11.mp3'
 };
 const FALLBACK_AUDIO_URL = 'https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg';
 
@@ -1004,7 +1007,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '20';
+const DAYS_CONTENT_VERSION = '21';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
