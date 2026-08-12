@@ -368,7 +368,19 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
     </div>
 
-    <!-- STEP 6: reveal + submit -->
+    <!-- STEP 6: transformação até hoje -->
+    <div class="step" data-step>
+      <p class="qnum">06</p>
+      <p class="question">O que você já fez pela sua transformação até hoje? <span class="req">*</span></p>
+      <div class="options" data-radio-group>
+        <label class="option"><input type="radio" name="Transformação até hoje" value="Ainda não investi em nada" required> Ainda não investi em nada</label>
+        <label class="option"><input type="radio" name="Transformação até hoje" value="Já fiz terapia/mentoria/cursos"> Já fiz terapia/mentoria/cursos</label>
+        <label class="option"><input type="radio" name="Transformação até hoje" value="Já fiz retiro, mentorias, cursos, etc. Já venho de uma jornada longa!"> Já fiz retiro, mentorias, cursos, etc. Já venho de uma jornada longa!</label>
+      </div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:18px auto 0">voltar</button>
+    </div>
+
+    <!-- STEP 7: reveal + submit -->
     <div class="step" data-step>
       <div class="reveal-card">
         <p class="reveal-label">Eu li o que você escreveu</p>
@@ -409,7 +421,7 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
     progressBar.style.width = (i / (steps.length - 1) * 100) + '%';
     var errorMsg = steps[i].querySelector('.error-msg');
     if (errorMsg) errorMsg.classList.remove('show');
-    if (i === 6) updateReveal();
+    if (i === 7) updateReveal();
     current = i;
     window.scrollTo(0, 0);
   }
