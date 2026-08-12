@@ -360,7 +360,7 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
     <div class="step" data-step>
       <p class="qnum">05</p>
       <p class="question">Você acha que está travado no medo de ser visto, julgamento? Onde você acha que seus desafios te pegam mais hoje? <span class="req">*</span></p>
-      <div class="field"><textarea name="Onde a trava pega" id="f_trava" required rows="3" enterkeyhint="next"></textarea></div>
+      <div class="field"><textarea name="Onde a trava pega" id="f_trava" required rows="3" enterkeyhint="next" placeholder="ex: Eu travo na hora de aparecer no vídeo, mesmo já tendo o conteúdo pronto na cabeça..."></textarea></div>
       <div class="hint"><em>ex. sobre mim:</em> Eu era inconsistente e tinha muito bloqueio criativo mesmo quando tinha coragem de postar. Nesse processo, entendi que minhas crenças e padrões inconscientes estavam me travando e sabotando. E quando trabalhei o meu DESTRAVE, tudo mudou!</div>
       <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
       <button type="button" class="btn-voltar back-btn" style="display:block; margin:8px auto 0">voltar</button>
@@ -426,6 +426,20 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
     window.scrollTo(0, 0);
   }
 
+  // Respostas de baixo esforço que a pergunta 5 (aberta, sobre a trava)
+  // recebe demais: "não sei" em qualquer grafia, ou texto curto demais pra
+  // gerar uma citação real na tela de reveal. Bloqueia só esse campo
+  // específico, não afeta as outras perguntas de texto livre.
+  var LOW_EFFORT_TRAVA = /^(n[aã]o\s*sei|ns|n\s*sei|sei\s*l[aá]|idk|nada|nenhuma?|sem ideia|n\/?a)\.?!?$/i;
+  var MIN_TRAVA_LENGTH = 15;
+
+  function isLowEffortTrava(value) {
+    var trimmed = value.trim();
+    if (trimmed.length < MIN_TRAVA_LENGTH) return true;
+    if (LOW_EFFORT_TRAVA.test(trimmed)) return true;
+    return false;
+  }
+
   function stepIsValid(i) {
     var step = steps[i];
     var required = step.querySelectorAll('[required]');
@@ -437,6 +451,7 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
     for (var k = 0; k < required.length; k++) {
       if (!required[k].value.trim()) return false;
       if (!required[k].checkValidity()) return false;
+      if (required[k].id === 'f_trava' && isLowEffortTrava(required[k].value)) return false;
     }
     return true;
   }
@@ -444,6 +459,9 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
   function errorMessageFor(i) {
     var step = steps[i];
     var field = step.querySelector('input[required], textarea[required]');
+    if (field && field.id === 'f_trava' && field.value.trim() && isLowEffortTrava(field.value) && field.checkValidity()) {
+      return 'Capricha um pouquinho mais nessa resposta, conta pra mim com suas palavras o que trava você de verdade (o exemplo acima te ajuda) &#128536;';
+    }
     if (field && field.value.trim() && !field.checkValidity()) {
       if (field.type === 'email') return 'Esse email não parece completo, confere o formato pra mim? &#128536;';
       if (field.type === 'tel') return 'Esse WhatsApp não parece completo, só números, DDD incluso &#128536;';
