@@ -1549,51 +1549,6 @@ export default function DailyMissionView({
               </motion.div>
 
 
-              {/* THE THREE VIDEO / PROMISES EXPERIENCE - Mandatory Checklist */}
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-[2rem] border border-amber-200/40 dark:border-amber-500/10 bg-[#FFFDF9] dark:bg-ink-raised/30 p-6 sm:p-8 shadow-rosegold space-y-5"
-              >
-                <div className="space-y-1.5">
-                  <h3 className="text-sm font-bold text-slate-800 dark:text-amber-100 flex items-center gap-2 font-sans tracking-wide">
-                    <Sparkles className="h-4.5 w-4.5 text-accentgold animate-pulse" />
-                    <EditableText contentKey="dailyMission.promisesTitle" fallback={textDict.promisesTitle} as="span" />
-                  </h3>
-                  <EditableText
-                    contentKey="dailyMission.promisesSubtitle"
-                    fallback={textDict.promisesSubtitle}
-                    as="p"
-                    className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
-                  />
-                </div>
-
-                <div className="space-y-3.5 pt-1">
-                  {([
-                    { key: 'inertia' as const, ...localizedContent.promises[0] },
-                    { key: 'confidence' as const, ...localizedContent.promises[1] },
-                    { key: 'evidence' as const, ...localizedContent.promises[2] }
-                  ]).map((item) => (
-                    <label
-                      key={item.key}
-                      className="flex items-start gap-3.5 p-4 bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/10 cursor-pointer hover:bg-amber-50/30 dark:hover:bg-rosegold/5 transition-all duration-300 select-none shadow-xs"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={promisesChecked[item.key]}
-                        disabled={isCompleted}
-                        onChange={(e) => setPromisesChecked(p => ({ ...p, [item.key]: e.target.checked }))}
-                        className="mt-0.5 h-4.5 w-4.5 rounded-md text-rosegold border-slate-300 focus:ring-rosegold transition-all duration-300"
-                      />
-                      <div className="text-xs font-sans">
-                        <span className="font-semibold text-slate-700 dark:text-ink-text block">{item.label}</span>
-                        <span className="text-slate-500 dark:text-ink-muted block mt-1 leading-relaxed">{item.desc}</span>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </motion.div>
               {/* STEP 3: Weekly Hook Showcase (opening hook / daily hook / own idea) */}
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
@@ -1737,6 +1692,51 @@ export default function DailyMissionView({
                     />
                   </div>
                 )}
+              </motion.div>
+              {/* THE THREE VIDEO / PROMISES EXPERIENCE - Mandatory Checklist */}
+              <motion.div 
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                className="rounded-[2rem] border border-amber-200/40 dark:border-amber-500/10 bg-[#FFFDF9] dark:bg-ink-raised/30 p-6 sm:p-8 shadow-rosegold space-y-5"
+              >
+                <div className="space-y-1.5">
+                  <h3 className="text-sm font-bold text-slate-800 dark:text-amber-100 flex items-center gap-2 font-sans tracking-wide">
+                    <Sparkles className="h-4.5 w-4.5 text-accentgold animate-pulse" />
+                    <EditableText contentKey="dailyMission.promisesTitle" fallback={textDict.promisesTitle} as="span" />
+                  </h3>
+                  <EditableText
+                    contentKey="dailyMission.promisesSubtitle"
+                    fallback={textDict.promisesSubtitle}
+                    as="p"
+                    className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
+                  />
+                </div>
+
+                <div className="space-y-3.5 pt-1">
+                  {([
+                    { key: 'inertia' as const, ...localizedContent.promises[0] },
+                    { key: 'confidence' as const, ...localizedContent.promises[1] },
+                    { key: 'evidence' as const, ...localizedContent.promises[2] }
+                  ]).map((item) => (
+                    <label
+                      key={item.key}
+                      className="flex items-start gap-3.5 p-4 bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/10 cursor-pointer hover:bg-amber-50/30 dark:hover:bg-rosegold/5 transition-all duration-300 select-none shadow-xs"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={promisesChecked[item.key]}
+                        disabled={isCompleted}
+                        onChange={(e) => setPromisesChecked(p => ({ ...p, [item.key]: e.target.checked }))}
+                        className="mt-0.5 h-4.5 w-4.5 rounded-md text-rosegold border-slate-300 focus:ring-rosegold transition-all duration-300"
+                      />
+                      <div className="text-xs font-sans">
+                        <span className="font-semibold text-slate-700 dark:text-ink-text block">{item.label}</span>
+                        <span className="text-slate-500 dark:text-ink-muted block mt-1 leading-relaxed">{item.desc}</span>
+                      </div>
+                    </label>
+                  ))}
+                </div>
               </motion.div>
 
             </>

@@ -670,12 +670,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     friday: {
       title: 'Sexta: sequência de Stories que vende ou conecta (mínimo 5 slides)',
       bullets: [
-        'Use o prompt 10 da Renata OS (ou a fórmula de Stories) pra roteirizar os 5+ slides, já incluindo o convite final dentro da sequência',
+        'Peça pra Renata OS montar os 5+ slides com a fórmula de Stories, já incluindo o convite final dentro da sequência, e use o prompt 10 pra ajustar o tom depois de escrito',
         'Grave os 5+ Stories',
         'Poste a sequência completa'
       ],
       promises: [
-        { label: 'Roteirizei os 5+ Stories na Renata OS', desc: 'Prompt 10 ou a fórmula de Stories, com o convite já dentro da sequência' },
+        { label: 'Roteirizei os 5+ Stories na Renata OS', desc: 'Fórmula de Stories + prompt 10 pra tirar cara de IA, convite já dentro da sequência' },
         { label: 'Gravei os 5+ Stories', desc: 'Sequência completa, sem parar no meio' },
         { label: 'Postei a sequência pra quem já te segue', desc: 'Mínimo 5 slides' }
       ]
@@ -683,12 +683,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     saturday: {
       title: 'Sábado: sequência de Stories + vídeo B-roll de 7 segundos',
       bullets: [
-        'Use o prompt 10 da Renata OS pra roteirizar a sequência de Stories',
+        'Peça pra Renata OS montar a sequência com a fórmula de Stories, e use o prompt 10 pra ajustar o tom depois de escrito',
         'Poste a sequência de Stories (mínimo 5 slides)',
         'Grave e poste 1 vídeo B-roll de 7 segundos'
       ],
       promises: [
-        { label: 'Roteirizei a sequência na Renata OS', desc: 'Prompt 10, antes de gravar' },
+        { label: 'Roteirizei a sequência na Renata OS', desc: 'Fórmula de Stories + prompt 10, antes de gravar' },
         { label: 'Postei a sequência de Stories', desc: 'Mínimo 5 slides, vendendo ou conectando' },
         { label: 'Postei o vídeo B-roll de 7 segundos', desc: 'Gancho forte na legenda, prompt 1 a 3 se precisar de ideia' }
       ]
@@ -771,12 +771,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     friday: {
       title: 'Friday: a selling or connecting Stories sequence (minimum 5 slides)',
       bullets: [
-        'Use Renata OS prompt 10 (or the Stories formula) to script the 5+ slides, with the closing invite already built into the sequence',
+        'Ask Renata OS to build the 5+ slides using the Stories formula, with the closing invite already built into the sequence, then use prompt 10 to adjust the tone once it is written',
         'Record the 5+ Stories',
         'Post the full sequence'
       ],
       promises: [
-        { label: 'Scripted the 5+ Stories on Renata OS', desc: 'Prompt 10 or the Stories formula, invite already inside the sequence' },
+        { label: 'Scripted the 5+ Stories on Renata OS', desc: 'Stories formula + prompt 10 to strip the AI voice, invite already inside the sequence' },
         { label: 'Recorded the 5+ Stories', desc: 'Full sequence, without stopping halfway' },
         { label: 'Posted the sequence for whoever already follows you', desc: 'Minimum 5 slides' }
       ]
@@ -784,12 +784,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     saturday: {
       title: 'Saturday: Stories sequence + seven-second b-roll video',
       bullets: [
-        'Use Renata OS prompt 10 to script the Stories sequence',
+        'Ask Renata OS to build the sequence using the Stories formula, then use prompt 10 to adjust the tone once it is written',
         'Post the Stories sequence (minimum 5 slides)',
         'Record and post 1 seven-second b-roll video'
       ],
       promises: [
-        { label: 'Scripted the sequence on Renata OS', desc: 'Prompt 10, before recording' },
+        { label: 'Scripted the sequence on Renata OS', desc: 'Stories formula + prompt 10, before recording' },
         { label: 'Posted the Stories sequence', desc: 'Minimum 5 slides, selling or connecting' },
         { label: 'Posted the seven-second b-roll video', desc: 'Strong hook in the caption, prompt 1-3 if you need an idea' }
       ]
@@ -872,12 +872,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     friday: {
       title: 'Viernes: secuencia de Stories que vende o conecta (mínimo 5 diapositivas)',
       bullets: [
-        'Usa el prompt 10 de la Renata OS (o la fórmula de Stories) para escribir las 5+ diapositivas, con la invitación final ya dentro de la secuencia',
+        'Pídele a la Renata OS que arme las 5+ diapositivas con la fórmula de Stories, con la invitación final ya dentro de la secuencia, y usa el prompt 10 para ajustar el tono después de escrito',
         'Graba las 5+ Stories',
         'Publica la secuencia completa'
       ],
       promises: [
-        { label: 'Escribí el guión de las 5+ Stories en la Renata OS', desc: 'Prompt 10 o la fórmula de Stories, invitación ya dentro de la secuencia' },
+        { label: 'Escribí el guión de las 5+ Stories en la Renata OS', desc: 'Fórmula de Stories + prompt 10 para quitar cara de IA, invitación ya dentro de la secuencia' },
         { label: 'Grabé las 5+ Stories', desc: 'Secuencia completa, sin parar a la mitad' },
         { label: 'Publiqué la secuencia para quien ya te sigue', desc: 'Mínimo 5 diapositivas' }
       ]
@@ -885,12 +885,12 @@ const DAILY_PLAN_COPY: Record<Language, {
     saturday: {
       title: 'Sábado: secuencia de Stories + video B-roll de 7 segundos',
       bullets: [
-        'Usa el prompt 10 de la Renata OS para escribir el guión de la secuencia de Stories',
+        'Pídele a la Renata OS que arme la secuencia con la fórmula de Stories, y usa el prompt 10 para ajustar el tono después de escrito',
         'Publica la secuencia de Stories (mínimo 5 diapositivas)',
         'Graba y publica 1 video B-roll de 7 segundos'
       ],
       promises: [
-        { label: 'Escribí el guión en la Renata OS', desc: 'Prompt 10, antes de grabar' },
+        { label: 'Escribí el guión en la Renata OS', desc: 'Fórmula de Stories + prompt 10, antes de grabar' },
         { label: 'Publiqué la secuencia de Stories', desc: 'Mínimo 5 diapositivas, vendiendo o conectando' },
         { label: 'Publiqué el video B-roll de 7 segundos', desc: 'Gancho fuerte en la descripción, prompt 1 a 3 si necesitas una idea' }
       ]
@@ -1004,7 +1004,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '17';
+const DAYS_CONTENT_VERSION = '18';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
