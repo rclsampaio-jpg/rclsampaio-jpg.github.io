@@ -1512,7 +1512,89 @@ export default function DailyMissionView({
                 </motion.div>
               )}
 
-              {/* STEP 2: Weekly Hook Showcase (opening hook / daily hook / own idea) */}
+              {/* STEP 2: Exposure Action */}
+              <motion.div 
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="rounded-[2rem] bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-6 sm:p-8 shadow-rosegold space-y-4"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold bg-rose-50/50 dark:bg-rosegold/10 px-3 py-1 rounded-full uppercase font-extrabold">
+                    <EditableText contentKey="dailyMission.step02" fallback={textDict.step02} as="span" /> •{' '}
+                    <EditableText contentKey="dailyMission.exposureTitle" fallback={textDict.exposureTitle} as="span" />
+                  </span>
+                </div>
+                
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-rose-50/15 to-rose-50/5 dark:bg-none! dark:bg-transparent! border border-rose-100/15 dark:border-ink-hairline shadow-sm dark:shadow-none space-y-3">
+                  {(() => {
+                    const [title, ...bullets] = localizedContent.exposureAction.split('\n').filter(Boolean);
+                    return (
+                      <>
+                        <p className="text-slate-800 dark:text-ink-text text-sm font-sans font-semibold leading-relaxed">
+                          {title}
+                        </p>
+                        <ul className="space-y-2">
+                          {bullets.map((bullet, idx) => (
+                            <li key={idx} className="flex gap-2 text-slate-700 dark:text-ink-muted text-sm font-sans leading-relaxed">
+                              <span className="text-rosegold shrink-0">•</span>
+                              <span>{bullet.replace(/^•\s*/, '')}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    );
+                  })()}
+                </div>
+              </motion.div>
+
+
+              {/* THE THREE VIDEO / PROMISES EXPERIENCE - Mandatory Checklist */}
+              <motion.div 
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                className="rounded-[2rem] border border-amber-200/40 dark:border-amber-500/10 bg-[#FFFDF9] dark:bg-ink-raised/30 p-6 sm:p-8 shadow-rosegold space-y-5"
+              >
+                <div className="space-y-1.5">
+                  <h3 className="text-sm font-bold text-slate-800 dark:text-amber-100 flex items-center gap-2 font-sans tracking-wide">
+                    <Sparkles className="h-4.5 w-4.5 text-accentgold animate-pulse" />
+                    <EditableText contentKey="dailyMission.promisesTitle" fallback={textDict.promisesTitle} as="span" />
+                  </h3>
+                  <EditableText
+                    contentKey="dailyMission.promisesSubtitle"
+                    fallback={textDict.promisesSubtitle}
+                    as="p"
+                    className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
+                  />
+                </div>
+
+                <div className="space-y-3.5 pt-1">
+                  {([
+                    { key: 'inertia' as const, ...localizedContent.promises[0] },
+                    { key: 'confidence' as const, ...localizedContent.promises[1] },
+                    { key: 'evidence' as const, ...localizedContent.promises[2] }
+                  ]).map((item) => (
+                    <label
+                      key={item.key}
+                      className="flex items-start gap-3.5 p-4 bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/10 cursor-pointer hover:bg-amber-50/30 dark:hover:bg-rosegold/5 transition-all duration-300 select-none shadow-xs"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={promisesChecked[item.key]}
+                        disabled={isCompleted}
+                        onChange={(e) => setPromisesChecked(p => ({ ...p, [item.key]: e.target.checked }))}
+                        className="mt-0.5 h-4.5 w-4.5 rounded-md text-rosegold border-slate-300 focus:ring-rosegold transition-all duration-300"
+                      />
+                      <div className="text-xs font-sans">
+                        <span className="font-semibold text-slate-700 dark:text-ink-text block">{item.label}</span>
+                        <span className="text-slate-500 dark:text-ink-muted block mt-1 leading-relaxed">{item.desc}</span>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </motion.div>
+              {/* STEP 3: Weekly Hook Showcase (opening hook / daily hook / own idea) */}
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -1521,7 +1603,7 @@ export default function DailyMissionView({
               >
                 <div className="flex items-center justify-between pb-2 border-b border-rose-100/15 dark:border-ink-hairline">
                   <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
-                    <EditableText contentKey="dailyMission.step02" fallback={textDict.step02} as="span" /> •{' '}
+                    <EditableText contentKey="dailyMission.step03" fallback={textDict.step03} as="span" /> •{' '}
                     <EditableText contentKey="dailyMission.hookShowcaseTitle" fallback={textDict.hookShowcaseTitle} as="span" />
                   </span>
                 </div>
@@ -1657,88 +1739,6 @@ export default function DailyMissionView({
                 )}
               </motion.div>
 
-              {/* STEP 4: Exposure Action */}
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-[2rem] bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-6 sm:p-8 shadow-rosegold space-y-4"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold bg-rose-50/50 dark:bg-rosegold/10 px-3 py-1 rounded-full uppercase font-extrabold">
-                    <EditableText contentKey="dailyMission.step03" fallback={textDict.step03} as="span" /> •{' '}
-                    <EditableText contentKey="dailyMission.exposureTitle" fallback={textDict.exposureTitle} as="span" />
-                  </span>
-                </div>
-                
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-rose-50/15 to-rose-50/5 dark:bg-none! dark:bg-transparent! border border-rose-100/15 dark:border-ink-hairline shadow-sm dark:shadow-none space-y-3">
-                  {(() => {
-                    const [title, ...bullets] = localizedContent.exposureAction.split('\n').filter(Boolean);
-                    return (
-                      <>
-                        <p className="text-slate-800 dark:text-ink-text text-sm font-sans font-semibold leading-relaxed">
-                          {title}
-                        </p>
-                        <ul className="space-y-2">
-                          {bullets.map((bullet, idx) => (
-                            <li key={idx} className="flex gap-2 text-slate-700 dark:text-ink-muted text-sm font-sans leading-relaxed">
-                              <span className="text-rosegold shrink-0">•</span>
-                              <span>{bullet.replace(/^•\s*/, '')}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </>
-                    );
-                  })()}
-                </div>
-              </motion.div>
-
-
-              {/* THE THREE VIDEO / PROMISES EXPERIENCE - Mandatory Checklist */}
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-[2rem] border border-amber-200/40 dark:border-amber-500/10 bg-[#FFFDF9] dark:bg-ink-raised/30 p-6 sm:p-8 shadow-rosegold space-y-5"
-              >
-                <div className="space-y-1.5">
-                  <h3 className="text-sm font-bold text-slate-800 dark:text-amber-100 flex items-center gap-2 font-sans tracking-wide">
-                    <Sparkles className="h-4.5 w-4.5 text-accentgold animate-pulse" />
-                    <EditableText contentKey="dailyMission.promisesTitle" fallback={textDict.promisesTitle} as="span" />
-                  </h3>
-                  <EditableText
-                    contentKey="dailyMission.promisesSubtitle"
-                    fallback={textDict.promisesSubtitle}
-                    as="p"
-                    className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
-                  />
-                </div>
-
-                <div className="space-y-3.5 pt-1">
-                  {([
-                    { key: 'inertia' as const, ...localizedContent.promises[0] },
-                    { key: 'confidence' as const, ...localizedContent.promises[1] },
-                    { key: 'evidence' as const, ...localizedContent.promises[2] }
-                  ]).map((item) => (
-                    <label
-                      key={item.key}
-                      className="flex items-start gap-3.5 p-4 bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/10 cursor-pointer hover:bg-amber-50/30 dark:hover:bg-rosegold/5 transition-all duration-300 select-none shadow-xs"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={promisesChecked[item.key]}
-                        disabled={isCompleted}
-                        onChange={(e) => setPromisesChecked(p => ({ ...p, [item.key]: e.target.checked }))}
-                        className="mt-0.5 h-4.5 w-4.5 rounded-md text-rosegold border-slate-300 focus:ring-rosegold transition-all duration-300"
-                      />
-                      <div className="text-xs font-sans">
-                        <span className="font-semibold text-slate-700 dark:text-ink-text block">{item.label}</span>
-                        <span className="text-slate-500 dark:text-ink-muted block mt-1 leading-relaxed">{item.desc}</span>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </motion.div>
             </>
           )}
 
