@@ -502,7 +502,11 @@ export default function DailyMissionView({
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const isCompleted = progress.completionHistory.includes(currentDay.dayNumber);
-  const isRestDay = currentDay.type === DayType.Rest;
+  // Wednesday no longer is a passive "rest day" (removed per the weekly combo
+  // redesign, every day now has a real exposure plan, see getDailyPlan in
+  // templateData.ts). isRestDay is kept only as a rendering hook the
+  // surrounding JSX still references, always false now.
+  const isRestDay = false;
   const isFavorite = progress.favoriteHooks.includes(currentDay.dayNumber);
 
   const currentPhaseId = getPhaseId(currentDay.dayNumber);
@@ -510,11 +514,6 @@ export default function DailyMissionView({
 
   // Check if reflection is a seventh-day moment
   const isSeventhDayReflection = currentDay.dayNumber % 7 === 0;
-
-  // Every 3rd day, Step 3 / Promise 3 swaps from a single hook video to a
-  // Stories story-arc sequence (dor → ponte → resultado), must match the
-  // same i % 3 === 0 cadence used to generate exposureAction in templateData.ts.
-  const isStorySequenceDay = currentDay.dayNumber % 3 === 0;
 
   // Friday Sanctuary Breathing Loop
   useEffect(() => {
@@ -708,20 +707,38 @@ export default function DailyMissionView({
   const prefGrammar = resolveGrammarPreference(progress.grammarPreference);
   const guideStyle = resolveGuideStyle(progress.guideStyle);
 
+  const fallbackPromise = { label: '', desc: '' };
   const rawContent = currentDay.content[lang] || currentDay.content['pt'] || {
     audioUrl: '',
+    videoUrl: '',
     hook: '',
     scripts: ['', '', ''],
     exposureAction: '',
-    reflectionQuestion: ''
+    reflectionQuestion: '',
+    promises: [fallbackPromise, fallbackPromise, fallbackPromise] as [typeof fallbackPromise, typeof fallbackPromise, typeof fallbackPromise]
   };
 
   const localizedContent = {
     audioUrl: rawContent.audioUrl,
+    videoUrl: rawContent.videoUrl,
     hook: adaptMessage(rawContent.hook, prefGrammar, lang),
     exposureAction: adaptMessage(rawContent.exposureAction, prefGrammar, lang),
-    reflectionQuestion: adaptMessage(rawContent.reflectionQuestion, prefGrammar, lang)
+    reflectionQuestion: adaptMessage(rawContent.reflectionQuestion, prefGrammar, lang),
+    promises: rawContent.promises.map(p => ({
+      label: adaptMessage(p.label, prefGrammar, lang),
+      desc: adaptMessage(p.desc, prefGrammar, lang)
+    })) as [{ label: string; desc: string }, { label: string; desc: string }, { label: string; desc: string }]
   };
+
+  // Welcome-week support video preview (Days 1-7 only), same thumbnail
+  // pattern as the Library's "Vídeo da Semana".
+  const getYouTubeThumbnail = (url?: string): string | null => {
+    if (!url) return null;
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{11})/);
+    return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
+  };
+  const showDailyVideo = currentDay.dayNumber <= 7 && !!localizedContent.videoUrl;
+  const dailyVideoThumbnail = getYouTubeThumbnail(localizedContent.videoUrl);
 
   const hookOptions = getHookOptionsForDay(currentDay.dayNumber, lang, progress.journeyStartDate);
   const hookCategoryLabel = getHookCategoryLabel(currentDay.dayNumber, lang, progress.journeyStartDate);
@@ -735,6 +752,9 @@ export default function DailyMissionView({
       lockedDesc: 'Este passo libera amanhã. Aproveite hoje pra descansar, você já cumpriu sua promessa.',
       backToHome: 'Voltar pro Início',
       audioTitle: 'Mensagem da Renata',
+      videoTitle: 'Vídeo de Apoio da Semana 1',
+      videoDesc: 'Um vídeo curto da Renata só pros primeiros 7 dias, pra te acompanhar de perto nessa fase.',
+      videoWatch: 'Assistir no YouTube',
       ratingLoved: 'Amei',
       ratingLiked: 'Gostei',
       ratingDisliked: 'Não gostei',
@@ -819,6 +839,9 @@ export default function DailyMissionView({
       lockedDesc: 'This step unlocks tomorrow. Take today to rest, you already kept your promise.',
       backToHome: 'Back to Home',
       audioTitle: "Renata's Message",
+      videoTitle: 'Week 1 Support Video',
+      videoDesc: "A short video from Renata just for the first 7 days, to walk with you closely through this phase.",
+      videoWatch: 'Watch on YouTube',
       ratingLoved: 'Loved it',
       ratingLiked: 'Liked it',
       ratingDisliked: "Didn't like it",
@@ -903,6 +926,9 @@ export default function DailyMissionView({
       lockedDesc: 'Este paso se libera mañana. Aprovecha hoy para descansar, ya cumpliste tu promesa.',
       backToHome: 'Volver al Inicio',
       audioTitle: 'Mensaje de Renata',
+      videoTitle: 'Video de Apoyo de la Semana 1',
+      videoDesc: 'Un video corto de Renata solo para los primeros 7 días, para acompañarte de cerca en esta fase.',
+      videoWatch: 'Ver en YouTube',
       ratingLoved: 'Me encantó',
       ratingLiked: 'Me gustó',
       ratingDisliked: 'No me gustó',
@@ -1286,6 +1312,43 @@ export default function DailyMissionView({
                 </div>
               </motion.div>
 
+              {/* Week 1 support video preview (Days 1-7 only) */}
+              {showDailyVideo && (
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  className="rounded-[2rem] bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-6 sm:p-8 shadow-rosegold space-y-4"
+                >
+                  <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
+                    <EditableText contentKey="dailyMission.videoTitle" fallback={textDict.videoTitle} as="span" />
+                  </span>
+                  <a
+                    href={localizedContent.videoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => logEngagementEvent('daily_support_video', String(currentDay.dayNumber))}
+                    className="block group"
+                  >
+                    <div className="relative rounded-2xl overflow-hidden aspect-video bg-slate-900">
+                      {dailyVideoThumbnail && (
+                        <img
+                          src={dailyVideoThumbnail}
+                          alt={textDict.videoTitle}
+                          className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-250"
+                        />
+                      )}
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors duration-250">
+                        <div className="h-14 w-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-250">
+                          <Play className="h-6 w-6 text-slate-900 ml-0.5" fill="currentColor" />
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                  <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">{textDict.videoDesc}</p>
+                </motion.div>
+              )}
+
               {/* STEP 1: Calming Audio Session */}
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
@@ -1643,15 +1706,9 @@ export default function DailyMissionView({
 
                 <div className="space-y-3.5 pt-1">
                   {([
-                    { key: 'inertia' as const, labelKey: 'dailyMission.promise1Label', label: textDict.promise1Label, descKey: 'dailyMission.promise1', desc: textDict.promise1 },
-                    { key: 'confidence' as const, labelKey: 'dailyMission.promise2Label', label: textDict.promise2Label, descKey: 'dailyMission.promise2', desc: textDict.promise2 },
-                    {
-                      key: 'evidence' as const,
-                      labelKey: isStorySequenceDay ? 'dailyMission.promise3LabelStorySequence' : 'dailyMission.promise3Label',
-                      label: isStorySequenceDay ? textDict.promise3LabelStorySequence : textDict.promise3Label,
-                      descKey: isStorySequenceDay ? 'dailyMission.promise3StorySequence' : 'dailyMission.promise3',
-                      desc: isStorySequenceDay ? textDict.promise3StorySequence : textDict.promise3
-                    }
+                    { key: 'inertia' as const, ...localizedContent.promises[0] },
+                    { key: 'confidence' as const, ...localizedContent.promises[1] },
+                    { key: 'evidence' as const, ...localizedContent.promises[2] }
                   ]).map((item) => (
                     <label
                       key={item.key}
@@ -1665,8 +1722,8 @@ export default function DailyMissionView({
                         className="mt-0.5 h-4.5 w-4.5 rounded-md text-rosegold border-slate-300 focus:ring-rosegold transition-all duration-300"
                       />
                       <div className="text-xs font-sans">
-                        <EditableText contentKey={item.labelKey} fallback={item.label} as="span" className="font-semibold text-slate-700 dark:text-ink-text block" />
-                        <EditableText contentKey={item.descKey} fallback={item.desc} as="span" className="text-slate-500 dark:text-ink-muted block mt-1 leading-relaxed" />
+                        <span className="font-semibold text-slate-700 dark:text-ink-text block">{item.label}</span>
+                        <span className="text-slate-500 dark:text-ink-muted block mt-1 leading-relaxed">{item.desc}</span>
                       </div>
                     </label>
                   ))}

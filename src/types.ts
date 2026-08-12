@@ -15,12 +15,19 @@ export enum DayType {
   Reflection = 'Reflection',
 }
 
+export interface DayPromise {
+  label: string;
+  desc: string;
+}
+
 export interface DayContent {
   audioUrl: string;
+  videoUrl?: string; // Support video for Days 1-7 only (welcome week)
   hook: string;
   scripts: string[]; // Exactly 3 script examples
   exposureAction: string;
   reflectionQuestion: string;
+  promises: [DayPromise, DayPromise, DayPromise]; // 3 checkboxes, content varies by day's combo
 }
 
 export type MultiLangContent = Record<Language, DayContent>;

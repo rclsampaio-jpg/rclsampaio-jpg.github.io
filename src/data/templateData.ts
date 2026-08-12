@@ -411,6 +411,24 @@ function getAudioUrlForDay(dayNumber: number): string {
   return DAILY_AUDIO_FILES[dayNumber] || FALLBACK_AUDIO_URL;
 }
 
+// Welcome-week support videos (Days 1-7 only). Renata records and posts
+// these as unlisted YouTube videos, same pattern as the Library's
+// "Encontros" videos. Placeholder links below until she records the real
+// ones — swap the URL per day and the preview thumbnail updates itself.
+const DAILY_VIDEO_FILES: Record<number, string> = {
+  1: '',
+  2: '',
+  3: '',
+  4: '',
+  5: '',
+  6: '',
+  7: ''
+};
+
+function getVideoUrlForDay(dayNumber: number): string | undefined {
+  return DAILY_VIDEO_FILES[dayNumber] || undefined;
+}
+
 // 30 distinct "Mensagem do Dia" motivational messages (one per day, no more
 // repeating the same templated line with just the day number swapped in).
 // Order below (index 0 = message #1, etc.) matches DAILY_MESSAGE_ORDER, which
@@ -566,6 +584,390 @@ function getDailyMessage(dayNumber: number, lang: Language): string {
   return messages[messageNumber - 1];
 }
 
+// Step 3 "daily exposure action" plan. Days 1-7 (welcome week) are Stories-only,
+// no Reels obligation, mirrors the 7 support-video scripts. Days 8-30 rotate
+// through a fixed weekly combo of formats (never a single repeated format),
+// keyed by the real calendar weekday (DayType), with Wednesday alternating
+// between two combos depending on which week of the journey it falls in.
+interface DailyPlan {
+  title: string;
+  bullets: string[];
+  promises: [{ label: string; desc: string }, { label: string; desc: string }, { label: string; desc: string }];
+}
+
+const DAILY_PLAN_COPY: Record<Language, {
+  welcome: (i: number) => DailyPlan;
+  monday: DailyPlan;
+  tuesday: DailyPlan;
+  wednesdayOdd: DailyPlan;
+  wednesdayEven: DailyPlan;
+  thursday: DailyPlan;
+  friday: DailyPlan;
+  saturday: DailyPlan;
+  sunday: DailyPlan;
+}> = {
+  pt: {
+    welcome: (i) => ({
+      title: 'Hoje é semana de acolhimento, sem Reels ainda',
+      bullets: [
+        'Poste pelo menos 1 Story real hoje, sem editar, sem se preocupar com estética',
+        'Se sentir confortável, poste um segundo Story contando um pouco mais'
+      ],
+      promises: [
+        { label: 'Resolvi minhas pendências (ou aceitei minha pior versão)', desc: 'Carreguei o celular, arrumei o cantinho, ou simplesmente decidi aparecer do jeito que eu tô' },
+        { label: `Postei um Story real hoje (Dia ${i})`, desc: 'Sem editar, sem regravar até ficar "bonito"' },
+        { label: 'Ouvi o vídeo de apoio de hoje', desc: 'Ou o áudio da Renata, se ainda não tiver vídeo pra hoje' }
+      ]
+    }),
+    monday: {
+      title: 'Segunda: 2 Reels + 1 vídeo de 7 segundos (mínimo 3 posts hoje)',
+      bullets: [
+        'Grave e poste um Reels de até 30 segundos',
+        'Grave e poste um Reels de até 90 segundos',
+        'Grave e poste 1 vídeo de 7 segundos, com b-roll e gancho forte na legenda'
+      ],
+      promises: [
+        { label: 'Postei o Reels de até 30 segundos', desc: 'Um dos hooks disponíveis pra hoje' },
+        { label: 'Postei o Reels de até 90 segundos', desc: 'Pode usar Trial Reels se já tiver 200+ seguidores' },
+        { label: 'Postei o vídeo de 7 segundos', desc: 'B-roll + legenda com gancho forte, sem precisar falar' }
+      ]
+    },
+    tuesday: {
+      title: 'Terça: dia de produção em lote na Renata OS',
+      bullets: [
+        'Separe um tempo pra usar a Renata OS em bulk e gerar ideias/roteiros pros próximos dias',
+        'Se já tiver algo gravado e pronto, pode postar também, sem obrigação'
+      ],
+      promises: [
+        { label: 'Usei a Renata OS pra gerar conteúdo em lote', desc: 'Pelo menos alguns roteiros/ideias pros próximos dias' },
+        { label: 'Organizei o que vou gravar essa semana', desc: 'Anotei os temas, ganchos ou ideias que vieram' },
+        { label: 'Se já tinha algo pronto, postei', desc: 'Sem cobrança, só se já tiver' }
+      ]
+    },
+    wednesdayOdd: {
+      title: 'Quarta: 3 vídeos de 7 segundos + sequência de Stories',
+      bullets: [
+        'Grave e poste 3 vídeos de 7 segundos (b-roll + gancho forte na legenda)',
+        'Grave e poste uma sequência de Stories sobre o seu dia ou seu aprendizado recente'
+      ],
+      promises: [
+        { label: 'Postei os 3 vídeos de 7 segundos', desc: 'Aproveitando o que já produziu em lote na terça' },
+        { label: 'Postei a sequência de Stories', desc: 'Contando um pedaço real do seu processo' },
+        { label: 'Escolhi o melhor gancho pros 3 vídeos', desc: 'Da vitrine de hooks da semana' }
+      ]
+    },
+    wednesdayEven: {
+      title: 'Quarta: Reels de até 60 segundos (rodízio dessa semana)',
+      bullets: [
+        'Grave e poste um Reels de até 60 segundos',
+        'Use um dos hooks disponíveis pra hoje'
+      ],
+      promises: [
+        { label: 'Postei o Reels de até 60 segundos', desc: 'Usando um dos hooks disponíveis pra hoje' },
+        { label: 'Escolhi o gancho antes de gravar', desc: 'Da vitrine de hooks da semana' },
+        { label: 'Revisei antes de postar', desc: 'Sem regravar até ficar perfeito, só revisei o essencial' }
+      ]
+    },
+    thursday: {
+      title: 'Quinta: Carrossel + vídeo B-roll de 7 segundos',
+      bullets: [
+        'Monte e poste um Carrossel de venda ou educativo',
+        'Grave e poste 1 vídeo B-roll de 7 segundos, com gancho forte na legenda'
+      ],
+      promises: [
+        { label: 'Postei o Carrossel', desc: 'Capa com resultado real, um diferencial por slide' },
+        { label: 'Postei o vídeo B-roll de 7 segundos', desc: 'Gancho forte direto na legenda' },
+        { label: 'Escolhi o gancho de hoje', desc: 'Da vitrine de hooks da semana' }
+      ]
+    },
+    friday: {
+      title: 'Sexta: sequência de Stories que vende ou conecta (mínimo 5 slides)',
+      bullets: [
+        'Roteirize os 5+ Stories antes de gravar',
+        'Grave e poste a sequência completa',
+        'Feche com um CTA leve, sem cobrança'
+      ],
+      promises: [
+        { label: 'Roteirizei os 5+ Stories', desc: 'Antes de gravar, pra manter o mesmo eixo emocional' },
+        { label: 'Postei a sequência completa', desc: 'Mínimo 5 slides, pra quem já te segue' },
+        { label: 'Fechei com um CTA leve', desc: 'Comentar, seguir ou conversar, sem cobrança' }
+      ]
+    },
+    saturday: {
+      title: 'Sábado: sequência de Stories + vídeo B-roll de 7 segundos',
+      bullets: [
+        'Grave e poste uma sequência de Stories (mínimo 5 slides)',
+        'Grave e poste 1 vídeo B-roll de 7 segundos'
+      ],
+      promises: [
+        { label: 'Postei a sequência de Stories', desc: 'Mínimo 5 slides, vendendo ou conectando' },
+        { label: 'Postei o vídeo B-roll de 7 segundos', desc: 'Gancho forte na legenda' },
+        { label: 'Revisei os dois antes de postar', desc: 'Sem regravar até ficar perfeito' }
+      ]
+    },
+    sunday: {
+      title: 'Domingo: Carrossel + Reels de 30 segundos',
+      bullets: [
+        'Monte e poste um Carrossel de venda ou educativo',
+        'Grave e poste um Reels de até 30 segundos'
+      ],
+      promises: [
+        { label: 'Postei o Carrossel', desc: 'Capa com resultado real, um diferencial por slide' },
+        { label: 'Postei o Reels de 30 segundos', desc: 'Pode usar Trial Reels se já tiver 200+ seguidores' },
+        { label: 'Escolhi o gancho de hoje', desc: 'Da vitrine de hooks da semana' }
+      ]
+    }
+  },
+  en: {
+    welcome: (i) => ({
+      title: "It's welcome week, no Reels yet",
+      bullets: [
+        'Post at least 1 real Story today, no editing, no worrying about polish',
+        'If you feel comfortable, post a second Story saying a bit more'
+      ],
+      promises: [
+        { label: 'I resolved my pending excuses (or accepted my worst version)', desc: 'Charged my phone, set up my corner, or just decided to show up as I am' },
+        { label: `I posted a real Story today (Day ${i})`, desc: 'No editing, no re-recording until it looks "good"' },
+        { label: "I listened to today's support video", desc: "Or Renata's audio, if there's no video for today yet" }
+      ]
+    }),
+    monday: {
+      title: 'Monday: 2 Reels + 1 seven-second video (minimum 3 posts today)',
+      bullets: [
+        'Record and post a Reels up to 30 seconds long',
+        'Record and post a Reels up to 90 seconds long',
+        'Record and post 1 seven-second video, with b-roll and a strong caption hook'
+      ],
+      promises: [
+        { label: 'Posted the up-to-30-second Reels', desc: "One of today's available hooks" },
+        { label: 'Posted the up-to-90-second Reels', desc: 'Can use Trial Reels if you already have 200+ followers' },
+        { label: 'Posted the seven-second video', desc: 'B-roll + strong caption hook, no talking needed' }
+      ]
+    },
+    tuesday: {
+      title: 'Tuesday: bulk production day with Renata OS',
+      bullets: [
+        'Set aside time to use Renata OS in bulk and generate ideas/scripts for the coming days',
+        "If you already have something recorded and ready, you can post it too, no obligation"
+      ],
+      promises: [
+        { label: 'Used Renata OS to generate content in bulk', desc: 'At least a few scripts/ideas for the coming days' },
+        { label: "Organized what I'll record this week", desc: 'Noted the themes, hooks or ideas that came up' },
+        { label: 'Posted if I already had something ready', desc: 'No pressure, only if ready' }
+      ]
+    },
+    wednesdayOdd: {
+      title: 'Wednesday: 3 seven-second videos + a Stories sequence',
+      bullets: [
+        'Record and post 3 seven-second videos (b-roll + strong caption hook)',
+        'Record and post a Stories sequence about your day or a recent takeaway'
+      ],
+      promises: [
+        { label: 'Posted the 3 seven-second videos', desc: "Building on what you batch-produced on Tuesday" },
+        { label: 'Posted the Stories sequence', desc: 'Telling a real piece of your process' },
+        { label: 'Picked the best hook for the 3 videos', desc: "From this week's hook showcase" }
+      ]
+    },
+    wednesdayEven: {
+      title: "Wednesday: up-to-60-second Reels (this week's rotation)",
+      bullets: [
+        'Record and post a Reels up to 60 seconds long',
+        "Use one of today's available hooks"
+      ],
+      promises: [
+        { label: 'Posted the up-to-60-second Reels', desc: "Using one of today's available hooks" },
+        { label: 'Picked the hook before recording', desc: "From this week's hook showcase" },
+        { label: 'Reviewed before posting', desc: "No re-recording until perfect, just the essentials" }
+      ]
+    },
+    thursday: {
+      title: 'Thursday: Carousel + seven-second b-roll video',
+      bullets: [
+        'Build and post a sales or educational Carousel',
+        'Record and post 1 seven-second b-roll video, with a strong caption hook'
+      ],
+      promises: [
+        { label: 'Posted the Carousel', desc: 'Cover with a real result, one differentiator per slide' },
+        { label: 'Posted the seven-second b-roll video', desc: 'Strong hook straight in the caption' },
+        { label: "Picked today's hook", desc: "From this week's hook showcase" }
+      ]
+    },
+    friday: {
+      title: 'Friday: a selling or connecting Stories sequence (minimum 5 slides)',
+      bullets: [
+        'Script the 5+ Stories before recording',
+        'Record and post the full sequence',
+        'Close with a light CTA, no pressure'
+      ],
+      promises: [
+        { label: 'Scripted the 5+ Stories', desc: 'Before recording, to keep the same emotional thread' },
+        { label: 'Posted the full sequence', desc: 'Minimum 5 slides, for whoever already follows you' },
+        { label: 'Closed with a light CTA', desc: 'Comment, follow or chat, no pressure' }
+      ]
+    },
+    saturday: {
+      title: 'Saturday: Stories sequence + seven-second b-roll video',
+      bullets: [
+        'Record and post a Stories sequence (minimum 5 slides)',
+        'Record and post 1 seven-second b-roll video'
+      ],
+      promises: [
+        { label: 'Posted the Stories sequence', desc: 'Minimum 5 slides, selling or connecting' },
+        { label: 'Posted the seven-second b-roll video', desc: 'Strong hook in the caption' },
+        { label: 'Reviewed both before posting', desc: 'No re-recording until perfect' }
+      ]
+    },
+    sunday: {
+      title: 'Sunday: Carousel + 30-second Reels',
+      bullets: [
+        'Build and post a sales or educational Carousel',
+        'Record and post a Reels up to 30 seconds long'
+      ],
+      promises: [
+        { label: 'Posted the Carousel', desc: 'Cover with a real result, one differentiator per slide' },
+        { label: 'Posted the 30-second Reels', desc: 'Can use Trial Reels if you already have 200+ followers' },
+        { label: "Picked today's hook", desc: "From this week's hook showcase" }
+      ]
+    }
+  },
+  es: {
+    welcome: (i) => ({
+      title: 'Es la semana de acogida, todavía sin Reels',
+      bullets: [
+        'Publica al menos 1 Story real hoy, sin editar, sin preocuparte por la estética',
+        'Si te sientes cómoda, publica un segundo Story contando un poco más'
+      ],
+      promises: [
+        { label: 'Resolví mis pendientes (o acepté mi peor versión)', desc: 'Cargué el celular, organicé mi rincón, o simplemente decidí aparecer como estoy' },
+        { label: `Publiqué un Story real hoy (Día ${i})`, desc: 'Sin editar, sin regrabar hasta que "quede bien"' },
+        { label: 'Escuché el video de apoyo de hoy', desc: 'O el audio de Renata, si todavía no hay video para hoy' }
+      ]
+    }),
+    monday: {
+      title: 'Lunes: 2 Reels + 1 video de 7 segundos (mínimo 3 publicaciones hoy)',
+      bullets: [
+        'Graba y publica un Reels de hasta 30 segundos',
+        'Graba y publica un Reels de hasta 90 segundos',
+        'Graba y publica 1 video de 7 segundos, con b-roll y un gancho fuerte en la descripción'
+      ],
+      promises: [
+        { label: 'Publiqué el Reels de hasta 30 segundos', desc: 'Uno de los ganchos disponibles para hoy' },
+        { label: 'Publiqué el Reels de hasta 90 segundos', desc: 'Puedes usar Trial Reels si ya tienes 200+ seguidores' },
+        { label: 'Publiqué el video de 7 segundos', desc: 'B-roll + gancho fuerte en la descripción, sin necesidad de hablar' }
+      ]
+    },
+    tuesday: {
+      title: 'Martes: día de producción en lote con la Renata OS',
+      bullets: [
+        'Dedica un tiempo a usar la Renata OS en bulk y generar ideas/guiones para los próximos días',
+        'Si ya tienes algo grabado y listo, también puedes publicarlo, sin obligación'
+      ],
+      promises: [
+        { label: 'Usé la Renata OS para generar contenido en lote', desc: 'Al menos algunos guiones/ideas para los próximos días' },
+        { label: 'Organicé lo que voy a grabar esta semana', desc: 'Anoté los temas, ganchos o ideas que surgieron' },
+        { label: 'Si ya tenía algo listo, lo publiqué', desc: 'Sin presión, solo si ya está listo' }
+      ]
+    },
+    wednesdayOdd: {
+      title: 'Miércoles: 3 videos de 7 segundos + secuencia de Stories',
+      bullets: [
+        'Graba y publica 3 videos de 7 segundos (b-roll + gancho fuerte en la descripción)',
+        'Graba y publica una secuencia de Stories sobre tu día o tu aprendizaje reciente'
+      ],
+      promises: [
+        { label: 'Publiqué los 3 videos de 7 segundos', desc: 'Aprovechando lo que ya produjiste en lote el martes' },
+        { label: 'Publiqué la secuencia de Stories', desc: 'Contando un fragmento real de tu proceso' },
+        { label: 'Elegí el mejor gancho para los 3 videos', desc: 'De la vitrina de ganchos de la semana' }
+      ]
+    },
+    wednesdayEven: {
+      title: 'Miércoles: Reels de hasta 60 segundos (rotación de esta semana)',
+      bullets: [
+        'Graba y publica un Reels de hasta 60 segundos',
+        'Usa uno de los ganchos disponibles para hoy'
+      ],
+      promises: [
+        { label: 'Publiqué el Reels de hasta 60 segundos', desc: 'Usando uno de los ganchos disponibles para hoy' },
+        { label: 'Elegí el gancho antes de grabar', desc: 'De la vitrina de ganchos de la semana' },
+        { label: 'Revisé antes de publicar', desc: 'Sin regrabar hasta que quede perfecto, solo lo esencial' }
+      ]
+    },
+    thursday: {
+      title: 'Jueves: Carrusel + video B-roll de 7 segundos',
+      bullets: [
+        'Arma y publica un Carrusel de venta o educativo',
+        'Graba y publica 1 video B-roll de 7 segundos, con gancho fuerte en la descripción'
+      ],
+      promises: [
+        { label: 'Publiqué el Carrusel', desc: 'Portada con resultado real, un diferencial por diapositiva' },
+        { label: 'Publiqué el video B-roll de 7 segundos', desc: 'Gancho fuerte directo en la descripción' },
+        { label: 'Elegí el gancho de hoy', desc: 'De la vitrina de ganchos de la semana' }
+      ]
+    },
+    friday: {
+      title: 'Viernes: secuencia de Stories que vende o conecta (mínimo 5 diapositivas)',
+      bullets: [
+        'Escribe el guión de los 5+ Stories antes de grabar',
+        'Graba y publica la secuencia completa',
+        'Cierra con un CTA ligero, sin presión'
+      ],
+      promises: [
+        { label: 'Escribí el guión de los 5+ Stories', desc: 'Antes de grabar, para mantener el mismo eje emocional' },
+        { label: 'Publiqué la secuencia completa', desc: 'Mínimo 5 diapositivas, para quien ya te sigue' },
+        { label: 'Cerré con un CTA ligero', desc: 'Comentar, seguir o conversar, sin presión' }
+      ]
+    },
+    saturday: {
+      title: 'Sábado: secuencia de Stories + video B-roll de 7 segundos',
+      bullets: [
+        'Graba y publica una secuencia de Stories (mínimo 5 diapositivas)',
+        'Graba y publica 1 video B-roll de 7 segundos'
+      ],
+      promises: [
+        { label: 'Publiqué la secuencia de Stories', desc: 'Mínimo 5 diapositivas, vendiendo o conectando' },
+        { label: 'Publiqué el video B-roll de 7 segundos', desc: 'Gancho fuerte en la descripción' },
+        { label: 'Revisé los dos antes de publicar', desc: 'Sin regrabar hasta que quede perfecto' }
+      ]
+    },
+    sunday: {
+      title: 'Domingo: Carrusel + Reels de 30 segundos',
+      bullets: [
+        'Arma y publica un Carrusel de venta o educativo',
+        'Graba y publica un Reels de hasta 30 segundos'
+      ],
+      promises: [
+        { label: 'Publiqué el Carrusel', desc: 'Portada con resultado real, un diferencial por diapositiva' },
+        { label: 'Publiqué el Reels de 30 segundos', desc: 'Puedes usar Trial Reels si ya tienes 200+ seguidores' },
+        { label: 'Elegí el gancho de hoy', desc: 'De la vitrina de ganchos de la semana' }
+      ]
+    }
+  }
+};
+
+function getDailyPlan(dayNumber: number, lang: Language, startDate?: string | null): DailyPlan {
+  const copy = DAILY_PLAN_COPY[lang] || DAILY_PLAN_COPY.pt;
+  if (dayNumber <= 7) return copy.welcome(dayNumber);
+
+  const type = getDayType(dayNumber, startDate);
+  const weekNumber = Math.ceil(dayNumber / 7);
+  const isEvenWeek = weekNumber % 2 === 0;
+
+  switch (type) {
+    case DayType.RestartIntention: return copy.monday;
+    case DayType.Truth: return copy.tuesday;
+    case DayType.Rest: return isEvenWeek ? copy.wednesdayEven : copy.wednesdayOdd;
+    case DayType.ContrarianThinking: return copy.thursday;
+    case DayType.Storytelling: return copy.friday;
+    case DayType.Presence: return copy.saturday;
+    case DayType.Reflection: return copy.sunday;
+    default: return copy.monday;
+  }
+}
+
+function formatExposureAction(plan: DailyPlan): string {
+  return [plan.title, ...plan.bullets.map(b => `• ${b}`)].join('\n');
+}
+
 // Generate initial 30 days structure based on the rhythm, anchored to the
 // real calendar date Day 1 was first opened (startDate) so the weekday theme
 // (and its hooks) match the actual day of the week.
@@ -578,20 +980,11 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
     const titleEn = `${titlesByWeekDay[type].en} (Day ${i})`;
     const titleEs = `${titlesByWeekDay[type].es} (Día ${i})`;
     const audioUrl = getAudioUrlForDay(i);
+    const videoUrl = getVideoUrlForDay(i);
 
-    // Every 3rd day, Step 3 (hook video) swaps for a Stories story-arc
-    // sequence instead, same cadence the "3 promises" checklist mirrors
-    // in DailyMissionView (isStorySequenceDay there).
-    const isStorySequenceDay = i % 3 === 0;
-    const exposureActionPt = isStorySequenceDay
-      ? `Hoje você vai fazer 3 práticas de gravação\n• Grave um vídeo de até 60 segundos para postar no reels\n• Grave um vídeo de pelo menos 30 segundos nos stories sobre o seu maior aprendizado do Dia ${i} ou poste uma foto com uma legenda honesta\n• Grave uma sequência de pelo menos 3 vídeos nos stories contando: a dor que você viveu, a ponte que te tirou dela, e o resultado que você alcançou, mesmo que você ainda não tenha muitos seguidores, o hábito de contar é o que constrói o alcance`
-      : `Hoje você vai fazer 3 práticas de gravação\n• Grave um vídeo de até 60 segundos para postar no reels\n• Grave um vídeo de pelo menos 30 segundos nos stories sobre o seu maior aprendizado do Dia ${i} ou poste uma foto com uma legenda honesta\n• Grave um vídeo de até 90 segundos, com um dos hooks disponíveis pro dia de hoje`;
-    const exposureActionEn = isStorySequenceDay
-      ? `Today you'll do 3 recording practices\n• Record a video up to 60 seconds long to post on reels\n• Record a video at least 30 seconds long on your Stories about your biggest takeaway from Day ${i}, or post a photo with an honest caption\n• Record a sequence of at least 3 Stories telling: the pain you went through, the bridge that got you past it, and the result you reached, even if you don't have many followers yet, the habit of telling it is what builds the reach`
-      : `Today you'll do 3 recording practices\n• Record a video up to 60 seconds long to post on reels\n• Record a video at least 30 seconds long on your Stories about your biggest takeaway from Day ${i}, or post a photo with an honest caption\n• Record a video up to 90 seconds long, using one of today's available hooks`;
-    const exposureActionEs = isStorySequenceDay
-      ? `Hoy vas a hacer 3 prácticas de grabación\n• Graba un video de hasta 60 segundos para publicar en reels\n• Graba un video de al menos 30 segundos en tus stories sobre tu mayor aprendizaje del Día ${i} o publica una foto con una descripción honesta\n• Graba una secuencia de al menos 3 stories contando: el dolor que viviste, el puente que te sacó de ahí, y el resultado que lograste, aunque todavía no tengas muchos seguidores, el hábito de contarlo es lo que construye el alcance`
-      : `Hoy vas a hacer 3 prácticas de grabación\n• Graba un video de hasta 60 segundos para publicar en reels\n• Graba un video de al menos 30 segundos en tus stories sobre tu mayor aprendizaje del Día ${i} o publica una foto con una descripción honesta\n• Graba un video de hasta 90 segundos, con uno de los hooks disponibles para hoy`;
+    const planPt = getDailyPlan(i, 'pt', startDate);
+    const planEn = getDailyPlan(i, 'en', startDate);
+    const planEs = getDailyPlan(i, 'es', startDate);
 
     days.push({
       dayNumber: i,
@@ -600,14 +993,16 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
       content: {
         pt: {
           audioUrl, // Real recording if available for this day, otherwise placeholder
+          videoUrl,
           hook: getDailyMessage(i, 'pt'),
           scripts: [
             `Roteiro Opção 1 (Conexão Rápida):\n"Se você tem vergonha de gravar vídeos, deixa eu te contar um segredo... eu também tinha. Mas hoje eu decidi..."`,
             `Roteiro Opção 2 (Provocação):\n"Pare de tentar agradar a todo mundo nas redes sociais. A verdade é que quem te julga não paga seus boletos..."`,
             `Roteiro Opção 3 (Educativo):\n"3 coisas simples que me ajudaram a vencer a vergonha da câmera: 1. Falar com a lente como se fosse um amigo; 2..."`
           ],
-          exposureAction: exposureActionPt,
-          reflectionQuestion: 'Como você se sentiu hoje ao encarar a possibilidade de ser [vista/visto/viste] de verdade pelas pessoas?'
+          exposureAction: formatExposureAction(planPt),
+          reflectionQuestion: 'Como você se sentiu hoje ao encarar a possibilidade de ser [vista/visto/viste] de verdade pelas pessoas?',
+          promises: planPt.promises
         },
         en: {
           audioUrl,
@@ -617,8 +1012,9 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
             `Script Option 2 (Provocation):\n"Stop trying to please everyone on social media. The truth is, those who judge you don't pay your bills..."`,
             `Script Option 3 (Educational):\n"3 simple things that helped me overcome camera shyness: 1. Talk to the lens as if it were a close friend; 2..."`
           ],
-          exposureAction: exposureActionEn,
-          reflectionQuestion: 'How did you feel today confronting the possibility of being truly seen by people?'
+          exposureAction: formatExposureAction(planEn),
+          reflectionQuestion: 'How did you feel today confronting the possibility of being truly seen by people?',
+          promises: planEn.promises
         },
         es: {
           audioUrl,
@@ -628,8 +1024,9 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
             `Guión Opción 2 (Provocación):\n"Deja de intentar agradar a todos en las redes sociales. La verdad es que quien te juzga no paga tus cuentas..."`,
             `Guión Opción 3 (Educativo):\n"3 cosas simples que me ayudaron a vencer la vergüenza de la cámara: 1. Hablarle a la lente como si fuera un amigo; 2..."`
           ],
-          exposureAction: exposureActionEs,
-          reflectionQuestion: '¿Cómo te sentiste hoy al enfrentar la posibilidad de ser [vista/visto/viste] realmente por la gente?'
+          exposureAction: formatExposureAction(planEs),
+          reflectionQuestion: '¿Cómo te sentiste hoy al enfrentar la posibilidad de ser [vista/visto/viste] realmente por la gente?',
+          promises: planEs.promises
         }
       }
     });
@@ -643,7 +1040,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '12';
+const DAYS_CONTENT_VERSION = '14';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');

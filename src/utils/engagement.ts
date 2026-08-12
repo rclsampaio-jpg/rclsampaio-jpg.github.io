@@ -1,6 +1,6 @@
 import { supabase } from '../lib/supabase';
 
-export type EngagementMediaType = 'daily_audio' | 'library_audio' | 'library_video' | 'library_pdf' | 'weekly_video';
+export type EngagementMediaType = 'daily_audio' | 'library_audio' | 'library_video' | 'library_pdf' | 'weekly_video' | 'daily_support_video';
 
 // One event per asset per page load is enough signal for "who's
 // consuming what" analytics — avoids spamming the table on every
