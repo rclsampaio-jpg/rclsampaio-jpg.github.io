@@ -17,43 +17,72 @@ interface ProfessionalAreaViewProps {
 
 const FORMATOS = ['Reels', 'Stories', 'Carrossel', 'Vídeo longo'];
 
-const MESSAGE_LIBRARY: { title: string; body: string }[] = [
+// Cada script carrega o(s) gargalo(s) que ele resolve — usado pra destacar
+// "recomendado pra você" na aba Mensagens conforme a resposta do diagnóstico.
+const MESSAGE_LIBRARY: { title: string; body: string; resolveGargalo: string[] }[] = [
   {
     title: 'Abertura de conversa',
-    body: 'Oi [nome]! Vi que você comentou/curtiu [conteúdo]. Fiquei curiosa: o que mais te chamou atenção nele?'
+    body: 'Oi [nome]! Vi que você comentou/curtiu [conteúdo]. Fiquei curiosa: o que mais te chamou atenção nele?',
+    resolveGargalo: ['Em gerar mensagens/interesse']
   },
   {
     title: 'Entender o momento atual',
-    body: 'Me conta rapidinho como você tá hoje em relação a [tema do seu conteúdo]? Assim eu entendo melhor como posso te ajudar.'
+    body: 'Me conta rapidinho como você tá hoje em relação a [tema do seu conteúdo]? Assim eu entendo melhor como posso te ajudar.',
+    resolveGargalo: ['Em gerar mensagens/interesse', 'Em transformar mensagem em reunião']
   },
   {
     title: 'Filtro de objetivo',
-    body: 'E o que você já tentou até hoje pra resolver isso? Só pra eu não te sugerir algo que você já tentou e não funcionou.'
+    body: 'E o que você já tentou até hoje pra resolver isso? Só pra eu não te sugerir algo que você já tentou e não funcionou.',
+    resolveGargalo: ['Em transformar mensagem em reunião']
   },
   {
     title: 'Apresentar a oferta sem preço',
-    body: 'Baseado no que você me contou, eu tenho um jeito de te ajudar com isso, quer que eu te explique como funciona?'
+    body: 'Baseado no que você me contou, eu tenho um jeito de te ajudar com isso, quer que eu te explique como funciona?',
+    resolveGargalo: ['Em transformar mensagem em reunião']
   },
   {
     title: 'Contorno de objeção de preço',
-    body: 'Entendo. Antes de pensar em valor, me diz: faz sentido pra você resolver isso agora, ou é mais uma questão de timing?'
+    body: 'Entendo. Antes de pensar em valor, me diz: faz sentido pra você resolver isso agora, ou é mais uma questão de timing?',
+    resolveGargalo: ['Em fechar a venda na reunião']
   },
   {
     title: 'Fechamento objetivo',
-    body: 'Então bora começar. Prefere fechar via Pix ou cartão?'
+    body: 'Então bora começar. Prefere fechar via Pix ou cartão?',
+    resolveGargalo: ['Em fechar a venda na reunião']
   }
 ];
 
-const VOZ_PERGUNTAS: { key: string; label: string }[] = [
-  { key: 'tom', label: 'Como você fala naturalmente quando explica algo pra alguém? (direta, acolhedora, técnica...)' },
-  { key: 'erro_comum', label: 'Que tipo de linguagem você usa hoje que soa mais "aula" do que conversa?' },
-  { key: 'frase_marca', label: 'Tem alguma frase ou jeito de falar que só você usa, que já é sua marca?' }
+// Perguntas de múltipla escolha, não texto livre — ela reconhece a opção
+// mais parecida com ela em vez de precisar descrever do zero.
+const VOZ_PERGUNTAS: { key: string; label: string; options: string[] }[] = [
+  {
+    key: 'tom',
+    label: 'Qual desses estilos mais parece com você quando explica algo pra alguém?',
+    options: ['Direta e prática', 'Acolhedora e emocional', 'Técnica e detalhista', 'Bem-humorada e leve']
+  },
+  {
+    key: 'estilo_evitar',
+    label: 'O que você mais precisa cortar pra soar menos "aula" e mais conversa?',
+    options: ['Explicações longas antes de ir ao ponto', 'Termos técnicos que só quem já estudou entende', 'Frases genéricas de motivação', 'Nada, já falo de forma direta']
+  }
 ];
 
-const ESTRUTURA_PERGUNTAS: { key: string; label: string }[] = [
-  { key: 'formato_hoje', label: 'Hoje, quando você posta, você entrega o passo a passo completo ou guarda o "como" pra quem vira cliente?' },
-  { key: 'gargalo', label: 'Onde trava mais: em criar o conteúdo, em quem te manda mensagem, ou em fechar a venda?' },
-  { key: 'frequencia', label: 'Com que frequência real (não a ideal) você consegue postar?' }
+const ESTRUTURA_PERGUNTAS: { key: string; label: string; options: string[] }[] = [
+  {
+    key: 'formato_hoje',
+    label: 'Hoje, quando você posta, você...',
+    options: ['Entrego o passo a passo completo', 'Mostro o resultado e guardo o "como"', 'Não tenho um padrão definido']
+  },
+  {
+    key: 'gargalo',
+    label: 'Onde mais trava hoje?',
+    options: ['Em criar conteúdo com constância', 'Em gerar mensagens/interesse', 'Em transformar mensagem em reunião', 'Em fechar a venda na reunião']
+  },
+  {
+    key: 'frequencia',
+    label: 'Quantas vezes por semana você realmente posta (não a ideal)?',
+    options: ['Quase todo dia', '2 a 3 vezes', '1 vez ou menos']
+  }
 ];
 
 const REFERENCE_CONTENT: { title: string; points: string[] }[] = [
@@ -179,6 +208,17 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
     };
   }, [checkIns]);
 
+  const gargaloAtual = diagnostic?.estruturaRespostas?.gargalo;
+
+  // Mensagens que resolvem o gargalo declarado no diagnóstico vêm primeiro,
+  // marcadas como recomendadas — o resto continua disponível embaixo.
+  const orderedMessages = useMemo(() => {
+    if (!gargaloAtual) return MESSAGE_LIBRARY.map((m) => ({ ...m, recomendado: false }));
+    return [...MESSAGE_LIBRARY]
+      .map((m) => ({ ...m, recomendado: m.resolveGargalo.includes(gargaloAtual) }))
+      .sort((a, b) => Number(b.recomendado) - Number(a.recomendado));
+  }, [gargaloAtual]);
+
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
       <div className="text-center space-y-2">
@@ -236,16 +276,26 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
 
           <div>
             <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider mb-3">Voz</p>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {VOZ_PERGUNTAS.map((p) => (
                 <div key={p.key}>
-                  <label className="text-xs text-slate-500 dark:text-ink-muted block mb-1.5">{p.label}</label>
-                  <textarea
-                    value={vozRespostas[p.key] ?? ''}
-                    onChange={(e) => setVozRespostas((prev) => ({ ...prev, [p.key]: e.target.value }))}
-                    rows={2}
-                    className="w-full text-sm bg-rose-50/40 dark:bg-ink border border-rose-100/20 dark:border-ink-hairline rounded-xl p-3 text-slate-700 dark:text-ink-text focus:outline-none focus:border-rosegold resize-none"
-                  />
+                  <label className="text-xs text-slate-500 dark:text-ink-muted block mb-2">{p.label}</label>
+                  <div className="flex flex-wrap gap-2">
+                    {p.options.map((opt) => (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => setVozRespostas((prev) => ({ ...prev, [p.key]: opt }))}
+                        className={`px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition cursor-pointer ${
+                          vozRespostas[p.key] === opt
+                            ? 'bg-rosegold/15 text-rosegold dark:text-rosegold-light border border-rosegold/40'
+                            : 'bg-rose-50/40 dark:bg-ink text-slate-500 dark:text-ink-muted border border-transparent'
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -253,16 +303,26 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
 
           <div>
             <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider mb-3">Estrutura</p>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {ESTRUTURA_PERGUNTAS.map((p) => (
                 <div key={p.key}>
-                  <label className="text-xs text-slate-500 dark:text-ink-muted block mb-1.5">{p.label}</label>
-                  <textarea
-                    value={estruturaRespostas[p.key] ?? ''}
-                    onChange={(e) => setEstruturaRespostas((prev) => ({ ...prev, [p.key]: e.target.value }))}
-                    rows={2}
-                    className="w-full text-sm bg-rose-50/40 dark:bg-ink border border-rose-100/20 dark:border-ink-hairline rounded-xl p-3 text-slate-700 dark:text-ink-text focus:outline-none focus:border-rosegold resize-none"
-                  />
+                  <label className="text-xs text-slate-500 dark:text-ink-muted block mb-2">{p.label}</label>
+                  <div className="flex flex-wrap gap-2">
+                    {p.options.map((opt) => (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => setEstruturaRespostas((prev) => ({ ...prev, [p.key]: opt }))}
+                        className={`px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition cursor-pointer ${
+                          estruturaRespostas[p.key] === opt
+                            ? 'bg-rosegold/15 text-rosegold dark:text-rosegold-light border border-rosegold/40'
+                            : 'bg-rose-50/40 dark:bg-ink text-slate-500 dark:text-ink-muted border border-transparent'
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -286,6 +346,11 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
           <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted mb-2">
             Base do Escala Descomplicada, direto ao ponto.
           </p>
+          {gargaloAtual === 'Em criar conteúdo com constância' && (
+            <p className="text-center text-xs font-sans text-rosegold/80 dark:text-rosegold-light/80 mb-2">
+              Seu diagnóstico aponta esse como seu gargalo, Big Idea e Autoridade Percebida ajudam mais direto aqui.
+            </p>
+          )}
           {REFERENCE_CONTENT.map((ref) => (
             <div
               key={ref.title}
@@ -440,6 +505,16 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
           animate={{ opacity: 1, y: 0 }}
           className="space-y-4"
         >
+          {diagnostic?.completedAt && (
+            <div className="rounded-2xl bg-rosegold/5 dark:bg-rosegold-light/5 border border-rosegold/20 p-4 space-y-1">
+              <p className="text-[10px] font-sans font-bold text-rosegold uppercase tracking-wider">Seu posicionamento</p>
+              <p className="text-xs text-slate-600 dark:text-ink-muted leading-relaxed">
+                {diagnostic.nicho && <>Nicho: <span className="font-semibold text-slate-800 dark:text-ink-text">{diagnostic.nicho}</span>. </>}
+                {diagnostic.vozRespostas?.tom && <>Voz: <span className="font-semibold text-slate-800 dark:text-ink-text">{diagnostic.vozRespostas.tom}</span>. </>}
+                {gargaloAtual && <>Gargalo atual: <span className="font-semibold text-slate-800 dark:text-ink-text">{gargaloAtual}</span>.</>}
+              </p>
+            </div>
+          )}
           <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted">
             Últimos 30 dias · {stats.diasComCheckin} dia(s) com check-in
           </p>
@@ -492,12 +567,26 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
           <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted mb-2">
             Copia, cola, adapta pro teu tom. Não é roteiro fixo.
           </p>
-          {MESSAGE_LIBRARY.map((msg) => (
+          {!gargaloAtual && (
+            <p className="text-center text-xs font-sans text-rosegold/80 dark:text-rosegold-light/80 mb-2">
+              Preenche o Diagnóstico pra eu te mostrar qual script resolve o seu gargalo primeiro.
+            </p>
+          )}
+          {orderedMessages.map((msg) => (
             <div
               key={msg.title}
-              className="rounded-2xl bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-4 space-y-1.5"
+              className={`rounded-2xl bg-white dark:bg-ink-raised border p-4 space-y-1.5 ${
+                msg.recomendado ? 'border-rosegold/50' : 'border-rose-100/20 dark:border-ink-hairline'
+              }`}
             >
-              <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider">{msg.title}</p>
+              <div className="flex items-center justify-between">
+                <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider">{msg.title}</p>
+                {msg.recomendado && (
+                  <span className="text-[10px] font-sans font-bold text-white bg-rosegold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    Recomendado pra você
+                  </span>
+                )}
+              </div>
               <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed">{msg.body}</p>
             </div>
           ))}
