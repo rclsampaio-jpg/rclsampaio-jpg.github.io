@@ -50,12 +50,13 @@ const NextLevelView = lazy(() => import('./components/NextLevelView'));
 const MyTransformationView = lazy(() => import('./components/MyTransformationView'));
 const CommunityView = lazy(() => import('./components/CommunityView'));
 const LibraryView = lazy(() => import('./components/LibraryView'));
+const ProfessionalAreaView = lazy(() => import('./components/ProfessionalAreaView'));
 
 import { adaptMessage, resolveGrammarPreference } from './utils/grammar';
 import { getLocalDateISO, getUnlockAnchorDateISO } from './utils/date';
 import { useSystem } from './engines/SystemEngine';
 
-type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'transformation' | 'community' | 'library' | 'profile';
+type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'transformation' | 'community' | 'library' | 'profile' | 'professional';
 
 export default function App() {
   return (
@@ -120,7 +121,7 @@ function AppContent() {
   const [lang, setLang] = useState<Language>('pt'); // Default language
   // Excludes 'cms' deliberately — that's admin-gated and re-entering it
   // without re-unlocking would be confusing; it always falls back to Home.
-  const VALID_TAB_IDS: TabId[] = ['home', 'mission', 'journey', 'sos', 'nextlevel', 'transformation', 'community', 'library', 'profile', 'settings'];
+  const VALID_TAB_IDS: TabId[] = ['home', 'mission', 'journey', 'sos', 'nextlevel', 'transformation', 'community', 'library', 'profile', 'settings', 'professional'];
   const [activeTab, setActiveTabState] = useState<TabId>(() => {
     // sessionStorage (not localStorage) on purpose: a reload/refresh within
     // the same open session resumes on the same tab, but fully closing and
@@ -175,6 +176,32 @@ function AppContent() {
     setEditMode(false);
     if (activeTab === 'cms') {
       setActiveTab('home');
+    }
+  };
+
+  // Gate for the Destrave (Área da Profissional) tab — a separate paid
+  // product from the main 30-day journey, closed manually via WhatsApp like
+  // the rest of the funnel (see renaser_destrave_funil_estrutura memory).
+  // Same client-side-deterrent caveat as ADMIN_PASSPHRASE above: this isn't
+  // real security, just a shared code handed to buyers after they pay.
+  const [isProfessionalUnlocked, setIsProfessionalUnlocked] = useState(
+    () => localStorage.getItem('renaser_professional_unlocked') === 'true'
+  );
+  const [showProfessionalPrompt, setShowProfessionalPrompt] = useState(false);
+  const [professionalPassInput, setProfessionalPassInput] = useState('');
+  const [professionalPassError, setProfessionalPassError] = useState(false);
+  const PROFESSIONAL_ACCESS_PASSPHRASE = 'DestraveEstrutura25';
+
+  const handleProfessionalUnlock = () => {
+    if (professionalPassInput === PROFESSIONAL_ACCESS_PASSPHRASE) {
+      setIsProfessionalUnlocked(true);
+      localStorage.setItem('renaser_professional_unlocked', 'true');
+      setShowProfessionalPrompt(false);
+      setProfessionalPassInput('');
+      setProfessionalPassError(false);
+      setActiveTab('professional');
+    } else {
+      setProfessionalPassError(true);
     }
   };
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -517,6 +544,7 @@ function AppContent() {
       community: 'Comunidade',
       library: 'Biblioteca',
       profile: 'Meu Ser',
+      professional: 'Destrave',
     },
     en: {
       home: 'Home',
@@ -530,6 +558,7 @@ function AppContent() {
       community: 'Community',
       library: 'Library',
       profile: 'My Portal',
+      professional: 'Destrave',
     },
     es: {
       home: 'Inicio',
@@ -543,6 +572,7 @@ function AppContent() {
       community: 'Comunidad',
       library: 'Biblioteca',
       profile: 'Mi Portal',
+      professional: 'Destrave',
     }
   }[lang];
 
@@ -829,6 +859,21 @@ function AppContent() {
               <span>{labels.nextlevel}</span>
             </button>
 
+            {/* Destrave (Área da Profissional) — produto separado, gate por código */}
+            <button
+              onClick={() => isProfessionalUnlocked ? setActiveTab('professional') : setShowProfessionalPrompt(true)}
+              className={`px-4 py-2 text-xs font-sans font-semibold rounded-xl transition flex items-center gap-1.5 ${
+                activeTab === 'professional'
+                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25 dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
+                  : isProfessionalUnlocked
+                  ? 'text-rosegold dark:text-rosegold-light bg-rosegold/10 hover:bg-rosegold/20'
+                  : 'text-slate-500 dark:text-ink-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10'
+              }`}
+            >
+              {!isProfessionalUnlocked && <Lock className="h-3 w-3" />}
+              <span>{labels.professional}</span>
+            </button>
+
             {isAdminUnlocked && (
               <>
                 <span className="h-5 w-px bg-rose-100 dark:bg-ink-hairline mx-2" />
@@ -955,6 +1000,17 @@ function AppContent() {
               </button>
 
               <button
+                onClick={() => {
+                  if (isProfessionalUnlocked) { setActiveTab('professional'); setMobileMenuOpen(false); }
+                  else { setShowProfessionalPrompt(true); setMobileMenuOpen(false); }
+                }}
+                className="w-full py-2.5 px-4 text-left rounded-xl flex items-center justify-between transition bg-rosegold/10 text-rosegold dark:text-rosegold-light font-bold"
+              >
+                <span>{labels.professional}</span>
+                {!isProfessionalUnlocked && <Lock className="h-3 w-3" />}
+              </button>
+
+              <button
                 onClick={() => { setActiveTab('settings'); setMobileMenuOpen(false); }}
                 className={`w-full py-2.5 px-4 text-left rounded-xl ${activeTab === 'settings' ? 'bg-slate-900 dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light text-white font-bold' : 'text-slate-700 dark:text-ink-muted'}`}
               >
@@ -1030,6 +1086,62 @@ function AppContent() {
                 </button>
                 <button
                   onClick={handleAdminUnlock}
+                  className="px-5 py-2 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 text-xs font-sans font-bold uppercase tracking-wider rounded-xl transition cursor-pointer"
+                >
+                  {lang === 'pt' ? 'Entrar' : lang === 'es' ? 'Entrar' : 'Enter'}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Professional unlock prompt — gates the Destrave (Área da Profissional) tab */}
+      <AnimatePresence>
+        {showProfessionalPrompt && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-6">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              className="bg-[#FAF8F5] dark:bg-ink-raised max-w-sm w-full rounded-3xl p-8 border border-rosegold/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none space-y-4"
+            >
+              <div className="flex items-center gap-2">
+                <Lock className="h-4 w-4 text-rosegold dark:text-rosegold-light" />
+                <h3 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
+                  {lang === 'pt' ? 'Acesso Destrave' : lang === 'es' ? 'Acceso Destrave' : 'Destrave Access'}
+                </h3>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed">
+                {lang === 'pt'
+                  ? 'Essa área é um produto separado da jornada de 30 dias. Se você comprou o acesso, digite o código que recebeu.'
+                  : lang === 'es'
+                  ? 'Esta área es un producto separado del viaje de 30 días. Si compraste el acceso, escribe el código que recibiste.'
+                  : "This area is a separate product from the 30-day journey. If you bought access, enter the code you received."}
+              </p>
+              <input
+                type="password"
+                autoFocus
+                value={professionalPassInput}
+                onChange={(e) => { setProfessionalPassInput(e.target.value); setProfessionalPassError(false); }}
+                onKeyDown={(e) => e.key === 'Enter' && handleProfessionalUnlock()}
+                placeholder={lang === 'pt' ? 'Código de acesso' : lang === 'es' ? 'Código de acceso' : 'Access code'}
+                className="w-full text-sm bg-white dark:bg-transparent dark:border-0 dark:border-b dark:rounded-none border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 dark:focus:ring-0 focus:ring-rosegold rounded-xl p-3 text-slate-700 dark:text-ink-text"
+              />
+              {professionalPassError && (
+                <p className="text-[11px] text-red-500 font-sans">
+                  {lang === 'pt' ? 'Código incorreto.' : lang === 'es' ? 'Código incorrecto.' : 'Incorrect code.'}
+                </p>
+              )}
+              <div className="flex justify-end gap-2 pt-1">
+                <button
+                  onClick={() => { setShowProfessionalPrompt(false); setProfessionalPassInput(''); setProfessionalPassError(false); }}
+                  className="px-4 py-2 text-xs font-sans font-semibold text-slate-500 hover:text-slate-700 transition cursor-pointer"
+                >
+                  {lang === 'pt' ? 'Cancelar' : lang === 'es' ? 'Cancelar' : 'Cancel'}
+                </button>
+                <button
+                  onClick={handleProfessionalUnlock}
                   className="px-5 py-2 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 text-xs font-sans font-bold uppercase tracking-wider rounded-xl transition cursor-pointer"
                 >
                   {lang === 'pt' ? 'Entrar' : lang === 'es' ? 'Entrar' : 'Enter'}
@@ -1121,6 +1233,14 @@ function AppContent() {
               <NextLevelView
                 progress={progress}
                 lang={lang}
+              />
+            )}
+
+            {activeTab === 'professional' && isProfessionalUnlocked && (
+              <ProfessionalAreaView
+                progress={progress}
+                lang={lang}
+                onUpdateProgress={updateProgress}
               />
             )}
 

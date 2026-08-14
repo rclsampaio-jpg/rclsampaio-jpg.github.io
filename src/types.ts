@@ -140,6 +140,29 @@ export interface UserProgress {
     alternativeResourcesTriggered?: boolean;
     homeClickHistory?: string[];
   };
+
+  // Área da Profissional (produto separado do DESTRAVE, gate próprio via
+  // PROFESSIONAL_ACCESS_PASSPHRASE em App.tsx). Diagnóstico é preenchido uma
+  // vez; check-ins diários alimentam o dashboard de conversão calculado
+  // (nunca digitado à mão, sempre derivado dos check-ins).
+  professionalDiagnostic?: ProfessionalDiagnostic;
+  professionalCheckIns?: Record<string, ProfessionalCheckIn>; // key = YYYY-MM-DD
+}
+
+export interface ProfessionalDiagnostic {
+  nicho?: string;
+  vozRespostas?: Record<string, string>;
+  estruturaRespostas?: Record<string, string>;
+  completedAt?: string | null; // YYYY-MM-DD
+}
+
+export interface ProfessionalCheckIn {
+  postou: boolean;
+  formatosPostados?: string[]; // ex: ['Reels', 'Stories']
+  mensagensRecebidas: number;
+  reunioesAgendadas: number;
+  vendasFechadas: number;
+  nota?: string; // "o que funcionou ou travou hoje"
 }
 
 // Ecosystem, Community, Support, Mentorship & Library Engine types
