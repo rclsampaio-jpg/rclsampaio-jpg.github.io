@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   Play, Pause, Copy, Check, Star, ArrowRight, ArrowLeft, Heart, Sparkles, ThumbsUp, ThumbsDown,
   Info, Compass, HelpCircle, X, BookOpen, Smile, Wind, Award,
-  RotateCcw, Lock, Download
+  RotateCcw, Lock, Download, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { MissionDay, Language, DayType, UserProgress } from '../types';
 import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions, getHookCategoryLabel } from '../data/templateData';
@@ -31,6 +31,8 @@ interface DailyMissionViewProps {
   onTriggerSos: () => void;
   onBackToHome: () => void;
   onUpdateMood: (dayNum: number, mood: string) => void;
+  isAdminUnlocked?: boolean;
+  onJumpToDay?: (dayNumber: number) => void;
 }
 
 // 4 Phases structure metadata for display
@@ -464,6 +466,8 @@ export default function DailyMissionView({
   onTriggerSos,
   onBackToHome,
   onUpdateMood,
+  isAdminUnlocked,
+  onJumpToDay,
 }: DailyMissionViewProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
@@ -1038,6 +1042,27 @@ export default function DailyMissionView({
   if (isWaitingForNewCalendarDay) {
     return (
       <div className="max-w-md mx-auto space-y-10 py-16">
+        {isAdminUnlocked && onJumpToDay && (
+          <div className="flex items-center justify-center gap-3 rounded-xl border border-dashed border-rosegold/40 bg-rosegold/5 px-4 py-2.5">
+            <button
+              onClick={() => onJumpToDay(Math.max(1, currentDay.dayNumber - 1))}
+              disabled={currentDay.dayNumber <= 1}
+              className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <span className="text-[11px] font-mono uppercase tracking-wider text-rosegold">
+              Admin · Dia {currentDay.dayNumber} / 30
+            </span>
+            <button
+              onClick={() => onJumpToDay(Math.min(30, currentDay.dayNumber + 1))}
+              disabled={currentDay.dayNumber >= 30}
+              className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        )}
         <div className="text-center space-y-5">
           <div className="h-14 w-14 rounded-2xl bg-rose-50 dark:bg-rosegold/10 text-rosegold flex items-center justify-center mx-auto">
             <Lock className="h-6 w-6" />
@@ -1091,7 +1116,31 @@ export default function DailyMissionView({
 
   return (
     <div className="space-y-6 select-none relative">
-      
+
+      {/* Admin-only day jumper: browse any day's content without touching
+          real progress or requiring completion. Not shown to real users. */}
+      {isAdminUnlocked && onJumpToDay && (
+        <div className="flex items-center justify-center gap-3 rounded-xl border border-dashed border-rosegold/40 bg-rosegold/5 px-4 py-2.5">
+          <button
+            onClick={() => onJumpToDay(Math.max(1, currentDay.dayNumber - 1))}
+            disabled={currentDay.dayNumber <= 1}
+            className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <span className="text-[11px] font-mono uppercase tracking-wider text-rosegold">
+            Admin · Dia {currentDay.dayNumber} / 30
+          </span>
+          <button
+            onClick={() => onJumpToDay(Math.min(30, currentDay.dayNumber + 1))}
+            disabled={currentDay.dayNumber >= 30}
+            className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
       {/* 1. Interactive Animated Butterfly Overlay (Days 3, 11, 18, 25) */}
       {[3, 11, 18, 25].includes(currentDay.dayNumber) && !isCompleted && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-50">

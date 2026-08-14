@@ -1085,6 +1085,8 @@ function AppContent() {
                 onTriggerSos={() => setActiveTab('sos')}
                 onBackToHome={() => setActiveTab('home')}
                 onUpdateMood={handleUpdateMood}
+                isAdminUnlocked={isAdminUnlocked}
+                onJumpToDay={setFocusedDayNumber}
               />
             )}
 
