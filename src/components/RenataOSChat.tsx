@@ -5,12 +5,27 @@
 
 import { useState, useRef, useEffect, ChangeEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Send, HeartHandshake, Plus, Paperclip } from 'lucide-react';
+import { X, Send, HeartHandshake, Plus, Paperclip, Mic } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { RenaSerIcon } from './RenaSerLogo';
 import { RENATA_OS_ENDPOINT } from '../config';
 import { supabase } from '../lib/supabase';
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, ToneVariants } from '../utils/grammar';
+
+// Mirrors the worker's stripMarkdown (renata-os-worker/src/index.js) — the
+// backend only strips raw markdown when SAVING the exchange to the DB, so
+// the live-streamed text still carries **/_ characters while it's being
+// typed out. Apply the same cleanup client-side so what's on screen never
+// shows raw markdown syntax, streaming or not.
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/__(.+?)__/g, '$1')
+    .replace(/(?<!\w)\*(?!\s)(.+?)(?<!\s)\*(?!\w)/g, '$1')
+    .replace(/(?<!\w)_(?!\s)(.+?)(?<!\s)_(?!\w)/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^[-*]\s+/gm, '');
+}
 
 interface RenataOSChatProps {
   lang: Language;
@@ -41,6 +56,7 @@ const trans = {
     tooManyFiles: 'Só dá pra enviar até 4 arquivos de uma vez.',
     sosPrompt: 'Precisa de apoio emocional agora?',
     sosButton: 'Abrir SOS Emocional',
+    voiceInput: 'Falar em vez de digitar',
     notConfigured: 'A Renata OS ainda não está conectada a nenhum modelo de IA. Peça para configurarem o endpoint em src/config.ts assim que o backend estiver no ar.'
   },
   en: {
@@ -55,6 +71,7 @@ const trans = {
     tooManyFiles: 'You can only send up to 4 files at once.',
     sosPrompt: 'Need emotional support right now?',
     sosButton: 'Open Emotional SOS',
+    voiceInput: 'Speak instead of typing',
     notConfigured: "Renata OS isn't connected to an AI model yet. Ask for the endpoint in src/config.ts to be configured once the backend is live."
   },
   es: {
@@ -69,6 +86,7 @@ const trans = {
     tooManyFiles: 'Solo puedes enviar hasta 4 archivos a la vez.',
     sosPrompt: '¿Necesitas apoyo emocional ahora?',
     sosButton: 'Abrir SOS Emocional',
+    voiceInput: 'Hablar en vez de escribir',
     notConfigured: 'Renata OS todavía no está conectada a ningún modelo de IA. Pide que configuren el endpoint en src/config.ts en cuanto el backend esté activo.'
   }
 };
@@ -145,9 +163,13 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
   const [isLoading, setIsLoading] = useState(false);
   const [attachments, setAttachments] = useState<PendingAttachment[]>([]);
   const [attachmentError, setAttachmentError] = useState<string | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [voiceSupported, setVoiceSupported] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const recognitionRef = useRef<any>(null);
   // First-visit hint bubble so the floating button reads as "AI chat" at a
   // glance instead of a mystery icon — shown once, dismissed on first open
   // or automatically after a few seconds, remembered via localStorage so it
@@ -177,6 +199,63 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, isLoading]);
+
+  // Voice input via the browser's native SpeechRecognition (no API cost).
+  // Known iOS quirk: works reliably in a normal Safari tab but can be
+  // flaky in the installed "Add to Home Screen" standalone PWA — if a user
+  // reports the mic not picking up speech, that's the first thing to ask
+  // about (installed icon vs. browser tab), same pattern as the other
+  // iOS-standalone gotchas in this app.
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SpeechRecognitionCtor = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognitionCtor) return;
+    setVoiceSupported(true);
+    const recognition = new SpeechRecognitionCtor();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = lang === 'pt' ? 'pt-BR' : lang === 'es' ? 'es-ES' : 'en-US';
+
+    let finalTranscript = '';
+    recognition.onresult = (event: any) => {
+      let interim = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript + ' ';
+        } else {
+          interim += transcript;
+        }
+      }
+      setInput((finalTranscript + interim).trim());
+    };
+    recognition.onerror = () => setIsRecording(false);
+    recognition.onend = () => setIsRecording(false);
+    recognitionRef.current = recognition;
+
+    return () => {
+      recognition.onresult = null;
+      recognition.onerror = null;
+      recognition.onend = null;
+      try { recognition.stop(); } catch { /* noop */ }
+    };
+  }, [lang]);
+
+  const toggleVoiceInput = () => {
+    if (!recognitionRef.current) return;
+    if (isRecording) {
+      recognitionRef.current.stop();
+      setIsRecording(false);
+    } else {
+      setInput('');
+      try {
+        recognitionRef.current.start();
+        setIsRecording(true);
+      } catch {
+        setIsRecording(false);
+      }
+    }
+  };
 
   const handleAttachClick = () => fileInputRef.current?.click();
 
@@ -402,7 +481,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
               initial={{ y: 40, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
-              className="relative w-full sm:max-w-md h-[85vh] sm:h-[600px] bg-[#FAF8F5] dark:bg-ink rounded-t-3xl sm:rounded-3xl border border-rosegold/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none flex flex-col overflow-hidden"
+              className="relative w-full sm:max-w-xl h-[85vh] sm:h-[75vh] sm:max-h-[780px] bg-[#FAF8F5] dark:bg-ink rounded-t-3xl sm:rounded-3xl border border-rosegold/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none flex flex-col overflow-hidden"
             >
               {/* Header */}
               <div className="flex items-center justify-between p-5 border-b border-rose-100/20 dark:border-ink-hairline">
@@ -433,13 +512,13 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                       </span>
                     )}
                     <div
-                      className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm font-sans leading-relaxed ${
+                      className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm font-sans leading-relaxed whitespace-pre-wrap ${
                         msg.role === 'user'
                           ? 'bg-rosegold text-white rounded-br-sm selection:bg-white/30 selection:text-white'
                           : 'bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline text-slate-700 dark:text-ink-text rounded-bl-sm'
                       }`}
                     >
-                      {msg.text}
+                      {msg.role === 'assistant' ? stripMarkdown(msg.text) : msg.text}
                     </div>
                   </div>
                 ))}
@@ -529,6 +608,20 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                     rows={1}
                     className="flex-1 text-sm bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 focus:ring-rosegold dark:focus:ring-rosegold-light rounded-xl px-4 py-3 text-slate-700 dark:text-ink-text placeholder:dark:text-ink-muted transition-[border-color,box-shadow] resize-none max-h-40 overflow-y-auto"
                   />
+                  {voiceSupported && (
+                    <button
+                      type="button"
+                      onClick={toggleVoiceInput}
+                      title={t.voiceInput}
+                      className={`h-11 w-11 shrink-0 rounded-xl border flex items-center justify-center transition cursor-pointer ${
+                        isRecording
+                          ? 'bg-rosegold border-rosegold text-white animate-pulse'
+                          : 'border-rose-100/30 dark:border-ink-hairline text-slate-500 dark:text-ink-muted hover:text-rosegold hover:border-rosegold/50 dark:hover:text-rosegold-light'
+                      }`}
+                    >
+                      <Mic className="h-4 w-4" />
+                    </button>
+                  )}
                   <button
                     onClick={handleSend}
                     disabled={isLoading || (!input.trim() && attachments.length === 0)}
