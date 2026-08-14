@@ -123,9 +123,14 @@ const RENATA_OS_PROMPTS: { title: string; prompt: (nicho: string, tom: string, g
       `Me ajuda a pensar em 3 formas de mostrar autoridade percebida no meu conteúdo sobre ${nicho}, usando resultado real (mesmo que de um cliente só, mesmo pequeno) em vez de teoria. Meu tom é ${tom}.`
   },
   {
-    title: 'Sua estrutura de conteúdo/oferta (mapa da VSL)',
+    title: '1. Preencher o mapa da sua VSL',
     prompt: (nicho, tom) =>
       `Quero estruturar minha promessa/conteúdo seguindo esse mapa: promessa, por que eu travo, o que isso já me custou, pra quem é e pra quem não é, por que o que já tentei não resolveu, meu mecanismo, uma prova real que eu já tenho, o que a pessoa recebe, e o próximo passo. Meu nicho é ${nicho}, meu tom é ${tom}. Me faça uma pergunta de cada vez pra preencher isso comigo.`
+  },
+  {
+    title: '2. Sua VSL final pronta',
+    prompt: (nicho, tom) =>
+      `Agora pega todas as respostas que acabei de te dar sobre minha promessa, meu problema, pra quem é, meu mecanismo, prova real, o que entrego e o próximo passo, coloca elas em ordem, e me entrega a VSL pronta: roteiro completo, no máximo 1200 palavras, pra caber num vídeo falado de até 11 minutos. A abertura e o fechamento devem seguir o mesmo espírito da VSL original da Renata que você tem como referência, adaptados à minha voz (${tom}) e ao meu nicho (${nicho}), nunca copiados literalmente. Não invente prova social, só usa o que eu te contei.`
   }
 ];
 

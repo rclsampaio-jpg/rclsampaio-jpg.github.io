@@ -26,6 +26,7 @@ import leisCopyRenata from '../referencias/leis-copy-renata.md';
 import promptsProntos from '../referencias/prompts-prontos.md';
 import tomDeVoz from '../referencias/tom-de-voz.md';
 import mentalidadeRenata from '../referencias/mentalidade-renata.md';
+import vslDestrave from '../referencias/vsl-destrave.md';
 
 // Every message resends the whole reference bundle from scratch (no fixed
 // model memory), and this bundle has grown a lot as more laws/prompts were
@@ -54,6 +55,7 @@ function buildReferencesContext(userMessage) {
   const wantsFormats = has('formato', 'tipo de conteúdo', 'tipo de conteudo', 'carrossel', 'carousel', 'reel', 'stories');
   const wantsSeo = has('seo', 'busca', 'hashtag', 'palavra-chave', 'palavra chave', 'descrição', 'descricao');
   const wantsThumb = has('thumbnail', 'título', 'titulo', 'capa', 'miniatura');
+  const wantsVsl = has('vsl', 'roteiro de vendas', 'video de vendas', 'vídeo de vendas', 'minha oferta', 'estrutura da minha oferta', 'big idea', 'oferta irrecusável', 'oferta irrecusavel', 'autoridade percebida');
 
   const parts = [
     `# Metodologia e posicionamento da RenaSer\n${metodologiaRenaser}`,
@@ -71,6 +73,7 @@ function buildReferencesContext(userMessage) {
   if (wantsFormats) parts.push(`# Formatos de conteúdo\n${formatos}`);
   if (wantsSeo) parts.push(`# SEO\n${seo}`);
   if (wantsThumb) parts.push(`# Thumbnail e título\n${thumbnailTitulo}`);
+  if (wantsVsl) parts.push(`# VSL original da Renata, referência de blocos e estrutura completa\n${vslDestrave}`);
 
   return `\n${parts.join('\n\n')}\n`;
 }
