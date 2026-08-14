@@ -71,7 +71,7 @@ export default function App() {
 function AppContent() {
   const system = useSystem();
 
-  const { user, loading: authLoading, signOut, passwordRecovery } = useAuth();
+  const { user, session, loading: authLoading, signOut, passwordRecovery } = useAuth();
   const inviteCodeFromUrl = new URLSearchParams(window.location.search).get('codigo');
   const [authMode, setAuthMode] = useState<'login' | 'signup'>(inviteCodeFromUrl ? 'signup' : 'login');
 
@@ -179,29 +179,72 @@ function AppContent() {
     }
   };
 
-  // Gate for the Destrave (Área da Profissional) tab — a separate paid
-  // product from the main 30-day journey, closed manually via WhatsApp like
-  // the rest of the funnel (see renaser_destrave_funil_estrutura memory).
-  // Same client-side-deterrent caveat as ADMIN_PASSPHRASE above: this isn't
-  // real security, just a shared code handed to buyers after they pay.
+  // Gate for the Destrave (Área da Profissional) tab — produto separado da
+  // jornada de 30 dias, vendido à parte. Código de uso único, validado no
+  // servidor via redeem-professional-code (mesmo padrão de admin-generate-
+  // invite/redeem-invite). O flag real fica em profiles.professional_unlocked
+  // (checado abaixo), o localStorage é só um fallback instantâneo no mesmo
+  // dispositivo que resgatou o código.
   const [isProfessionalUnlocked, setIsProfessionalUnlocked] = useState(
     () => localStorage.getItem('renaser_professional_unlocked') === 'true'
   );
   const [showProfessionalPrompt, setShowProfessionalPrompt] = useState(false);
   const [professionalPassInput, setProfessionalPassInput] = useState('');
   const [professionalPassError, setProfessionalPassError] = useState(false);
-  const PROFESSIONAL_ACCESS_PASSPHRASE = 'DestraveEstrutura25';
+  const [professionalUnlocking, setProfessionalUnlocking] = useState(false);
 
-  const handleProfessionalUnlock = () => {
-    if (professionalPassInput === PROFESSIONAL_ACCESS_PASSPHRASE) {
-      setIsProfessionalUnlocked(true);
-      localStorage.setItem('renaser_professional_unlocked', 'true');
-      setShowProfessionalPrompt(false);
-      setProfessionalPassInput('');
-      setProfessionalPassError(false);
-      setActiveTab('professional');
-    } else {
+  useEffect(() => {
+    let cancelled = false;
+    if (!user) return;
+    supabase
+      .from('profiles')
+      .select('professional_unlocked')
+      .eq('id', user.id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (cancelled || error) return;
+        if (data?.professional_unlocked) {
+          setIsProfessionalUnlocked(true);
+          localStorage.setItem('renaser_professional_unlocked', 'true');
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+
+  const handleProfessionalUnlock = async () => {
+    const code = professionalPassInput.trim();
+    if (!code) return;
+    setProfessionalUnlocking(true);
+    setProfessionalPassError(false);
+    try {
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+      const res = await fetch(`${supabaseUrl}/functions/v1/redeem-professional-code`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseAnonKey,
+          'Authorization': `Bearer ${session?.access_token ?? ''}`,
+        },
+        body: JSON.stringify({ code }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setIsProfessionalUnlocked(true);
+        localStorage.setItem('renaser_professional_unlocked', 'true');
+        setShowProfessionalPrompt(false);
+        setProfessionalPassInput('');
+        setProfessionalPassError(false);
+        setActiveTab('professional');
+      } else {
+        setProfessionalPassError(true);
+      }
+    } catch {
       setProfessionalPassError(true);
+    } finally {
+      setProfessionalUnlocking(false);
     }
   };
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -1120,7 +1163,7 @@ function AppContent() {
                   : "This area is a separate product from the 30-day journey. If you bought access, enter the code you received."}
               </p>
               <input
-                type="password"
+                type="text"
                 autoFocus
                 value={professionalPassInput}
                 onChange={(e) => { setProfessionalPassInput(e.target.value); setProfessionalPassError(false); }}
@@ -1130,7 +1173,7 @@ function AppContent() {
               />
               {professionalPassError && (
                 <p className="text-[11px] text-red-500 font-sans">
-                  {lang === 'pt' ? 'Código incorreto.' : lang === 'es' ? 'Código incorrecto.' : 'Incorrect code.'}
+                  {lang === 'pt' ? 'Código inválido ou já utilizado.' : lang === 'es' ? 'Código inválido o ya utilizado.' : 'Invalid or already used code.'}
                 </p>
               )}
               <div className="flex justify-end gap-2 pt-1">
@@ -1142,9 +1185,12 @@ function AppContent() {
                 </button>
                 <button
                   onClick={handleProfessionalUnlock}
-                  className="px-5 py-2 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 text-xs font-sans font-bold uppercase tracking-wider rounded-xl transition cursor-pointer"
+                  disabled={professionalUnlocking}
+                  className="px-5 py-2 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 text-xs font-sans font-bold uppercase tracking-wider rounded-xl transition cursor-pointer disabled:opacity-60"
                 >
-                  {lang === 'pt' ? 'Entrar' : lang === 'es' ? 'Entrar' : 'Enter'}
+                  {professionalUnlocking
+                    ? (lang === 'pt' ? 'Verificando...' : lang === 'es' ? 'Verificando...' : 'Checking...')
+                    : (lang === 'pt' ? 'Entrar' : lang === 'es' ? 'Entrar' : 'Enter')}
                 </button>
               </div>
             </motion.div>

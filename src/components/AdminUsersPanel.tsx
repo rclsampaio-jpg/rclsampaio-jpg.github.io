@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Users, Ban, RotateCcw, Trash2, Award, ShieldCheck, RefreshCw } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import InviteAdminPanel from './auth/InviteAdminPanel';
+import ProfessionalAccessAdminPanel from './auth/ProfessionalAccessAdminPanel';
 
 interface AdminUser {
   id: string;
@@ -83,6 +84,7 @@ export default function AdminUsersPanel() {
   return (
     <div className="space-y-6">
       <InviteAdminPanel />
+      <ProfessionalAccessAdminPanel />
       <div className="bg-white dark:bg-ink-raised rounded-2xl border border-rose-100/25 dark:border-rosegold/10 p-6 space-y-6">
       <div className="border-b border-rose-100/10 pb-4 flex items-center justify-between gap-3">
         <div>

@@ -141,10 +141,11 @@ export interface UserProgress {
     homeClickHistory?: string[];
   };
 
-  // Área da Profissional (produto separado do DESTRAVE, gate próprio via
-  // PROFESSIONAL_ACCESS_PASSPHRASE em App.tsx). Diagnóstico é preenchido uma
-  // vez; check-ins diários alimentam o dashboard de conversão calculado
-  // (nunca digitado à mão, sempre derivado dos check-ins).
+  // Área da Profissional (produto separado, é o próprio Destrave — gate por
+  // código de uso único via redeem-professional-code, checado em App.tsx).
+  // Diagnóstico é preenchido uma vez; check-ins diários alimentam o
+  // dashboard de conversão calculado (nunca digitado à mão, sempre derivado
+  // dos check-ins).
   professionalDiagnostic?: ProfessionalDiagnostic;
   professionalCheckIns?: Record<string, ProfessionalCheckIn>; // key = YYYY-MM-DD
 }
