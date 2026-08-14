@@ -90,7 +90,9 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
 
   const [postou, setPostou] = useState(todayCheckIn?.postou ?? false);
   const [formatosPostados, setFormatosPostados] = useState<string[]>(todayCheckIn?.formatosPostados ?? []);
-  const [linkConteudo, setLinkConteudo] = useState(todayCheckIn?.linkConteudo ?? '');
+  const [linksConteudo, setLinksConteudo] = useState<string[]>(
+    todayCheckIn?.linksConteudo?.length ? todayCheckIn.linksConteudo : ['']
+  );
   const [mensagensRecebidas, setMensagensRecebidas] = useState(String(todayCheckIn?.mensagensRecebidas ?? ''));
   const [reunioesAgendadas, setReunioesAgendadas] = useState(String(todayCheckIn?.reunioesAgendadas ?? ''));
   const [vendasFechadas, setVendasFechadas] = useState(String(todayCheckIn?.vendasFechadas ?? ''));
@@ -108,11 +110,19 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
     setFormatosPostados((prev) => (prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f]));
   };
 
+  const updateLinkConteudo = (index: number, value: string) => {
+    setLinksConteudo((prev) => prev.map((l, i) => (i === index ? value : l)));
+  };
+
+  const addLinkConteudo = () => {
+    setLinksConteudo((prev) => [...prev, '']);
+  };
+
   const handleSaveCheckIn = () => {
     const checkIn: ProfessionalCheckIn = {
       postou,
       formatosPostados,
-      linkConteudo: postou ? (linkConteudo.trim() || undefined) : undefined,
+      linksConteudo: postou ? linksConteudo.map((l) => l.trim()).filter(Boolean) : undefined,
       mensagensRecebidas: Number(mensagensRecebidas) || 0,
       reunioesAgendadas: Number(reunioesAgendadas) || 0,
       vendasFechadas: Number(vendasFechadas) || 0,
@@ -348,20 +358,32 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
               </div>
               <div className="mt-3">
                 <label className="text-[11px] font-sans text-slate-500 dark:text-ink-muted block mb-1">Link do conteúdo</label>
-                <input
-                  type="url"
-                  value={linkConteudo}
-                  onChange={(e) => setLinkConteudo(e.target.value)}
-                  placeholder="Cole aqui o link do que você postou hoje"
-                  className="w-full text-sm bg-rose-50/40 dark:bg-ink border border-rose-100/20 dark:border-ink-hairline rounded-xl p-3 text-slate-700 dark:text-ink-text focus:outline-none focus:border-rosegold"
-                />
+                <div className="space-y-2">
+                  {linksConteudo.map((link, i) => (
+                    <input
+                      key={i}
+                      type="url"
+                      value={link}
+                      onChange={(e) => updateLinkConteudo(i, e.target.value)}
+                      placeholder="Cole aqui o link do que você postou hoje"
+                      className="w-full text-sm bg-rose-50/40 dark:bg-ink border border-rose-100/20 dark:border-ink-hairline rounded-xl p-3 text-slate-700 dark:text-ink-text focus:outline-none focus:border-rosegold"
+                    />
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={addLinkConteudo}
+                  className="mt-2 text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
+                >
+                  + adicionar outro link
+                </button>
               </div>
             </div>
           )}
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="text-[11px] font-sans text-slate-500 dark:text-ink-muted block mb-1">Mensagens</label>
+              <label className="text-[11px] font-sans text-slate-500 dark:text-ink-muted block mb-1">Mensagens Recebidas</label>
               <input
                 type="number"
                 min="0"
@@ -371,7 +393,7 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
               />
             </div>
             <div>
-              <label className="text-[11px] font-sans text-slate-500 dark:text-ink-muted block mb-1">Reuniões</label>
+              <label className="text-[11px] font-sans text-slate-500 dark:text-ink-muted block mb-1">Reuniões Agendadas</label>
               <input
                 type="number"
                 min="0"
@@ -381,7 +403,7 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
               />
             </div>
             <div>
-              <label className="text-[11px] font-sans text-slate-500 dark:text-ink-muted block mb-1">Vendas</label>
+              <label className="text-[11px] font-sans text-slate-500 dark:text-ink-muted block mb-1">Vendas Geradas</label>
               <input
                 type="number"
                 min="0"
@@ -428,15 +450,15 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
             </div>
             <div className="rounded-2xl bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-4 text-center">
               <p className="text-2xl font-serif font-bold text-slate-800 dark:text-ink-text">{stats.mensagens}</p>
-              <p className="text-[11px] font-sans text-slate-500 dark:text-ink-muted uppercase tracking-wider">Mensagens</p>
+              <p className="text-[11px] font-sans text-slate-500 dark:text-ink-muted uppercase tracking-wider">Mensagens Recebidas</p>
             </div>
             <div className="rounded-2xl bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-4 text-center">
               <p className="text-2xl font-serif font-bold text-slate-800 dark:text-ink-text">{stats.reunioes}</p>
-              <p className="text-[11px] font-sans text-slate-500 dark:text-ink-muted uppercase tracking-wider">Reuniões</p>
+              <p className="text-[11px] font-sans text-slate-500 dark:text-ink-muted uppercase tracking-wider">Reuniões Agendadas</p>
             </div>
             <div className="rounded-2xl bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-4 text-center">
               <p className="text-2xl font-serif font-bold text-rosegold">{stats.vendas}</p>
-              <p className="text-[11px] font-sans text-slate-500 dark:text-ink-muted uppercase tracking-wider">Vendas</p>
+              <p className="text-[11px] font-sans text-slate-500 dark:text-ink-muted uppercase tracking-wider">Vendas Geradas</p>
             </div>
           </div>
 
