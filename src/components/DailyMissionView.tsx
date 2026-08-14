@@ -808,9 +808,28 @@ export default function DailyMissionView({
       promise3: 'Gravei um vídeo de até 90 segundos usando um dos hooks disponíveis hoje',
       promise3StorySequence: 'Gravei uma sequência de pelo menos 3 vídeos nos stories contando minha dor, a ponte que me tirou dela, e o resultado que alcancei',
       reflection7Title: 'Sua Reflexão Semanal de Crescimento',
-      reflection7Q1: '1. O que mais te surpreendeu na sua capacidade de agir esta semana?',
-      reflection7Q2: '2. O que se tornou visivelmente mais fácil em relação ao primeiro dia?',
-      reflection7Q3: '3. Do que exatamente você sente mais orgulho em si mesma hoje?',
+      reflection7Questions: {
+        1: [
+          '1. O que te deu mais medo nessa primeira semana, e o que aconteceu de verdade quando você fez mesmo com medo?',
+          '2. Qual pequena vitória dessa semana você quase não comemorou, mas devia?',
+          '3. O que você entendeu sobre perfeccionismo que não sabia sete dias atrás?'
+        ],
+        2: [
+          '1. O que mais te surpreendeu na sua capacidade de agir esta semana?',
+          '2. O que se tornou visivelmente mais fácil em relação ao primeiro dia?',
+          '3. Do que exatamente você sente mais orgulho em si mesma?'
+        ],
+        3: [
+          '1. Qual foi o momento mais autêntico que você compartilhou essa semana, e como foi soltar isso pro mundo?',
+          '2. Que parte da sua história você teve coragem de contar, que antes guardava só pra você?',
+          '3. Onde você sentiu mais honestidade emocional essa semana, mesmo sem ser confortável?'
+        ],
+        4: [
+          '1. Em que momento essa semana você parou de "tentar" e sentiu que aquilo já é quem você é?',
+          '2. O que mudou na forma como você se apresenta, comparado a quem você era no dia 1?',
+          '3. Qual prova concreta você tem hoje de que essa nova identidade já é real, não só um objetivo?'
+        ]
+      } as Record<number, [string, string, string]>,
       sanctuaryTitle: 'Santuário de Descanso Estratégico',
       inhale: 'Inspire...',
       hold: 'Prenda o ar...',
@@ -833,7 +852,7 @@ export default function DailyMissionView({
       listenItem: '1. Ouvir a Mensagem da Renata',
       promisesItem: '2. Gravações de Hoje',
       recordingsLinkInstruction: 'Cole aqui o link dos 3 posts de hoje',
-      batchProductionInstruction: 'Hoje não precisa de link. Registre aqui o que você organizou ou produziu (ideias, roteiros, conteúdo gravado pra usar depois)',
+      batchProductionInstruction: 'Registre aqui o que você organizou ou produziu (ideias, roteiros, conteúdo gravado pra usar). Hoje é dia de organizar teu conteúdo, mas se você postar, registre também o link da postagem nessa mesma caixinha.',
       batchProductionPlaceholder: 'Ex: gerei 5 roteiros de Reels na Renata OS, deixei 3 vídeos de 7s já gravados pra quarta...',
       completedStatus: 'Concluído',
       pendingStatus: 'Pendente',
@@ -897,9 +916,28 @@ export default function DailyMissionView({
       promise3: "Recorded a video up to 90 seconds long using one of today's available hooks",
       promise3StorySequence: 'Recorded a sequence of at least 3 Stories telling my pain, the bridge that got me past it, and the result I reached',
       reflection7Title: 'Your Weekly Growth Reflection',
-      reflection7Q1: '1. What surprised you the most about your capacity to act this week?',
-      reflection7Q2: '2. What has become visibly easier compared to the first day?',
-      reflection7Q3: '3. What exactly are you most proud of about yourself today?',
+      reflection7Questions: {
+        1: [
+          '1. What scared you the most this first week, and what actually happened when you did it scared anyway?',
+          '2. What small win this week did you almost not celebrate, but should have?',
+          '3. What did you understand about perfectionism that you didn\'t know seven days ago?'
+        ],
+        2: [
+          '1. What surprised you the most about your capacity to act this week?',
+          '2. What has become visibly easier compared to the first day?',
+          '3. What exactly are you most proud of about yourself?'
+        ],
+        3: [
+          '1. What was the most authentic moment you shared this week, and what was it like letting it go out into the world?',
+          '2. What part of your story did you have the courage to tell, that you used to keep only to yourself?',
+          '3. Where did you feel the most emotional honesty this week, even when it wasn\'t comfortable?'
+        ],
+        4: [
+          '1. What moment this week did you stop "trying" and feel that this is already who you are?',
+          '2. What changed in how you show up, compared to who you were on day 1?',
+          '3. What concrete proof do you have today that this new identity is already real, not just a goal?'
+        ]
+      } as Record<number, [string, string, string]>,
       sanctuaryTitle: 'Strategic Rest Sanctuary',
       inhale: 'Inhale...',
       hold: 'Hold...',
@@ -922,7 +960,7 @@ export default function DailyMissionView({
       listenItem: "1. Listen to Renata's Message",
       promisesItem: "2. Today's Recordings",
       recordingsLinkInstruction: "Paste the link to today's 3 posts here",
-      batchProductionInstruction: "No link needed today. Log what you organized or produced (ideas, scripts, content recorded for later)",
+      batchProductionInstruction: "Log here what you organized or produced (ideas, scripts, content recorded for later use). Today is for organizing your content, but if you do post, log that link in this same box too.",
       batchProductionPlaceholder: 'E.g.: generated 5 Reels scripts on Renata OS, pre-recorded 3 seven-second videos for Wednesday...',
       completedStatus: 'Completed',
       pendingStatus: 'Pending',
@@ -986,9 +1024,28 @@ export default function DailyMissionView({
       promise3: 'Grabé un video de hasta 90 segundos usando uno de los hooks disponibles hoy',
       promise3StorySequence: 'Grabé una secuencia de al menos 3 stories contando mi dolor, el puente que me sacó de ahí, y el resultado que logré',
       reflection7Title: 'Tu Reflexión Semanal de Crecimiento',
-      reflection7Q1: '1. ¿Qué es lo que más te sorprendió de tu capacidad para actuar esta semana?',
-      reflection7Q2: '2. ¿Qué se ha vuelto visiblemente más fácil en relación con el primer día?',
-      reflection7Q3: '3. ¿De qué te sientes exactamente más orgulloso de ti mismo hoy?',
+      reflection7Questions: {
+        1: [
+          '1. ¿Qué fue lo que más miedo te dio en esta primera semana, y qué pasó de verdad cuando lo hiciste con miedo igual?',
+          '2. ¿Qué pequeña victoria de esta semana casi no celebraste, pero merecía?',
+          '3. ¿Qué entendiste sobre el perfeccionismo que no sabías hace siete días?'
+        ],
+        2: [
+          '1. ¿Qué es lo que más te sorprendió de tu capacidad para actuar esta semana?',
+          '2. ¿Qué se ha vuelto visiblemente más fácil en relación con el primer día?',
+          '3. ¿De qué te sientes exactamente más orgulloso de ti mismo?'
+        ],
+        3: [
+          '1. ¿Cuál fue el momento más auténtico que compartiste esta semana, y cómo fue soltarlo al mundo?',
+          '2. ¿Qué parte de tu historia tuviste el coraje de contar, que antes guardabas solo para ti?',
+          '3. ¿Dónde sentiste más honestidad emocional esta semana, aunque no fuera cómodo?'
+        ],
+        4: [
+          '1. ¿En qué momento de esta semana dejaste de "intentar" y sentiste que eso ya es quien eres?',
+          '2. ¿Qué cambió en la forma en que te muestras, comparado con quién eras el día 1?',
+          '3. ¿Qué prueba concreta tienes hoy de que esta nueva identidad ya es real, no solo un objetivo?'
+        ]
+      } as Record<number, [string, string, string]>,
       sanctuaryTitle: 'Santuario de Descanso Estratégico',
       inhale: 'Inhala...',
       hold: 'Retén el aire...',
@@ -1011,7 +1068,7 @@ export default function DailyMissionView({
       listenItem: '1. Escuchar el Mensaje de Renata',
       promisesItem: '2. Grabaciones de Hoy',
       recordingsLinkInstruction: 'Pega aquí el enlace de tus 3 publicaciones de hoy',
-      batchProductionInstruction: 'Hoy no necesitas enlace. Registra aquí lo que organizaste o produjiste (ideas, guiones, contenido grabado para usar después)',
+      batchProductionInstruction: 'Registra aquí lo que organizaste o produjiste (ideas, guiones, contenido grabado para usar). Hoy es día de organizar tu contenido, pero si publicas, registra también el enlace de la publicación en esta misma caja.',
       batchProductionPlaceholder: 'Ej: generé 5 guiones de Reels en la Renata OS, dejé 3 videos de 7s ya grabados para el miércoles...',
       completedStatus: 'Completado',
       pendingStatus: 'Pendiente',
@@ -1908,9 +1965,9 @@ export default function DailyMissionView({
                     <p className="font-bold text-accentgold not-italic uppercase tracking-widest text-[11px]">
                       {localizedPhase.title} <EditableText contentKey="dailyMission.reflectionMoment" fallback={textDict.reflectionMoment} as="span" />
                     </p>
-                    <p><EditableText contentKey="dailyMission.reflection7Q1" fallback={textDict.reflection7Q1} as="span" /></p>
-                    <p><EditableText contentKey="dailyMission.reflection7Q2" fallback={textDict.reflection7Q2} as="span" /></p>
-                    <p><EditableText contentKey="dailyMission.reflection7Q3" fallback={textDict.reflection7Q3} as="span" /></p>
+                    {textDict.reflection7Questions[currentPhaseId]?.map((q, idx) => (
+                      <p key={idx}>{q}</p>
+                    ))}
                   </div>
                 ) : (
                   <p className="text-xs text-slate-500 dark:text-ink-muted italic leading-relaxed">
