@@ -528,6 +528,10 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
     .reveal { animation: rise 0.7s ease both; }
     @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   }
+
+  /* Bloqueia seleção/cópia de texto da página (proteção de conteúdo) */
+  body { -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+  input, textarea { -webkit-user-select: text; -moz-user-select: text; user-select: text; }
 </style>
 
 </head>
@@ -545,7 +549,7 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
 
   <section class="vsl-section">
     <div class="vsl-wrap" id="vslWrap">
-      <video id="vslVideo" src="vsl.mp4" poster="vsl-poster.jpg" controls playsinline preload="metadata" controlsList="nofullscreen noremoteplayback noplaybackrate" disablepictureinpicture></video>
+      <video id="vslVideo" src="vsl.mp4" poster="vsl-poster.jpg" controls playsinline preload="metadata" controlsList="nofullscreen noremoteplayback" disablepictureinpicture></video>
     </div>
     <p class="vsl-lockmsg" id="vslLockMsg">O restante da página libera enquanto você assiste.</p>
   </section>
@@ -753,5 +757,13 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
 })();
 </script>
 
+
+<script>
+(function () {
+  ['copy', 'cut', 'contextmenu', 'selectstart'].forEach(function (evt) {
+    document.addEventListener(evt, function (e) { e.preventDefault(); }, false);
+  });
+})();
+</script>
 </body>
 </html>
