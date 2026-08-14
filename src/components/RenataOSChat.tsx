@@ -5,7 +5,7 @@
 
 import { useState, useRef, useEffect, ChangeEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Send, HeartHandshake, Plus, Paperclip, Mic } from 'lucide-react';
+import { X, Send, HeartHandshake, Plus, Paperclip, Mic, Maximize2, Minimize2 } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { RenaSerIcon } from './RenaSerLogo';
 import { RENATA_OS_ENDPOINT } from '../config';
@@ -57,6 +57,8 @@ const trans = {
     sosPrompt: 'Precisa de apoio emocional agora?',
     sosButton: 'Abrir SOS Emocional',
     voiceInput: 'Falar em vez de digitar',
+    maximize: 'Maximizar',
+    restore: 'Restaurar tamanho',
     notConfigured: 'A Renata OS ainda não está conectada a nenhum modelo de IA. Peça para configurarem o endpoint em src/config.ts assim que o backend estiver no ar.'
   },
   en: {
@@ -72,6 +74,8 @@ const trans = {
     sosPrompt: 'Need emotional support right now?',
     sosButton: 'Open Emotional SOS',
     voiceInput: 'Speak instead of typing',
+    maximize: 'Maximize',
+    restore: 'Restore size',
     notConfigured: "Renata OS isn't connected to an AI model yet. Ask for the endpoint in src/config.ts to be configured once the backend is live."
   },
   es: {
@@ -87,6 +91,8 @@ const trans = {
     sosPrompt: '¿Necesitas apoyo emocional ahora?',
     sosButton: 'Abrir SOS Emocional',
     voiceInput: 'Hablar en vez de escribir',
+    maximize: 'Maximizar',
+    restore: 'Restaurar tamaño',
     notConfigured: 'Renata OS todavía no está conectada a ningún modelo de IA. Pide que configuren el endpoint en src/config.ts en cuanto el backend esté activo.'
   }
 };
@@ -164,6 +170,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
   const [attachments, setAttachments] = useState<PendingAttachment[]>([]);
   const [attachmentError, setAttachmentError] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -481,7 +488,9 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
               initial={{ y: 40, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
-              className="relative w-full sm:max-w-xl h-[85vh] sm:h-[75vh] sm:max-h-[780px] bg-[#FAF8F5] dark:bg-ink rounded-t-3xl sm:rounded-3xl border border-rosegold/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none flex flex-col overflow-hidden"
+              className={`relative w-full h-[85vh] bg-[#FAF8F5] dark:bg-ink rounded-t-3xl sm:rounded-3xl border border-rosegold/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none flex flex-col overflow-hidden transition-[max-width,height] duration-300 ${
+                isMaximized ? 'sm:max-w-4xl sm:h-[92vh]' : 'sm:max-w-xl sm:h-[75vh] sm:max-h-[780px]'
+              }`}
             >
               {/* Header */}
               <div className="flex items-center justify-between p-5 border-b border-rose-100/20 dark:border-ink-hairline">
@@ -494,12 +503,21 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                     <p className="text-[10px] text-slate-400 dark:text-ink-muted font-sans">{t.subtitle}</p>
                   </div>
                 </div>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="p-2 rounded-full text-slate-400 dark:text-ink-muted hover:text-rosegold dark:hover:text-rosegold-light hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10 transition cursor-pointer"
-                >
-                  <X className="h-4 w-4" />
-                </button>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setIsMaximized((v) => !v)}
+                    title={isMaximized ? t.restore : t.maximize}
+                    className="hidden sm:flex p-2 rounded-full text-slate-400 dark:text-ink-muted hover:text-rosegold dark:hover:text-rosegold-light hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10 transition cursor-pointer"
+                  >
+                    {isMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                  </button>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="p-2 rounded-full text-slate-400 dark:text-ink-muted hover:text-rosegold dark:hover:text-rosegold-light hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10 transition cursor-pointer"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
 
               {/* Messages */}
