@@ -604,60 +604,70 @@ export default {
     // path needs the same safety net since it can't know a stream is empty
     // until it's fully drained).
     const modelsToTry = [OPENROUTER_MODELS.primary, OPENROUTER_MODELS.fallback];
+    // OpenRouter's free pool gets congested in bursts — a 429 right now
+    // often clears within a couple seconds once the shared queue drains.
+    // One extra full pass (primary, then fallback again) after a short
+    // wait catches that case instead of surfacing "não consegui responder"
+    // for what was really just a momentary spike.
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     const clientStream = new ReadableStream({
       async start(controller) {
         const encoder = new TextEncoder();
         let fullText = '';
 
-        for (const model of modelsToTry) {
-          let upstream;
-          try {
-            upstream = await fetchOpenRouterStream(model, systemPrompt, history, messageText, env);
-          } catch (err) {
-            console.error(`Renata OS: stream connect failed (${model})`, err);
-            continue;
-          }
+        for (let attempt = 0; attempt < 2 && !fullText; attempt++) {
+          if (attempt > 0) await sleep(1500);
 
-          const decoder = new TextDecoder();
-          const reader = upstream.body.getReader();
-          let buffer = '';
-          try {
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              buffer += decoder.decode(value, { stream: true });
-              const lines = buffer.split('\n');
-              buffer = lines.pop() || '';
-              for (const line of lines) {
-                const trimmed = line.trim();
-                if (!trimmed.startsWith('data:')) continue;
-                const payload = trimmed.slice(5).trim();
-                if (!payload || payload === '[DONE]') continue;
-                try {
-                  const json = JSON.parse(payload);
-                  const delta = json?.choices?.[0]?.delta?.content;
-                  if (delta) {
-                    fullText += delta;
-                    // Sent raw (not run through stripMarkdown) so tokens can
-                    // go out the moment they arrive — the full accumulated
-                    // text still gets cleaned before it's saved to history
-                    // below, this only risks a stray markdown symbol
-                    // flashing on screen in the rare case the model doesn't
-                    // follow the no-markdown instruction, not corrupting
-                    // what's stored.
-                    controller.enqueue(encoder.encode(delta));
+          for (const model of modelsToTry) {
+            let upstream;
+            try {
+              upstream = await fetchOpenRouterStream(model, systemPrompt, history, messageText, env);
+            } catch (err) {
+              console.error(`Renata OS: stream connect failed (${model}, attempt ${attempt + 1})`, err);
+              continue;
+            }
+
+            const decoder = new TextDecoder();
+            const reader = upstream.body.getReader();
+            let buffer = '';
+            try {
+              while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop() || '';
+                for (const line of lines) {
+                  const trimmed = line.trim();
+                  if (!trimmed.startsWith('data:')) continue;
+                  const payload = trimmed.slice(5).trim();
+                  if (!payload || payload === '[DONE]') continue;
+                  try {
+                    const json = JSON.parse(payload);
+                    const delta = json?.choices?.[0]?.delta?.content;
+                    if (delta) {
+                      fullText += delta;
+                      // Sent raw (not run through stripMarkdown) so tokens can
+                      // go out the moment they arrive — the full accumulated
+                      // text still gets cleaned before it's saved to history
+                      // below, this only risks a stray markdown symbol
+                      // flashing on screen in the rare case the model doesn't
+                      // follow the no-markdown instruction, not corrupting
+                      // what's stored.
+                      controller.enqueue(encoder.encode(delta));
+                    }
+                  } catch {
+                    // Malformed/partial SSE line, ignore and keep reading.
                   }
-                } catch {
-                  // Malformed/partial SSE line, ignore and keep reading.
                 }
               }
+            } catch (err) {
+              console.error(`Renata OS: stream read error (${model}, attempt ${attempt + 1})`, err);
             }
-          } catch (err) {
-            console.error(`Renata OS: stream read error (${model})`, err);
-          }
 
-          if (fullText) break; // got real content, no need to try the next model
+            if (fullText) break; // got real content, no need to try the next model
+          }
         }
 
         if (!fullText) {
