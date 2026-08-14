@@ -170,6 +170,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, compact
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
+  const finalTranscriptRef = useRef('');
   // First-visit hint bubble so the floating button reads as "AI chat" at a
   // glance instead of a mystery icon — shown once, dismissed on first open
   // or automatically after a few seconds, remembered via localStorage so it
@@ -228,24 +229,32 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, compact
     recognition.interimResults = true;
     recognition.lang = lang === 'pt' ? 'pt-BR' : lang === 'es' ? 'es-ES' : 'en-US';
 
-    let finalTranscript = '';
+    // Reset per recording SESSION (onstart), not once per component mount —
+    // this SpeechRecognition instance is reused across multiple start/stop
+    // toggles (only recreated when `lang` changes), so without this reset
+    // a second recording kept appending onto whatever text the first
+    // recording had already accumulated, even after the box was cleared.
+    recognition.onstart = () => {
+      finalTranscriptRef.current = '';
+    };
     recognition.onresult = (event: any) => {
       let interim = '';
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcript = event.results[i][0].transcript;
         if (event.results[i].isFinal) {
-          finalTranscript += transcript + ' ';
+          finalTranscriptRef.current += transcript + ' ';
         } else {
           interim += transcript;
         }
       }
-      setInput((finalTranscript + interim).trim());
+      setInput((finalTranscriptRef.current + interim).trim());
     };
     recognition.onerror = () => setIsRecording(false);
     recognition.onend = () => setIsRecording(false);
     recognitionRef.current = recognition;
 
     return () => {
+      recognition.onstart = null;
       recognition.onresult = null;
       recognition.onerror = null;
       recognition.onend = null;
