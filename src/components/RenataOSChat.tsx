@@ -5,7 +5,7 @@
 
 import { useState, useRef, useEffect, ChangeEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Send, HeartHandshake, Plus, Paperclip, Mic, Maximize2, Minimize2 } from 'lucide-react';
+import { X, Send, Plus, Paperclip, Mic, Maximize2, Minimize2 } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { RenaSerIcon } from './RenaSerLogo';
 import { RENATA_OS_ENDPOINT } from '../config';
@@ -31,7 +31,6 @@ interface RenataOSChatProps {
   lang: Language;
   progress: UserProgress;
   currentDayNumber: number;
-  onOpenSos: () => void;
   // True outside the Home tab — shrinks the FAB to just the logo + "IA"
   // badge (no text label) so it stays out of the way of each screen's own
   // content instead of taking up a full pill's worth of space everywhere.
@@ -54,8 +53,6 @@ const trans = {
     fileTooLarge: 'Esse arquivo é grande demais. Tenta um arquivo menor.',
     fileTypeInvalid: 'Só posso analisar imagens ou PDFs.',
     tooManyFiles: 'Só dá pra enviar até 4 arquivos de uma vez.',
-    sosPrompt: 'Precisa de apoio emocional agora?',
-    sosButton: 'Abrir SOS Emocional',
     voiceInput: 'Falar em vez de digitar',
     maximize: 'Maximizar',
     restore: 'Restaurar tamanho',
@@ -71,8 +68,6 @@ const trans = {
     fileTooLarge: 'That file is too large. Try a smaller one.',
     fileTypeInvalid: 'I can only analyze images or PDFs.',
     tooManyFiles: 'You can only send up to 4 files at once.',
-    sosPrompt: 'Need emotional support right now?',
-    sosButton: 'Open Emotional SOS',
     voiceInput: 'Speak instead of typing',
     maximize: 'Maximize',
     restore: 'Restore size',
@@ -88,8 +83,6 @@ const trans = {
     fileTooLarge: 'Ese archivo es demasiado grande. Intenta con uno más pequeño.',
     fileTypeInvalid: 'Solo puedo analizar imágenes o PDFs.',
     tooManyFiles: 'Solo puedes enviar hasta 4 archivos a la vez.',
-    sosPrompt: '¿Necesitas apoyo emocional ahora?',
-    sosButton: 'Abrir SOS Emocional',
     voiceInput: 'Hablar en vez de escribir',
     maximize: 'Maximizar',
     restore: 'Restaurar tamaño',
@@ -162,7 +155,7 @@ const HINT_BY_LANG: Record<Language, string> = {
   es: 'Soy una IA, pregúntame lo que sea 💬'
 };
 
-export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenSos, compact = false }: RenataOSChatProps) {
+export default function RenataOSChat({ lang, progress, currentDayNumber, compact = false }: RenataOSChatProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -550,17 +543,6 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, onOpenS
                     </div>
                   </div>
                 )}
-              </div>
-
-              {/* SOS quick action */}
-              <div className="px-5 pb-2">
-                <button
-                  onClick={() => { setIsOpen(false); onOpenSos(); }}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-rose-50/60 dark:bg-transparent border border-rose-100/30 dark:border-rosegold-light/30 text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light transition cursor-pointer hover:bg-rose-50 dark:hover:bg-rosegold-light/10"
-                >
-                  <HeartHandshake className="h-3.5 w-3.5" />
-                  {t.sosPrompt} {t.sosButton}
-                </button>
               </div>
 
               {/* Input row */}

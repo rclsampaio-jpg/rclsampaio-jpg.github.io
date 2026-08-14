@@ -1205,7 +1205,6 @@ function AppContent() {
           lang={lang}
           progress={progress}
           currentDayNumber={focusedDayNumber}
-          onOpenSos={() => setActiveTab('sos')}
           compact={activeTab !== 'home'}
         />
 
