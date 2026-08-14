@@ -160,6 +160,7 @@ export interface ProfessionalDiagnostic {
 export interface ProfessionalCheckIn {
   postou: boolean;
   formatosPostados?: string[]; // ex: ['Reels', 'Stories']
+  linkConteudo?: string; // link do conteúdo gravado/postado naquele dia
   mensagensRecebidas: number;
   reunioesAgendadas: number;
   vendasFechadas: number;
