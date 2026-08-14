@@ -17,38 +17,114 @@ interface ProfessionalAreaViewProps {
 
 const FORMATOS = ['Reels', 'Stories', 'Carrossel', 'Vídeo longo'];
 
-// Cada script carrega o(s) gargalo(s) que ele resolve — usado pra destacar
-// "recomendado pra você" na aba Mensagens conforme a resposta do diagnóstico.
-const MESSAGE_LIBRARY: { title: string; body: string; resolveGargalo: string[] }[] = [
+// Em vez de script pronto pra copiar e colar, cada item vira um prompt que
+// ela manda pro Renata OS — o objetivo é ela desenvolver a própria voz na
+// conversa real, não decorar frase de outra pessoa. O prompt já entra
+// preenchido com nicho/tom/gargalo do diagnóstico quando existem.
+const PROMPT_LIBRARY: { title: string; momento: string; prompt: (nicho: string, tom: string) => string; resolveGargalo: string[] }[] = [
   {
     title: 'Abertura de conversa',
-    body: 'Oi [nome]! Vi que você comentou/curtiu [conteúdo]. Fiquei curiosa: o que mais te chamou atenção nele?',
+    momento: 'Quando alguém comenta ou curte seu conteúdo',
+    prompt: (nicho, tom) =>
+      `Uma pessoa comentou/curtiu meu conteúdo e eu quero puxar conversa com ela, de um jeito genuíno, não vendedor. Meu nicho é ${nicho}, meu tom de voz é ${tom}. Me ajuda a montar uma abertura curta que soe como eu de verdade, não um roteiro pronto.`,
     resolveGargalo: ['Em gerar mensagens/interesse']
   },
   {
-    title: 'Entender o momento atual',
-    body: 'Me conta rapidinho como você tá hoje em relação a [tema do seu conteúdo]? Assim eu entendo melhor como posso te ajudar.',
+    title: 'Entender o momento atual dela',
+    momento: 'Quando a conversa já começou',
+    prompt: (nicho, tom) =>
+      `Já puxei conversa com uma pessoa interessada no meu conteúdo sobre ${nicho}. Agora preciso entender o momento real dela antes de oferecer qualquer coisa. Meu tom é ${tom}. Me ajuda a formular 2-3 perguntas que abrem espaço pra ela falar, sem parecer questionário.`,
     resolveGargalo: ['Em gerar mensagens/interesse', 'Em transformar mensagem em reunião']
   },
   {
     title: 'Filtro de objetivo',
-    body: 'E o que você já tentou até hoje pra resolver isso? Só pra eu não te sugerir algo que você já tentou e não funcionou.',
+    momento: 'Antes de marcar reunião',
+    prompt: (nicho, tom) =>
+      `Ela me contou o momento dela em relação a ${nicho}. Quero entender o que ela já tentou até agora pra resolver isso, sem soar como interrogatório, no meu tom (${tom}). Me ajuda a formular essa pergunta.`,
     resolveGargalo: ['Em transformar mensagem em reunião']
   },
   {
     title: 'Apresentar a oferta sem preço',
-    body: 'Baseado no que você me contou, eu tenho um jeito de te ajudar com isso, quer que eu te explique como funciona?',
+    momento: 'Puxando pra reunião',
+    prompt: (nicho, tom) =>
+      `Baseado no que ela me contou, quero apresentar que eu tenho um jeito de ajudar com isso (dentro de ${nicho}), sem falar preço ainda, e convidar pra uma conversa. Meu tom é ${tom}. Me ajuda a escrever essa mensagem.`,
     resolveGargalo: ['Em transformar mensagem em reunião']
   },
   {
     title: 'Contorno de objeção de preço',
-    body: 'Entendo. Antes de pensar em valor, me diz: faz sentido pra você resolver isso agora, ou é mais uma questão de timing?',
+    momento: 'Quando ela hesita no valor',
+    prompt: (nicho, tom) =>
+      `Ela demonstrou objeção quando eu falei de valor. Quero responder sem baixar preço nem ficar na defensiva, entendendo se é questão de prioridade ou de timing. Meu tom é ${tom}, meu nicho é ${nicho}. Me ajuda a formular essa resposta.`,
     resolveGargalo: ['Em fechar a venda na reunião']
   },
   {
     title: 'Fechamento objetivo',
-    body: 'Então bora começar. Prefere fechar via Pix ou cartão?',
+    momento: 'Quando ela já decidiu',
+    prompt: (nicho, tom) =>
+      `Ela já decidiu que quer fechar. Quero uma mensagem de fechamento direta e objetiva, sem enrolar, no meu tom (${tom}), pra ${nicho}. Me ajuda a escrever.`,
     resolveGargalo: ['Em fechar a venda na reunião']
+  }
+];
+
+const VSL_REFERENCIA: { bloco: string; ideia: string }[] = [
+  { bloco: '1. Promessa', ideia: 'Uma promessa específica e cronometrada, o que ela vai sair sabendo/tendo, sem enrolar no começo.' },
+  { bloco: '2. Mecanismo do problema', ideia: 'Por que ela trava hoje, de um jeito que ela reconhece na hora ("é exatamente isso que acontece comigo").' },
+  { bloco: '3. Consequências', ideia: 'O que essa trava já custou de verdade, contado em primeira pessoa, com exemplo real.' },
+  { bloco: '4. Pra quem é / não é', ideia: 'Filtro honesto, inclusive dizendo pra quem NÃO é, isso aumenta a confiança de quem fica.' },
+  { bloco: '5. Por que o que ela já tentou não resolveu', ideia: 'Invalidar os métodos genéricos sem atacar quem os seguiu, mostrando o que falta neles.' },
+  { bloco: '6. O mecanismo (seu método)', ideia: 'A ideia central que só você tem, nomeada, com lógica clara de por que funciona.' },
+  { bloco: '7. Prova social', ideia: 'Um resultado real e específico, com número, não um "todo mundo adora".' },
+  { bloco: '8. O que ela recebe', ideia: 'Formato claro: o que tem dentro, com que frequência, por quanto tempo.' },
+  { bloco: '9. Projeção de ganho', ideia: 'Três cenários realistas (simples, comum, ótimo), não uma promessa única exagerada.' },
+  { bloco: '10. Detalhe da entrega', ideia: 'Prazo, vagas, formato de acompanhamento, sem letra miúda.' },
+  { bloco: '11. Custo da inação + próximo passo', ideia: 'O que ela perde ficando parada, e um único próximo passo óbvio.' }
+];
+
+// Não basta nomear o gargalo, precisa dizer o que fazer com ele e apontar
+// exatamente pra onde dentro da própria área ela resolve isso.
+const GARGALO_RESOLUCAO: Record<string, { oQueFazer: string; aba: 'mensagens' | 'referencia'; abaLabel: string }> = {
+  'Em criar conteúdo com constância': {
+    oQueFazer: 'Normalmente não é falta de ideia, é falta de um ângulo fixo pra postar sem ter que reinventar toda vez. Defina sua Big Idea primeiro, isso destrava o resto.',
+    aba: 'referencia',
+    abaLabel: 'Ir pra Referência'
+  },
+  'Em gerar mensagens/interesse': {
+    oQueFazer: 'Seu conteúdo pode estar resolvendo demais no post, sem deixar ninguém curioso pra te chamar. Comece pelos prompts de Abertura de conversa.',
+    aba: 'mensagens',
+    abaLabel: 'Ir pra Mensagens'
+  },
+  'Em transformar mensagem em reunião': {
+    oQueFazer: 'A conversa costuma parar no meio por falta de filtro antes da oferta. Usa os prompts de Filtro de objetivo e Oferta sem preço.',
+    aba: 'mensagens',
+    abaLabel: 'Ir pra Mensagens'
+  },
+  'Em fechar a venda na reunião': {
+    oQueFazer: 'A objeção de preço trava quando falta ancoragem clara antes do valor. Usa os prompts de Contorno de objeção e Fechamento objetivo.',
+    aba: 'mensagens',
+    abaLabel: 'Ir pra Mensagens'
+  }
+};
+
+const RENATA_OS_PROMPTS: { title: string; prompt: (nicho: string, tom: string, gargalo: string) => string }[] = [
+  {
+    title: 'Sua Big Idea',
+    prompt: (nicho, tom) =>
+      `Quero construir minha Big Idea: a frase que resume o ângulo único que só eu tenho dentro de ${nicho}. Meu tom de voz é ${tom}. Me faça perguntas, uma de cada vez, até ter contexto suficiente pra sugerir algumas opções.`
+  },
+  {
+    title: 'Sua Oferta Irrecusável',
+    prompt: (nicho, tom, gargalo) =>
+      `Quero estruturar minha oferta pra ${nicho}: resultado claro que eu entrego, prazo, formato, e o que eu NÃO vou incluir pra não confundir quem recebe. Meu gargalo hoje é "${gargalo}". Me ajuda perguntando o que falta antes de montar a oferta comigo.`
+  },
+  {
+    title: 'Sua Autoridade Percebida',
+    prompt: (nicho, tom) =>
+      `Me ajuda a pensar em 3 formas de mostrar autoridade percebida no meu conteúdo sobre ${nicho}, usando resultado real (mesmo que de um cliente só, mesmo pequeno) em vez de teoria. Meu tom é ${tom}.`
+  },
+  {
+    title: 'Sua estrutura de conteúdo/oferta (mapa da VSL)',
+    prompt: (nicho, tom) =>
+      `Quero estruturar minha promessa/conteúdo seguindo esse mapa: promessa, por que eu travo, o que isso já me custou, pra quem é e pra quem não é, por que o que já tentei não resolveu, meu mecanismo, uma prova real que eu já tenho, o que a pessoa recebe, e o próximo passo. Meu nicho é ${nicho}, meu tom é ${tom}. Me faça uma pergunta de cada vez pra preencher isso comigo.`
   }
 ];
 
@@ -134,6 +210,13 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
   const [vozRespostas, setVozRespostas] = useState<Record<string, string>>(diagnostic?.vozRespostas ?? {});
   const [estruturaRespostas, setEstruturaRespostas] = useState<Record<string, string>>(diagnostic?.estruturaRespostas ?? {});
   const [diagnosticSaved, setDiagnosticSaved] = useState(false);
+  const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
+
+  const copyPrompt = (title: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedPrompt(title);
+    setTimeout(() => setCopiedPrompt(null), 2000);
+  };
 
   const toggleFormato = (f: string) => {
     setFormatosPostados((prev) => (prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f]));
@@ -209,15 +292,19 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
   }, [checkIns]);
 
   const gargaloAtual = diagnostic?.estruturaRespostas?.gargalo;
+  const nichoAtual = diagnostic?.nicho || '[seu nicho]';
+  const tomAtual = diagnostic?.vozRespostas?.tom || '[seu tom de voz]';
 
-  // Mensagens que resolvem o gargalo declarado no diagnóstico vêm primeiro,
-  // marcadas como recomendadas — o resto continua disponível embaixo.
-  const orderedMessages = useMemo(() => {
-    if (!gargaloAtual) return MESSAGE_LIBRARY.map((m) => ({ ...m, recomendado: false }));
-    return [...MESSAGE_LIBRARY]
-      .map((m) => ({ ...m, recomendado: m.resolveGargalo.includes(gargaloAtual) }))
-      .sort((a, b) => Number(b.recomendado) - Number(a.recomendado));
-  }, [gargaloAtual]);
+  // Prompts que resolvem o gargalo declarado no diagnóstico vêm primeiro,
+  // marcados como recomendados — o resto continua disponível embaixo.
+  const orderedPrompts = useMemo(() => {
+    const withText = PROMPT_LIBRARY.map((m) => ({
+      ...m,
+      text: m.prompt(nichoAtual, tomAtual),
+      recomendado: gargaloAtual ? m.resolveGargalo.includes(gargaloAtual) : false
+    }));
+    return withText.sort((a, b) => Number(b.recomendado) - Number(a.recomendado));
+  }, [gargaloAtual, nichoAtual, tomAtual]);
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
@@ -235,8 +322,8 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
 
       <div className="flex items-center justify-center gap-2 flex-wrap">
         {([
-          { id: 'diagnostico', label: 'Diagnóstico', icon: Compass },
           { id: 'checkin', label: 'Check-in do Dia', icon: CheckCircle2 },
+          { id: 'diagnostico', label: 'Diagnóstico', icon: Compass },
           { id: 'dashboard', label: 'Dashboard', icon: TrendingUp },
           { id: 'mensagens', label: 'Mensagens', icon: MessageCircle },
           { id: 'referencia', label: 'Referência', icon: BookOpen }
@@ -367,6 +454,47 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
               </ul>
             </div>
           ))}
+
+          <div className="rounded-2xl bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-5 space-y-3 mt-4">
+            <div>
+              <p className="text-sm font-serif font-semibold text-slate-800 dark:text-ink-text">Como a Renata estruturou a dela</p>
+              <p className="text-xs text-slate-500 dark:text-ink-muted mt-1">
+                Esse é o mapa real usado pra estruturar a VSL do Destrave. Não é pra copiar frase por frase, é pra usar como esqueleto e preencher com a sua história.
+              </p>
+            </div>
+            <ul className="space-y-2">
+              {VSL_REFERENCIA.map((v) => (
+                <li key={v.bloco}>
+                  <p className="text-xs font-sans font-bold text-slate-700 dark:text-ink-text">{v.bloco}</p>
+                  <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">{v.ideia}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-3 mt-4">
+            <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted">
+              Perguntas exatas pra mandar pro Renata OS e preencher isso com as suas informações.
+            </p>
+            {RENATA_OS_PROMPTS.map((p) => {
+              const text = p.prompt(nichoAtual, tomAtual, gargaloAtual || '[seu gargalo]');
+              return (
+                <div
+                  key={p.title}
+                  className="rounded-2xl bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-4 space-y-2"
+                >
+                  <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider">{p.title}</p>
+                  <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed bg-rose-50/40 dark:bg-ink rounded-xl p-3">{text}</p>
+                  <button
+                    onClick={() => copyPrompt(p.title, text)}
+                    className="text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
+                  >
+                    {copiedPrompt === p.title ? 'Copiado ✓' : 'Copiar prompt'}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </motion.div>
       )}
 
@@ -506,13 +634,27 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
           className="space-y-4"
         >
           {diagnostic?.completedAt && (
-            <div className="rounded-2xl bg-rosegold/5 dark:bg-rosegold-light/5 border border-rosegold/20 p-4 space-y-1">
+            <div className="rounded-2xl bg-rosegold/5 dark:bg-rosegold-light/5 border border-rosegold/20 p-4 space-y-2">
               <p className="text-[10px] font-sans font-bold text-rosegold uppercase tracking-wider">Seu posicionamento</p>
               <p className="text-xs text-slate-600 dark:text-ink-muted leading-relaxed">
                 {diagnostic.nicho && <>Nicho: <span className="font-semibold text-slate-800 dark:text-ink-text">{diagnostic.nicho}</span>. </>}
                 {diagnostic.vozRespostas?.tom && <>Voz: <span className="font-semibold text-slate-800 dark:text-ink-text">{diagnostic.vozRespostas.tom}</span>. </>}
                 {gargaloAtual && <>Gargalo atual: <span className="font-semibold text-slate-800 dark:text-ink-text">{gargaloAtual}</span>.</>}
               </p>
+              {gargaloAtual && GARGALO_RESOLUCAO[gargaloAtual] && (
+                <div className="pt-2 border-t border-rosegold/15 space-y-2">
+                  <p className="text-xs text-slate-600 dark:text-ink-muted leading-relaxed">
+                    <span className="font-semibold text-slate-800 dark:text-ink-text">Como resolver: </span>
+                    {GARGALO_RESOLUCAO[gargaloAtual].oQueFazer}
+                  </p>
+                  <button
+                    onClick={() => setActiveSection(GARGALO_RESOLUCAO[gargaloAtual].aba)}
+                    className="text-xs font-sans font-bold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
+                  >
+                    {GARGALO_RESOLUCAO[gargaloAtual].abaLabel} →
+                  </button>
+                </div>
+              )}
             </div>
           )}
           <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted">
@@ -565,29 +707,38 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
           className="space-y-3"
         >
           <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted mb-2">
-            Copia, cola, adapta pro teu tom. Não é roteiro fixo.
+            Copia o prompt, cola no Renata OS, e ele te ajuda a escrever a resposta na tua voz, pro teu momento real.
           </p>
           {!gargaloAtual && (
             <p className="text-center text-xs font-sans text-rosegold/80 dark:text-rosegold-light/80 mb-2">
-              Preenche o Diagnóstico pra eu te mostrar qual script resolve o seu gargalo primeiro.
+              Preenche o Diagnóstico pra eu te mostrar qual prompt resolve o seu gargalo primeiro.
             </p>
           )}
-          {orderedMessages.map((msg) => (
+          {orderedPrompts.map((item) => (
             <div
-              key={msg.title}
-              className={`rounded-2xl bg-white dark:bg-ink-raised border p-4 space-y-1.5 ${
-                msg.recomendado ? 'border-rosegold/50' : 'border-rose-100/20 dark:border-ink-hairline'
+              key={item.title}
+              className={`rounded-2xl bg-white dark:bg-ink-raised border p-4 space-y-2 ${
+                item.recomendado ? 'border-rosegold/50' : 'border-rose-100/20 dark:border-ink-hairline'
               }`}
             >
               <div className="flex items-center justify-between">
-                <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider">{msg.title}</p>
-                {msg.recomendado && (
-                  <span className="text-[10px] font-sans font-bold text-white bg-rosegold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                <div>
+                  <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider">{item.title}</p>
+                  <p className="text-[11px] font-sans text-slate-400 dark:text-ink-muted">{item.momento}</p>
+                </div>
+                {item.recomendado && (
+                  <span className="text-[10px] font-sans font-bold text-white bg-rosegold px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">
                     Recomendado pra você
                   </span>
                 )}
               </div>
-              <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed">{msg.body}</p>
+              <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed bg-rose-50/40 dark:bg-ink rounded-xl p-3">{item.text}</p>
+              <button
+                onClick={() => copyPrompt(item.title, item.text)}
+                className="text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
+              >
+                {copiedPrompt === item.title ? 'Copiado ✓' : 'Copiar prompt'}
+              </button>
             </div>
           ))}
           <div className="flex items-center gap-2 justify-center pt-2 text-xs text-slate-400 dark:text-ink-muted">
