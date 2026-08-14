@@ -424,8 +424,8 @@ const DAILY_VIDEO_FILES: Record<number, string> = {
   3: 'https://youtu.be/L3UH4DKYh6Q',
   4: 'https://youtu.be/mr3Pgg1k0j0',
   5: 'https://youtu.be/Bxk-WYWt1xM',
-  6: '',
-  7: ''
+  6: 'https://youtu.be/uKfIqr1QAuI',
+  7: 'https://youtu.be/Fss9fy5p6P4'
 };
 
 function getVideoUrlForDay(dayNumber: number): string | undefined {
@@ -1007,7 +1007,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '21';
+const DAYS_CONTENT_VERSION = '22';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
