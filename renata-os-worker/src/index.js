@@ -27,40 +27,59 @@ import promptsProntos from '../referencias/prompts-prontos.md';
 import tomDeVoz from '../referencias/tom-de-voz.md';
 import mentalidadeRenata from '../referencias/mentalidade-renata.md';
 
-const REFERENCIAS_CONTEXT = `
-# Metodologia e posicionamento da RenaSer
-${metodologiaRenaser}
+// Every message resends the whole reference bundle from scratch (no fixed
+// model memory), and this bundle has grown a lot as more laws/prompts were
+// added. That directly slows down the free-tier models, prompt processing
+// time scales with token count on shared/rate-limited compute. Core brand
+// voice/law docs stay in every request (small, and needed for tone even in
+// a one-line reply), but the bigger reference-only docs only get included
+// when the user's message actually looks related to them, cutting a real
+// chunk of tokens off the common case (short replies, check-ins, anything
+// not about a specific content format).
+function buildReferencesContext(userMessage) {
+  const text = (userMessage || '').toLowerCase();
+  const has = (...keywords) => keywords.some((k) => text.includes(k));
 
-# Tom de voz, padrão real de linguagem
-${tomDeVoz}
+  // Deliberately broad and biased toward including prompts-prontos.md: the
+  // system prompt promises to recite one of its 10 prompts verbatim on
+  // request, so a false negative here (excluding it when she actually
+  // wanted a prompt) breaks a real feature. A false positive just costs a
+  // few hundred extra tokens, so when in doubt, include it.
+  const wantsPrompts = !text || has(
+    'prompt', 'reel', 'reels', 'carrossel', 'carousel', 'stories', 'story',
+    'roteiro', 'legenda', 'criar', 'cria ', 'ajuda', 'gancho', 'hook',
+    'vídeo', 'video', 'doodle', 'segundos', 'posta', 'postar', 'conteúdo', 'conteudo'
+  );
+  const wantsHooks = has('gancho', 'hook', 'retenção', 'retencao', 'primeiros segundos', 'anti-hook', 'anti hook');
+  const wantsFormats = has('formato', 'tipo de conteúdo', 'tipo de conteudo', 'carrossel', 'carousel', 'reel', 'stories');
+  const wantsSeo = has('seo', 'busca', 'hashtag', 'palavra-chave', 'palavra chave', 'descrição', 'descricao');
+  const wantsThumb = has('thumbnail', 'título', 'titulo', 'capa', 'miniatura');
 
-# Mentalidade da Renata, filosofia pessoal por trás da marca
-${mentalidadeRenata}
+  const parts = [
+    `# Metodologia e posicionamento da RenaSer\n${metodologiaRenaser}`,
+    `# Tom de voz, padrão real de linguagem\n${tomDeVoz}`,
+    `# Mentalidade da Renata, filosofia pessoal por trás da marca\n${mentalidadeRenata}`,
+    // Copy laws stay in every request on purpose: they govern tone/voice for
+    // any reply, not just content-creation ones, and excluding them
+    // wrongly is a much worse failure mode than the token cost of keeping
+    // them (this is the single biggest reference file, but also the one
+    // most requests actually touch in practice).
+    `# Leis de copy e gancho, metodologia própria\n${leisCopyRenata}`
+  ];
+  if (wantsPrompts) parts.push(`# Prompts prontos, menu de criação de conteúdo\n${promptsProntos}`);
+  if (wantsHooks) parts.push(`# Ganchos e retenção (referência geral)\n${ganchos}`);
+  if (wantsFormats) parts.push(`# Formatos de conteúdo\n${formatos}`);
+  if (wantsSeo) parts.push(`# SEO\n${seo}`);
+  if (wantsThumb) parts.push(`# Thumbnail e título\n${thumbnailTitulo}`);
 
-# Leis de copy e gancho, metodologia própria
-${leisCopyRenata}
-
-# Prompts prontos, menu de criação de conteúdo
-${promptsProntos}
-
-# Ganchos e retenção (referência geral)
-${ganchos}
-
-# Formatos de conteúdo
-${formatos}
-
-# SEO
-${seo}
-
-# Thumbnail e título
-${thumbnailTitulo}
-`;
+  return `\n${parts.join('\n\n')}\n`;
+}
 
 // Os frameworks de referência estão em português, isso é intencional e
 // não é um problema para respostas em EN/ES: o modelo lê o conhecimento
 // de base em PT e responde no idioma pedido normalmente.
-const SYSTEM_PROMPT = {
-  pt: `Você é a Renata OS, a inteligência artificial de apoio dentro do app RenaSer. Você é uma copiloto de crescimento no Instagram e criação de conteúdo, não só uma mentora do programa de 30 dias, embora continue apoiando quem está na jornada dos 30 dias também.
+const SYSTEM_PROMPT_TEMPLATE = {
+  pt: (userMessage) => `Você é a Renata OS, a inteligência artificial de apoio dentro do app RenaSer. Você é uma copiloto de crescimento no Instagram e criação de conteúdo, não só uma mentora do programa de 30 dias, embora continue apoiando quem está na jornada dos 30 dias também.
 
 A RenaSer não é um curso de marketing: é um ecossistema de destrave de visibilidade que junta trabalho emocional e execução prática. A dor central de quem fala com você quase nunca é "não sei o que postar", é "eu travo, tenho vergonha, me sinto exposta e desisto antes de postar". Parta sempre desse entendimento antes de responder algo puramente técnico. O núcleo psicológico da marca é desarmar o perfeccionismo e o medo de ser vista, um passo pequeno por dia, sem cobrança nem julgamento, nunca sugira "regravar até ficar perfeito" ou use tom de cobrança.
 
@@ -72,8 +91,8 @@ Quando a mensagem do usuário for a primeira da conversa (sem histórico anterio
 
 Regra crítica sobre os prompts prontos, isso não é opcional: quando a usuária pedir um prompt específico (ex.: "me manda o prompt do carrossel", "prompt pra reels de 7 segundos", "qual o prompt de revisão"), você identifica qual dos 10 prompts da seção "Prompts prontos, menu de criação de conteúdo" abaixo corresponde ao pedido dela e entrega esse prompt na íntegra, copiado exatamente como está escrito ali, entre aspas, sem resumir, sem parafrasear, sem "enrolar" explicando o que o prompt faz antes. Nunca invente um prompt novo nem varie o texto, o valor disso é ser uma solução estática e testada que já segue as leis de copy, então o texto exato importa. Se ela pedir "manda todos os prompts", liste os 10, também copiados na íntegra. Se ela escolher um formato sem pedir o prompt em si (ex.: "quero fazer um reels"), você pode conduzir a conversa usando o prompt correspondente como roteiro interno, sem precisar recitá-lo literalmente nem chamá-lo de "prompt" pra ela. E se ela copiar um desses prompts já preenchido com o tema dela e mandar de volta como pedido, você entrega o conteúdo pronto, seguindo à risca as leis e regras de copy/formato do ecossistema (leis de copy, ganchos, "lei do tea", "lei do tirar cara de IA", formatos de vídeo/carrossel).
 
-${REFERENCIAS_CONTEXT}`,
-  en: `You are Renata OS, the supportive AI inside the RenaSer app. You are a general Instagram growth and content creation copilot, not just a mentor for the 30-day program, though you still support people on that journey too.
+${buildReferencesContext(userMessage)}`,
+  en: (userMessage) => `You are Renata OS, the supportive AI inside the RenaSer app. You are a general Instagram growth and content creation copilot, not just a mentor for the 30-day program, though you still support people on that journey too.
 
 RenaSer is not a marketing course: it's a visibility-unlocking ecosystem that combines emotional work with practical execution. The core pain of whoever is talking to you is almost never "I don't know what to post", it's "I freeze up, I feel ashamed, I feel exposed, and I give up before posting." Always start from that understanding before answering something purely technical. The brand's psychological core is disarming perfectionism and the fear of being seen, one small step at a time, without pressure or judgment, never suggest "re-record until it's perfect" or use a pressuring tone.
 
@@ -85,8 +104,8 @@ When the user's message is the first in the conversation (no prior history), ans
 
 Critical rule about the ready-made prompts, this is not optional: when she asks for a specific prompt (e.g. "send me the carousel prompt", "prompt for a 7-second reel"), identify which of the 10 prompts in the "Prompts prontos, menu de criação de conteúdo" section below matches her request and deliver that exact prompt in full, copied verbatim as written there, in quotes, no summarizing, no paraphrasing, no explaining what it does first. Never invent a new prompt or vary the wording, the whole point is that it's a static, tested solution that already follows the copy laws, so the exact text matters. If she asks for "all the prompts," list all 10, also copied verbatim. If she picks a format without asking for the prompt itself (e.g. "I want to make a reel"), you can use the matching prompt as your internal script to guide the conversation, without reciting it literally or calling it a "prompt" to her. And if she copies one of those prompts already filled in with her own topic and sends it back as her request, you deliver the finished content, strictly following the ecosystem's copy/format laws (copy laws, hooks, the "lei do tea", the anti-AI-language filter, video/carousel formats).
 
-${REFERENCIAS_CONTEXT}`,
-  es: `Eres Renata OS, la inteligencia artificial de apoyo dentro de la app RenaSer. Eres una copiloto general de crecimiento en Instagram y creación de contenido, no solo una mentora del programa de 30 días, aunque sigues apoyando a quien está en ese viaje también.
+${buildReferencesContext(userMessage)}`,
+  es: (userMessage) => `Eres Renata OS, la inteligencia artificial de apoyo dentro de la app RenaSer. Eres una copiloto general de crecimiento en Instagram y creación de contenido, no solo una mentora del programa de 30 días, aunque sigues apoyando a quien está en ese viaje también.
 
 RenaSer no es un curso de marketing: es un ecosistema de destrabe de visibilidad que junta trabajo emocional y ejecución práctica. El dolor central de quien te habla casi nunca es "no sé qué publicar", es "me trabo, siento vergüenza, me siento expuesta y desisto antes de publicar". Parte siempre de ese entendimiento antes de responder algo puramente técnico. El núcleo psicológico de la marca es desarmar el perfeccionismo y el miedo a ser vista, un paso pequeño por día, sin presión ni juicio, nunca sugieras "regrabar hasta que quede perfecto" ni uses un tono de presión.
 
@@ -98,7 +117,7 @@ Cuando el mensaje del usuario sea el primero de la conversación (sin historial 
 
 Regla crítica sobre los prompts listos, esto no es opcional: cuando ella pida un prompt específico (ej.: "mándame el prompt del carrusel", "prompt para reel de 7 segundos"), identifica cuál de los 10 prompts de la sección "Prompts prontos, menu de criação de conteúdo" abajo corresponde a su pedido y entrégalo completo, copiado exactamente como está escrito ahí, entre comillas, sin resumir, sin parafrasear, sin explicar antes qué hace el prompt. Nunca inventes un prompt nuevo ni cambies el texto, el valor de esto es ser una solución estática y probada que ya sigue las leyes de copy, así que el texto exacto importa. Si pide "mándame todos los prompts", lista los 10, también copiados completos. Si elige un formato sin pedir el prompt en sí (ej.: "quiero hacer un reel"), puedes usar el prompt correspondiente como guion interno para guiar la conversación, sin recitarlo literalmente ni llamarlo "prompt" frente a ella. Y si copia uno de esos prompts ya completado con su propio tema y lo manda de vuelta como su pedido, entregas el contenido ya listo, siguiendo estrictamente las leyes de copy/formato del ecosistema (leyes de copy, ganchos, la "lei do tea", el filtro anti-IA, formatos de video/carrusel).
 
-${REFERENCIAS_CONTEXT}`
+${buildReferencesContext(userMessage)}`
 };
 
 // Modelos do free pool da OpenRouter (tag ":free", sem custo, com rate
@@ -142,6 +161,13 @@ function corsHeaders(origin) {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Content-Type': 'application/json'
   };
+}
+
+// Chat replies (success and friendly-error alike) go out as plain text now,
+// streamed when possible, so the frontend always reads response.body the
+// same way regardless of which code path produced it.
+function textHeaders(origin) {
+  return { ...corsHeaders(origin), 'Content-Type': 'text/plain; charset=utf-8' };
 }
 
 // Best-effort in-memory rate limit — resets on cold start and isn't shared
@@ -243,6 +269,23 @@ async function fetchHistory(supabase, userId) {
   return data.reverse();
 }
 
+// Detects when a message is itself a full "system prompt" the user pasted
+// in (e.g. the "Content to Clients" framework doc), as opposed to a normal
+// question. Small free-tier models tend to just echo a large instructions
+// block back verbatim instead of adopting it, because it conflicts with
+// Renata OS's own baked-in system prompt — this lets the conversation swap
+// personas entirely instead of running both prompts at once. Heuristic:
+// long message (a real question is never this long) whose opening explicitly
+// announces itself as a system/role prompt.
+const CUSTOM_SYSTEM_PROMPT_MARKER = /prompt de sistema|system prompt/i;
+function extractCustomSystemPrompt(text) {
+  if (typeof text !== 'string') return null;
+  const trimmed = text.trim();
+  if (trimmed.length < 400) return null;
+  if (!CUSTOM_SYSTEM_PROMPT_MARKER.test(trimmed.slice(0, 200))) return null;
+  return trimmed;
+}
+
 // Grava a pergunta e a resposta em chat_messages. Melhor-esforço: se falhar,
 // não derruba a resposta que já foi gerada e devolvida ao usuário, só a
 // próxima conversa fica sem essa troca específica no histórico.
@@ -323,18 +366,51 @@ function stripMarkdown(text) {
 // Tenta o modelo primário; se falhar por qualquer motivo (erro HTTP,
 // resposta vazia, rate limit do free pool), tenta o fallback
 // automaticamente. Só lança erro pro chamador se os DOIS falharem.
-async function getAIReply(systemPrompt, history, userMessage, env) {
+// Opens a streaming completion against OpenRouter (stream: true) and
+// returns the raw upstream Response so the caller can pipe response.body
+// straight through to the client. Same primary→fallback pattern as
+// getAIReply, but the fallback only kicks in if the *connection* itself
+// fails (bad status, network error, or nothing arriving within
+// OPENROUTER_TIMEOUT_MS) — once real tokens start streaming back we commit
+// to that model rather than trying to swap mid-reply.
+async function fetchOpenRouterStream(model, systemPrompt, history, userContent, env) {
+  const messages = [
+    { role: 'system', content: systemPrompt },
+    ...history.map((m) => ({ role: m.role, content: m.content })),
+    { role: 'user', content: userContent }
+  ];
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), OPENROUTER_TIMEOUT_MS);
+
+  let response;
   try {
-    return await callOpenRouter(OPENROUTER_MODELS.primary, systemPrompt, history, userMessage, env);
-  } catch (primaryError) {
-    try {
-      return await callOpenRouter(OPENROUTER_MODELS.fallback, systemPrompt, history, userMessage, env);
-    } catch (fallbackError) {
-      throw new Error(
-        `Both models failed. Primary: ${primaryError.message}. Fallback: ${fallbackError.message}`
-      );
-    }
+    response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
+        'HTTP-Referer': 'https://rclsampaio-jpg.github.io',
+        'X-Title': 'RenaSer - Renata OS'
+      },
+      body: JSON.stringify({ model, messages, stream: true }),
+      signal: controller.signal
+    });
+  } catch (err) {
+    if (err.name === 'AbortError') throw new Error(`OpenRouter stream timeout (${model})`);
+    throw err;
+  } finally {
+    // Only guards getting the connection/headers open, not the full body
+    // read (that happens later, chunk by chunk, in the caller) — a longer
+    // total generation shouldn't be punished once the user can already see
+    // it arriving.
+    clearTimeout(timeout);
   }
+
+  if (!response.ok || !response.body) {
+    throw new Error(`OpenRouter stream error (${model}): ${response.status}`);
+  }
+  return response;
 }
 
 // Same idea as getAIReply, but for a message that includes one or more
@@ -425,11 +501,13 @@ export default {
       return new Response(JSON.stringify({ error: 'Missing message' }), { status: 400, headers });
     }
 
+    const textHdrs = textHeaders(origin);
+
     const langKeyEarly = ['pt', 'en', 'es'].includes(lang) ? lang : 'pt';
     const MAX_ATTACHMENTS = 4;
     if (rawAttachments.length > MAX_ATTACHMENTS) {
       const err = { pt: 'Só dá pra enviar até 4 arquivos de uma vez.', en: 'You can only send up to 4 files at once.', es: 'Solo puedes enviar hasta 4 archivos a la vez.' }[langKeyEarly];
-      return new Response(JSON.stringify({ reply: err }), { status: 200, headers });
+      return new Response(err, { status: 200, headers: textHdrs });
     }
     const validAttachments = [];
     for (const att of rawAttachments) {
@@ -439,11 +517,11 @@ export default {
       const tooBig = typeof dataUrl === 'string' && dataUrl.length > MAX_ATTACHMENT_BYTES;
       if (typeof dataUrl !== 'string' || (!isImage && !isPdf)) {
         const err = { pt: 'Só posso analisar imagens ou PDFs.', en: 'I can only analyze images or PDFs.', es: 'Solo puedo analizar imágenes o PDFs.' }[langKeyEarly];
-        return new Response(JSON.stringify({ reply: err }), { status: 200, headers });
+        return new Response(err, { status: 200, headers: textHdrs });
       }
       if (tooBig) {
         const err = { pt: 'Esse arquivo é grande demais. Tenta um arquivo menor.', en: 'That file is too large. Try a smaller one.', es: 'Ese archivo es demasiado grande. Intenta con uno más pequeño.' }[langKeyEarly];
-        return new Response(JSON.stringify({ reply: err }), { status: 200, headers });
+        return new Response(err, { status: 200, headers: textHdrs });
       }
       validAttachments.push({ mime, dataUrl, name: typeof name === 'string' ? name : undefined });
     }
@@ -464,37 +542,27 @@ export default {
         en: "You're sending messages too fast. Wait a minute and try again.",
         es: 'Estás enviando mensajes muy rápido. Espera un minuto e intenta de nuevo.'
       }[['pt', 'en', 'es'].includes(lang) ? lang : 'pt'];
-      return new Response(JSON.stringify({ reply: friendlyLimit }), { status: 200, headers });
+      return new Response(friendlyLimit, { status: 200, headers: textHdrs });
     }
 
     const langKey = ['pt', 'en', 'es'].includes(lang) ? lang : 'pt';
-    const systemPromptBase = SYSTEM_PROMPT[langKey];
+    const messageText = typeof message === 'string' ? message.trim() : '';
+
+    const history = await fetchHistory(supabase, user.id);
+
+    // If this message (or a recent one in this same conversation) is a
+    // pasted system prompt, adopt it wholesale instead of layering it on
+    // top of Renata OS's own persona — see extractCustomSystemPrompt above.
+    const customSystemPrompt = extractCustomSystemPrompt(messageText)
+      || [...history].reverse().map((m) => (m.role === 'user' ? extractCustomSystemPrompt(m.content) : null)).find(Boolean)
+      || null;
 
     const contextLine = context
       ? `\n\nContexto do usuário: dia ${context.dayNumber || '?'}/30, ${context.completedDays || 0} dias concluídos, streak atual de ${context.currentStreak || 0} dia(s).`
       : '';
-    const systemPrompt = `${systemPromptBase}${contextLine}`;
-
-    const history = await fetchHistory(supabase, user.id);
-
-    const messageText = typeof message === 'string' ? message.trim() : '';
-
-    let reply;
-    try {
-      reply = validAttachments.length > 0
-        ? await getAIReplyWithAttachments(systemPrompt, history, messageText, validAttachments, env)
-        : await getAIReply(systemPrompt, history, messageText, env);
-    } catch (err) {
-      // Mensagem amigável, sem vazar o erro técnico (que vai só nos logs
-      // do Cloudflare, não na resposta).
-      console.error('Renata OS: both models failed', err);
-      const friendlyError = {
-        pt: 'Não consegui responder agora. Tente de novo em instantes.',
-        en: "I couldn't respond right now. Please try again in a moment.",
-        es: 'No pude responder ahora. Intenta de nuevo en un momento.'
-      }[langKey];
-      return new Response(JSON.stringify({ reply: friendlyError }), { status: 200, headers });
-    }
+    const systemPrompt = customSystemPrompt
+      ? `${customSystemPrompt}\n\n---\nInstrução adicional obrigatória: siga o prompt acima à risca, como se você fosse exatamente esse personagem/sistema descrito nele, e não a Renata OS. Continue a conversa a partir do histórico de mensagens abaixo (ex.: se você já fez uma pergunta e a usuária respondeu, faça a próxima pergunta da lista, não repita a mesma nem recomece). Não mencione a Renata OS, o app RenaSer ou peça desculpas por "mudar de personagem" — apenas aja como o prompt pede.`
+      : `${SYSTEM_PROMPT_TEMPLATE[langKey](messageText)}${contextLine}`;
 
     // The attachment itself is never persisted (processed in-memory only,
     // see MAX_ATTACHMENT_BYTES comment above) — history just remembers that
@@ -503,8 +571,104 @@ export default {
     const historyText = messageText || (validAttachments.length > 0
       ? { pt: '[enviou arquivo(s) para análise]', en: '[sent file(s) for analysis]', es: '[envió archivo(s) para análisis]' }[langKey]
       : '');
-    await saveExchange(supabase, user.id, historyText, reply);
+    const friendlyError = {
+      pt: 'Não consegui responder agora. Tente de novo em instantes.',
+      en: "I couldn't respond right now. Please try again in a moment.",
+      es: 'No pude responder ahora. Intenta de nuevo en un momento.'
+    }[langKey];
 
-    return new Response(JSON.stringify({ reply }), { headers });
+    if (validAttachments.length > 0) {
+      // Vision/file replies aren't streamed token-by-token (this path is
+      // far less common than plain text chat, and file-parser attachments
+      // add their own latency regardless), but they still go out through
+      // the same plain-text response contract the frontend reads
+      // uniformly, so it doesn't need to special-case attachments vs. text.
+      let reply;
+      try {
+        reply = await getAIReplyWithAttachments(systemPrompt, history, messageText, validAttachments, env);
+      } catch (err) {
+        console.error('Renata OS: both models failed (attachments)', err);
+        return new Response(friendlyError, { headers: textHdrs });
+      }
+      await saveExchange(supabase, user.id, historyText, reply);
+      return new Response(reply, { headers: textHdrs });
+    }
+
+    // Plain text chat: stream the reply as it's generated, instead of the
+    // user staring at "•••" for however long the free-tier model takes to
+    // finish the whole thing. Tries the primary model, then the fallback,
+    // in order — not just when the connection itself fails, but also when
+    // a model connects fine and streams literally nothing (a real free-tier
+    // quirk: callOpenRouter's non-streaming path used to catch this via its
+    // "OpenRouter empty reply" check and retry the fallback, the streaming
+    // path needs the same safety net since it can't know a stream is empty
+    // until it's fully drained).
+    const modelsToTry = [OPENROUTER_MODELS.primary, OPENROUTER_MODELS.fallback];
+
+    const clientStream = new ReadableStream({
+      async start(controller) {
+        const encoder = new TextEncoder();
+        let fullText = '';
+
+        for (const model of modelsToTry) {
+          let upstream;
+          try {
+            upstream = await fetchOpenRouterStream(model, systemPrompt, history, messageText, env);
+          } catch (err) {
+            console.error(`Renata OS: stream connect failed (${model})`, err);
+            continue;
+          }
+
+          const decoder = new TextDecoder();
+          const reader = upstream.body.getReader();
+          let buffer = '';
+          try {
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              buffer += decoder.decode(value, { stream: true });
+              const lines = buffer.split('\n');
+              buffer = lines.pop() || '';
+              for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed.startsWith('data:')) continue;
+                const payload = trimmed.slice(5).trim();
+                if (!payload || payload === '[DONE]') continue;
+                try {
+                  const json = JSON.parse(payload);
+                  const delta = json?.choices?.[0]?.delta?.content;
+                  if (delta) {
+                    fullText += delta;
+                    // Sent raw (not run through stripMarkdown) so tokens can
+                    // go out the moment they arrive — the full accumulated
+                    // text still gets cleaned before it's saved to history
+                    // below, this only risks a stray markdown symbol
+                    // flashing on screen in the rare case the model doesn't
+                    // follow the no-markdown instruction, not corrupting
+                    // what's stored.
+                    controller.enqueue(encoder.encode(delta));
+                  }
+                } catch {
+                  // Malformed/partial SSE line, ignore and keep reading.
+                }
+              }
+            }
+          } catch (err) {
+            console.error(`Renata OS: stream read error (${model})`, err);
+          }
+
+          if (fullText) break; // got real content, no need to try the next model
+        }
+
+        if (!fullText) {
+          fullText = friendlyError;
+          controller.enqueue(encoder.encode(fullText));
+        }
+        await saveExchange(supabase, user.id, historyText, stripMarkdown(fullText));
+        controller.close();
+      }
+    });
+
+    return new Response(clientStream, { headers: textHdrs });
   }
 };
