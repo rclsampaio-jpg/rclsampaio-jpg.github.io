@@ -13,6 +13,7 @@ interface ProfessionalAreaViewProps {
   progress: UserProgress;
   lang: Language;
   onUpdateProgress: (progress: UserProgress) => void;
+  onGoToLibrary: () => void;
 }
 
 const FORMATOS = ['Reels', 'Stories', 'Carrossel', 'Vídeo longo'];
@@ -188,7 +189,7 @@ const REFERENCE_CONTENT: { title: string; points: string[] }[] = [
   }
 ];
 
-export default function ProfessionalAreaView({ progress, lang, onUpdateProgress }: ProfessionalAreaViewProps) {
+export default function ProfessionalAreaView({ progress, lang, onUpdateProgress, onGoToLibrary }: ProfessionalAreaViewProps) {
   const today = getLocalDateISO();
   const checkIns = progress.professionalCheckIns || {};
   const todayCheckIn = checkIns[today];
@@ -323,9 +324,9 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
       <div className="flex items-center justify-center gap-2 flex-wrap">
         {([
           { id: 'checkin', label: 'Check-in do Dia', icon: CheckCircle2 },
-          { id: 'diagnostico', label: 'Diagnóstico', icon: Compass },
           { id: 'dashboard', label: 'Dashboard', icon: TrendingUp },
           { id: 'mensagens', label: 'Mensagens', icon: MessageCircle },
+          { id: 'diagnostico', label: 'Diagnóstico', icon: Compass },
           { id: 'referencia', label: 'Referência', icon: BookOpen }
         ] as const).map(({ id, label, icon: Icon }) => (
           <button
@@ -457,8 +458,11 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
 
           <div className="rounded-2xl bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-5 space-y-3 mt-4">
             <div>
-              <p className="text-sm font-serif font-semibold text-slate-800 dark:text-ink-text">Como a Renata estruturou a dela</p>
-              <p className="text-xs text-slate-500 dark:text-ink-muted mt-1">
+              <p className="text-sm font-serif font-semibold text-slate-800 dark:text-ink-text">O que é VSL, e como a Renata estruturou a dela</p>
+              <p className="text-xs text-slate-500 dark:text-ink-muted mt-1 leading-relaxed">
+                VSL é "Video Sales Letter", um vídeo estruturado pra apresentar um problema, mostrar por que ele acontece, e convidar pra próxima conversa, tudo numa sequência lógica. Você não precisa ter um produto pronto nem página de vendas ativa pra usar essa lógica: ela serve pra QUALQUER conteúdo onde você quer que a pessoa entenda seu problema e sinta que você é quem resolve, mesmo um Reels de 60 segundos ou uma sequência de Stories. É por isso que esse mapa importa mesmo antes de você vender qualquer coisa: ele te dá clareza do que você oferece, hoje, com o que você já tem.
+              </p>
+              <p className="text-xs text-slate-500 dark:text-ink-muted mt-2">
                 Esse é o mapa real usado pra estruturar a VSL do Destrave. Não é pra copiar frase por frase, é pra usar como esqueleto e preencher com a sua história.
               </p>
             </div>
@@ -494,6 +498,19 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress 
                 </div>
               );
             })}
+          </div>
+
+          <div className="rounded-2xl bg-rosegold/5 dark:bg-rosegold-light/5 border border-rosegold/20 p-5 space-y-2 mt-4">
+            <p className="text-sm font-serif font-semibold text-slate-800 dark:text-ink-text">Pra praticar e achar sua voz</p>
+            <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">
+              A Biblioteca do RenaSer já tem o guia de hooks/anti-hooks e os 7 ângulos de Reels de conversão, além dos 14 prompts prontos pra pedir conteúdo direto pro Renata OS. Não precisa duplicar aqui, é só ir lá.
+            </p>
+            <button
+              onClick={onGoToLibrary}
+              className="text-xs font-sans font-bold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
+            >
+              Ir pra Biblioteca →
+            </button>
           </div>
         </motion.div>
       )}

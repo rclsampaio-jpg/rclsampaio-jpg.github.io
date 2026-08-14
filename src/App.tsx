@@ -1287,6 +1287,7 @@ function AppContent() {
                 progress={progress}
                 lang={lang}
                 onUpdateProgress={updateProgress}
+                onGoToLibrary={() => setActiveTab('library')}
               />
             )}
 
