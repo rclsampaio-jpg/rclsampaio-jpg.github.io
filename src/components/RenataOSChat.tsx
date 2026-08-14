@@ -200,6 +200,18 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, compact
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, isLoading]);
 
+  // Auto-grow the textarea on every change to `input`, not just on the
+  // textarea's own onChange DOM event — voice input (below) sets `input`
+  // directly via setInput(), which never fires onChange, so the box used
+  // to stay stuck at its initial tiny height while dictated text kept
+  // growing underneath, clipped and unscrollable-looking.
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, 240)}px`;
+  }, [input]);
+
   // Voice input via the browser's native SpeechRecognition (no API cost).
   // Known iOS quirk: works reliably in a normal Safari tab but can be
   // flaky in the installed "Add to Home Screen" standalone PWA — if a user
@@ -590,14 +602,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, compact
                   <textarea
                     ref={textareaRef}
                     value={input}
-                    onChange={(e) => {
-                      setInput(e.target.value);
-                      const el = textareaRef.current;
-                      if (el) {
-                        el.style.height = 'auto';
-                        el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
-                      }
-                    }}
+                    onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
@@ -606,7 +611,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, compact
                     }}
                     placeholder={t.placeholder}
                     rows={1}
-                    className="flex-1 text-sm bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 focus:ring-rosegold dark:focus:ring-rosegold-light rounded-xl px-4 py-3 text-slate-700 dark:text-ink-text placeholder:dark:text-ink-muted transition-[border-color,box-shadow] resize-none max-h-40 overflow-y-auto"
+                    className="flex-1 text-sm bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none focus:ring-1 focus:ring-rosegold dark:focus:ring-rosegold-light rounded-xl px-4 py-3 text-slate-700 dark:text-ink-text placeholder:dark:text-ink-muted transition-[border-color,box-shadow] resize-none max-h-60 overflow-y-auto"
                   />
                   {voiceSupported && (
                     <button
