@@ -6,9 +6,10 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
+import {
   Sparkles, Flame, CheckCircle2, ArrowRight, BookOpen, Volume2,
-  Settings, Award, Lock, HelpCircle, Check, Play, Compass, User, Heart
+  Settings, Award, Lock, HelpCircle, Check, Play, Compass, User, Heart,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { MissionDay, Language, UserProgress, DayType } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
@@ -140,6 +141,7 @@ interface HomeViewProps {
   onUpdateProgress?: (updated: UserProgress) => void;
   onTriggerSos?: () => void;
   isAdminUnlocked?: boolean;
+  onJumpToDay?: (dayNumber: number) => void;
 }
 
 export default function HomeView({
@@ -151,7 +153,8 @@ export default function HomeView({
   onShowIntro,
   onUpdateProgress,
   onTriggerSos,
-  isAdminUnlocked
+  isAdminUnlocked,
+  onJumpToDay
 }: HomeViewProps) {
   // Admin-only: preview any of the 10 Árvore do Renascimento stages without
   // touching real progress data (completionHistory drives streaks too).
@@ -866,8 +869,33 @@ export default function HomeView({
         </motion.div>
       </div>
 
+      {/* Admin-only day jumper: browse any day's Início preview without
+          touching real progress or requiring completion, same pattern as
+          DailyMissionView's admin day jumper. */}
+      {isAdminUnlocked && onJumpToDay && (
+        <div className="flex items-center justify-center gap-3 rounded-xl border border-dashed border-rosegold/40 bg-rosegold/5 px-4 py-2.5 relative z-20 mb-2">
+          <button
+            onClick={() => onJumpToDay(Math.max(1, currentDay.dayNumber - 1))}
+            disabled={currentDay.dayNumber <= 1}
+            className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <span className="text-[11px] font-mono uppercase tracking-wider text-rosegold">
+            Admin · Dia {currentDay.dayNumber} / 30
+          </span>
+          <button
+            onClick={() => onJumpToDay(Math.min(30, currentDay.dayNumber + 1))}
+            disabled={currentDay.dayNumber >= 30}
+            className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
       {/* Top Section: Where am I? (Chapter & Stage Anchor) */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}

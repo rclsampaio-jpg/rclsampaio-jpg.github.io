@@ -1225,6 +1225,7 @@ function AppContent() {
                 onUpdateProgress={updateProgress}
                 onTriggerSos={() => setActiveTab('sos')}
                 isAdminUnlocked={isAdminUnlocked}
+                onJumpToDay={setFocusedDayNumber}
               />
             )}
 
