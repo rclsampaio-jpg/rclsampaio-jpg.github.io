@@ -1,16 +1,26 @@
 // src/components/professional/DashboardTab.tsx
 import { useMemo } from 'react';
 import { motion } from 'motion/react';
-import { UserProgress } from '../../types';
+import { Check, Minus, X } from 'lucide-react';
+import { UserProgress, PilarKey, PilarStatus } from '../../types';
 import { GARGALO_RESOLUCAO } from '../../data/professionalAreaData';
+import { PILARES } from '../../data/professionalDiagnosticData';
 
 interface DashboardTabProps {
   progress: UserProgress;
   gargalosAtuais: string[];
+  pilaresAtuais: Partial<Record<PilarKey, PilarStatus>>;
   onNavigate: (section: 'checkin' | 'dashboard' | 'mensagens' | 'diagnostico' | 'referencia') => void;
 }
 
-export default function DashboardTab({ progress, gargalosAtuais, onNavigate }: DashboardTabProps) {
+const PILAR_ICON: Record<PilarStatus, typeof Check> = { sim: Check, parcial: Minus, nao: X };
+const PILAR_STYLE: Record<PilarStatus, string> = {
+  sim: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400',
+  parcial: 'bg-amber-500/15 text-accentgold',
+  nao: 'bg-rose-50 dark:bg-rosegold/15 text-rosegold'
+};
+
+export default function DashboardTab({ progress, gargalosAtuais, pilaresAtuais, onNavigate }: DashboardTabProps) {
   const diagnostic = progress.professionalDiagnostic;
   const checkIns = progress.professionalCheckIns || {};
 
@@ -76,6 +86,40 @@ export default function DashboardTab({ progress, gargalosAtuais, onNavigate }: D
           )}
         </div>
       )}
+
+      {diagnostic?.completedAt && (
+        <div className="rounded-2xl bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-5 space-y-3">
+          <div className="flex items-baseline justify-between">
+            <p className="text-xs font-sans font-bold text-slate-700 dark:text-ink-text uppercase tracking-wider">Raio-X dos 5 Pilares</p>
+            <span className="text-xs font-sans font-bold text-rosegold">
+              {PILARES.filter((p) => pilaresAtuais[p.key] === 'sim').length}/{PILARES.length} prontos
+            </span>
+          </div>
+          <div className="space-y-2">
+            {PILARES.map((p) => {
+              const status = pilaresAtuais[p.key] ?? 'nao';
+              const Icon = PILAR_ICON[status];
+              return (
+                <div key={p.key} className="flex items-center justify-between gap-2 text-xs">
+                  <span className="text-slate-600 dark:text-ink-muted">{p.label}</span>
+                  <span className={`shrink-0 h-5 w-5 flex items-center justify-center rounded-full ${PILAR_STYLE[status]}`}>
+                    <Icon className="h-3 w-3" strokeWidth={3} />
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+          {PILARES.some((p) => pilaresAtuais[p.key] !== 'sim') && (
+            <button
+              onClick={() => onNavigate('referencia')}
+              className="text-xs font-sans font-bold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer pt-1"
+            >
+              Ir pra Fundamentos, resolver o que falta →
+            </button>
+          )}
+        </div>
+      )}
+
       <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted">
         Últimos 30 dias · {stats.diasComCheckin} dia(s) com check-in
       </p>

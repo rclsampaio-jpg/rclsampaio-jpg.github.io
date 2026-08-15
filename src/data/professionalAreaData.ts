@@ -7,23 +7,27 @@
 
 export const FORMATOS = ['Reels', 'Stories', 'Carrossel', 'Vídeo longo'];
 
+// Fallback usado quando ela ainda não preencheu "a dor real" no
+// Diagnóstico — os prompts continuam funcionando, só ficam menos afiados.
+export const DOR_FALLBACK = '[a dor real da sua audiência, preenche no Diagnóstico pra afiar isso]';
+
 // Em vez de script pronto pra copiar e colar, cada item vira um prompt que
 // ela manda pro Renata OS — o objetivo é ela desenvolver a própria voz na
 // conversa real, não decorar frase de outra pessoa. O prompt já entra
-// preenchido com nicho/tom/gargalo do diagnóstico quando existem.
-export const PROMPT_LIBRARY: { title: string; momento: string; prompt: (nicho: string, tom: string) => string; resolveGargalo: string[] }[] = [
+// preenchido com nicho/tom/dor do diagnóstico quando existem.
+export const PROMPT_LIBRARY: { title: string; momento: string; prompt: (nicho: string, tom: string, dor: string) => string; resolveGargalo: string[] }[] = [
   {
     title: 'Abertura de conversa',
     momento: 'Quando alguém comenta ou curte seu conteúdo',
-    prompt: (nicho, tom) =>
-      `Uma pessoa comentou/curtiu meu conteúdo e eu quero puxar conversa com ela, de um jeito genuíno, não vendedor. Meu nicho é ${nicho}, meu tom de voz é ${tom}. Me ajuda a montar uma abertura curta que soe como eu de verdade, não um roteiro pronto.`,
+    prompt: (nicho, tom, dor) =>
+      `Uma pessoa comentou/curtiu meu conteúdo e eu quero puxar conversa com ela, de um jeito genuíno, não vendedor. Meu nicho é ${nicho}, meu tom de voz é ${tom}, e a dor que meu conteúdo normalmente atrai é "${dor}". Me ajuda a montar uma abertura curta que soe como eu de verdade, não um roteiro pronto.`,
     resolveGargalo: ['Em gerar mensagens/interesse']
   },
   {
     title: 'Entender o momento atual dela',
     momento: 'Quando a conversa já começou',
-    prompt: (nicho, tom) =>
-      `Já puxei conversa com uma pessoa interessada no meu conteúdo sobre ${nicho}. Agora preciso entender o momento real dela antes de oferecer qualquer coisa. Meu tom é ${tom}. Me ajuda a formular 2-3 perguntas que abrem espaço pra ela falar, sem parecer questionário.`,
+    prompt: (nicho, tom, dor) =>
+      `Já puxei conversa com uma pessoa interessada no meu conteúdo sobre ${nicho}. A dor que eu normalmente resolvo é "${dor}", mas preciso confirmar se é isso mesmo que pega ela antes de oferecer qualquer coisa. Meu tom é ${tom}. Me ajuda a formular 2-3 perguntas que abrem espaço pra ela falar, sem parecer questionário.`,
     resolveGargalo: ['Em gerar mensagens/interesse', 'Em transformar mensagem em reunião']
   },
   {
@@ -95,23 +99,23 @@ export const GARGALO_RESOLUCAO: Record<string, { oQueFazer: string; aba: 'mensag
   }
 };
 
-export const RENATA_OS_PROMPTS: { title: string; prompt: (nicho: string, tom: string, gargalo: string) => string; resolveGargalo: string[] }[] = [
+export const RENATA_OS_PROMPTS: { title: string; prompt: (nicho: string, tom: string, dor: string, gargalo: string) => string; resolveGargalo: string[] }[] = [
   {
     title: 'Sua Big Idea',
-    prompt: (nicho, tom) =>
-      `Quero construir minha Big Idea: a frase que resume o ângulo único que só eu tenho dentro de ${nicho}. Meu tom de voz é ${tom}. Me faça perguntas, uma de cada vez, até ter contexto suficiente pra sugerir algumas opções.`,
+    prompt: (nicho, tom, dor) =>
+      `Quero construir minha Big Idea: a frase que resume o ângulo único que só eu tenho dentro de ${nicho}, resolvendo a dor "${dor}". Meu tom de voz é ${tom}. Me faça perguntas, uma de cada vez, até ter contexto suficiente pra sugerir algumas opções.`,
     resolveGargalo: ['Em criar conteúdo com constância']
   },
   {
     title: 'Sua Oferta Irrecusável',
-    prompt: (nicho, tom, gargalo) =>
-      `Quero estruturar minha oferta pra ${nicho}: resultado claro que eu entrego, prazo, formato, e o que eu NÃO vou incluir pra não confundir quem recebe. Meu gargalo hoje é "${gargalo}". Me ajuda perguntando o que falta antes de montar a oferta comigo.`,
+    prompt: (nicho, tom, dor, gargalo) =>
+      `Quero estruturar minha oferta pra ${nicho}, resolvendo diretamente a dor "${dor}": resultado claro que eu entrego, prazo, formato, e o que eu NÃO vou incluir pra não confundir quem recebe. Meu gargalo hoje é "${gargalo}". Me ajuda perguntando o que falta antes de montar a oferta comigo.`,
     resolveGargalo: []
   },
   {
     title: 'Seus Ângulos de Conteúdo',
-    prompt: (nicho, tom) =>
-      `Quero variar como eu falo da mesma dor pro meu nicho (${nicho}), sem trocar de mensagem, só de porta de entrada emocional. Me ajuda a listar 4 ângulos diferentes (ex: medo de julgamento, perfeccionismo, comparação, "tenho tanto pra mostrar e não mostro") pra essa mesma dor, cada um virando ideia de post/Reels, no meu tom (${tom}).`,
+    prompt: (nicho, tom, dor) =>
+      `Quero variar como eu falo da mesma dor ("${dor}") pro meu nicho (${nicho}), sem trocar de mensagem, só de porta de entrada emocional. Me ajuda a listar 4 ângulos diferentes (ex: medo de julgamento, perfeccionismo, comparação, "tenho tanto pra mostrar e não mostro") pra essa mesma dor, cada um virando ideia de post/Reels, no meu tom (${tom}).`,
     resolveGargalo: ['Em criar conteúdo com constância']
   },
   {
@@ -122,8 +126,8 @@ export const RENATA_OS_PROMPTS: { title: string; prompt: (nicho: string, tom: st
   },
   {
     title: '1. Preencher o mapa da sua VSL',
-    prompt: (nicho, tom) =>
-      `Quero estruturar minha promessa/conteúdo seguindo esse mapa: promessa, por que eu travo, o que isso já me custou, pra quem é e pra quem não é, por que o que já tentei não resolveu, meu mecanismo, uma prova real que eu já tenho, o que a pessoa recebe, e o próximo passo. Meu nicho é ${nicho}, meu tom é ${tom}. Me faça uma pergunta de cada vez pra preencher isso comigo.`,
+    prompt: (nicho, tom, dor) =>
+      `Quero estruturar minha promessa/conteúdo seguindo esse mapa: promessa, por que eu travo, o que isso já me custou, pra quem é e pra quem não é, por que o que já tentei não resolveu, meu mecanismo, uma prova real que eu já tenho, o que a pessoa recebe, e o próximo passo. Meu nicho é ${nicho}, meu tom é ${tom}, e a dor real que eu resolvo é "${dor}". Me faça uma pergunta de cada vez pra preencher isso comigo.`,
     resolveGargalo: []
   },
   {

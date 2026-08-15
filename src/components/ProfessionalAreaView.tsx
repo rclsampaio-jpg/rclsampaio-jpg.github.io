@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { CheckCircle2, TrendingUp, MessageCircle, Compass, BookOpen } from 'lucide-react';
 import { Language, UserProgress } from '../types';
+import { DOR_FALLBACK } from '../data/professionalAreaData';
 import DashboardTab from './professional/DashboardTab';
 import CheckinTab from './professional/CheckinTab';
 import MensagensTab from './professional/MensagensTab';
@@ -28,6 +29,8 @@ export default function ProfessionalAreaView({ progress, onUpdateProgress, onGoT
   const gargalosAtuais = diagnostic?.estruturaRespostas?.gargalo ?? [];
   const nichoAtual = diagnostic?.nicho || '[seu nicho]';
   const tomAtual = diagnostic?.vozRespostas?.tom?.join(', ') || '[seu tom de voz]';
+  const dorAtual = diagnostic?.dorReal || DOR_FALLBACK;
+  const pilaresAtuais = diagnostic?.pilares ?? {};
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
@@ -67,13 +70,13 @@ export default function ProfessionalAreaView({ progress, onUpdateProgress, onGoT
       </div>
 
       {activeSection === 'dashboard' && (
-        <DashboardTab progress={progress} gargalosAtuais={gargalosAtuais} onNavigate={setActiveSection} />
+        <DashboardTab progress={progress} gargalosAtuais={gargalosAtuais} pilaresAtuais={pilaresAtuais} onNavigate={setActiveSection} />
       )}
       {activeSection === 'checkin' && (
         <CheckinTab progress={progress} onUpdateProgress={onUpdateProgress} />
       )}
       {activeSection === 'mensagens' && (
-        <MensagensTab nichoAtual={nichoAtual} tomAtual={tomAtual} gargalosAtuais={gargalosAtuais} />
+        <MensagensTab nichoAtual={nichoAtual} tomAtual={tomAtual} dorAtual={dorAtual} gargalosAtuais={gargalosAtuais} />
       )}
       {activeSection === 'diagnostico' && (
         <DiagnosticoTab progress={progress} onUpdateProgress={onUpdateProgress} />
@@ -82,6 +85,7 @@ export default function ProfessionalAreaView({ progress, onUpdateProgress, onGoT
         <ReferenciaTab
           nichoAtual={nichoAtual}
           tomAtual={tomAtual}
+          dorAtual={dorAtual}
           gargalosAtuais={gargalosAtuais}
           onGoToLibrary={onGoToLibrary}
         />

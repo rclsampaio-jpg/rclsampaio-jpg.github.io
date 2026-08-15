@@ -7,10 +7,11 @@ import { PROMPT_LIBRARY } from '../../data/professionalAreaData';
 interface MensagensTabProps {
   nichoAtual: string;
   tomAtual: string;
+  dorAtual: string;
   gargalosAtuais: string[];
 }
 
-export default function MensagensTab({ nichoAtual, tomAtual, gargalosAtuais }: MensagensTabProps) {
+export default function MensagensTab({ nichoAtual, tomAtual, dorAtual, gargalosAtuais }: MensagensTabProps) {
   const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
   const copyPrompt = (title: string, text: string) => {
     navigator.clipboard.writeText(text);
@@ -23,11 +24,11 @@ export default function MensagensTab({ nichoAtual, tomAtual, gargalosAtuais }: M
   const orderedPrompts = useMemo(() => {
     const withText = PROMPT_LIBRARY.map((m) => ({
       ...m,
-      text: m.prompt(nichoAtual, tomAtual),
+      text: m.prompt(nichoAtual, tomAtual, dorAtual),
       recomendado: m.resolveGargalo.some((g) => gargalosAtuais.includes(g))
     }));
     return withText.sort((a, b) => Number(b.recomendado) - Number(a.recomendado));
-  }, [gargalosAtuais, nichoAtual, tomAtual]);
+  }, [gargalosAtuais, nichoAtual, tomAtual, dorAtual]);
 
   return (
     <motion.div

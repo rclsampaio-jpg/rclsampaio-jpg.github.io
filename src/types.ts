@@ -160,8 +160,19 @@ export interface UserProgress {
   };
 }
 
+export type PilarKey = 'bigIdea' | 'angulos' | 'oferta' | 'vsl' | 'autoridade';
+export type PilarStatus = 'sim' | 'parcial' | 'nao';
+
 export interface ProfessionalDiagnostic {
   nicho?: string;
+  // A dor real da audiência (não a superficial) e o estado concreto que ela
+  // quer alcançar — o "gap" que sustenta toda a Escala Descomplicada.
+  // Injetado nos prompts do Renata OS junto com nicho/tom, não só decorativo.
+  dorReal?: string;
+  pontoB?: string;
+  // Raio-X de onde ela está nos 5 pilares da metodologia (Fundamentos),
+  // vira o mapa de progresso no Dashboard.
+  pilares?: Partial<Record<PilarKey, PilarStatus>>;
   vozRespostas?: Record<string, string[]>; // multi-seleção por pergunta
   estruturaRespostas?: Record<string, string[]>; // multi-seleção por pergunta
   completedAt?: string | null; // YYYY-MM-DD

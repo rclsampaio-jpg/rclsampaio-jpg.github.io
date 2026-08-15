@@ -7,11 +7,12 @@ import { REFERENCE_CONTENT, VSL_REFERENCIA, RENATA_OS_PROMPTS } from '../../data
 interface ReferenciaTabProps {
   nichoAtual: string;
   tomAtual: string;
+  dorAtual: string;
   gargalosAtuais: string[];
   onGoToLibrary: () => void;
 }
 
-export default function ReferenciaTab({ nichoAtual, tomAtual, gargalosAtuais, onGoToLibrary }: ReferenciaTabProps) {
+export default function ReferenciaTab({ nichoAtual, tomAtual, dorAtual, gargalosAtuais, onGoToLibrary }: ReferenciaTabProps) {
   const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
   const copyPrompt = (title: string, text: string) => {
     navigator.clipboard.writeText(text);
@@ -24,11 +25,11 @@ export default function ReferenciaTab({ nichoAtual, tomAtual, gargalosAtuais, on
   const orderedReferencePrompts = useMemo(() => {
     const withText = RENATA_OS_PROMPTS.map((p) => ({
       ...p,
-      text: p.prompt(nichoAtual, tomAtual, gargalosAtuais.join(', ') || '[seu gargalo]'),
+      text: p.prompt(nichoAtual, tomAtual, dorAtual, gargalosAtuais.join(', ') || '[seu gargalo]'),
       recomendado: p.resolveGargalo.some((g) => gargalosAtuais.includes(g))
     }));
     return withText.sort((a, b) => Number(b.recomendado) - Number(a.recomendado));
-  }, [gargalosAtuais, nichoAtual, tomAtual]);
+  }, [gargalosAtuais, nichoAtual, tomAtual, dorAtual]);
 
   return (
     <motion.div
