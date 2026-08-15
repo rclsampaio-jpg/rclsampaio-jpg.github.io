@@ -1,6 +1,7 @@
 // src/components/professional/ReferenciaTab.tsx
 import { useMemo, useState } from 'react';
 import { motion } from 'motion/react';
+import { Zap, Target } from 'lucide-react';
 import { REFERENCE_CONTENT, VSL_REFERENCIA, RENATA_OS_PROMPTS } from '../../data/professionalAreaData';
 
 interface ReferenciaTabProps {
@@ -35,13 +36,19 @@ export default function ReferenciaTab({ nichoAtual, tomAtual, gargalosAtuais, on
       animate={{ opacity: 1, y: 0 }}
       className="space-y-3"
     >
-      <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted mb-2">
-        Conceitos direto ao ponto, sem enrolação.
-      </p>
-      {gargalosAtuais.includes('Em criar conteúdo com constância') && (
-        <p className="text-center text-xs font-sans text-rosegold/80 dark:text-rosegold-light/80 mb-2">
-          Seu diagnóstico aponta esse como seu gargalo, Big Idea e Autoridade Percebida ajudam mais direto aqui.
+      <div className="flex items-center justify-center gap-1.5 mb-2">
+        <Zap className="h-3.5 w-3.5 text-rosegold dark:text-rosegold-light shrink-0" />
+        <p className="text-xs font-sans font-bold text-rosegold dark:text-rosegold-light uppercase tracking-wider">
+          Conceitos direto ao ponto, sem enrolação
         </p>
+      </div>
+      {gargalosAtuais.includes('Em criar conteúdo com constância') && (
+        <div className="flex items-start gap-2.5 rounded-2xl border border-rosegold/40 bg-rosegold/10 dark:bg-rosegold-light/10 px-4 py-3 mb-2">
+          <Target className="h-4 w-4 text-rosegold dark:text-rosegold-light shrink-0 mt-0.5" />
+          <p className="text-xs font-sans text-slate-700 dark:text-ink-text leading-relaxed">
+            <strong className="font-bold">Seu diagnóstico aponta esse como seu gargalo:</strong> Big Idea e Autoridade Percebida ajudam mais direto aqui.
+          </p>
+        </div>
       )}
       {REFERENCE_CONTENT.map((ref) => (
         <div
@@ -81,9 +88,12 @@ export default function ReferenciaTab({ nichoAtual, tomAtual, gargalosAtuais, on
       </div>
 
       <div className="space-y-3 mt-4">
-        <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted">
-          Perguntas exatas pra mandar pro Renata OS e preencher isso com as suas informações.
-        </p>
+        <div className="flex items-center justify-center gap-1.5">
+          <Zap className="h-3.5 w-3.5 text-rosegold dark:text-rosegold-light shrink-0" />
+          <p className="text-xs font-sans font-bold text-rosegold dark:text-rosegold-light uppercase tracking-wider">
+            Perguntas exatas pra mandar pro Renata OS
+          </p>
+        </div>
         {orderedReferencePrompts.map((p) => (
           <div
             key={p.title}

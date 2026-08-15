@@ -1,7 +1,7 @@
 // src/components/professional/MensagensTab.tsx
 import { useMemo, useState } from 'react';
 import { motion } from 'motion/react';
-import { Award } from 'lucide-react';
+import { Award, Zap, Target } from 'lucide-react';
 import { PROMPT_LIBRARY } from '../../data/professionalAreaData';
 
 interface MensagensTabProps {
@@ -35,13 +35,19 @@ export default function MensagensTab({ nichoAtual, tomAtual, gargalosAtuais }: M
       animate={{ opacity: 1, y: 0 }}
       className="space-y-3"
     >
-      <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted mb-2">
-        Copia o prompt, cola no Renata OS, e ele te ajuda a escrever a resposta na tua voz, pro teu momento real.
-      </p>
-      {gargalosAtuais.length === 0 && (
-        <p className="text-center text-xs font-sans text-rosegold/80 dark:text-rosegold-light/80 mb-2">
-          Preenche o Diagnóstico pra eu te mostrar qual prompt resolve o seu gargalo primeiro.
+      <div className="flex items-center justify-center gap-1.5 mb-2">
+        <Zap className="h-3.5 w-3.5 text-rosegold dark:text-rosegold-light shrink-0" />
+        <p className="text-xs font-sans font-bold text-rosegold dark:text-rosegold-light uppercase tracking-wider">
+          Copia, cola no Renata OS, e escreve na tua voz
         </p>
+      </div>
+      {gargalosAtuais.length === 0 && (
+        <div className="flex items-start gap-2.5 rounded-2xl border border-rosegold/40 bg-rosegold/10 dark:bg-rosegold-light/10 px-4 py-3 mb-2">
+          <Target className="h-4 w-4 text-rosegold dark:text-rosegold-light shrink-0 mt-0.5" />
+          <p className="text-xs font-sans text-slate-700 dark:text-ink-text leading-relaxed">
+            Preenche o Diagnóstico pra eu te mostrar qual prompt resolve o seu gargalo primeiro.
+          </p>
+        </div>
       )}
       {orderedPrompts.map((item) => (
         <div
