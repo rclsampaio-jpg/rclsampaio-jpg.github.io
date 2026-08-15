@@ -74,9 +74,9 @@ export const VSL_REFERENCIA: { bloco: string; ideia: string }[] = [
 // exatamente pra onde dentro da própria área ela resolve isso.
 export const GARGALO_RESOLUCAO: Record<string, { oQueFazer: string; aba: 'mensagens' | 'referencia'; abaLabel: string }> = {
   'Em criar conteúdo com constância': {
-    oQueFazer: 'Normalmente não é falta de ideia, é falta de um ângulo fixo pra postar sem ter que reinventar toda vez. Usa o prompt "Sua Big Idea" na Referência, ele já tá marcado como recomendado pra você.',
+    oQueFazer: 'Normalmente não é falta de ideia, é falta de um ângulo fixo pra postar sem ter que reinventar toda vez. Usa o prompt "Sua Big Idea" em Fundamentos, ele já tá marcado como recomendado pra você.',
     aba: 'referencia',
-    abaLabel: 'Ir pra Referência'
+    abaLabel: 'Ir pra Fundamentos'
   },
   'Em gerar mensagens/interesse': {
     oQueFazer: 'Seu conteúdo pode estar resolvendo demais no post, sem deixar ninguém curioso pra te chamar. Comece pelos prompts de Abertura de conversa.',
