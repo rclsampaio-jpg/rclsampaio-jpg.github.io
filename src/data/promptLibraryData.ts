@@ -145,7 +145,7 @@ export const PROMPT_GROUPS: PromptGroup[] = [
     prompts: [
       {
         id: 'p12',
-        purpose: 'Passo 1: salve a imagem acima e manda esse prompt pra Renata OS, ela sugere as 6 frases do doodle.',
+        purpose: 'Mande esse prompt pra Renata OS + a imagem que você salvou. Não esqueça de substituir as frases com strikethrough (mostradas riscadas abaixo) com as suas respostas pessoais.',
         text: 'Sou criadora de conteúdo [seu estágio] e minha mensagem principal é [sua mensagem principal]. Quero que você sugira as frases pras 6 posições de um doodle (rabiscos ao redor da minha foto: topo, lado esquerdo, lado direito superior, centro direito, inferior direito, inferior esquerdo), de acordo com a minha mensagem principal, usando a mentalidade da RenaSer: fazer com que a audiência fique obcecada comigo. Analise e me traga sua recomendação, uma frase curta por posição.',
         displayText: 'Sou criadora de conteúdo ~~inicial~~ [seu estágio] e minha mensagem principal é ~~encorajar pessoas a começarem tb e provar que funciona. Criando um instagram do 0 e superando todos os medos de falhar/do julgamento que o começo traz~~ [sua mensagem principal]. Quero que você sugira as frases pras 6 posições de um doodle (rabiscos ao redor da minha foto: topo, lado esquerdo, lado direito superior, centro direito, inferior direito, inferior esquerdo), de acordo com a minha mensagem principal, usando a mentalidade da RenaSer: fazer com que a audiência fique obcecada comigo. Analise e me traga sua recomendação, uma frase curta por posição.'
       },
