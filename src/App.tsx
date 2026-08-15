@@ -688,6 +688,24 @@ function AppContent() {
     setActiveTab('nextlevel');
   };
 
+  // Testar a Missão Diária da Fase de Prática (dia 31+): igual ao de cima,
+  // mas deixa o dia 31 como "hoje" ainda não concluído, senão o Início cai
+  // direto no painel em vez de mostrar a missão semanal nova.
+  const handleQuickSimulatePracticePhase = () => {
+    const simulatedHistory = Array.from({ length: 30 }, (_, i) => i + 1);
+    const updated: UserProgress = {
+      ...progress,
+      currentDay: 31,
+      completionHistory: simulatedHistory,
+      currentStreak: 30,
+      longestStreak: 30,
+      lastActiveDate: getLocalDateISO(),
+      dayUnlockAnchorDate: getUnlockAnchorDateISO()
+    };
+    updateProgress(updated);
+    setActiveTab('home');
+  };
+
   // Localized Taglines/Labels
   const taglines = {
     pt: 'se lembre de quem você é',
@@ -1614,6 +1632,7 @@ function AppContent() {
                 onResetProgress={handleResetProgress}
                 onQuickSimulateUnlockDay30={handleQuickSimulateUnlockDay30}
                 onQuickSimulateCompletion={handleQuickSimulateCompletion}
+                onQuickSimulatePracticePhase={handleQuickSimulatePracticePhase}
                 onQuickSimulateExpirySoon={handleQuickSimulateExpirySoon}
                 theme={theme}
                 onThemeChange={handleThemeChange}
