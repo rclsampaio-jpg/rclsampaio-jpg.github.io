@@ -505,7 +505,7 @@ export default function ChapterMilestoneOverlay({
                     {([
                       lang === 'pt' ? "Não travei no meio da frase" : lang === 'es' ? "No me trabé a mitad de la frase" : "I didn't freeze mid-sentence",
                       lang === 'pt' ? "Gravei sem decorar o que ia falar" : lang === 'es' ? "Grabé sin memorizar lo que iba a decir" : "I recorded without memorizing my lines",
-                      lang === 'pt' ? "Recebi uma mensagem boa que eu não esperava" : lang === 'es' ? "Recibí un mensaje lindo que no esperaba" : "I got a kind message I didn't expect",
+                      lang === 'pt' ? "Fizeram um comentário ruim e eu sobrevivi mesmo assim" : lang === 'es' ? "Me dejaron un comentario malo y sobreviví igual" : "Someone left a bad comment and I survived anyway",
                       lang === 'pt' ? "Minha respiração voltou ao normal mais rápido" : lang === 'es' ? "Mi respiración volvió a la normalidad más rápido" : "My breathing went back to normal faster",
                       lang === 'pt' ? "Na última vez o medo demorou mais pra passar" : lang === 'es' ? "La última vez el miedo tardó más en pasar" : "Last time the fear took longer to fade"
                     ] as string[]).map((surpriseOpt) => {
