@@ -49,7 +49,7 @@ export default function ProfessionalAreaView({ progress, onUpdateProgress, onGoT
           { id: 'checkin', label: 'Check-in do Dia', icon: CheckCircle2 },
           { id: 'mensagens', label: 'Mensagens', icon: MessageCircle },
           { id: 'diagnostico', label: 'Diagnóstico', icon: Compass },
-          { id: 'referencia', label: 'Referência', icon: BookOpen }
+          { id: 'referencia', label: 'Fundamentos', icon: BookOpen }
         ] as const).map(({ id, label, icon: Icon }) => (
           <button
             key={id}
