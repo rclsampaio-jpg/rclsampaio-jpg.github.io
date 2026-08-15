@@ -542,6 +542,7 @@ function AppContent() {
   // Settings: Reset User Data
   const handleResetProgress = () => {
     localStorage.removeItem('renaser_onboarded');
+    setHasOnboarded(false); // hasOnboarded is React state now, clearing localStorage alone doesn't re-trigger onboarding
     setHasDismissedDailyGate(true); // make sure onboarding isn't blocked by daily gate!
     const todayISO = getLocalDateISO();
     const defaultProgress: UserProgress = {
