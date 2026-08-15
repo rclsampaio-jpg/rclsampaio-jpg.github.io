@@ -269,7 +269,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   // Categories translation/icon maps
   // Ocultas temporariamente a pedido dela, sem conteúdo suficiente pra
   // justificar uma aba própria agora. Reversível: só tirar daqui.
-  const HIDDEN_LIBRARY_CATEGORIES = ['articles', 'pdfs', 'challenges'];
+  const HIDDEN_LIBRARY_CATEGORIES = ['articles', 'pdfs', 'challenges', 'meditations'];
 
   // Ordem por prioridade de uso, não ordem de criação: conteúdo prático
   // primeiro (o que ela vem buscar), bem-estar por último (suporte, não o
