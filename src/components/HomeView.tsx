@@ -135,7 +135,7 @@ interface HomeViewProps {
   currentDay: MissionDay;
   progress: UserProgress;
   lang: Language;
-  onSelectTab: (tabId: 'home' | 'journey' | 'hooks' | 'settings' | 'cms' | 'mission' | 'transformation') => void;
+  onSelectTab: (tabId: 'home' | 'journey' | 'hooks' | 'settings' | 'cms' | 'mission') => void;
   onLanguageChange: (lang: Language) => void;
   onShowIntro?: (chapterId: number) => void;
   onUpdateProgress?: (updated: UserProgress) => void;

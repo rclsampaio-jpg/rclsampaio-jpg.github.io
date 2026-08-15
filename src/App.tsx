@@ -48,7 +48,6 @@ const EmotionalSosView = lazy(() => import('./components/EmotionalSosView'));
 const ProfileView = lazy(() => import('./components/ProfileView'));
 const CmsView = lazy(() => import('./components/CmsView'));
 const NextLevelView = lazy(() => import('./components/NextLevelView'));
-const MyTransformationView = lazy(() => import('./components/MyTransformationView'));
 const CommunityView = lazy(() => import('./components/CommunityView'));
 const LibraryView = lazy(() => import('./components/LibraryView'));
 const ProfessionalAreaView = lazy(() => import('./components/ProfessionalAreaView'));
@@ -57,7 +56,7 @@ import { adaptMessage, resolveGrammarPreference } from './utils/grammar';
 import { getLocalDateISO, getUnlockAnchorDateISO } from './utils/date';
 import { useSystem } from './engines/SystemEngine';
 
-type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'transformation' | 'community' | 'library' | 'profile' | 'professional';
+type TabId = 'home' | 'mission' | 'journey' | 'sos' | 'nextlevel' | 'cms' | 'settings' | 'community' | 'library' | 'profile' | 'professional';
 
 export default function App() {
   return (
@@ -123,7 +122,7 @@ function AppContent() {
   const [lang, setLang] = useState<Language>('pt'); // Default language
   // Excludes 'cms' deliberately — that's admin-gated and re-entering it
   // without re-unlocking would be confusing; it always falls back to Home.
-  const VALID_TAB_IDS: TabId[] = ['home', 'mission', 'journey', 'sos', 'nextlevel', 'transformation', 'community', 'library', 'profile', 'settings', 'professional'];
+  const VALID_TAB_IDS: TabId[] = ['home', 'mission', 'journey', 'sos', 'nextlevel', 'community', 'library', 'profile', 'settings', 'professional'];
   const [activeTab, setActiveTabState] = useState<TabId>(() => {
     // sessionStorage (not localStorage) on purpose: a reload/refresh within
     // the same open session resumes on the same tab, but fully closing and
@@ -684,6 +683,22 @@ function AppContent() {
     localStorage.setItem(ACTIVE_SIMULATION_KEY, key);
     setActiveSimulation(key);
     onApply?.();
+  };
+
+  // Testar o pop-up de marco de capítulo (onde fica o campo "carta pro
+  // futuro eu") sem precisar concluir de verdade o dia 7/14/21/30 — esse
+  // pop-up só dispara dentro do fluxo real de handleCompleteDay, então as
+  // simulações de progresso acima (que preenchem completionHistory direto)
+  // nunca o disparam. Cicla pelos 4 capítulos a cada clique.
+  const [milestonePreviewIndex, setMilestonePreviewIndex] = useState(0);
+  const handleQuickSimulateMilestone = () => {
+    const chapterId = (milestonePreviewIndex % 4) + 1;
+    setMilestonePreviewIndex((i) => i + 1);
+    setChapterMilestone({
+      type: 'completion',
+      chapterId,
+      userReflection: 'Reflexão de teste, só pra conferir o pop-up e o campo de carta pro futuro eu.'
+    });
   };
 
   // Settings: Diagnostic Quick Jumps
@@ -1591,14 +1606,6 @@ function AppContent() {
               )
             )}
 
-            {activeTab === 'transformation' && (
-              <MyTransformationView
-                progress={progress}
-                days={days}
-                lang={lang}
-                onBackToHome={() => setActiveTab('home')}
-              />
-            )}
 
             {activeTab === 'mission' && (
               <DailyMissionView
@@ -1678,6 +1685,7 @@ function AppContent() {
                 onQuickSimulateExpirySoon={handleQuickSimulateExpirySoon}
                 onQuickSimulateUnlockDay30={handleQuickSimulateUnlockDay30}
                 onQuickSimulateCompletion={handleQuickSimulateCompletion}
+                onQuickSimulateMilestone={handleQuickSimulateMilestone}
                 activeSimulation={activeSimulation}
               />
             )}

@@ -9,9 +9,18 @@ interface LoginViewProps {
   onSwitchToSignup: () => void;
 }
 
+// No PWA instalado como ícone na tela do iPhone, a sessão do Supabase às
+// vezes não sobrevive entre aberturas (WebKit limpa o storage do app
+// instalado de um jeito diferente da aba normal do Safari), e sem
+// autoComplete nos campos o Safari também não oferece preencher pelo
+// Keychain. Isso obrigava a digitar o email inteiro de novo toda vez.
+// Guardar só o email (nunca a senha) já resolve a maior parte do
+// incômodo, mesmo quando a sessão de verdade precisa ser refeita.
+const REMEMBERED_EMAIL_KEY = 'renaser_last_login_email';
+
 export default function LoginView({ onSwitchToSignup }: LoginViewProps) {
   const { signIn, requestPasswordReset } = useAuth();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(() => localStorage.getItem(REMEMBERED_EMAIL_KEY) || '');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -22,6 +31,7 @@ export default function LoginView({ onSwitchToSignup }: LoginViewProps) {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
+    localStorage.setItem(REMEMBERED_EMAIL_KEY, email);
     const { error } = await signIn(email, password);
     setSubmitting(false);
     if (error) setError(error);
@@ -61,6 +71,9 @@ export default function LoginView({ onSwitchToSignup }: LoginViewProps) {
             <>
               <input
                 type="email"
+                name="email"
+                id="forgot-email"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
@@ -130,6 +143,9 @@ export default function LoginView({ onSwitchToSignup }: LoginViewProps) {
         <div className="space-y-3 text-left">
           <input
             type="email"
+            name="email"
+            id="login-email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
@@ -138,6 +154,9 @@ export default function LoginView({ onSwitchToSignup }: LoginViewProps) {
           />
           <input
             type="password"
+            name="password"
+            id="login-password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Senha"

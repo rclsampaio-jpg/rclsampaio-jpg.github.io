@@ -46,6 +46,7 @@ interface CmsViewProps {
   onQuickSimulateExpirySoon: () => void;
   onQuickSimulateUnlockDay30: () => void;
   onQuickSimulateCompletion: () => void;
+  onQuickSimulateMilestone: () => void;
   activeSimulation: string | null;
 }
 
@@ -67,6 +68,7 @@ export default function CmsView({
   onQuickSimulateExpirySoon,
   onQuickSimulateUnlockDay30,
   onQuickSimulateCompletion,
+  onQuickSimulateMilestone,
   activeSimulation
 }: CmsViewProps) {
   // Creator Studio navigation
@@ -1743,6 +1745,17 @@ export default function CmsView({
                   Simulação ativa: {activeSimulation}. Seu progresso real está salvo e volta assim que você desligar.
                 </p>
               )}
+              <div className="pt-3 border-t border-rose-100/10">
+                <button
+                  onClick={onQuickSimulateMilestone}
+                  className="w-full sm:w-auto py-3 px-4 rounded-xl text-xs font-sans font-semibold bg-white dark:bg-transparent text-slate-600 dark:text-ink-muted border border-rose-100/40 dark:border-ink-hairline transition cursor-pointer"
+                >
+                  Disparar pop-up de marco de capítulo (carta pro futuro eu)
+                </button>
+                <p className="text-[11px] text-slate-400 dark:text-ink-muted font-mono pt-1.5">
+                  Não é um toggle, dispara na hora e cicla pelos 4 capítulos a cada clique. Esse pop-up só roda no fluxo real de "Concluir hoje" do dia 7/14/21/30, então as simulações acima nunca o disparam.
+                </p>
+              </div>
             </div>
 
             <div className="bg-white dark:bg-ink-raised rounded-2xl border border-red-200/40 dark:border-red-500/20 p-6 space-y-4">
