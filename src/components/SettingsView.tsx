@@ -235,6 +235,79 @@ export default function SettingsView({
         </div>
       </motion.div>
 
+      {/* Dia de organização/produção: o pop-up só pergunta isso uma vez
+          (ou periodicamente, se ela não marcar "manter definitivo"). Pra
+          mudar depois sem esperar a próxima pergunta, precisa de um
+          lugar fixo pra alterar, daí aqui. */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05 }}
+        className="bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-ink-hairline rounded-3xl p-6 shadow-rosegold dark:shadow-none space-y-4"
+      >
+        <div className="flex items-center gap-2.5">
+          <RefreshCcw className="h-5 w-5 text-rosegold" />
+          <h3 className="text-sm font-sans font-medium text-slate-800 dark:text-ink-text uppercase tracking-wider">
+            {lang === 'pt' ? 'Dia de Organização e Produção' : lang === 'es' ? 'Día de Organización y Producción' : 'Organization & Production Day'}
+          </h3>
+        </div>
+        <p className="text-xs text-slate-500 dark:text-ink-muted">
+          {lang === 'pt'
+            ? 'O dia da semana reservado pra planejar e gravar seu conteúdo em lote.'
+            : lang === 'es'
+            ? 'El día de la semana reservado para planear y grabar tu contenido en lote.'
+            : 'The weekday set aside to plan and batch-record your content.'}
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {(lang === 'pt'
+            ? ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
+            : lang === 'es'
+            ? ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+            : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+          ).map((label, dayOfWeek) => {
+            const isSelected = progress.productionDayPreference?.dayOfWeek === dayOfWeek;
+            return (
+              <button
+                key={dayOfWeek}
+                onClick={() => onUpdateProgress({
+                  ...progress,
+                  productionDayPreference: {
+                    dayOfWeek,
+                    permanent: progress.productionDayPreference?.permanent ?? false,
+                    nextAskDate: progress.productionDayPreference?.nextAskDate ?? null
+                  }
+                })}
+                className={`py-2.5 px-2 rounded-xl border text-xs font-sans font-semibold transition cursor-pointer ${
+                  isSelected
+                    ? 'bg-rosegold border-rosegold text-white dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light'
+                    : 'bg-warmwhite dark:bg-transparent border-slate-200/60 dark:border-ink-hairline text-slate-600 dark:text-ink-muted hover:bg-slate-100 dark:hover:bg-rosegold-light/5'
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+        <label className="flex items-center gap-2.5 pt-1 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={progress.productionDayPreference?.permanent ?? false}
+            onChange={(e) => onUpdateProgress({
+              ...progress,
+              productionDayPreference: {
+                dayOfWeek: progress.productionDayPreference?.dayOfWeek ?? 1,
+                permanent: e.target.checked,
+                nextAskDate: e.target.checked ? null : progress.productionDayPreference?.nextAskDate ?? null
+              }
+            })}
+            className="h-4 w-4 rounded border-rose-200 text-rosegold focus:ring-rosegold cursor-pointer"
+          />
+          <span className="text-xs font-sans text-slate-600 dark:text-ink-muted">
+            {lang === 'pt' ? 'Manter definitivo, não perguntar mais' : lang === 'es' ? 'Mantener definitivo, no preguntar más' : "Keep it permanent, don't ask again"}
+          </span>
+        </label>
+      </motion.div>
+
       {/* 3. Dangerous reset zone */}
       <motion.div 
         initial={{ opacity: 0, y: 15 }}

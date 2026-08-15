@@ -285,6 +285,11 @@ function AppContent() {
 
   useEffect(() => {
     if (!showOpeningSplash) return;
+    // A borboleta dessa tela usa o mesmo sistema da splash de onboarding
+    // (portal na raiz, ver handleIntroButterflyStart), pra continuar
+    // voando por cima do Início/Missão Diária depois que essa tela some,
+    // em vez de cortar junto com ela.
+    handleIntroButterflyStart();
     // 2.5s, not 6.5s — returning users hit this screen on every login before
     // even reaching the "Começar Jornada de Hoje" gate, so a long wait here
     // is pure friction, not a first-impression moment.
@@ -292,6 +297,7 @@ function AppContent() {
       setShowOpeningSplash(false);
     }, 2500);
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Daily Gate Splash Screen State — was resetting on every page refresh
@@ -414,7 +420,14 @@ function AppContent() {
   );
   const [showProductionDayCheck, setShowProductionDayCheck] = useState(false);
   useEffect(() => {
-    if (productionDayDue) setShowProductionDayCheck(true);
+    // Sem o "else", o pop-up ficava preso aberto pra sempre depois de
+    // "manter definitivo": logo após o login, o progresso ainda não
+    // sincronizou do Supabase, então productionDayPreference está
+    // temporariamente undefined e productionDayDue fica true por uma
+    // fração de segundo, abrindo o pop-up. Quando o progresso real (com
+    // permanent: true) chega e productionDayDue vira false, nada fechava
+    // o pop-up de volta, então ele continuava aparecendo em todo login.
+    setShowProductionDayCheck(productionDayDue);
   }, [productionDayDue]);
 
   const PRODUCTION_DAY_LABELS_PT = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
@@ -937,33 +950,6 @@ function AppContent() {
         {/* Soft Ambient Gold Blurs — dark mode drops them, Luxo Contido stays flat */}
         <div className="absolute top-1/3 left-1/3 h-96 w-96 bg-rosegold/5 dark:hidden blur-3xl rounded-full" />
         <div className="absolute bottom-1/3 right-1/3 h-96 w-96 bg-accentgold/5 dark:hidden blur-3xl rounded-full" />
-
-        {/* Elegant Natural Butterfly Crossing slowly */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
-          <motion.div
-            initial={{ x: '-15vw', y: '65vh', rotate: 15, opacity: 0 }}
-            animate={{
-              x: '115vw',
-              y: ['65vh', '48vh', '55vh', '32vh', '40vh', '15vh'],
-              rotate: [15, 18, 20, 19, 22, 25],
-              opacity: [0, 1, 1, 1, 1, 0]
-            }}
-            transition={{
-              duration: 6.5,
-              ease: "easeInOut"
-            }}
-            className="absolute"
-          >
-            <motion.img
-              src="/assets/images/butterfly.png"
-              alt=""
-              animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
-              transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut" }}
-              className="h-8 w-auto"
-              style={{ transformOrigin: 'center 70%' }}
-            />
-          </motion.div>
-        </div>
 
         {/* Quietly Fading In Content */}
         <motion.div 
