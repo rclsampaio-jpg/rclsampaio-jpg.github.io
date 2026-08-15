@@ -460,8 +460,8 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, compact
           }}
           layout
           transition={{ layout: { duration: 0.25, ease: 'easeInOut' } }}
-          className={`relative flex items-center rounded-full shadow-lg transition-colors border bg-gradient-to-br from-rosegold to-[#A35D68] text-white border-rosegold/40 dark:bg-none dark:bg-ink-raised dark:border-rosegold-light ${
-            compact ? 'p-2' : 'gap-2.5 pl-3 pr-4 py-2.5 sm:pr-5'
+          className={`group relative flex items-center rounded-full shadow-lg transition-all duration-300 border bg-gradient-to-br from-rosegold to-[#A35D68] text-white border-rosegold/40 dark:bg-none dark:bg-ink-raised dark:border-rosegold-light ${
+            compact ? 'p-2' : 'p-2 hover:gap-2.5 hover:pl-3 hover:pr-4 sm:hover:pr-5 hover:py-2.5'
           }`}
         >
           <motion.span
@@ -473,7 +473,7 @@ export default function RenataOSChat({ lang, progress, currentDayNumber, compact
             <RenaSerIcon size={22} animate={false} />
           </span>
           {!compact && (
-            <span className="relative text-xs font-mono font-bold uppercase tracking-wider">
+            <span className="relative text-xs font-mono font-bold uppercase tracking-wider max-w-0 opacity-0 overflow-hidden whitespace-nowrap transition-all duration-300 group-hover:max-w-[160px] group-hover:opacity-100">
               {t.title}
             </span>
           )}
