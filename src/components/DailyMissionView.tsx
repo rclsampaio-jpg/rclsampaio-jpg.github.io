@@ -512,7 +512,6 @@ export default function DailyMissionView({
   const [audioRating, setAudioRating] = useState<'loved' | 'liked' | 'disliked' | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const dailyVideoIframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const isCompleted = progress.completionHistory.includes(currentDay.dayNumber);
   // Wednesday no longer is a passive "rest day" (removed per the weekly combo
@@ -776,38 +775,56 @@ export default function DailyMissionView({
   const dailyVideoId = getYouTubeId(localizedContent.videoUrl);
   const dailyVideoThumbnail = dailyVideoId ? `https://img.youtube.com/vi/${dailyVideoId}/hqdefault.jpg` : null;
   const [isDailyVideoPlaying, setIsDailyVideoPlaying] = useState(false);
+  const dailyVideoPlayerRef = useRef<any>(null);
+  const dailyVideoPlayerElId = `daily-video-player-${currentDay.dayNumber}`;
 
-  // Escuta o postMessage do player do YouTube (protocolo IFrame API, com
-  // enablejsapi=1 no src) pra saber quando o vídeo termina de tocar, e
-  // marca o passo "Ouvir a Mensagem" como concluído nesse momento. Precisa
-  // mandar um "listening" pro iframe primeiro pra ele começar a postar os
-  // eventos de mudança de estado.
+  // Usa a API real do player do YouTube (carrega o script oficial uma
+  // única vez) em vez de um iframe cru com postMessage manual: o iframe
+  // cru às vezes não iniciava no primeiro clique (precisava clicar 2x) e a
+  // detecção de "vídeo terminou" via postMessage não era confiável. Com
+  // YT.Player de verdade, onStateChange dispara certo em ENDED (estado 0).
   useEffect(() => {
     if (!isDailyVideoPlaying || !dailyVideoId) return;
-    const notifyListening = () => {
-      dailyVideoIframeRef.current?.contentWindow?.postMessage(
-        JSON.stringify({ event: 'listening', id: dailyVideoId }),
-        '*'
-      );
-    };
-    const timer = setTimeout(notifyListening, 500);
-    const handleMessage = (event: MessageEvent) => {
-      if (typeof event.data !== 'string' || !event.origin.includes('youtube.com')) return;
-      try {
-        const data = JSON.parse(event.data);
-        if (data.event === 'onStateChange' && data.info === 0) {
-          setVideoCompleted(true);
+    let cancelled = false;
+
+    const createPlayer = () => {
+      if (cancelled) return;
+      dailyVideoPlayerRef.current = new (window as any).YT.Player(dailyVideoPlayerElId, {
+        videoId: dailyVideoId,
+        playerVars: { autoplay: 1, playsinline: 1 },
+        events: {
+          onStateChange: (e: any) => {
+            if (e.data === (window as any).YT.PlayerState.ENDED) {
+              setVideoCompleted(true);
+            }
+          }
         }
-      } catch {
-        // Not a JSON postMessage from the YouTube player, ignore.
+      });
+    };
+
+    if ((window as any).YT && (window as any).YT.Player) {
+      createPlayer();
+    } else {
+      const existingScript = document.getElementById('youtube-iframe-api-script');
+      if (!existingScript) {
+        const script = document.createElement('script');
+        script.id = 'youtube-iframe-api-script';
+        script.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(script);
       }
-    };
-    window.addEventListener('message', handleMessage);
+      const previousReady = (window as any).onYouTubeIframeAPIReady;
+      (window as any).onYouTubeIframeAPIReady = () => {
+        previousReady?.();
+        createPlayer();
+      };
+    }
+
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener('message', handleMessage);
+      cancelled = true;
+      dailyVideoPlayerRef.current?.destroy?.();
+      dailyVideoPlayerRef.current = null;
     };
-  }, [isDailyVideoPlaying, dailyVideoId]);
+  }, [isDailyVideoPlaying, dailyVideoId, dailyVideoPlayerElId]);
 
   const hookOptions = getHookOptionsForDay(currentDay.dayNumber, lang, progress.journeyStartDate);
   const hookCategoryLabel = getHookCategoryLabel(currentDay.dayNumber, lang, progress.journeyStartDate);
@@ -1508,14 +1525,7 @@ export default function DailyMissionView({
                   </span>
                   {isDailyVideoPlaying && dailyVideoId ? (
                     <div className="rounded-2xl overflow-hidden aspect-video bg-slate-900">
-                      <iframe
-                        ref={dailyVideoIframeRef}
-                        src={`https://www.youtube.com/embed/${dailyVideoId}?autoplay=1&enablejsapi=1`}
-                        title={textDict.videoTitle}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="w-full h-full"
-                      />
+                      <div id={dailyVideoPlayerElId} className="w-full h-full" />
                     </div>
                   ) : (
                     <button
