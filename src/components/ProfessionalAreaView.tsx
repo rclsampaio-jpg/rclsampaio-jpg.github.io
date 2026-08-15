@@ -303,7 +303,7 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
           Destrave
         </h1>
         <p className="text-sm text-slate-500 dark:text-ink-muted max-w-md mx-auto">
-          Conteúdo estratégico que converte quem já te segue em cliente. Sem enrolação, sem aula, direto ao ponto.
+          Conteúdo estratégico que converte seguidores em clientes. Sem enrolação, sem aula, direto ao ponto.
         </p>
       </div>
 

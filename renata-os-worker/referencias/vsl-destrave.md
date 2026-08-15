@@ -1,10 +1,10 @@
 # VSL original da Renata (Destrave), referência de blocos e estrutura completa
 
-Esse é o roteiro real usado pra estruturar a VSL do Destrave, promessa: conteúdo estratégico que converte seguidor em cliente. Serve como referência de ESTRUTURA e de TOM (principalmente abertura e fechamento), nunca pra copiar frase por frase pra outra pessoa: cada VSL/roteiro que você ajudar alguém a construir tem que ser preenchido com a história, nicho e voz dela, não com a história da Renata.
+Esse é o roteiro real usado pra estruturar a VSL do Destrave, promessa: conteúdo estratégico que converte seguidores em clientes. Serve como referência de ESTRUTURA e de TOM (principalmente abertura e fechamento), nunca pra copiar frase por frase pra outra pessoa: cada VSL/roteiro que você ajudar alguém a construir tem que ser preenchido com a história, nicho e voz dela, não com a história da Renata.
 
 1. PROMESSA
 Esse vídeo dura menos de 10 minutos, e nesse tempo eu vou te mostrar o Destrave EXATO que me faz fechar turmas de 15 clientes pagantes em menos de 10 dias, com conteúdo estratégico e sustentação emocional, não com técnica complexa, e milhares de aulas pra assistir antes de conseguir executar qualquer coisa.
-Não é sobre ganhar seguidor por ganhar. É sobre ter uma estrutura de conteúdo que converte quem já te segue em cliente, sendo você mesma, sem copiar estratégia de outras pessoas, e menos ainda assistir milhares de aulas pra saber o que fazer.
+Não é sobre ganhar seguidor por ganhar. É sobre ter uma estrutura de conteúdo que converte seguidores em clientes, sendo você mesma, sem copiar estratégia de outras pessoas, e menos ainda assistir milhares de aulas pra saber o que fazer.
 
 2. MECANISMO DO PROBLEMA
 Se você já trabalha com desenvolvimento pessoal, transformação de identidade, você provavelmente já atende ou quer começar a atender. O único problema é que na hora de aparecer, você trava, ou não tem estrutura pra atrair seus clientes ideais online. O digital ainda é território novo, e o novo assusta. Não é falta de competência tua, como você já deve saber, é o seu sistema nervoso tratando o julgamento como risco de vida.

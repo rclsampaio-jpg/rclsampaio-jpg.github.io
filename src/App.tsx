@@ -1021,7 +1021,7 @@ function AppContent() {
                 onClick={() => { setActiveTab('journey'); setMobileMenuOpen(false); }}
                 className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'journey' ? 'bg-rosegold text-white font-bold dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light' : 'text-slate-700 dark:text-ink-muted'}`}
               >
-                {labels.journey}
+                {lang === 'pt' ? 'Jornada' : lang === 'es' ? 'Viaje' : 'Journey'}
               </button>
 
               <button
@@ -1046,19 +1046,6 @@ function AppContent() {
               </button>
 
               <button
-                onClick={() => { if (isNextLevelUnlocked) { setActiveTab('nextlevel'); setMobileMenuOpen(false); } }}
-                disabled={!isNextLevelUnlocked}
-                className={`w-full py-2.5 px-4 text-left rounded-xl flex items-center justify-between transition ${
-                  isNextLevelUnlocked
-                    ? 'bg-amber-100 dark:bg-transparent dark:border dark:border-amber-400/60 text-amber-800 dark:text-amber-300 font-bold'
-                    : 'text-slate-300 dark:text-ink-hairline bg-slate-50 dark:bg-transparent cursor-not-allowed'
-                }`}
-              >
-                <span>{labels.nextlevel}</span>
-                {!isNextLevelUnlocked && <Lock className="h-3 w-3" />}
-              </button>
-
-              <button
                 onClick={() => {
                   if (isProfessionalUnlocked) { setActiveTab('professional'); setMobileMenuOpen(false); }
                   else { setShowProfessionalPrompt(true); setMobileMenuOpen(false); }
@@ -1074,6 +1061,19 @@ function AppContent() {
                 className={`w-full py-2.5 px-4 text-left rounded-xl ${activeTab === 'settings' ? 'bg-slate-900 dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light text-white font-bold' : 'text-slate-700 dark:text-ink-muted'}`}
               >
                 {labels.settings}
+              </button>
+
+              <button
+                onClick={() => { if (isNextLevelUnlocked) { setActiveTab('nextlevel'); setMobileMenuOpen(false); } }}
+                disabled={!isNextLevelUnlocked}
+                className={`w-full py-2.5 px-4 text-left rounded-xl flex items-center justify-between transition ${
+                  isNextLevelUnlocked
+                    ? 'bg-amber-100 dark:bg-transparent dark:border dark:border-amber-400/60 text-amber-800 dark:text-amber-300 font-bold'
+                    : 'text-slate-300 dark:text-ink-hairline bg-slate-50 dark:bg-transparent cursor-not-allowed'
+                }`}
+              >
+                <span>{labels.nextlevel}</span>
+                {!isNextLevelUnlocked && <Lock className="h-3 w-3" />}
               </button>
 
               {isAdminUnlocked && (
