@@ -210,7 +210,7 @@ export default function ChapterMilestoneOverlay({
       rebirthSub: 'Sua real história começa agora.',
       qSurprised: 'O que mais te surpreendeu nesta semana de aprendizado?',
       qFeeling: 'Como você se sente exatamente agora?',
-      qFutureNote: 'Quer deixar uma nota sincera para o seu eu do futuro? (Opcional, máx 300 caracteres)',
+      qFutureNote: 'Você realizou um marco e ele precisa ser celebrado! Parabéns!! Agora deixa uma mensagem pro seu eu do futuro. Pode não fazer sentido hoje, mas vai por mim, você vai me agradecer depois!! 🦋 (Opcional, máx 300 caracteres)',
       notePlaceholder: 'Escreva algo gentil que você queira ler mais para a frente...',
       identityShiftLabel: 'Quem você está se tornando'
     },
@@ -232,7 +232,7 @@ export default function ChapterMilestoneOverlay({
       rebirthSub: 'Your real story begins here.',
       qSurprised: 'What surprised you the most during this week of learning?',
       qFeeling: 'How do you feel exactly right now?',
-      qFutureNote: 'Would you like to leave an honest note for your future self? (Optional, max 300 chars)',
+      qFutureNote: "You just hit a milestone and it needs celebrating! Congrats!! Now leave a message for your future self. It might not make sense today, but trust me, you'll thank me later!! 🦋 (Optional, max 300 chars)",
       notePlaceholder: 'Write something gentle you would want to read in the future...',
       identityShiftLabel: 'Who you are becoming'
     },
@@ -254,7 +254,7 @@ export default function ChapterMilestoneOverlay({
       rebirthSub: 'Tu verdadera historia comienza ahora.',
       qSurprised: '¿Qué fue lo que más te sorprendió durante esta semana de aprendizaje?',
       qFeeling: '¿Cómo te sientes exactamente en este momento?',
-      qFutureNote: '¿Quieres dejar una nota sincera para tu yo del futuro? (Opcional, máx 300 caracteres)',
+      qFutureNote: '¡Alcanzaste un marco y eso merece celebrarse! ¡¡Felicidades!! Ahora deja un mensaje para tu yo del futuro. Puede que hoy no tenga sentido, pero confía en mí, ¡¡me lo vas a agradecer después!! 🦋 (Opcional, máx 300 caracteres)',
       notePlaceholder: 'Escribe algo tierno que quieras leer más adelante...',
       identityShiftLabel: 'Quién te estás convirtiendo'
     }
