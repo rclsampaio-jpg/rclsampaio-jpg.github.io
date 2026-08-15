@@ -641,6 +641,21 @@ function AppContent() {
     setActiveTab('home');
   };
 
+  // Admin-only: adianta journeyStartDate pra cair 5 dias antes do vencimento
+  // (90 ou 180 dependendo do Destrave), só pra conferir o aviso de expiração
+  // sem esperar meses nem editar nada manualmente.
+  const handleQuickSimulateExpirySoon = () => {
+    const daysAgo = journeyAccessExpiryDays - 5;
+    const simulatedStart = new Date();
+    simulatedStart.setDate(simulatedStart.getDate() - daysAgo);
+    localStorage.removeItem(expiryWarningDismissKey);
+    updateProgress({
+      ...progress,
+      journeyStartDate: simulatedStart.toISOString().slice(0, 10)
+    });
+    setActiveTab('home');
+  };
+
   const handleQuickSimulateCompletion = () => {
     // Fill history for all 30 days
     const simulatedHistory = Array.from({ length: 30 }, (_, i) => i + 1);
@@ -731,7 +746,9 @@ function AppContent() {
   // informa), pra ela ter tempo de decidir renovar ou escalar pro Destrave
   // antes de perder acesso de repente.
   const expiryWarningDismissKey = `renaser_expiry_warning_dismissed_${getLocalDateISO()}`;
-  const expiryWarningDue = !isAdminUnlocked && daysUntilJourneyExpiry !== null && daysUntilJourneyExpiry > 0 && daysUntilJourneyExpiry <= 7;
+  // Admin também vê esse aviso (diferente do bloqueio duro acima) — ela
+  // precisa poder simular e conferir o pop-up sem perder acesso de verdade.
+  const expiryWarningDue = daysUntilJourneyExpiry !== null && daysUntilJourneyExpiry > 0 && daysUntilJourneyExpiry <= 7;
   const [showExpiryWarning, setShowExpiryWarning] = useState(false);
   useEffect(() => {
     if (expiryWarningDue && localStorage.getItem(expiryWarningDismissKey) !== 'true') {
@@ -1574,6 +1591,7 @@ function AppContent() {
                 onResetProgress={handleResetProgress}
                 onQuickSimulateUnlockDay30={handleQuickSimulateUnlockDay30}
                 onQuickSimulateCompletion={handleQuickSimulateCompletion}
+                onQuickSimulateExpirySoon={handleQuickSimulateExpirySoon}
                 theme={theme}
                 onThemeChange={handleThemeChange}
                 onUpdateProgress={updateProgress}

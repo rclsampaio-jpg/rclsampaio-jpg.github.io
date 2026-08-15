@@ -19,6 +19,7 @@ interface SettingsViewProps {
   onResetProgress: () => void;
   onQuickSimulateCompletion: () => void;
   onQuickSimulateUnlockDay30: () => void;
+  onQuickSimulateExpirySoon: () => void;
   theme: 'light' | 'dark';
   onThemeChange: (theme: 'light' | 'dark') => void;
   onUpdateProgress: (updated: UserProgress) => void;
@@ -41,6 +42,7 @@ export default function SettingsView({
   onResetProgress,
   onQuickSimulateCompletion,
   onQuickSimulateUnlockDay30,
+  onQuickSimulateExpirySoon,
   theme,
   onThemeChange,
   onUpdateProgress,
@@ -347,6 +349,13 @@ export default function SettingsView({
               className="flex-1 py-3 px-4 bg-gradient-to-r from-rosegold to-rosegold-light dark:bg-none dark:bg-transparent dark:border dark:border-rosegold-light text-white dark:text-rosegold-light rounded-xl text-xs font-sans font-bold transition shadow-md shadow-rosegold/20 dark:shadow-none cursor-pointer"
             >
               {textDict.simulateComplete30}
+            </button>
+
+            <button
+              onClick={onQuickSimulateExpirySoon}
+              className="flex-1 py-3 px-4 bg-white dark:bg-transparent text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs font-sans font-semibold transition cursor-pointer"
+            >
+              Simular expiração em 5 dias
             </button>
           </div>
 
