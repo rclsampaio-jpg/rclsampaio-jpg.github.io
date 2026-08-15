@@ -74,7 +74,7 @@ export const VSL_REFERENCIA: { bloco: string; ideia: string }[] = [
 // exatamente pra onde dentro da própria área ela resolve isso.
 export const GARGALO_RESOLUCAO: Record<string, { oQueFazer: string; aba: 'mensagens' | 'referencia'; abaLabel: string }> = {
   'Em criar conteúdo com constância': {
-    oQueFazer: 'Normalmente não é falta de ideia, é falta de um ângulo fixo pra postar sem ter que reinventar toda vez. Usa o prompt "Sua Big Idea" em Fundamentos, ele já tá marcado como recomendado pra você.',
+    oQueFazer: 'Normalmente não é falta de ideia, é falta de um método nomeado (Big Idea) e de variações prontas pra postar sem reinventar toda vez (Ângulos de Conteúdo). Usa esses dois prompts em Fundamentos, já tão marcados como recomendados pra você.',
     aba: 'referencia',
     abaLabel: 'Ir pra Fundamentos'
   },
@@ -109,6 +109,12 @@ export const RENATA_OS_PROMPTS: { title: string; prompt: (nicho: string, tom: st
     resolveGargalo: []
   },
   {
+    title: 'Seus Ângulos de Conteúdo',
+    prompt: (nicho, tom) =>
+      `Quero variar como eu falo da mesma dor pro meu nicho (${nicho}), sem trocar de mensagem, só de porta de entrada emocional. Me ajuda a listar 4 ângulos diferentes (ex: medo de julgamento, perfeccionismo, comparação, "tenho tanto pra mostrar e não mostro") pra essa mesma dor, cada um virando ideia de post/Reels, no meu tom (${tom}).`,
+    resolveGargalo: ['Em criar conteúdo com constância']
+  },
+  {
     title: 'Sua Autoridade Percebida',
     prompt: (nicho, tom) =>
       `Me ajuda a pensar em 3 formas de mostrar autoridade percebida no meu conteúdo sobre ${nicho}, usando resultado real (mesmo que de um cliente só, mesmo pequeno) em vez de teoria. Meu tom é ${tom}.`,
@@ -135,6 +141,15 @@ export const REFERENCE_CONTENT: { title: string; points: string[] }[] = [
       'É a ideia central que resume, numa frase, o que te diferencia de qualquer outra pessoa no seu nicho.',
       'Não é o que você faz, é o ângulo pelo qual você faz. Duas profissionais do mesmo nicho podem ter Big Ideas completamente diferentes.',
       'Teste rápido: se alguém só ouvir sua Big Idea, precisa entender na hora por que te procurar e não outra pessoa.'
+    ]
+  },
+  {
+    title: 'Ângulos de Conteúdo',
+    points: [
+      'É a mesma oferta, o mesmo problema, contado por lentes emocionais diferentes, não é sobre criar mensagens novas.',
+      'A mesma dor tem várias portas de entrada: medo de julgamento, perfeccionismo, comparação com quem "consegue fácil", ou "tenho tanta coisa boa e não mostro nada". São a mesma pessoa em dias diferentes.',
+      'Diferente de gancho: gancho é a abertura (os primeiros segundos), ângulo é a lente emocional do conteúdo inteiro. Um ângulo pode ter vários ganchos diferentes dentro dele.',
+      'Não dá pra saber de antemão qual ângulo vai ressoar mais naquele momento. O método é ter vários prontos e deixar o resultado real apontar qual está funcionando.'
     ]
   },
   {
