@@ -648,49 +648,37 @@ function AppContent() {
     system.progressSystem.resetProgress();
   };
 
-  // Simulações de teste (Creator Studio) agora são um toggle real. A
-  // primeira versão tentava guardar um snapshot do progresso "de verdade"
-  // antes de simular e restaurar ele ao desligar, mas isso quebrou: depois
-  // de tanto teste, o primeiro snapshot salvo já não era mais o dia 1 real
-  // dela, então "desligar" sempre voltava pra um estado simulado antigo,
-  // nunca pro dia 1 de verdade. Mais simples e confiável: desligar sempre
-  // reseta pro dia 1 limpo (sem completionHistory, sem streak), igual ao
-  // "zerar progresso", em vez de depender de um snapshot que pode estar
-  // corrompido por testes anteriores.
+  // Simulações de teste (Creator Studio) agora são um toggle real: clicar
+  // no mesmo botão de novo desliga e restaura o progresso de verdade dela
+  // (seja lá qual dia ela estiver, não só dia 1). O bug da primeira versão
+  // era só salvar o snapshot "se ainda não existir um" — um snapshot velho
+  // (de teste de sessões anteriores) nunca era substituído, então ficava
+  // pra sempre desatualizado. Agora, sempre que ela liga uma simulação
+  // partindo de fora de qualquer simulação (activeSimulation === null),
+  // o snapshot é sobrescrito com o progresso atual de verdade, garantindo
+  // que ele nunca fica velho.
+  const SIMULATION_SNAPSHOT_KEY = 'renaser_pre_simulation_snapshot';
   const ACTIVE_SIMULATION_KEY = 'renaser_active_simulation';
   const [activeSimulation, setActiveSimulation] = useState<string | null>(
     () => localStorage.getItem(ACTIVE_SIMULATION_KEY)
   );
 
-  const resetToRealDayOne = () => {
-    const todayISO = getLocalDateISO();
-    const cleanProgress: UserProgress = {
-      ...progress,
-      currentDay: 1,
-      completionHistory: [],
-      currentStreak: 0,
-      longestStreak: 0,
-      favoriteHooks: [],
-      copiedHooks: [],
-      videoLinks: {},
-      reflections: {},
-      lastActiveDate: null,
-      journeyStartDate: todayISO
-    };
-    updateProgress(cleanProgress);
-    const freshDays = generateInitialDays(todayISO);
-    setDays(freshDays);
-    saveDaysToStorage(freshDays);
-    setFocusedDayNumber(1);
-  };
-
   const runOrToggleSimulation = (key: string, apply: () => UserProgress, onApply?: () => void) => {
     if (activeSimulation === key) {
-      resetToRealDayOne();
+      const snapshotRaw = localStorage.getItem(SIMULATION_SNAPSHOT_KEY);
+      if (snapshotRaw) {
+        const restored: UserProgress = JSON.parse(snapshotRaw);
+        updateProgress(restored);
+        setFocusedDayNumber(restored.currentDay <= 30 ? restored.currentDay : 30);
+      }
+      localStorage.removeItem(SIMULATION_SNAPSHOT_KEY);
       localStorage.removeItem(ACTIVE_SIMULATION_KEY);
       setActiveSimulation(null);
       setActiveTab('home');
       return;
+    }
+    if (activeSimulation === null) {
+      localStorage.setItem(SIMULATION_SNAPSHOT_KEY, JSON.stringify(progress));
     }
     updateProgress(apply());
     localStorage.setItem(ACTIVE_SIMULATION_KEY, key);
