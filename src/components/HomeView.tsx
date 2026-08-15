@@ -42,16 +42,16 @@ const HOME_TONE: Record<Language, {
       inspirational: 'Uma experiência de visibilidade e coragem'
     },
     introTitle: {
-      gentle: 'Você está [pronta/pronto/pronte]?',
-      challenger: 'Você está [pronta/pronto/pronte]?',
-      strategic: 'Você está [pronta/pronto/pronte]?',
-      inspirational: 'Você está [pronta/pronto/pronte]?'
+      gentle: 'Você está [pronta/pronto/pronte]? 😃',
+      challenger: 'Você está [pronta/pronto/pronte]? 😃',
+      strategic: 'Você está [pronta/pronto/pronte]? 😃',
+      inspirational: 'Você está [pronta/pronto/pronte]? 😃'
     },
     introText: {
-      gentle: 'Nessa jornada, você receberá um direcionamento diário e com áudios, vídeos de até 4 minutos e exercícios práticos para executar. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar quem você realmente é.',
-      challenger: 'Nessa jornada, você receberá um direcionamento diário e com áudios, vídeos de até 4 minutos e exercícios práticos para executar. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar quem você realmente é.',
-      strategic: 'Nessa jornada, você receberá um direcionamento diário e com áudios, vídeos de até 4 minutos e exercícios práticos para executar. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar quem você realmente é.',
-      inspirational: 'Nessa jornada, você receberá um direcionamento diário e com áudios, vídeos de até 4 minutos e exercícios práticos para executar. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar quem você realmente é.'
+      gentle: 'Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar de quem você é.',
+      challenger: 'Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar de quem você é.',
+      strategic: 'Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar de quem você é.',
+      inspirational: 'Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar de quem você é.'
     },
     yesterdayReminder: {
       gentle: '✨ Sem pressa nenhuma. Volte exatamente de onde parou, no seu tempo, não existe atraso aqui, só o seu próprio ritmo. Soltar o controle também faz parte.',
