@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Flame, Link2, ExternalLink, LifeBuoy } from 'lucide-react';
+import { Flame, Link2, ExternalLink, Heart } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { PRACTICE_WEEKS, getPracticeWeekIndexForDay } from '../data/practiceWeeksData';
 import LinkListInput from './LinkListInput';
@@ -55,6 +55,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
       moodLabel: 'Como você se sentiu hoje?',
       complete: 'Concluir hoje',
       streak: 'sequência',
+      sosHeading: 'Sentindo ansiedade ou trava física?',
       sos: 'Acione o SOS Emocional'
     },
     en: {
@@ -69,6 +70,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
       moodLabel: 'How did you feel today?',
       complete: 'Complete today',
       streak: 'streak',
+      sosHeading: 'Feeling anxiety or stage fright?',
       sos: 'Activate Emotional SOS'
     },
     es: {
@@ -83,6 +85,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
       moodLabel: '¿Cómo te sentiste hoy?',
       complete: 'Completar hoy',
       streak: 'racha',
+      sosHeading: '¿Sientes ansiedad o miedo en la voz?',
       sos: 'Activar SOS Emocional'
     }
   };
@@ -192,13 +195,25 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
         {textVal.complete}
       </button>
 
-      <button
-        type="button"
-        onClick={onTriggerSos}
-        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-rosegold hover:bg-[#A35D68] text-xs font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 shadow-rosegold"
-      >
-        <LifeBuoy size={16} /> {textVal.sos}
-      </button>
+      <div className="rounded-[1.5rem] border border-rose-150/40 dark:border-ink-hairline bg-[#251E1C]/5 dark:bg-ink/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="p-2.5 rounded-xl bg-rosegold/10 text-rosegold shrink-0">
+            <Heart className="h-4.5 w-4.5 fill-current text-rosegold animate-pulse" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h4 className="text-xs font-bold text-slate-800 dark:text-ink-text font-sans tracking-wide leading-relaxed">
+              {textVal.sosHeading}
+            </h4>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={onTriggerSos}
+          className="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-rosegold hover:bg-[#A35D68] text-[10px] font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 cursor-pointer shadow-rosegold animate-pulse"
+        >
+          {textVal.sos}
+        </button>
+      </div>
     </motion.div>
   );
 }
