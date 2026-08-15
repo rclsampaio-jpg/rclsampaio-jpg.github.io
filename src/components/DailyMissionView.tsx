@@ -476,6 +476,11 @@ export default function DailyMissionView({
   const [maxReachedProgress, setMaxReachedProgress] = useState(0);
   const [audioSpeed, setAudioSpeed] = useState(1);
   const [audioCompleted, setAudioCompleted] = useState(false);
+  // Dias 1-7 mostram vídeo em vez de áudio (showDailyVideo), então
+  // audioCompleted nunca fica true nesses dias (não existe elemento
+  // <audio> pra disparar onEnded). Rastreado à parte, via postMessage do
+  // player do YouTube quando o vídeo termina de tocar.
+  const [videoCompleted, setVideoCompleted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [activeHookTab, setActiveHookTab] = useState<number>(0);
@@ -507,6 +512,7 @@ export default function DailyMissionView({
   const [audioRating, setAudioRating] = useState<'loved' | 'liked' | 'disliked' | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const dailyVideoIframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const isCompleted = progress.completionHistory.includes(currentDay.dayNumber);
   // Wednesday no longer is a passive "rest day" (removed per the weekly combo
@@ -557,6 +563,7 @@ export default function DailyMissionView({
     setCurrentTime(0);
     setDuration(0);
     setAudioCompleted(false);
+    setVideoCompleted(false);
     setActiveHookTab(0);
     setCustomHookIdea('');
     setIsDailyVideoPlaying(false);
@@ -719,7 +726,10 @@ export default function DailyMissionView({
   // Posting the 3 proof links is optional, completion only depends on the
   // promise checkboxes, not on whether a link was pasted in for each.
   const allPromisesKept = promisesChecked.inertia && promisesChecked.confidence && promisesChecked.evidence;
-  const canComplete = isRestDay || (audioCompleted && reflectionInput.trim().length > 3 && allPromisesKept);
+  // Dias 1-7 (vídeo) validam pelo fim do vídeo, não pelo áudio, que nem
+  // existe nesses dias.
+  const listenStepDone = currentDay.dayNumber <= 7 ? videoCompleted : audioCompleted;
+  const canComplete = isRestDay || (listenStepDone && reflectionInput.trim().length > 3 && allPromisesKept);
   const combinedPromiseLinks = isBatchProductionDay
     ? promiseLinks.inertia
     : recordingLinks.filter(l => l.trim()).join(LINK_SEPARATOR);
@@ -767,6 +777,38 @@ export default function DailyMissionView({
   const dailyVideoThumbnail = dailyVideoId ? `https://img.youtube.com/vi/${dailyVideoId}/hqdefault.jpg` : null;
   const [isDailyVideoPlaying, setIsDailyVideoPlaying] = useState(false);
 
+  // Escuta o postMessage do player do YouTube (protocolo IFrame API, com
+  // enablejsapi=1 no src) pra saber quando o vídeo termina de tocar, e
+  // marca o passo "Ouvir a Mensagem" como concluído nesse momento. Precisa
+  // mandar um "listening" pro iframe primeiro pra ele começar a postar os
+  // eventos de mudança de estado.
+  useEffect(() => {
+    if (!isDailyVideoPlaying || !dailyVideoId) return;
+    const notifyListening = () => {
+      dailyVideoIframeRef.current?.contentWindow?.postMessage(
+        JSON.stringify({ event: 'listening', id: dailyVideoId }),
+        '*'
+      );
+    };
+    const timer = setTimeout(notifyListening, 500);
+    const handleMessage = (event: MessageEvent) => {
+      if (typeof event.data !== 'string' || !event.origin.includes('youtube.com')) return;
+      try {
+        const data = JSON.parse(event.data);
+        if (data.event === 'onStateChange' && data.info === 0) {
+          setVideoCompleted(true);
+        }
+      } catch {
+        // Not a JSON postMessage from the YouTube player, ignore.
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [isDailyVideoPlaying, dailyVideoId]);
+
   const hookOptions = getHookOptionsForDay(currentDay.dayNumber, lang, progress.journeyStartDate);
   const hookCategoryLabel = getHookCategoryLabel(currentDay.dayNumber, lang, progress.journeyStartDate);
   const actionHookOptions = getActionHookOptions(lang);
@@ -781,6 +823,7 @@ export default function DailyMissionView({
       audioTitle: 'Mensagem da Renata',
       videoTitle: 'Vídeo de Apoio da Semana 1',
       videoDesc: 'Um vídeo curto da Renata só pros primeiros 7 dias, pra te acompanhar de perto nessa fase.',
+      markVideoWatched: 'Já assisti até o fim, marcar como ouvido',
       videoWatch: 'Assistir no YouTube',
       ratingLoved: 'Amei',
       ratingLiked: 'Gostei',
@@ -889,6 +932,7 @@ export default function DailyMissionView({
       audioTitle: "Renata's Message",
       videoTitle: 'Week 1 Support Video',
       videoDesc: "A short video from Renata just for the first 7 days, to walk with you closely through this phase.",
+      markVideoWatched: 'I watched it all, mark as done',
       videoWatch: 'Watch on YouTube',
       ratingLoved: 'Loved it',
       ratingLiked: 'Liked it',
@@ -997,6 +1041,7 @@ export default function DailyMissionView({
       audioTitle: 'Mensaje de Renata',
       videoTitle: 'Video de Apoyo de la Semana 1',
       videoDesc: 'Un video corto de Renata solo para los primeros 7 días, para acompañarte de cerca en esta fase.',
+      markVideoWatched: 'Ya lo vi hasta el final, marcar como escuchado',
       videoWatch: 'Ver en YouTube',
       ratingLoved: 'Me encantó',
       ratingLiked: 'Me gustó',
@@ -1464,7 +1509,8 @@ export default function DailyMissionView({
                   {isDailyVideoPlaying && dailyVideoId ? (
                     <div className="rounded-2xl overflow-hidden aspect-video bg-slate-900">
                       <iframe
-                        src={`https://www.youtube.com/embed/${dailyVideoId}?autoplay=1`}
+                        ref={dailyVideoIframeRef}
+                        src={`https://www.youtube.com/embed/${dailyVideoId}?autoplay=1&enablejsapi=1`}
                         title={textDict.videoTitle}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
@@ -1497,6 +1543,20 @@ export default function DailyMissionView({
                     </button>
                   )}
                   <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">{textDict.videoDesc}</p>
+                  {/* Fallback manual: a detecção automática de "vídeo
+                      terminou" depende de postMessage do player do
+                      YouTube, que pode falhar dependendo de rede/bloqueio
+                      de terceiros. Sem isso, ela ficaria travada de novo
+                      sem conseguir concluir o dia. */}
+                  {isDailyVideoPlaying && !videoCompleted && (
+                    <button
+                      type="button"
+                      onClick={() => setVideoCompleted(true)}
+                      className="text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
+                    >
+                      {textDict.markVideoWatched}
+                    </button>
+                  )}
                 </motion.div>
               )}
 
@@ -1909,11 +1969,11 @@ export default function DailyMissionView({
                   <div className="flex items-center justify-between text-xs bg-[#FAF8F5] dark:bg-ink border border-rose-100/10 p-4 rounded-xl shadow-xs">
                     <EditableText contentKey="dailyMission.listenItem" fallback={textDict.listenItem} as="span" className="text-slate-600 dark:text-ink-muted font-semibold font-sans" />
                     <span className={`px-3 py-1 rounded-full text-[11px] font-sans font-bold uppercase tracking-wider ${
-                      audioCompleted
+                      listenStepDone
                         ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
                         : 'bg-rose-50 dark:bg-rosegold/15 text-rosegold'
                     }`}>
-                      {audioCompleted
+                      {listenStepDone
                         ? <EditableText contentKey="dailyMission.completedStatus" fallback={textDict.completedStatus} as="span" />
                         : <EditableText contentKey="dailyMission.pendingStatus" fallback={textDict.pendingStatus} as="span" />}
                     </span>
