@@ -10,6 +10,7 @@ import { Language, UserProgress } from '../types';
 import { Chapter, chapters } from '../data/chaptersData';
 import { adaptMessage, pickTone, resolveGuideStyle, ToneVariants } from '../utils/grammar';
 import EditableText from './editable/EditableText';
+import ConfettiBurst from './ConfettiBurst';
 
 interface ChapterMilestoneOverlayProps {
   type: 'intro' | 'completion';
@@ -279,6 +280,8 @@ export default function ChapterMilestoneOverlay({
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 select-none"
     >
+      {type === 'completion' && <ConfettiBurst burstKey={`${chapter.id}-${type}`} particleCount={80} />}
+
       {/* Borboleta voando por cima do card (z-[60], acima do modal). Troca
           de trajeto a cada passagem (ver BUTTERFLY_PATHS) em vez de repetir
           sempre o mesmo caminho, senão parecia um robô saindo e entrando

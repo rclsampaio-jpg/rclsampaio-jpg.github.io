@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { PartyPopper } from 'lucide-react';
 import { Language } from '../types';
 import EditableText from './editable/EditableText';
+import ConfettiBurst from './ConfettiBurst';
 
 interface DayCompletionOverlayProps {
   dayNumber: number;
@@ -42,6 +43,7 @@ export default function DayCompletionOverlay({ dayNumber, lang, onClose }: DayCo
         className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-6"
         onClick={onClose}
       >
+        <ConfettiBurst burstKey={dayNumber} />
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
