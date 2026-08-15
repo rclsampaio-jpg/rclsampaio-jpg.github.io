@@ -956,7 +956,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                       {group.prompts.map((p) => (
                         <div key={p.id} className="rounded-xl bg-rose-50/40 dark:bg-ink p-3 space-y-2">
                           <p className="text-xs text-slate-500 dark:text-ink-muted">{p.purpose}</p>
-                          <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed">{renderPromptText(p.displayText ?? p.text)}</p>
+                          <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed whitespace-pre-wrap">{renderPromptText(p.displayText ?? p.text)}</p>
                           <button
                             onClick={() => copyLibraryPrompt(p.id, p.text)}
                             className="flex items-center gap-1.5 text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
