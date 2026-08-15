@@ -648,73 +648,106 @@ function AppContent() {
     system.progressSystem.resetProgress();
   };
 
-  // Settings: Diagnostic Quick Jumps
-  const handleQuickSimulateUnlockDay30 = () => {
-    // Fill history for days 1 to 29
-    const simulatedHistory = Array.from({ length: 29 }, (_, i) => i + 1);
-    const updated: UserProgress = {
-      ...progress,
-      currentDay: 30,
-      completionHistory: simulatedHistory,
-      currentStreak: 29,
-      longestStreak: 29,
-      lastActiveDate: getLocalDateISO(),
-      dayUnlockAnchorDate: getUnlockAnchorDateISO()
-    };
-    updateProgress(updated);
-    setFocusedDayNumber(30);
-    setActiveTab('home');
+  // Simulações de teste (Creator Studio) agora são um toggle real: clicar
+  // no mesmo botão de novo desliga e restaura o progresso de verdade dela,
+  // em vez de deixá-la travada na simulação até deslogar. O snapshot é
+  // salvo uma única vez (na primeira simulação ligada) pra não perder o
+  // estado real se ela ligar uma simulação diferente em seguida.
+  const SIMULATION_SNAPSHOT_KEY = 'renaser_pre_simulation_snapshot';
+  const ACTIVE_SIMULATION_KEY = 'renaser_active_simulation';
+  const [activeSimulation, setActiveSimulation] = useState<string | null>(
+    () => localStorage.getItem(ACTIVE_SIMULATION_KEY)
+  );
+
+  const runOrToggleSimulation = (key: string, apply: () => UserProgress, onApply?: () => void) => {
+    if (activeSimulation === key) {
+      const snapshotRaw = localStorage.getItem(SIMULATION_SNAPSHOT_KEY);
+      if (snapshotRaw) {
+        updateProgress(JSON.parse(snapshotRaw));
+      }
+      localStorage.removeItem(SIMULATION_SNAPSHOT_KEY);
+      localStorage.removeItem(ACTIVE_SIMULATION_KEY);
+      setActiveSimulation(null);
+      return;
+    }
+    if (!localStorage.getItem(SIMULATION_SNAPSHOT_KEY)) {
+      localStorage.setItem(SIMULATION_SNAPSHOT_KEY, JSON.stringify(progress));
+    }
+    updateProgress(apply());
+    localStorage.setItem(ACTIVE_SIMULATION_KEY, key);
+    setActiveSimulation(key);
+    onApply?.();
   };
+
+  // Settings: Diagnostic Quick Jumps
+  const handleQuickSimulateUnlockDay30 = () => runOrToggleSimulation(
+    'unlockDay30',
+    () => {
+      const simulatedHistory = Array.from({ length: 29 }, (_, i) => i + 1);
+      return {
+        ...progress,
+        currentDay: 30,
+        completionHistory: simulatedHistory,
+        currentStreak: 29,
+        longestStreak: 29,
+        lastActiveDate: getLocalDateISO(),
+        dayUnlockAnchorDate: getUnlockAnchorDateISO()
+      };
+    },
+    () => { setFocusedDayNumber(30); setActiveTab('home'); }
+  );
 
   // Admin-only: adianta journeyStartDate pra cair 5 dias antes do vencimento
   // (90 ou 180 dependendo do Destrave), só pra conferir o aviso de expiração
   // sem esperar meses nem editar nada manualmente.
-  const handleQuickSimulateExpirySoon = () => {
-    const daysAgo = journeyAccessExpiryDays - 5;
-    const simulatedStart = new Date();
-    simulatedStart.setDate(simulatedStart.getDate() - daysAgo);
-    localStorage.removeItem(expiryWarningDismissKey);
-    updateProgress({
-      ...progress,
-      journeyStartDate: simulatedStart.toISOString().slice(0, 10)
-    });
-    setActiveTab('home');
-  };
+  const handleQuickSimulateExpirySoon = () => runOrToggleSimulation(
+    'expirySoon',
+    () => {
+      const daysAgo = journeyAccessExpiryDays - 5;
+      const simulatedStart = new Date();
+      simulatedStart.setDate(simulatedStart.getDate() - daysAgo);
+      localStorage.removeItem(expiryWarningDismissKey);
+      return { ...progress, journeyStartDate: simulatedStart.toISOString().slice(0, 10) };
+    },
+    () => setActiveTab('home')
+  );
 
-  const handleQuickSimulateCompletion = () => {
-    // Fill history for all 30 days
-    const simulatedHistory = Array.from({ length: 30 }, (_, i) => i + 1);
-    const updated: UserProgress = {
-      ...progress,
-      currentDay: 30,
-      completionHistory: simulatedHistory,
-      currentStreak: 30,
-      longestStreak: 30,
-      lastActiveDate: getLocalDateISO(),
-      dayUnlockAnchorDate: getUnlockAnchorDateISO()
-    };
-    updateProgress(updated);
-    setFocusedDayNumber(30);
-    setActiveTab('nextlevel');
-  };
+  const handleQuickSimulateCompletion = () => runOrToggleSimulation(
+    'completion',
+    () => {
+      const simulatedHistory = Array.from({ length: 30 }, (_, i) => i + 1);
+      return {
+        ...progress,
+        currentDay: 30,
+        completionHistory: simulatedHistory,
+        currentStreak: 30,
+        longestStreak: 30,
+        lastActiveDate: getLocalDateISO(),
+        dayUnlockAnchorDate: getUnlockAnchorDateISO()
+      };
+    },
+    () => { setFocusedDayNumber(30); setActiveTab('nextlevel'); }
+  );
 
   // Testar a Missão Diária da Fase de Prática (dia 31+): igual ao de cima,
   // mas deixa o dia 31 como "hoje" ainda não concluído, senão o Início cai
   // direto no painel em vez de mostrar a missão semanal nova.
-  const handleQuickSimulatePracticePhase = () => {
-    const simulatedHistory = Array.from({ length: 30 }, (_, i) => i + 1);
-    const updated: UserProgress = {
-      ...progress,
-      currentDay: 31,
-      completionHistory: simulatedHistory,
-      currentStreak: 30,
-      longestStreak: 30,
-      lastActiveDate: getLocalDateISO(),
-      dayUnlockAnchorDate: getUnlockAnchorDateISO()
-    };
-    updateProgress(updated);
-    setActiveTab('home');
-  };
+  const handleQuickSimulatePracticePhase = () => runOrToggleSimulation(
+    'practicePhase',
+    () => {
+      const simulatedHistory = Array.from({ length: 30 }, (_, i) => i + 1);
+      return {
+        ...progress,
+        currentDay: 31,
+        completionHistory: simulatedHistory,
+        currentStreak: 30,
+        longestStreak: 30,
+        lastActiveDate: getLocalDateISO(),
+        dayUnlockAnchorDate: getUnlockAnchorDateISO()
+      };
+    },
+    () => setActiveTab('home')
+  );
 
   // Localized Taglines/Labels
   const taglines = {
@@ -1637,6 +1670,7 @@ function AppContent() {
                 onQuickSimulateExpirySoon={handleQuickSimulateExpirySoon}
                 onQuickSimulateUnlockDay30={handleQuickSimulateUnlockDay30}
                 onQuickSimulateCompletion={handleQuickSimulateCompletion}
+                activeSimulation={activeSimulation}
               />
             )}
 

@@ -46,6 +46,7 @@ interface CmsViewProps {
   onQuickSimulateExpirySoon: () => void;
   onQuickSimulateUnlockDay30: () => void;
   onQuickSimulateCompletion: () => void;
+  activeSimulation: string | null;
 }
 
 type StudioModule =
@@ -65,7 +66,8 @@ export default function CmsView({
   onQuickSimulatePracticePhase,
   onQuickSimulateExpirySoon,
   onQuickSimulateUnlockDay30,
-  onQuickSimulateCompletion
+  onQuickSimulateCompletion,
+  activeSimulation
 }: CmsViewProps) {
   // Creator Studio navigation
   const [activeModule, setActiveModule] = useState<StudioModule>('dashboard');
@@ -1706,39 +1708,41 @@ export default function CmsView({
                     Ferramentas de teste da jornada
                   </h3>
                   <p className="text-xs text-slate-500 dark:text-ink-muted mt-1">
-                    Simula estados de conta pra testar telas sem precisar completar dias de verdade nem esperar meses.
+                    Simula estados de conta pra testar telas sem precisar completar dias de verdade nem esperar meses. Toque de novo no botão ativo pra desligar a simulação e voltar pro seu progresso real.
                   </p>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-2 border-t border-rose-100/10">
-                <button
-                  onClick={onQuickSimulateUnlockDay30}
-                  className="flex-1 py-3 px-4 bg-amber-50 dark:bg-transparent text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs font-sans font-semibold transition cursor-pointer"
-                >
-                  Simular desbloqueio dia 30
-                </button>
-                <button
-                  onClick={onQuickSimulateCompletion}
-                  className="flex-1 py-3 px-4 bg-gradient-to-r from-rosegold to-rosegold-light dark:bg-none dark:bg-transparent dark:border dark:border-rosegold-light text-white dark:text-rosegold-light rounded-xl text-xs font-sans font-bold transition shadow-md shadow-rosegold/20 dark:shadow-none cursor-pointer"
-                >
-                  Simular conclusão dos 30 dias
-                </button>
-                <button
-                  onClick={onQuickSimulatePracticePhase}
-                  className="flex-1 py-3 px-4 bg-amber-50 dark:bg-transparent text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs font-sans font-semibold transition cursor-pointer"
-                >
-                  Simular Fase de Prática (dia 31)
-                </button>
-                <button
-                  onClick={onQuickSimulateExpirySoon}
-                  className="flex-1 py-3 px-4 bg-amber-50 dark:bg-transparent text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs font-sans font-semibold transition cursor-pointer"
-                >
-                  Simular expiração em 5 dias
-                </button>
+                {([
+                  { key: 'unlockDay30', label: 'Simular desbloqueio dia 30', onClick: onQuickSimulateUnlockDay30 },
+                  { key: 'completion', label: 'Simular conclusão dos 30 dias', onClick: onQuickSimulateCompletion },
+                  { key: 'practicePhase', label: 'Simular Fase de Prática (dia 31)', onClick: onQuickSimulatePracticePhase },
+                  { key: 'expirySoon', label: 'Simular expiração em 5 dias', onClick: onQuickSimulateExpirySoon }
+                ]).map((sim) => {
+                  const isActive = activeSimulation === sim.key;
+                  return (
+                    <button
+                      key={sim.key}
+                      onClick={sim.onClick}
+                      className={`flex-1 py-3 px-4 rounded-xl text-xs font-sans font-bold transition cursor-pointer border ${
+                        isActive
+                          ? 'bg-rosegold text-white border-rosegold shadow-md shadow-rosegold/30 ring-2 ring-rosegold/40'
+                          : 'bg-amber-50 dark:bg-transparent text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800/40 font-semibold'
+                      }`}
+                    >
+                      {isActive ? `✕ Desligar: ${sim.label}` : sim.label}
+                    </button>
+                  );
+                })}
               </div>
               <p className="text-[11px] text-slate-400 dark:text-ink-muted font-mono pt-1">
-                Dia atual: {progress.currentDay} / 30 · {progress.completionHistory.length} dias concluídos · {progress.completionHistory.includes(30) ? 'Próximo Nível desbloqueado' : 'Próximo Nível bloqueado'}
+                Dia atual: {progress.currentDay} / 30 · {progress.completionHistory.length} dias concluídos · {progress.completionHistory.includes(30) ? 'Próximo Nível desbloqueado' : 'Próximo Nível bloqueado'} · Início da jornada: {progress.journeyStartDate || 'não definido'}
               </p>
+              {activeSimulation && (
+                <p className="text-[11px] font-sans font-bold text-rosegold dark:text-rosegold-light pt-1">
+                  Simulação ativa: {activeSimulation}. Seu progresso real está salvo e volta assim que você desligar.
+                </p>
+              )}
             </div>
 
             <div className="bg-white dark:bg-ink-raised rounded-2xl border border-red-200/40 dark:border-red-500/20 p-6 space-y-4">
