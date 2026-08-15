@@ -1,14 +1,10 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { jsonResponse, handlePreflight } from '../_shared/http.ts';
 
 const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_URL')!,
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
 );
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, apikey, content-type',
-};
 
 /**
  * Redeems a professional_access_codes code for the caller, one-time use,
@@ -17,18 +13,19 @@ const corsHeaders = {
  * that redeemed it). Mirrors redeem-invite's shape exactly.
  */
 Deno.serve(async (req: Request) => {
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
-  if (req.method !== 'POST') return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers: corsHeaders });
+  const preflight = handlePreflight(req);
+  if (preflight) return preflight;
+  if (req.method !== 'POST') return jsonResponse({ error: 'Method not allowed' }, 405);
 
   const authHeader = req.headers.get('Authorization') || '';
   const token = authHeader.replace(/^Bearer\s+/i, '').trim();
   if (!token) {
-    return new Response(JSON.stringify({ success: false, error: 'Não autenticado.' }), { status: 401, headers: corsHeaders });
+    return jsonResponse({ success: false, error: 'Não autenticado.' }, 401);
   }
 
   const { data: userData, error: userError } = await supabaseAdmin.auth.getUser(token);
   if (userError || !userData.user) {
-    return new Response(JSON.stringify({ success: false, error: 'Sessão inválida.' }), { status: 401, headers: corsHeaders });
+    return jsonResponse({ success: false, error: 'Sessão inválida.' }, 401);
   }
   const userId = userData.user.id;
 
@@ -36,12 +33,12 @@ Deno.serve(async (req: Request) => {
   try {
     body = await req.json();
   } catch {
-    return new Response(JSON.stringify({ success: false, error: 'JSON inválido.' }), { status: 400, headers: corsHeaders });
+    return jsonResponse({ success: false, error: 'JSON inválido.' }, 400);
   }
 
   const code = (body.code || '').trim().toUpperCase();
   if (!code) {
-    return new Response(JSON.stringify({ success: false, error: 'Código é obrigatório.' }), { status: 400, headers: corsHeaders });
+    return jsonResponse({ success: false, error: 'Código é obrigatório.' }, 400);
   }
 
   const { data: accessCode, error: codeError } = await supabaseAdmin
@@ -51,7 +48,7 @@ Deno.serve(async (req: Request) => {
     .maybeSingle();
 
   if (codeError || !accessCode || accessCode.used_by) {
-    return new Response(JSON.stringify({ success: false, error: 'Código inválido ou já utilizado.' }), { status: 400, headers: corsHeaders });
+    return jsonResponse({ success: false, error: 'Código inválido ou já utilizado.' }, 400);
   }
 
   await supabaseAdmin
@@ -61,5 +58,5 @@ Deno.serve(async (req: Request) => {
 
   await supabaseAdmin.from('profiles').upsert({ id: userId, professional_unlocked: true });
 
-  return new Response(JSON.stringify({ success: true }), { status: 200, headers: corsHeaders });
+  return jsonResponse({ success: true });
 });

@@ -1,4 +1,5 @@
 import { requireAdmin, makeAdminClient } from '../_shared/authAdmin.ts';
+import { jsonResponse, handlePreflight } from '../_shared/http.ts';
 
 const supabaseAdmin = makeAdminClient();
 
@@ -12,11 +13,8 @@ function randomCode(length = 10): string {
 }
 
 Deno.serve(async (req: Request) => {
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'authorization, apikey, content-type',
-  };
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+  const preflight = handlePreflight(req);
+  if (preflight) return preflight;
 
   const auth = await requireAdmin(req, supabaseAdmin);
   if (!auth.ok) return auth.response;
@@ -24,10 +22,7 @@ Deno.serve(async (req: Request) => {
   const code = randomCode();
   const { error } = await supabaseAdmin.from('professional_access_codes').insert({ code });
   if (error) {
-    return new Response(
-      JSON.stringify({ error: 'Não foi possível gerar o código.' }),
-      { status: 500, headers: corsHeaders },
-    );
+    return jsonResponse({ error: 'Não foi possível gerar o código.' }, 500);
   }
-  return new Response(JSON.stringify({ code }), { status: 200, headers: corsHeaders });
+  return jsonResponse({ code });
 });
