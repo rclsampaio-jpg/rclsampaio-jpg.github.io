@@ -62,9 +62,9 @@ export function getDayTypeLabel(type: DayType, lang: Language): string {
       es: 'Pensamiento Contrario (Jueves)'
     },
     [DayType.Rest]: {
-      pt: 'Dia de Descanso (Quarta-feira)',
-      en: 'Rest Day (Wednesday)',
-      es: 'Día de Descanso (Miércoles)'
+      pt: 'Multiplicação de Presença',
+      en: 'Presence Multiplication',
+      es: 'Multiplicación de Presencia'
     },
     [DayType.Presence]: {
       pt: 'Treino de Presença (Sábado)',
@@ -102,9 +102,9 @@ const titlesByWeekDay: Record<DayType, Record<Language, string>> = {
     es: 'Compartiendo una Opinión Impopular'
   },
   [DayType.Rest]: {
-    pt: 'Pausa Estratégica e Integração',
-    en: 'Strategic Pause and Integration',
-    es: 'Pausa Estratégica e Integración'
+    pt: 'Multiplicando sua Presença',
+    en: 'Multiplying Your Presence',
+    es: 'Multiplicando tu Presencia'
   },
   [DayType.Presence]: {
     pt: 'Falando para Uma Única Pessoa',
@@ -1007,7 +1007,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '22';
+const DAYS_CONTENT_VERSION = '23';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');

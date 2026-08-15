@@ -1519,6 +1519,7 @@ function AppContent() {
                   progress={progress}
                   lang={lang}
                   onCompleteDay={handleCompleteDay}
+                  onUpdateMood={handleUpdateMood}
                   onTriggerSos={() => setActiveTab('sos')}
                   onGoToLibrary={() => setActiveTab('library')}
                 />
