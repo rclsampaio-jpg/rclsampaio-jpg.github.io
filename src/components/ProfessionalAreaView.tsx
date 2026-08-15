@@ -86,7 +86,7 @@ const VSL_REFERENCIA: { bloco: string; ideia: string }[] = [
 // exatamente pra onde dentro da própria área ela resolve isso.
 const GARGALO_RESOLUCAO: Record<string, { oQueFazer: string; aba: 'mensagens' | 'referencia'; abaLabel: string }> = {
   'Em criar conteúdo com constância': {
-    oQueFazer: 'Normalmente não é falta de ideia, é falta de um ângulo fixo pra postar sem ter que reinventar toda vez. Defina sua Big Idea primeiro, isso destrava o resto.',
+    oQueFazer: 'Normalmente não é falta de ideia, é falta de um ângulo fixo pra postar sem ter que reinventar toda vez. Usa o prompt "Sua Big Idea" na Referência, ele já tá marcado como recomendado pra você.',
     aba: 'referencia',
     abaLabel: 'Ir pra Referência'
   },
@@ -107,31 +107,36 @@ const GARGALO_RESOLUCAO: Record<string, { oQueFazer: string; aba: 'mensagens' | 
   }
 };
 
-const RENATA_OS_PROMPTS: { title: string; prompt: (nicho: string, tom: string, gargalo: string) => string }[] = [
+const RENATA_OS_PROMPTS: { title: string; prompt: (nicho: string, tom: string, gargalo: string) => string; resolveGargalo: string[] }[] = [
   {
     title: 'Sua Big Idea',
     prompt: (nicho, tom) =>
-      `Quero construir minha Big Idea: a frase que resume o ângulo único que só eu tenho dentro de ${nicho}. Meu tom de voz é ${tom}. Me faça perguntas, uma de cada vez, até ter contexto suficiente pra sugerir algumas opções.`
+      `Quero construir minha Big Idea: a frase que resume o ângulo único que só eu tenho dentro de ${nicho}. Meu tom de voz é ${tom}. Me faça perguntas, uma de cada vez, até ter contexto suficiente pra sugerir algumas opções.`,
+    resolveGargalo: ['Em criar conteúdo com constância']
   },
   {
     title: 'Sua Oferta Irrecusável',
     prompt: (nicho, tom, gargalo) =>
-      `Quero estruturar minha oferta pra ${nicho}: resultado claro que eu entrego, prazo, formato, e o que eu NÃO vou incluir pra não confundir quem recebe. Meu gargalo hoje é "${gargalo}". Me ajuda perguntando o que falta antes de montar a oferta comigo.`
+      `Quero estruturar minha oferta pra ${nicho}: resultado claro que eu entrego, prazo, formato, e o que eu NÃO vou incluir pra não confundir quem recebe. Meu gargalo hoje é "${gargalo}". Me ajuda perguntando o que falta antes de montar a oferta comigo.`,
+    resolveGargalo: []
   },
   {
     title: 'Sua Autoridade Percebida',
     prompt: (nicho, tom) =>
-      `Me ajuda a pensar em 3 formas de mostrar autoridade percebida no meu conteúdo sobre ${nicho}, usando resultado real (mesmo que de um cliente só, mesmo pequeno) em vez de teoria. Meu tom é ${tom}.`
+      `Me ajuda a pensar em 3 formas de mostrar autoridade percebida no meu conteúdo sobre ${nicho}, usando resultado real (mesmo que de um cliente só, mesmo pequeno) em vez de teoria. Meu tom é ${tom}.`,
+    resolveGargalo: ['Em criar conteúdo com constância']
   },
   {
     title: '1. Preencher o mapa da sua VSL',
     prompt: (nicho, tom) =>
-      `Quero estruturar minha promessa/conteúdo seguindo esse mapa: promessa, por que eu travo, o que isso já me custou, pra quem é e pra quem não é, por que o que já tentei não resolveu, meu mecanismo, uma prova real que eu já tenho, o que a pessoa recebe, e o próximo passo. Meu nicho é ${nicho}, meu tom é ${tom}. Me faça uma pergunta de cada vez pra preencher isso comigo.`
+      `Quero estruturar minha promessa/conteúdo seguindo esse mapa: promessa, por que eu travo, o que isso já me custou, pra quem é e pra quem não é, por que o que já tentei não resolveu, meu mecanismo, uma prova real que eu já tenho, o que a pessoa recebe, e o próximo passo. Meu nicho é ${nicho}, meu tom é ${tom}. Me faça uma pergunta de cada vez pra preencher isso comigo.`,
+    resolveGargalo: []
   },
   {
     title: '2. Sua VSL final pronta',
     prompt: (nicho, tom) =>
-      `Agora pega todas as respostas que acabei de te dar sobre minha promessa, meu problema, pra quem é, meu mecanismo, prova real, o que entrego e o próximo passo, coloca elas em ordem, e me entrega a VSL pronta: roteiro completo, no máximo 1200 palavras, pra caber num vídeo falado de até 11 minutos. A abertura e o fechamento devem seguir o mesmo espírito da VSL original da Renata que você tem como referência, adaptados à minha voz (${tom}) e ao meu nicho (${nicho}), nunca copiados literalmente. Não invente prova social, só usa o que eu te contei.`
+      `Agora pega todas as respostas que acabei de te dar sobre minha promessa, meu problema, pra quem é, meu mecanismo, prova real, o que entrego e o próximo passo, coloca elas em ordem, e me entrega a VSL pronta: roteiro completo, no máximo 1200 palavras, pra caber num vídeo falado de até 11 minutos. A abertura e o fechamento devem seguir o mesmo espírito da VSL original da Renata que você tem como referência, adaptados à minha voz (${tom}) e ao meu nicho (${nicho}), nunca copiados literalmente. Não invente prova social, só usa o que eu te contei.`,
+    resolveGargalo: []
   }
 ];
 
@@ -178,7 +183,7 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
   const [vendasFechadas, setVendasFechadas] = useState(String(todayCheckIn?.vendasFechadas ?? ''));
   const [nota, setNota] = useState(todayCheckIn?.nota ?? '');
   const [saved, setSaved] = useState(false);
-  const [activeSection, setActiveSection] = useState<'checkin' | 'dashboard' | 'mensagens' | 'diagnostico' | 'referencia'>('checkin');
+  const [activeSection, setActiveSection] = useState<'checkin' | 'dashboard' | 'mensagens' | 'diagnostico' | 'referencia'>('dashboard');
 
   const diagnostic = progress.professionalDiagnostic;
   const [nicho, setNicho] = useState(diagnostic?.nicho ?? '');
@@ -293,6 +298,17 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
     return withText.sort((a, b) => Number(b.recomendado) - Number(a.recomendado));
   }, [gargalosAtuais, nichoAtual, tomAtual]);
 
+  // Mesma lógica das Mensagens: o gargalo declarado destaca qual prompt de
+  // Referência resolve ele de verdade, não só qual conceito ler.
+  const orderedReferencePrompts = useMemo(() => {
+    const withText = RENATA_OS_PROMPTS.map((p) => ({
+      ...p,
+      text: p.prompt(nichoAtual, tomAtual, gargalosAtuais.join(', ') || '[seu gargalo]'),
+      recomendado: p.resolveGargalo.some((g) => gargalosAtuais.includes(g))
+    }));
+    return withText.sort((a, b) => Number(b.recomendado) - Number(a.recomendado));
+  }, [gargalosAtuais, nichoAtual, tomAtual]);
+
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
       <div className="text-center space-y-2">
@@ -309,8 +325,8 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
 
       <div className="flex items-center justify-center gap-2 flex-wrap">
         {([
-          { id: 'checkin', label: 'Check-in do Dia', icon: CheckCircle2 },
           { id: 'dashboard', label: 'Dashboard', icon: TrendingUp },
+          { id: 'checkin', label: 'Check-in do Dia', icon: CheckCircle2 },
           { id: 'mensagens', label: 'Mensagens', icon: MessageCircle },
           { id: 'diagnostico', label: 'Diagnóstico', icon: Compass },
           { id: 'referencia', label: 'Referência', icon: BookOpen }
@@ -420,7 +436,7 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
           className="space-y-3"
         >
           <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted mb-2">
-            Base do Escala Descomplicada, direto ao ponto.
+            Conceitos direto ao ponto, sem enrolação.
           </p>
           {gargalosAtuais.includes('Em criar conteúdo com constância') && (
             <p className="text-center text-xs font-sans text-rosegold/80 dark:text-rosegold-light/80 mb-2">
@@ -468,24 +484,30 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
             <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted">
               Perguntas exatas pra mandar pro Renata OS e preencher isso com as suas informações.
             </p>
-            {RENATA_OS_PROMPTS.map((p) => {
-              const text = p.prompt(nichoAtual, tomAtual, gargalosAtuais.join(', ') || '[seu gargalo]');
-              return (
-                <div
-                  key={p.title}
-                  className="rounded-2xl bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-4 space-y-2"
-                >
+            {orderedReferencePrompts.map((p) => (
+              <div
+                key={p.title}
+                className={`rounded-2xl bg-white dark:bg-ink-raised border p-4 space-y-2 ${
+                  p.recomendado ? 'border-rosegold/50' : 'border-rose-100/20 dark:border-ink-hairline'
+                }`}
+              >
+                <div className="flex items-center justify-between">
                   <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider">{p.title}</p>
-                  <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed bg-rose-50/40 dark:bg-ink rounded-xl p-3">{text}</p>
-                  <button
-                    onClick={() => copyPrompt(p.title, text)}
-                    className="text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
-                  >
-                    {copiedPrompt === p.title ? 'Copiado ✓' : 'Copiar prompt'}
-                  </button>
+                  {p.recomendado && (
+                    <span className="text-[10px] font-sans font-bold text-white bg-rosegold px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">
+                      Recomendado pra você
+                    </span>
+                  )}
                 </div>
-              );
-            })}
+                <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed bg-rose-50/40 dark:bg-ink rounded-xl p-3">{p.text}</p>
+                <button
+                  onClick={() => copyPrompt(p.title, p.text)}
+                  className="text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
+                >
+                  {copiedPrompt === p.title ? 'Copiado ✓' : 'Copiar prompt'}
+                </button>
+              </div>
+            ))}
           </div>
 
           <div className="rounded-2xl bg-rosegold/5 dark:bg-rosegold-light/5 border border-rosegold/20 p-5 space-y-2 mt-4">
