@@ -9,7 +9,7 @@ import {
   Search, Play, Heart, Download, BookOpen, Volume2, FileText,
   Sparkles, CheckCircle2, RotateCcw, Maximize, Clock, ListFilter,
   Check, Pause, RefreshCw, Eye, Settings, HelpCircle, AlertCircle, Headphones, Wind,
-  MessageSquareText, ChevronDown, Copy
+  MessageSquareText, ChevronDown, Copy, X
 } from 'lucide-react';
 import { Language, LibraryAsset, SupportConfig, UserProgress } from '../types';
 import { loadLibraryAssets, saveLibraryAssets, loadSupportConfig } from '../data/ecosystemData';
@@ -306,6 +306,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
 
   const [expandedPromptGroup, setExpandedPromptGroup] = useState<string | null>(null);
   const [copiedPromptId, setCopiedPromptId] = useState<string | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<{ src: string; caption: string } | null>(null);
   const copyLibraryPrompt = (id: string, text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedPromptId(id);
@@ -953,18 +954,40 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                           {group.intro}
                         </p>
                       )}
-                      {group.exampleImage && (
-                        <div className="rounded-xl overflow-hidden border border-rose-100/20 dark:border-ink-hairline">
-                          <img src={group.exampleImage} alt={group.exampleImageCaption || group.title} className="w-full h-auto block" />
-                          {group.exampleImageCaption && (
-                            <p className="text-[11px] text-slate-400 dark:text-ink-muted p-2 text-center">{group.exampleImageCaption}</p>
-                          )}
+                      {group.exampleImages && group.exampleImages.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {group.exampleImages.map((ex, i) => (
+                            <button
+                              key={i}
+                              type="button"
+                              onClick={() => setLightboxImage(ex)}
+                              className="w-20 h-20 rounded-lg overflow-hidden border border-rose-100/20 dark:border-ink-hairline shrink-0 cursor-pointer hover:opacity-80 transition"
+                              title={ex.caption}
+                            >
+                              <img src={ex.src} alt={ex.caption} className="w-full h-full object-cover" />
+                            </button>
+                          ))}
                         </div>
                       )}
                       {group.prompts.map((p) => (
                         <div key={p.id} className="rounded-xl bg-rose-50/40 dark:bg-ink p-3 space-y-2">
                           <p className="text-xs text-slate-500 dark:text-ink-muted">{p.purpose}</p>
                           <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed whitespace-pre-wrap">{renderPromptText(p.displayText ?? p.text)}</p>
+                          {p.exampleImages && p.exampleImages.length > 0 && (
+                            <div className="flex flex-wrap gap-2 pt-1">
+                              {p.exampleImages.map((ex, i) => (
+                                <button
+                                  key={i}
+                                  type="button"
+                                  onClick={() => setLightboxImage(ex)}
+                                  className="w-16 h-16 rounded-lg overflow-hidden border border-rose-100/30 dark:border-ink-hairline shrink-0 cursor-pointer hover:opacity-80 transition"
+                                  title={ex.caption}
+                                >
+                                  <img src={ex.src} alt={ex.caption} className="w-full h-full object-cover" />
+                                </button>
+                              ))}
+                            </div>
+                          )}
                           <button
                             onClick={() => copyLibraryPrompt(p.id, p.text)}
                             className="flex items-center gap-1.5 text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
@@ -1166,6 +1189,37 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
       </div>
       </div>
       )}
+
+      <AnimatePresence>
+        {lightboxImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightboxImage(null)}
+            className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-6 cursor-pointer"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="max-w-lg w-full bg-white dark:bg-ink-raised rounded-2xl overflow-hidden cursor-default"
+            >
+              <img src={lightboxImage.src} alt={lightboxImage.caption} className="w-full h-auto block" />
+              <div className="p-4 flex items-start justify-between gap-3">
+                <p className="text-xs text-slate-500 dark:text-ink-muted">{lightboxImage.caption}</p>
+                <button
+                  onClick={() => setLightboxImage(null)}
+                  className="shrink-0 h-7 w-7 flex items-center justify-center rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-ink-muted cursor-pointer"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

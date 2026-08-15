@@ -9,19 +9,24 @@
 // Ordem dos grupos definida por ela diretamente (não por mim), do conceito
 // mais fundamental (mensagem central) pro mais técnico/formato específico.
 
+export interface ExampleImage {
+  src: string;
+  caption: string;
+}
+
 export interface PromptItem {
   id: string;
   purpose: string; // "pra que serve", uma linha
   text: string; // versão limpa, copiada pelo botão "copiar prompt"
   displayText?: string; // versão exibida no card, quando difere de `text`; trechos entre ~~assim~~ aparecem riscados (exemplo de referência, não pra copiar)
+  exampleImages?: ExampleImage[]; // thumbnails de resultado, clicáveis pra expandir
 }
 
 export interface PromptGroup {
   id: string;
   title: string;
   intro?: string; // contexto/instrução antes dos prompts, quando o grupo precisa de passo a passo
-  exampleImage?: string;
-  exampleImageCaption?: string;
+  exampleImages?: ExampleImage[]; // thumbnails de resultado, clicáveis pra expandir
   prompts: PromptItem[];
 }
 
@@ -200,9 +205,10 @@ Formato do output: pra peças curtas (posts, emails com menos de ~300 palavras),
   {
     id: 'doodle',
     title: 'Combo Doodle (foto com rabiscos)',
-    intro: 'É um combo de 3 passos, usa a Renata OS e depois o ChatGPT: 1) Salve a imagem abaixo + manda o primeiro prompt abaixo da imagem pra Renata OS, ela sugere uma frase pra cada uma das 6 posições do doodle, de acordo com a sua mensagem principal. 2) Copie a resposta da Renata OS. 3) Vai no ChatGPT e manda uma foto sua original (que você quer transformar em doodle) + o prompt gerador de imagem (segundo prompt) + a resposta que a Renata OS te deu. O ChatGPT devolve a imagem final com os doodles desenhados por cima.',
-    exampleImage: '/assets/images/doodle-referencia.jpg',
-    exampleImageCaption: 'Exemplo de como fica o resultado final, com as 6 posições de frase preenchidas.',
+    intro: 'É um combo de 3 passos, usa a Renata OS e depois o ChatGPT: 1) Salve a imagem abaixo + manda o primeiro prompt abaixo da imagem pra Renata OS, ela sugere uma frase pra cada uma das 6 posições do doodle, de acordo com a sua mensagem principal. 2) Copie a resposta da Renata OS. 3) Vai no ChatGPT e manda uma foto sua original (que você quer transformar em doodle) + o prompt gerador de imagem (passo 3 abaixo, escolha a versão brincalhona ou a elegante) + a resposta que a Renata OS te deu. O ChatGPT devolve a imagem final com os doodles desenhados por cima.',
+    exampleImages: [
+      { src: '/assets/images/doodle-referencia.jpg', caption: 'O molde das 6 posições de frase, use como guia ao montar o prompt do passo 1.' }
+    ],
     prompts: [
       {
         id: 'p12',
@@ -212,8 +218,20 @@ Formato do output: pra peças curtas (posts, emails com menos de ~300 palavras),
       },
       {
         id: 'p12b',
-        purpose: 'Passo 3: manda no ChatGPT junto com sua foto original e a resposta que a Renata OS te deu.',
-        text: 'Analise a imagem enviada e preserve o assunto original, a composição e a iluminação. Não altere a identidade nem a estrutura do assunto principal. Adicione doodles divertidos, feitos à mão, que interagem diretamente com o assunto da imagem. Os doodles devem imitar, seguir ou exagerar as formas, gestos ou movimentos presentes, como contornar poses, estender membros, adicionar linhas de movimento, ou criar elementos imaginativos que "respondem" ao assunto. Garanta que os doodles pareçam naturalmente integrados à cena, como se tivessem sido desenhados sobre a foto com intenção. Use um estilo esboçado, imperfeito, feito à mão, com linhas orgânicas, traços levemente irregulares e uma sensação casual e ilustrada. Inclua elementos de texto manuscrito e brincalhão ao redor da imagem, usando as frases que a Renata OS gerou pra cada posição. O texto deve combinar com o clima ou contexto da cena, num tom brincalhão e espontâneo. Mantenha uma composição equilibrada, pra que os doodles reforcem a imagem sem sobrecarregar o assunto principal. Mantenha a estética geral divertida, expressiva e pronta pra rede social. Alta resolução, sobreposição limpa, cores vibrantes e harmônicas. Gere a imagem em dimensões pra post de Instagram.'
+        purpose: 'Passo 3, versão brincalhona: manda no ChatGPT junto com sua foto original e a resposta que a Renata OS te deu.',
+        text: 'Analise a imagem enviada e preserve o assunto original, a composição e a iluminação. Não altere a identidade nem a estrutura do assunto principal. Adicione doodles divertidos, feitos à mão, que interagem diretamente com o assunto da imagem. Os doodles devem imitar, seguir ou exagerar as formas, gestos ou movimentos presentes, como contornar poses, estender membros, adicionar linhas de movimento, ou criar elementos imaginativos que "respondem" ao assunto. Garanta que os doodles pareçam naturalmente integrados à cena, como se tivessem sido desenhados sobre a foto com intenção. Use um estilo esboçado, imperfeito, feito à mão, com linhas orgânicas, traços levemente irregulares e uma sensação casual e ilustrada. Inclua elementos de texto manuscrito e brincalhão ao redor da imagem, usando as frases que a Renata OS gerou pra cada posição. O texto deve combinar com o clima ou contexto da cena, num tom brincalhão e espontâneo. Mantenha uma composição equilibrada, pra que os doodles reforcem a imagem sem sobrecarregar o assunto principal. Mantenha a estética geral divertida, expressiva e pronta pra rede social. Alta resolução, sobreposição limpa, cores vibrantes e harmônicas. Gere a imagem em dimensões pra post de Instagram.',
+        exampleImages: [
+          { src: '/assets/images/doodle-exemplo-infantilizado.jpg', caption: 'Resultado desse prompt: nuvens rosa, estrelas, letra manuscrita brincalhona.' }
+        ]
+      },
+      {
+        id: 'p12c',
+        purpose: 'Passo 3, versão elegante: se o resultado brincalhão acima ficar infantilizado demais pro seu perfil, use este prompt no lugar dele (mesma foto, mesma resposta da Renata OS).',
+        text: 'Analise a imagem enviada e preserve o assunto original, a composição e a iluminação. Não altere a identidade nem a estrutura do assunto principal. Adicione grafismos sofisticados, minimalistas, de linha fina, feitos à mão, que interagem diretamente com o assunto. Os grafismos devem ser elegantes, abstratos e arquitetônicos, imitando ou enfatizando os gestos, a postura ou os movimentos do assunto (como contornos sutis, linhas de movimento refinadas ou acentos geométricos minimalistas). Os grafismos precisam parecer ilustrações editoriais de alto padrão, integradas de forma perfeita como uma sobreposição refinada, nunca como rabiscos infantis. Use um estilo de caneta fine-liner sofisticado, com linhas orgânicas e graciosas e traços intencionais e artísticos. Inclua elementos de tipografia manuscrita elegante e minimalista posicionados ao redor da imagem, usando as frases que a Renata OS gerou pra cada posição. O texto deve ser sutil e sofisticado, combinando com o clima profissional e empoderador da cena. Garanta que os grafismos e o texto reforcem a presença e a autoridade do assunto sem sobrecarregar a imagem original. Mantenha uma estética de luxo, limpa e polida, adequada pra um perfil profissional de alto padrão. Alta resolução, sobreposição limpa, harmonia de cores sofisticada. Gere a imagem em proporção 4:5 pra Instagram.',
+        exampleImages: [
+          { src: '/assets/images/doodle-exemplo-elegante-1.jpg', caption: 'Resultado desse prompt: linha fina dourada, tipografia caligráfica, clima editorial.' },
+          { src: '/assets/images/doodle-exemplo-elegante-2.jpg', caption: 'Outra variação do mesmo prompt: mais espaçado, mesma estética de luxo.' }
+        ]
       }
     ]
   }
