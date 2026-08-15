@@ -17,8 +17,6 @@ interface SettingsViewProps {
   lang: Language;
   onLanguageChange: (lang: Language) => void;
   onResetProgress: () => void;
-  onQuickSimulateCompletion: () => void;
-  onQuickSimulateUnlockDay30: () => void;
   theme: 'light' | 'dark';
   onThemeChange: (theme: 'light' | 'dark') => void;
   onUpdateProgress: (updated: UserProgress) => void;
@@ -39,8 +37,6 @@ export default function SettingsView({
   lang,
   onLanguageChange,
   onResetProgress,
-  onQuickSimulateCompletion,
-  onQuickSimulateUnlockDay30,
   theme,
   onThemeChange,
   onUpdateProgress,
@@ -50,7 +46,6 @@ export default function SettingsView({
 }: SettingsViewProps) {
 
   const totalCompleted = progress.completionHistory.length;
-  const isEligibleForNextLevel = progress.completionHistory.includes(30);
 
   const textDict = {
     pt: {
@@ -314,60 +309,6 @@ export default function SettingsView({
           </button>
         </div>
       </motion.div>
-
-      {/* 2. Diagnostic Simulation panel - developer only */}
-      {isAdminUnlocked && (
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-amber-50/40 dark:bg-ink-raised border border-amber-200/60 dark:border-ink-hairline rounded-3xl p-6 space-y-4 shadow-sm dark:shadow-none"
-        >
-          <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300">
-            <Sparkles className="h-5 w-5" />
-            <h3 className="text-sm font-mono uppercase tracking-wider font-bold">
-              {textDict.diagnosticTitle}
-            </h3>
-          </div>
-
-          <p className="text-xs text-amber-900/80 dark:text-amber-100/80 leading-relaxed max-w-xl">
-            {textDict.diagnosticDesc}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3 pt-2">
-            <button
-              onClick={onQuickSimulateUnlockDay30}
-              className="flex-1 py-3 px-4 bg-white dark:bg-transparent text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs font-sans font-semibold transition cursor-pointer"
-            >
-              {textDict.simulateUnlock30}
-            </button>
-
-            <button
-              onClick={onQuickSimulateCompletion}
-              className="flex-1 py-3 px-4 bg-gradient-to-r from-rosegold to-rosegold-light dark:bg-none dark:bg-transparent dark:border dark:border-rosegold-light text-white dark:text-rosegold-light rounded-xl text-xs font-sans font-bold transition shadow-md shadow-rosegold/20 dark:shadow-none cursor-pointer"
-            >
-              {textDict.simulateComplete30}
-            </button>
-
-          </div>
-          <p className="text-[11px] text-amber-900/60 dark:text-amber-100/60 font-mono pt-1">
-            Simulações de Fase de Prática e expiração agora ficam no Creator Studio → Configurações.
-          </p>
-
-          <div className="border-t border-amber-200/60 dark:border-ink-hairline pt-4 text-[11px] text-amber-900/80 dark:text-amber-100/80 font-mono grid grid-cols-2 gap-4">
-            <div>
-              <span className="text-slate-400 block mb-0.5">{textDict.currentDayLabel}:</span>
-              <strong>Day {progress.currentDay} / 30</strong>
-            </div>
-            <div>
-              <span className="text-slate-400 block mb-0.5">{textDict.unlockedStatus}:</span>
-              <span className={isEligibleForNextLevel ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-500'}>
-                {isEligibleForNextLevel ? textDict.unlockedEligible : textDict.unlockedLocked}
-              </span>
-            </div>
-          </div>
-        </motion.div>
-      )}
 
       {/* 3. Dangerous reset zone */}
       <motion.div 

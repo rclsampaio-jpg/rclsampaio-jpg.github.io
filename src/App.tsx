@@ -373,11 +373,21 @@ function AppContent() {
   // dias gerados. "Hoje concluído" aqui significa progress.currentDay (o
   // dia real, incrementado a cada conclusão) já estar em completionHistory.
   const isPracticePhase = progress.completionHistory.includes(30);
+  // Depois de concluir o dia, o app já avança currentDay/focusedDayNumber
+  // pro dia seguinte — mas esse próximo dia ainda está bloqueado até virar
+  // o calendário de verdade (ver getUnlockAnchorDateISO). Sem isso aqui, o
+  // Início cai direto na Missão do dia seguinte, que aí mostra a própria
+  // tela de "Dia Bloqueado" da Missão Diária em vez do painel de progresso.
+  const isWaitingForNewCalendarDay = activeMissionDay.dayNumber === progress.currentDay
+    && activeMissionDay.dayNumber > 1
+    && !progress.completionHistory.includes(activeMissionDay.dayNumber)
+    && progress.dayUnlockAnchorDate === getLocalDateISO();
   const isTodayDoneOnHome = !hasOnboarded
     || (isPracticePhase
       ? progress.completionHistory.includes(progress.currentDay)
-      : (activeMissionDay.dayNumber === progress.currentDay
-        && progress.completionHistory.includes(progress.currentDay)));
+      : (isWaitingForNewCalendarDay
+        || (activeMissionDay.dayNumber === progress.currentDay
+          && progress.completionHistory.includes(progress.currentDay))));
 
   // Dia de organização/produção: adiado pra fora do onboarding (perguntar
   // depois, não durante o funil de entrada). Pergunta uma vez assim que o
@@ -1625,6 +1635,8 @@ function AppContent() {
                 progress={progress}
                 onQuickSimulatePracticePhase={handleQuickSimulatePracticePhase}
                 onQuickSimulateExpirySoon={handleQuickSimulateExpirySoon}
+                onQuickSimulateUnlockDay30={handleQuickSimulateUnlockDay30}
+                onQuickSimulateCompletion={handleQuickSimulateCompletion}
               />
             )}
 
@@ -1634,8 +1646,6 @@ function AppContent() {
                 lang={lang}
                 onLanguageChange={handleLanguageChange}
                 onResetProgress={handleResetProgress}
-                onQuickSimulateUnlockDay30={handleQuickSimulateUnlockDay30}
-                onQuickSimulateCompletion={handleQuickSimulateCompletion}
                 theme={theme}
                 onThemeChange={handleThemeChange}
                 onUpdateProgress={updateProgress}

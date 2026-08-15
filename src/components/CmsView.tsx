@@ -44,6 +44,8 @@ interface CmsViewProps {
   progress: UserProgress;
   onQuickSimulatePracticePhase: () => void;
   onQuickSimulateExpirySoon: () => void;
+  onQuickSimulateUnlockDay30: () => void;
+  onQuickSimulateCompletion: () => void;
 }
 
 type StudioModule =
@@ -61,7 +63,9 @@ export default function CmsView({
   onResetDays,
   progress,
   onQuickSimulatePracticePhase,
-  onQuickSimulateExpirySoon
+  onQuickSimulateExpirySoon,
+  onQuickSimulateUnlockDay30,
+  onQuickSimulateCompletion
 }: CmsViewProps) {
   // Creator Studio navigation
   const [activeModule, setActiveModule] = useState<StudioModule>('dashboard');
@@ -1706,7 +1710,19 @@ export default function CmsView({
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-rose-100/10">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-2 border-t border-rose-100/10">
+                <button
+                  onClick={onQuickSimulateUnlockDay30}
+                  className="flex-1 py-3 px-4 bg-amber-50 dark:bg-transparent text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs font-sans font-semibold transition cursor-pointer"
+                >
+                  Simular desbloqueio dia 30
+                </button>
+                <button
+                  onClick={onQuickSimulateCompletion}
+                  className="flex-1 py-3 px-4 bg-gradient-to-r from-rosegold to-rosegold-light dark:bg-none dark:bg-transparent dark:border dark:border-rosegold-light text-white dark:text-rosegold-light rounded-xl text-xs font-sans font-bold transition shadow-md shadow-rosegold/20 dark:shadow-none cursor-pointer"
+                >
+                  Simular conclusão dos 30 dias
+                </button>
                 <button
                   onClick={onQuickSimulatePracticePhase}
                   className="flex-1 py-3 px-4 bg-amber-50 dark:bg-transparent text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs font-sans font-semibold transition cursor-pointer"
@@ -1721,7 +1737,7 @@ export default function CmsView({
                 </button>
               </div>
               <p className="text-[11px] text-slate-400 dark:text-ink-muted font-mono pt-1">
-                Dia atual: {progress.currentDay} · {progress.completionHistory.length} dias concluídos
+                Dia atual: {progress.currentDay} / 30 · {progress.completionHistory.length} dias concluídos · {progress.completionHistory.includes(30) ? 'Próximo Nível desbloqueado' : 'Próximo Nível bloqueado'}
               </p>
             </div>
 
