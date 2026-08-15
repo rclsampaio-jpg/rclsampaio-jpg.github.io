@@ -11,7 +11,7 @@ import {
   Settings, Award, Lock, HelpCircle, Check, Play, Compass, User, Heart,
   ChevronLeft, ChevronRight
 } from 'lucide-react';
-import { MissionDay, Language, UserProgress, DayType } from '../types';
+import { MissionDay, Language, UserProgress } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
 import { getLocalDateISO } from '../utils/date';
 import { adaptMessage, resolveGrammarPreference, ToneVariants } from '../utils/grammar';
@@ -371,7 +371,13 @@ export default function HomeView({
   };
 
   const isCompleted = progress.completionHistory.includes(currentDay.dayNumber);
-  const isRestDay = currentDay.type === DayType.Rest;
+  // Quarta-feira deixou de ser um dia de descanso passivo desde a redesenha
+  // semanal (ver getDailyPlan em templateData.ts, todo dia tem plano de
+  // exposição real agora). DailyMissionView.tsx já trata isso (isRestDay
+  // sempre false lá), mas esse arquivo tinha ficado pra trás ainda checando
+  // o DayType.Rest de verdade, por isso a mensagem "dia de descanso"
+  // continuava aparecendo no Início.
+  const isRestDay = false;
 
   // A newly-unlocked day waits for the real next calendar day, except a
   // completion late at night (before LATE_NIGHT_UNLOCK_CUTOFF_HOUR) is
