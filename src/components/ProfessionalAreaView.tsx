@@ -8,6 +8,7 @@ import { motion } from 'motion/react';
 import { CheckCircle2, TrendingUp, MessageCircle, Calendar, Award, Compass, BookOpen } from 'lucide-react';
 import { Language, UserProgress, ProfessionalCheckIn, ProfessionalDiagnostic } from '../types';
 import { getLocalDateISO } from '../utils/date';
+import { VOZ_PERGUNTAS, ESTRUTURA_PERGUNTAS } from '../data/professionalDiagnosticData';
 
 interface ProfessionalAreaViewProps {
   progress: UserProgress;
@@ -134,38 +135,6 @@ const RENATA_OS_PROMPTS: { title: string; prompt: (nicho: string, tom: string, g
   }
 ];
 
-// Perguntas de múltipla escolha, não texto livre — ela reconhece a opção
-// mais parecida com ela em vez de precisar descrever do zero.
-const VOZ_PERGUNTAS: { key: string; label: string; options: string[] }[] = [
-  {
-    key: 'tom',
-    label: 'Qual desses estilos mais parece com você quando explica algo pra alguém?',
-    options: ['Direta e prática', 'Acolhedora e emocional', 'Técnica e detalhista', 'Bem-humorada e leve']
-  },
-  {
-    key: 'estilo_evitar',
-    label: 'O que você mais precisa cortar pra soar menos "aula" e mais conversa?',
-    options: ['Explicações longas antes de ir ao ponto', 'Termos técnicos que só quem já estudou entende', 'Frases genéricas de motivação', 'Nada, já falo de forma direta']
-  }
-];
-
-const ESTRUTURA_PERGUNTAS: { key: string; label: string; options: string[] }[] = [
-  {
-    key: 'formato_hoje',
-    label: 'Hoje, quando você posta, você...',
-    options: ['Entrego o passo a passo completo', 'Mostro o resultado e guardo o "como"', 'Não tenho um padrão definido']
-  },
-  {
-    key: 'gargalo',
-    label: 'Onde mais trava hoje?',
-    options: ['Em criar conteúdo com constância', 'Em gerar mensagens/interesse', 'Em transformar mensagem em reunião', 'Em fechar a venda na reunião']
-  },
-  {
-    key: 'frequencia',
-    label: 'Quantas vezes por semana você realmente posta (não a ideal)?',
-    options: ['Quase todo dia', '2 a 3 vezes', '1 vez ou menos']
-  }
-];
 
 const REFERENCE_CONTENT: { title: string; points: string[] }[] = [
   {

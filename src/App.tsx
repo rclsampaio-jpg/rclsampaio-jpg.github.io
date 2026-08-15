@@ -213,11 +213,10 @@ function AppContent() {
     };
   }, [user]);
 
-  const handleProfessionalUnlock = async () => {
-    const code = professionalPassInput.trim();
-    if (!code) return;
-    setProfessionalUnlocking(true);
-    setProfessionalPassError(false);
+  // Reusável: tanto o modal de desbloqueio do Destrave quanto o passo de
+  // onboarding ("Você faz parte do Destrave?") resgatam código por aqui.
+  const redeemProfessionalCode = async (code: string): Promise<boolean> => {
+    if (!code.trim()) return false;
     try {
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
       const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
@@ -228,24 +227,35 @@ function AppContent() {
           'apikey': supabaseAnonKey,
           'Authorization': `Bearer ${session?.access_token ?? ''}`,
         },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify({ code: code.trim() }),
       });
       const json = await res.json();
       if (json.success) {
         setIsProfessionalUnlocked(true);
         localStorage.setItem('renaser_professional_unlocked', 'true');
-        setShowProfessionalPrompt(false);
-        setProfessionalPassInput('');
-        setProfessionalPassError(false);
-        setActiveTab('professional');
-      } else {
-        setProfessionalPassError(true);
+        return true;
       }
+      return false;
     } catch {
-      setProfessionalPassError(true);
-    } finally {
-      setProfessionalUnlocking(false);
+      return false;
     }
+  };
+
+  const handleProfessionalUnlock = async () => {
+    const code = professionalPassInput.trim();
+    if (!code) return;
+    setProfessionalUnlocking(true);
+    setProfessionalPassError(false);
+    const success = await redeemProfessionalCode(code);
+    if (success) {
+      setShowProfessionalPrompt(false);
+      setProfessionalPassInput('');
+      setProfessionalPassError(false);
+      setActiveTab('professional');
+    } else {
+      setProfessionalPassError(true);
+    }
+    setProfessionalUnlocking(false);
   };
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const defaultProgress = loadUserProgressFromStorage();
@@ -1229,6 +1239,7 @@ function AppContent() {
                   isAdminUnlocked={isAdminUnlocked}
                   onJumpToDay={setFocusedDayNumber}
                   onOnboardingComplete={() => setHasOnboarded(true)}
+                  onRedeemProfessionalCode={redeemProfessionalCode}
                 />
               ) : (
                 <DailyMissionView
