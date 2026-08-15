@@ -6,10 +6,9 @@
 import { motion } from 'motion/react';
 import {
   Trash2, Globe, Flame, RefreshCcw, User, ShieldAlert,
-  Sparkles, Play, Sun, Moon, LogOut
+  Play, Sun, Moon, LogOut
 } from 'lucide-react';
 import { Language, UserProgress } from '../types';
-import { resolveGrammarPreference } from '../utils/grammar';
 import type { SyncStatus } from '../hooks/useProgressSync';
 
 interface SettingsViewProps {
@@ -192,80 +191,6 @@ export default function SettingsView({
               </button>
             );
           })}
-        </div>
-      </motion.div>
-
-      {/* Adaptive Personalization Engine Settings */}
-      <motion.div 
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.05 }}
-        className="bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-ink-hairline rounded-3xl p-6 shadow-rosegold dark:shadow-none space-y-6"
-      >
-        <div className="flex items-center gap-2.5 pb-2 border-b border-rose-100/20 dark:border-ink-hairline">
-          <Sparkles className="h-5 w-5 text-accentgold" />
-          <h3 className="text-sm font-sans font-medium text-slate-800 dark:text-ink-text uppercase tracking-wider">
-            {lang === 'pt' ? 'Sua Sintonização & Personalização' : lang === 'es' ? 'Tu Sintonización y Personalización' : 'Sintonization & Personalization'}
-          </h3>
-        </div>
-
-        {/* Part A: Mentor Guidance Style */}
-        <div className="space-y-3">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-ink-muted">
-            {lang === 'pt' ? 'Estilo de Orientação do Mentor' : lang === 'es' ? 'Estilo de Orientación de Mentor' : 'Mentor Guidance Style'}
-          </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
-              { code: 'gentle', title: lang === 'pt' ? '🌿 Gentil' : '🌿 Gentle', desc: lang === 'pt' ? 'Calmo, reflexivo, pausas longas' : 'Calm, reflective, slow pacing' },
-              { code: 'challenger', title: lang === 'pt' ? '🔥 Desafiador' : '🔥 Challenger', desc: lang === 'pt' ? 'Foco em ação imediata, direto' : 'Action focused, direct' },
-              { code: 'strategic', title: lang === 'pt' ? '💪 Estratégico' : '💪 Strategic', desc: lang === 'pt' ? 'Metas objetivas, menor emoção' : 'Goal oriented, objective' },
-              { code: 'inspirational', title: lang === 'pt' ? '✨ Inspirador' : '✨ Inspirational', desc: lang === 'pt' ? 'Transformação interna, alma' : 'Soul transformation, deep' }
-            ].map((styleObj) => {
-              const isSelected = (progress.guideStyle || 'gentle') === styleObj.code;
-              return (
-                <button
-                  key={styleObj.code}
-                  onClick={() => onUpdateProgress({ ...progress, guideStyle: styleObj.code as any })}
-                  className={`p-3.5 rounded-2xl border text-left transition cursor-pointer flex flex-col gap-0.5 ${
-                    isSelected 
-                      ? 'bg-rosegold border-rosegold text-white shadow-md shadow-rosegold/10 dark:bg-transparent dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none' 
-                      : 'bg-warmwhite dark:bg-transparent border-slate-200/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-muted'
-                  }`}
-                >
-                  <span className="text-xs font-sans font-semibold tracking-wide">{styleObj.title}</span>
-                  <span className={`text-[10px] ${isSelected ? 'text-rose-100' : 'text-slate-400 dark:text-ink-muted'}`}>{styleObj.desc}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Part B: Address Pronouns */}
-        <div className="space-y-3">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-ink-muted">
-            {lang === 'pt' ? 'Gênero Gramatical (Forma de Tratamento)' : lang === 'es' ? 'Preferencia de Tratamiento' : 'Grammar & Address'}
-          </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
-              { code: 'feminine', label: lang === 'pt' ? '🌸 Feminino (pronta)' : lang === 'es' ? '🌸 Femenino (lista)' : '🌸 Feminine' },
-              { code: 'masculine', label: lang === 'pt' ? '☀️ Masculino (pronto)' : lang === 'es' ? '☀️ Masculino (listo)' : '☀️ Masculine' }
-            ].map((grammarObj) => {
-              const isSelected = resolveGrammarPreference(progress.grammarPreference) === grammarObj.code;
-              return (
-                <button
-                  key={grammarObj.code}
-                  onClick={() => onUpdateProgress({ ...progress, grammarPreference: grammarObj.code as any })}
-                  className={`py-3 px-4 rounded-2xl border text-xs font-sans font-semibold transition flex items-center justify-center gap-2 cursor-pointer ${
-                    isSelected 
-                      ? 'bg-[#D4AF37] border-[#D4AF37] text-slate-950 font-bold shadow-md shadow-amber-500/10 dark:bg-transparent dark:text-accentgold dark:shadow-none' 
-                      : 'bg-warmwhite dark:bg-transparent border-slate-200/60 dark:border-ink-hairline hover:bg-slate-100 dark:hover:bg-rosegold-light/5 text-slate-700 dark:text-ink-muted'
-                  }`}
-                >
-                  <span>{grammarObj.label}</span>
-                </button>
-              );
-            })}
-          </div>
         </div>
       </motion.div>
 
