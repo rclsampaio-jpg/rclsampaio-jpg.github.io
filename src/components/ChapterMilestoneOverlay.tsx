@@ -266,6 +266,35 @@ export default function ChapterMilestoneOverlay({
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 select-none"
     >
+      {/* Borboleta voando pela tela inteira, igual à da tela de login, o
+          tempo todo que esse pop-up estiver aberto. */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div
+          initial={{ x: '-15vw', y: '70vh', rotate: 20 }}
+          animate={{
+            x: '115vw',
+            y: ['70vh', '50vh', '60vh', '35vh', '45vh', '20vh'],
+            rotate: [20, 0, 15, -10, 5, -20]
+          }}
+          transition={{
+            duration: 14,
+            ease: 'easeInOut',
+            repeat: Infinity,
+            repeatDelay: 2
+          }}
+          className="absolute"
+        >
+          <motion.img
+            src="/assets/images/butterfly.png"
+            alt=""
+            animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
+            transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut' }}
+            className="h-9 w-auto opacity-40"
+            style={{ transformOrigin: 'center 70%' }}
+          />
+        </motion.div>
+      </div>
+
       <motion.div
         initial={{ scale: 0.95, y: 15 }}
         animate={{ scale: 1, y: 0 }}
@@ -275,13 +304,6 @@ export default function ChapterMilestoneOverlay({
       >
         {/* Subtle decorative elements matching Gold evolution */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-40" />
-        
-        {/* Animated decorative custom abstract butterfly backdrop */}
-        <div className="absolute top-10 right-10 pointer-events-none opacity-5 animate-pulse">
-          <svg width="200" height="200" viewBox="0 0 100 100" fill="currentColor" className="text-[#D4AF37]">
-            <path d="M50,50 C30,30 10,40 10,60 C10,80 30,80 50,70 C70,80 90,80 90,60 C90,40 70,30 50,50 Z" />
-          </svg>
-        </div>
 
         {/* Content View Container */}
         <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6">
@@ -428,7 +450,7 @@ export default function ChapterMilestoneOverlay({
                 <span className="text-[10px] text-slate-400 dark:text-ink-muted uppercase tracking-widest font-bold">
                   Identity Shift
                 </span>
-                <p className="text-sm font-sans font-bold text-[#D4AF37] animate-pulse">
+                <p className="text-sm font-sans font-bold text-[#D4AF37]">
                   {adaptMessage(
                     (chapter.id === 4 ? MILESTONE_COPY[lang].enteredNewVersion : MILESTONE_COPY[lang].anotherPromiseKept)[resolvedGuideStyle],
                     grammarPreference,
@@ -465,11 +487,11 @@ export default function ChapterMilestoneOverlay({
                   />
                   <div className="space-y-1.5">
                     {([
-                      lang === 'pt' ? "Minha própria voz" : lang === 'es' ? "Mi propia voz" : "My own voice",
-                      lang === 'pt' ? "Falar sem gaguejar" : lang === 'es' ? "Hablar sin tartamudear" : "Speaking without stuttering",
-                      lang === 'pt' ? "Não me importar com julgamento" : lang === 'es' ? "No importarme el juicio" : "Not caring about judgment",
-                      lang === 'pt' ? "A calma após respirar" : lang === 'es' ? "La calma tras respirar" : "The calm after breathing",
-                      lang === 'pt' ? "A velocidade que o medo diminuiu" : lang === 'es' ? "La velocidad con la que disminuyó el miedo" : "How fast the fear decreased"
+                      lang === 'pt' ? "Não travei no meio da frase" : lang === 'es' ? "No me trabé a mitad de la frase" : "I didn't freeze mid-sentence",
+                      lang === 'pt' ? "Gravei sem decorar o que ia falar" : lang === 'es' ? "Grabé sin memorizar lo que iba a decir" : "I recorded without memorizing my lines",
+                      lang === 'pt' ? "Ninguém comentou nada ruim, e eu sobrevivi mesmo assim" : lang === 'es' ? "Nadie comentó nada malo, y sobreviví igual" : "No one said anything bad, and I survived either way",
+                      lang === 'pt' ? "Minha respiração voltou ao normal mais rápido" : lang === 'es' ? "Mi respiración volvió a la normalidad más rápido" : "My breathing went back to normal faster",
+                      lang === 'pt' ? "Na última vez o medo demorou mais pra passar" : lang === 'es' ? "La última vez el miedo tardó más en pasar" : "Last time the fear took longer to fade"
                     ] as string[]).map((surpriseOpt) => {
                       const isChecked = selectedSurprises.includes(surpriseOpt);
                       return (
