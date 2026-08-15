@@ -89,6 +89,19 @@ export default function ChapterMilestoneOverlay({
   const [futureSelfNote, setFutureSelfNote] = useState('');
   const [selectedSurprises, setSelectedSurprises] = useState<string[]>([]);
 
+  // Trajeto da borboleta: cada passagem usa um caminho diferente (ponto de
+  // entrada/saída e curva variam), avançando pra um novo trajeto só quando
+  // o anterior termina. Com "repeat: Infinity" reaproveitando o mesmo
+  // trajeto, ela sempre saía e entrava exatamente no mesmo lugar, o que
+  // parecia um robô resetando em vez de voar de verdade pela tela.
+  const [butterflyPathIndex, setButterflyPathIndex] = useState(0);
+  const BUTTERFLY_PATHS = [
+    { from: { x: '-15vw', y: '70vh', rotate: 20 }, to: { x: '115vw', y: ['70vh', '50vh', '60vh', '35vh', '45vh', '20vh'], rotate: [20, 0, 15, -10, 5, -20] } },
+    { from: { x: '115vw', y: '20vh', rotate: -160 }, to: { x: '-15vw', y: ['20vh', '38vh', '28vh', '55vh', '42vh', '65vh'], rotate: [-160, -180, -165, -195, -175, -200] } },
+    { from: { x: '20vw', y: '110vh', rotate: -70 }, to: { x: '75vw', y: ['110vh', '75vh', '40vh', '30vh', '15vh', '-10vh'], rotate: [-70, -50, -60, -30, -45, -20] } },
+    { from: { x: '85vw', y: '-10vh', rotate: 110 }, to: { x: '25vw', y: ['-10vh', '20vh', '45vh', '35vh', '60vh', '80vh'], rotate: [110, 130, 115, 145, 125, 150] } }
+  ];
+
   // Stop speech on unmount
   useEffect(() => {
     return () => {
@@ -210,7 +223,7 @@ export default function ChapterMilestoneOverlay({
       rebirthSub: 'Sua real história começa agora.',
       qSurprised: 'O que mais te surpreendeu nesta semana de aprendizado?',
       qFeeling: 'Como você se sente exatamente agora?',
-      qFutureNote: 'Você realizou um marco e ele precisa ser celebrado! Parabéns!! Agora deixa uma mensagem pro seu eu do futuro. Pode não fazer sentido hoje, mas vai por mim, você vai me agradecer depois!! 🦋 (Opcional, máx 300 caracteres)',
+      qFutureNote: 'Você realizou um marco e ele precisa ser celebrado! Parabéns!! Agora deixa uma mensagem pro seu eu do futuro. Pode não fazer sentido hoje, mas vai por mim, você vai me agradecer depois!! 🦋',
       notePlaceholder: 'Escreva algo gentil que você queira ler mais para a frente...',
       identityShiftLabel: 'Quem você está se tornando'
     },
@@ -232,7 +245,7 @@ export default function ChapterMilestoneOverlay({
       rebirthSub: 'Your real story begins here.',
       qSurprised: 'What surprised you the most during this week of learning?',
       qFeeling: 'How do you feel exactly right now?',
-      qFutureNote: "You just hit a milestone and it needs celebrating! Congrats!! Now leave a message for your future self. It might not make sense today, but trust me, you'll thank me later!! 🦋 (Optional, max 300 chars)",
+      qFutureNote: "You just hit a milestone and it needs celebrating! Congrats!! Now leave a message for your future self. It might not make sense today, but trust me, you'll thank me later!! 🦋",
       notePlaceholder: 'Write something gentle you would want to read in the future...',
       identityShiftLabel: 'Who you are becoming'
     },
@@ -254,7 +267,7 @@ export default function ChapterMilestoneOverlay({
       rebirthSub: 'Tu verdadera historia comienza ahora.',
       qSurprised: '¿Qué fue lo que más te sorprendió durante esta semana de aprendizaje?',
       qFeeling: '¿Cómo te sientes exactamente en este momento?',
-      qFutureNote: '¡Alcanzaste un marco y eso merece celebrarse! ¡¡Felicidades!! Ahora deja un mensaje para tu yo del futuro. Puede que hoy no tenga sentido, pero confía en mí, ¡¡me lo vas a agradecer después!! 🦋 (Opcional, máx 300 caracteres)',
+      qFutureNote: '¡Alcanzaste un marco y eso merece celebrarse! ¡¡Felicidades!! Ahora deja un mensaje para tu yo del futuro. Puede que hoy no tenga sentido, pero confía en mí, ¡¡me lo vas a agradecer después!! 🦋',
       notePlaceholder: 'Escribe algo tierno que quieras leer más adelante...',
       identityShiftLabel: 'Quién te estás convirtiendo'
     }
@@ -267,22 +280,23 @@ export default function ChapterMilestoneOverlay({
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 select-none"
     >
-      {/* Borboleta voando por cima do card (z-[60], acima do modal),
-          mais rápida que a da tela de login pra ficar visível durante o
-          tempo que a pessoa fica lendo esse pop-up especificamente. */}
+      {/* Borboleta voando por cima do card (z-[60], acima do modal). Troca
+          de trajeto a cada passagem (ver BUTTERFLY_PATHS) em vez de repetir
+          sempre o mesmo caminho, senão parecia um robô saindo e entrando
+          no mesmo lugar. */}
       <div className="absolute inset-0 z-[60] pointer-events-none overflow-hidden">
         <motion.div
-          initial={{ x: '-15vw', y: '70vh', rotate: 20 }}
-          animate={{
-            x: '115vw',
-            y: ['70vh', '50vh', '60vh', '35vh', '45vh', '20vh'],
-            rotate: [20, 0, 15, -10, 5, -20]
-          }}
+          key={butterflyPathIndex}
+          initial={BUTTERFLY_PATHS[butterflyPathIndex].from}
+          animate={BUTTERFLY_PATHS[butterflyPathIndex].to}
           transition={{
             duration: 7,
-            ease: 'easeInOut',
-            repeat: Infinity,
-            repeatDelay: 1
+            ease: 'easeInOut'
+          }}
+          onAnimationComplete={() => {
+            setTimeout(() => {
+              setButterflyPathIndex((i) => (i + 1) % BUTTERFLY_PATHS.length);
+            }, 800);
           }}
           className="absolute"
         >
@@ -427,32 +441,32 @@ export default function ChapterMilestoneOverlay({
             <div className="space-y-6">
               
               {/* Animation or Trophy banner */}
-              <div className="text-center py-6 bg-gradient-to-br from-amber-50/15 via-[#FAF8F5] to-amber-100/5 dark:bg-ink-raised dark:from-ink-raised dark:via-ink-raised dark:to-ink-raised rounded-2xl border border-accentgold/15 dark:border-rosegold-light/20 flex flex-col items-center space-y-3">
-                <div className="w-16 h-16 bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] rounded-full flex items-center justify-center animate-bounce shadow-inner">
-                  <Award className="h-8 w-8 text-[#D4AF37]" />
+              <div className="text-center py-7 bg-gradient-to-br from-emerald-50 via-amber-50/40 to-[#FAF8F5] dark:from-emerald-500/10 dark:via-ink-raised dark:to-ink-raised rounded-2xl border border-emerald-300/40 dark:border-emerald-400/20 flex flex-col items-center space-y-3 shadow-[0_0_40px_-10px] shadow-emerald-300/40 dark:shadow-emerald-500/10">
+                <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-500 text-white rounded-full flex items-center justify-center animate-bounce shadow-lg shadow-emerald-400/40">
+                  <Award className="h-9 w-9" />
                 </div>
                 <div className="space-y-1">
                   <EditableText
                     contentKey="journey.milestone.congratulations"
                     fallback={trans.congratulations}
                     as="h2"
-                    className="text-xl font-serif text-slate-800 dark:text-white"
+                    className="text-2xl font-display font-semibold text-emerald-700 dark:text-emerald-300"
                   />
                   <EditableText
                     contentKey="journey.milestone.phaseClosed"
                     fallback={trans.phaseClosed}
                     as="p"
-                    className="text-xs text-slate-400 dark:text-ink-muted font-sans uppercase tracking-widest font-bold"
+                    className="text-xs text-emerald-600/80 dark:text-emerald-400/80 font-sans uppercase tracking-widest font-bold"
                   />
                 </div>
               </div>
 
               {/* Identity Reinforcement Block */}
-              <div className="text-center py-3 bg-warmwhite dark:bg-ink-raised rounded-xl border border-rose-100/10 dark:border-rosegold/5 space-y-0.5">
-                <span className="text-[10px] text-slate-400 dark:text-ink-muted uppercase tracking-widest font-bold">
+              <div className="text-center py-4 bg-gradient-to-r from-accentgold/10 via-warmwhite to-accentgold/10 dark:from-accentgold/10 dark:via-ink-raised dark:to-accentgold/5 rounded-xl border border-accentgold/25 space-y-1">
+                <span className="text-[10px] text-accentgold uppercase tracking-widest font-bold">
                   {trans.identityShiftLabel}
                 </span>
-                <p className="text-sm font-sans font-bold text-accentgold">
+                <p className="text-base font-serif font-bold text-slate-800 dark:text-white">
                   {adaptMessage(
                     (chapter.id === 4 ? MILESTONE_COPY[lang].enteredNewVersion : MILESTONE_COPY[lang].anotherPromiseKept)[resolvedGuideStyle],
                     grammarPreference,
@@ -491,7 +505,7 @@ export default function ChapterMilestoneOverlay({
                     {([
                       lang === 'pt' ? "Não travei no meio da frase" : lang === 'es' ? "No me trabé a mitad de la frase" : "I didn't freeze mid-sentence",
                       lang === 'pt' ? "Gravei sem decorar o que ia falar" : lang === 'es' ? "Grabé sin memorizar lo que iba a decir" : "I recorded without memorizing my lines",
-                      lang === 'pt' ? "Ninguém comentou nada ruim, e eu sobrevivi mesmo assim" : lang === 'es' ? "Nadie comentó nada malo, y sobreviví igual" : "No one said anything bad, and I survived either way",
+                      lang === 'pt' ? "Recebi uma mensagem boa que eu não esperava" : lang === 'es' ? "Recibí un mensaje lindo que no esperaba" : "I got a kind message I didn't expect",
                       lang === 'pt' ? "Minha respiração voltou ao normal mais rápido" : lang === 'es' ? "Mi respiración volvió a la normalidad más rápido" : "My breathing went back to normal faster",
                       lang === 'pt' ? "Na última vez o medo demorou mais pra passar" : lang === 'es' ? "La última vez el miedo tardó más en pasar" : "Last time the fear took longer to fade"
                     ] as string[]).map((surpriseOpt) => {
