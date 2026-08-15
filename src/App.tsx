@@ -916,7 +916,7 @@ function AppContent() {
                   : 'text-slate-600 dark:text-ink-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10'
               }`}
             >
-              {labels.journey}
+              {lang === 'pt' ? 'Jornada' : lang === 'es' ? 'Viaje' : 'Journey'}
             </button>
 
             <button
