@@ -8,13 +8,12 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   Play, Pause, Copy, Check, Star, ArrowRight, ArrowLeft, Heart, Sparkles, ThumbsUp, ThumbsDown,
   Info, Compass, HelpCircle, X, BookOpen, Smile, Wind, Award,
-  RotateCcw, Lock, Download, ChevronLeft, ChevronRight
+  RotateCcw, Lock, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { MissionDay, Language, DayType, UserProgress } from '../types';
 import { getDayTypeLabel, getHookOptionsForDay, getActionHookOptions, getHookCategoryLabel } from '../data/templateData';
 import { adaptMessage, resolveGrammarPreference, pickTone, resolveGuideStyle, GuideStyle } from '../utils/grammar';
 import { getLocalDateISO } from '../utils/date';
-import { forceDownload } from '../utils/download';
 import { logEngagementEvent } from '../utils/engagement';
 import EditableText from './editable/EditableText';
 import LinkListInput from './LinkListInput';
@@ -32,6 +31,7 @@ interface DailyMissionViewProps {
   onTriggerSos: () => void;
   onBackToHome: () => void;
   onUpdateMood: (dayNum: number, mood: string) => void;
+  onGoToLibrary: () => void;
   isAdminUnlocked?: boolean;
   onJumpToDay?: (dayNumber: number) => void;
 }
@@ -467,6 +467,7 @@ export default function DailyMissionView({
   onTriggerSos,
   onBackToHome,
   onUpdateMood,
+  onGoToLibrary,
   isAdminUnlocked,
   onJumpToDay,
 }: DailyMissionViewProps) {
@@ -793,8 +794,8 @@ export default function DailyMissionView({
       tabDailyLabel: 'Hook do Dia',
       tabIdeaLabel: 'Minha Ideia',
       importantNoticeTitle: 'Aviso Importante',
-      importantNoticeBody: 'Já pensou poder postar reels e stories todos os dias, sem ter que pensar no que fazer? Se pensou, realizou! haha\n\nBaixe esse documento agora e use-o TODOS OS DIAS na hora de postar, junto ao passo 2 "Vitrine de Hooks" até você ficar craque [sozinha/sozinho/sozinhe]!',
-      importantNoticeDownload: 'Baixar Documento',
+      importantNoticeBody: 'Já pensou poder postar reels e stories todos os dias, sem ter que pensar no que fazer? Se pensou, realizou! haha\n\nOs prompts prontos pra isso estão na Biblioteca, use-os TODOS OS DIAS na hora de postar, junto ao passo 2 "Vitrine de Hooks" até você ficar craque [sozinha/sozinho/sozinhe]!',
+      importantNoticeDownload: 'Ver na Biblioteca',
       openHookHeading: 'Use uma dessas variedades de ação pra começar o seu vídeo',
       dailyHookHeadingPrefix: 'Hoje usaremos ganchos de',
       noDailyHookFallback: 'Hoje não tem hook temático, use o hook de abertura ou escreva o seu na aba "Minha Ideia".',
@@ -900,8 +901,8 @@ export default function DailyMissionView({
       tabDailyLabel: "Today's Hook",
       tabIdeaLabel: 'My Idea',
       importantNoticeTitle: 'Important Notice',
-      importantNoticeBody: "Ever wished you could post reels and stories every day without having to think about what to post? Well, wish granted! haha\n\nDownload this document now and use it EVERY DAY when posting, alongside Step 2 \"Hook Showcase\", until you become a pro on your own!",
-      importantNoticeDownload: 'Download Document',
+      importantNoticeBody: "Ever wished you could post reels and stories every day without having to think about what to post? Well, wish granted! haha\n\nThe ready-made prompts for that are in the Library, use them EVERY DAY when posting, alongside Step 2 \"Hook Showcase\", until you become a pro on your own!",
+      importantNoticeDownload: 'View in Library',
       openHookHeading: "Today we'll use action hooks",
       dailyHookHeadingPrefix: "Today's hook theme:",
       noDailyHookFallback: 'No themed hook today, use the opening hook, or write your own in the "My Idea" tab.',
@@ -1008,8 +1009,8 @@ export default function DailyMissionView({
       tabDailyLabel: 'Hook del Día',
       tabIdeaLabel: 'Mi Idea',
       importantNoticeTitle: 'Aviso Importante',
-      importantNoticeBody: '¿Ya pensaste en poder publicar reels y stories todos los días sin tener que pensar en qué hacer? ¡Si lo pensaste, se hizo realidad! jaja\n\nDescarga este documento ahora y úsalo TODOS LOS DÍAS a la hora de publicar, junto al paso 2 "Vitrina de Hooks", hasta que te vuelvas una experta [sola/solo/sole]!',
-      importantNoticeDownload: 'Descargar Documento',
+      importantNoticeBody: '¿Ya pensaste en poder publicar reels y stories todos los días sin tener que pensar en qué hacer? ¡Si lo pensaste, se hizo realidad! jaja\n\nLos prompts listos para eso están en la Biblioteca, úsalos TODOS LOS DÍAS a la hora de publicar, junto al paso 2 "Vitrina de Hooks", hasta que te vuelvas una experta [sola/solo/sole]!',
+      importantNoticeDownload: 'Ver en la Biblioteca',
       openHookHeading: 'Hoy usaremos ganchos de acción',
       dailyHookHeadingPrefix: 'Hoy usaremos ganchos de',
       noDailyHookFallback: 'Hoy no hay hook temático, usa el hook de apertura o escribe el tuyo en la pestaña "Mi Idea".',
@@ -1627,10 +1628,10 @@ export default function DailyMissionView({
                     {adaptMessage(textDict.importantNoticeBody, prefGrammar, lang)}
                   </p>
                   <button
-                    onClick={() => forceDownload('/assets/docs/como-crescer-no-instagram-do-zero.pdf', 'como-crescer-no-instagram-do-zero.pdf')}
+                    onClick={onGoToLibrary}
                     className="inline-flex items-center gap-2 px-5 py-3 bg-accentgold hover:brightness-105 text-slate-950 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer shadow-gold-accent"
                   >
-                    <Download className="h-4 w-4" />
+                    <BookOpen className="h-4 w-4" />
                     <EditableText contentKey="dailyMission.importantNoticeDownload" fallback={textDict.importantNoticeDownload} as="span" />
                   </button>
                 </motion.div>
