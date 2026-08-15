@@ -12,7 +12,16 @@ import EditableText from './editable/EditableText';
 interface NextLevelViewProps {
   progress: UserProgress;
   lang: Language;
+  isProfessionalUnlocked?: boolean;
+  onGoToDestrave?: () => void;
+  onGoToLibrary?: () => void;
+  onGoToCommunity?: () => void;
 }
+
+// Link de WhatsApp real, o mesmo usado em /destrave (CTA "Quero começar meu
+// DESTRAVE"). Antes esse CTA apontava pra um produto fictício ("RenaSer
+// Mastermind") com número placeholder nunca preenchido.
+const DESTRAVE_WHATSAPP_LINK = 'https://wa.me/message/KJTHGYJ7JXGCI1';
 
 // Graduation-screen copy that varies by guideStyle. "inspirational" preserves
 // the original wording this screen shipped with.
@@ -159,7 +168,7 @@ const GRADUATION_TONE: Record<Language, {
   }
 };
 
-export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
+export default function NextLevelView({ progress, lang, isProfessionalUnlocked, onGoToDestrave, onGoToLibrary, onGoToCommunity }: NextLevelViewProps) {
   const guideStyle = resolveGuideStyle(progress.guideStyle);
 
   const textDict = {
@@ -170,8 +179,10 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
       statStreaks: 'Melhor Sequência',
       statHooks: 'Ganchos Salvos',
       blueprintTitle: 'Sua Nova Identidade de Marca',
-      ctaHeading: 'O Próximo Passo: RenaSer Mastermind',
-      ctaBtn: 'Agendar Mentoria de Posicionamento'
+      ctaHeading: 'O Próximo Nível: Destrave',
+      ctaDescReal: 'Você já aprendeu a aparecer. O Destrave é pra quem quer o próximo passo: transformar quem já te segue em cliente pagante, com mensagem estruturada pra vender. Pensado pra mentoras, coaches e terapeutas que já têm o que oferecer.',
+      ctaBtnReal: 'Falar sobre o Destrave',
+      ctaBtnUnlocked: 'Ir pra Destrave'
     },
     en: {
       certificateTitle: 'Digital Authenticity Certification',
@@ -180,8 +191,10 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
       statStreaks: 'Peak Consistency',
       statHooks: 'Saved Hooks',
       blueprintTitle: 'Your New Brand Identity Blueprint',
-      ctaHeading: 'The Next Level: RenaSer Mastermind',
-      ctaBtn: 'Book Positioning Call'
+      ctaHeading: 'The Next Level: Destrave',
+      ctaDescReal: "You've already learned to show up. Destrave is the next step: turning your followers into paying clients, with a message structured to sell. Built for mentors, coaches, and therapists who already have something to offer.",
+      ctaBtnReal: 'Talk about Destrave',
+      ctaBtnUnlocked: 'Go to Destrave'
     },
     es: {
       certificateTitle: 'Certificado de Autenticidad Digital',
@@ -190,8 +203,10 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
       statStreaks: 'Mejor Consistencia',
       statHooks: 'Ganchos Guardados',
       blueprintTitle: 'El Plan de tu Nueva Identidad',
-      ctaHeading: 'Siguiente Nivel: Mastermind RenaSer',
-      ctaBtn: 'Agendar Mentoría Estratégica'
+      ctaHeading: 'El Siguiente Nivel: Destrave',
+      ctaDescReal: 'Ya aprendiste a aparecer. Destrave es el siguiente paso: convertir a quien ya te sigue en cliente que paga, con un mensaje estructurado para vender. Pensado para mentoras, coaches y terapeutas que ya tienen algo que ofrecer.',
+      ctaBtnReal: 'Hablar sobre Destrave',
+      ctaBtnUnlocked: 'Ir a Destrave'
     }
   }[lang];
 
@@ -202,7 +217,6 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
   const truth1 = tone.truth1[guideStyle];
   const truth2 = tone.truth2[guideStyle];
   const truth3 = tone.truth3[guideStyle];
-  const ctaDesc = tone.ctaDesc[guideStyle];
 
   return (
     <motion.div 
@@ -369,23 +383,73 @@ export default function NextLevelView({ progress, lang }: NextLevelViewProps) {
             />
             <EditableText
               contentKey="nextLevel.ctaDesc"
-              fallback={ctaDesc}
+              fallback={textDict.ctaDescReal}
               as="p"
               className="text-slate-500 dark:text-ink-muted text-xs sm:text-sm leading-relaxed font-sans"
             />
           </div>
 
-          <a
-            href="https://wa.me/5500000000000?text=Completed%20RenaSer%20Mastermind"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-xl text-xs font-sans font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-rosegold/20"
-          >
-            <EditableText contentKey="nextLevel.ctaBtn" fallback={textDict.ctaBtn} as="span" />
-            <ExternalLink className="h-4 w-4" />
-          </a>
+          {isProfessionalUnlocked ? (
+            <button
+              onClick={onGoToDestrave}
+              className="w-full py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-xl text-xs font-sans font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-rosegold/20"
+            >
+              <EditableText contentKey="nextLevel.ctaBtnUnlocked" fallback={textDict.ctaBtnUnlocked} as="span" />
+              <ExternalLink className="h-4 w-4" />
+            </button>
+          ) : (
+            <a
+              href={DESTRAVE_WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-xl text-xs font-sans font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-rosegold/20"
+            >
+              <EditableText contentKey="nextLevel.ctaBtnReal" fallback={textDict.ctaBtnReal} as="span" />
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          )}
         </div>
 
+      </div>
+
+      {/* 5. Fase de Prática — dias 31 a 90, sem depender de missão diária
+          nova. Reaproveita o que já existe (Renata OS, Biblioteca,
+          Comunidade) em vez de exigir currículo novo todo dia. */}
+      <div className="bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline rounded-3xl p-8 space-y-5">
+        <div>
+          <span className="text-[10px] uppercase font-sans tracking-widest text-rosegold font-bold block mb-1">
+            Sua Fase de Prática
+          </span>
+          <h3 className="text-lg font-display text-slate-800 dark:text-white">
+            Dos dias 31 a 90, você continua crescendo sem depender de mim todo dia
+          </h3>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <button
+            onClick={onGoToLibrary}
+            className="text-left p-4 rounded-2xl bg-rose-50/40 dark:bg-ink border border-rose-100/30 dark:border-ink-hairline hover:border-rosegold/40 transition cursor-pointer"
+          >
+            <p className="text-xs font-sans font-bold text-slate-700 dark:text-ink-text mb-1">Renata OS + Biblioteca</p>
+            <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">
+              Prompts prontos, o framework de conteúdo que converte, e vídeo novo toda semana. Continue postando sem precisar de missão nova.
+            </p>
+          </button>
+          <div className="text-left p-4 rounded-2xl bg-rose-50/40 dark:bg-ink border border-rose-100/30 dark:border-ink-hairline">
+            <p className="text-xs font-sans font-bold text-slate-700 dark:text-ink-text mb-1">Um foco por semana</p>
+            <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">
+              Reaproveite os temas que você já praticou (Verdade, Pensamento Contrário, Storytelling, Presença), aplicados a assuntos novos, sem precisar de currículo diário.
+            </p>
+          </div>
+          <button
+            onClick={onGoToCommunity}
+            className="text-left p-4 rounded-2xl bg-rose-50/40 dark:bg-ink border border-rose-100/30 dark:border-ink-hairline hover:border-rosegold/40 transition cursor-pointer"
+          >
+            <p className="text-xs font-sans font-bold text-slate-700 dark:text-ink-text mb-1">Comunidade</p>
+            <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">
+              Compartilha o que postou, recebe apoio real de quem tá na mesma fase que você.
+            </p>
+          </button>
+        </div>
       </div>
 
     </motion.div>

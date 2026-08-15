@@ -712,6 +712,16 @@ function AppContent() {
 
   const isNextLevelUnlocked = progress.completionHistory.includes(30);
 
+  // Acesso à jornada de 30 dias (Compartilhando sua História, R$997) dura 90
+  // dias por padrão. Quem já tem o Destrave ativo (mentoria de 6 meses) tem
+  // 180 dias, pra cobrir o acompanhamento inteiro sem precisar renovar no
+  // meio. Admin sempre passa, pra não travar teste.
+  const journeyAccessExpiryDays = isProfessionalUnlocked ? 180 : 90;
+  const journeyAccessExpired = !isAdminUnlocked && Boolean(
+    progress.journeyStartDate
+    && (Date.now() - new Date(`${progress.journeyStartDate}T00:00:00`).getTime()) / (1000 * 60 * 60 * 24) > journeyAccessExpiryDays
+  );
+
   if (authLoading) return null;
 
   // The user IS authenticated at this point (Supabase logs them in via the
@@ -741,6 +751,34 @@ function AppContent() {
       <InviteGateView
         onUnlocked={() => setNeedsInviteRedeem(false)}
       />
+    );
+  }
+
+  if (journeyAccessExpired) {
+    return (
+      <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-ink flex flex-col justify-center items-center p-8 text-center select-none">
+        <div className="max-w-sm w-full space-y-6 p-8 bg-white dark:bg-ink-raised rounded-[2.5rem] border border-rosegold/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none">
+          <div className="w-16 h-16 mx-auto bg-rosegold/10 border border-rosegold/15 text-rosegold rounded-[1.5rem] flex items-center justify-center">
+            <Lock className="h-7 w-7" />
+          </div>
+          <div className="space-y-2">
+            <h1 className="text-xl font-display font-light text-slate-900 dark:text-white">
+              Seu acesso expirou
+            </h1>
+            <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">
+              Seus {journeyAccessExpiryDays} dias de acesso à Jornada Compartilhando sua História terminaram. Fala com a gente pra renovar e continuar de onde parou.
+            </p>
+          </div>
+          <a
+            href="https://wa.me/message/KJTHGYJ7JXGCI1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full px-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer inline-block"
+          >
+            Renovar meu acesso
+          </a>
+        </div>
+      </div>
     );
   }
 
@@ -1437,6 +1475,13 @@ function AppContent() {
               <NextLevelView
                 progress={progress}
                 lang={lang}
+                isProfessionalUnlocked={isProfessionalUnlocked}
+                onGoToDestrave={() => {
+                  if (isProfessionalUnlocked) setActiveTab('professional');
+                  else setShowProfessionalPrompt(true);
+                }}
+                onGoToLibrary={() => { setLibraryInitialCategory(undefined); setActiveTab('library'); }}
+                onGoToCommunity={() => setActiveTab('community')}
               />
             )}
 
