@@ -917,6 +917,19 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                   </button>
                   {isOpen && (
                     <div className="px-4 pb-4 space-y-3">
+                      {group.intro && (
+                        <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed bg-rosegold/5 border border-rosegold/15 rounded-xl p-3">
+                          {group.intro}
+                        </p>
+                      )}
+                      {group.exampleImage && (
+                        <div className="rounded-xl overflow-hidden border border-rose-100/20 dark:border-ink-hairline">
+                          <img src={group.exampleImage} alt={group.exampleImageCaption || group.title} className="w-full h-auto block" />
+                          {group.exampleImageCaption && (
+                            <p className="text-[11px] text-slate-400 dark:text-ink-muted p-2 text-center">{group.exampleImageCaption}</p>
+                          )}
+                        </div>
+                      )}
                       {group.prompts.map((p) => (
                         <div key={p.id} className="rounded-xl bg-rose-50/40 dark:bg-ink p-3 space-y-2">
                           <p className="text-xs text-slate-500 dark:text-ink-muted">{p.purpose}</p>

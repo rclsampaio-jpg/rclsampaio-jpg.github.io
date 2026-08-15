@@ -4,7 +4,13 @@
 // "Prompts Prontos pra Usar na Renata OS", migrado pra dentro do app como
 // cards copiáveis em vez de download. Fonte: renata-os-worker/referencias/
 // prompts-prontos.md e leis-copy-renata.md (a mesma base que já orienta a
-// própria Renata OS), não é conteúdo novo.
+// própria Renata OS) e o texto original dos dois PDFs, não é conteúdo novo.
+//
+// Ordem dos grupos é deliberada, do mais simples/comum pro mais específico:
+// os 3 formatos de Reels primeiro (7s → até 90s → conversão), juntos e em
+// sequência, depois Carrossel, Revisão, Audiência obcecada, Roteiro sem
+// produto, e por último o Combo Doodle (o mais elaborado, com passo a passo
+// próprio). Isso evita a pessoa pular entre formatos parecidos espalhados.
 
 export interface PromptItem {
   id: string;
@@ -15,6 +21,9 @@ export interface PromptItem {
 export interface PromptGroup {
   id: string;
   title: string;
+  intro?: string; // contexto/instrução antes dos prompts, quando o grupo precisa de passo a passo
+  exampleImage?: string;
+  exampleImageCaption?: string;
   prompts: PromptItem[];
 }
 
@@ -67,6 +76,17 @@ export const PROMPT_GROUPS: PromptGroup[] = [
     ]
   },
   {
+    id: 'reels-conversao',
+    title: 'Reels de conversão (7 ângulos validados)',
+    prompts: [
+      {
+        id: 'p13',
+        purpose: 'Roteiro de Reels de conversão real, escolhendo entre os 7 ângulos validados.',
+        text: 'Me ajuda a criar Reels de conversão sobre [tema/trava]. Me pergunta primeiro se eu quero focar em só um dos 7 ângulos (inimigo comum, história pessoal, números, confissão, contraintuitivo, passo a passo, prova de terceiro) ou se quero ver o tema desenvolvido nos 7 ângulos de uma vez, como um bloco de sequência. Depois de eu responder, monta o(s) roteiro(s) completo(s) nesse formato, sempre em primeira pessoa ou com dado real meu, sem cara de IA, sem virar acusação genérica nem regra fechada. E não force CTA em todo roteiro, só feche com CTA quando isso fizer sentido dentro do meu calendário de conteúdo, se eu não tiver um calendário definido ainda, me pergunte antes de decidir.'
+      }
+    ]
+  },
+  {
     id: 'carrossel',
     title: 'Carrossel de venda',
     prompts: [
@@ -105,17 +125,6 @@ export const PROMPT_GROUPS: PromptGroup[] = [
     ]
   },
   {
-    id: 'reels-conversao',
-    title: 'Reels de conversão (7 ângulos validados)',
-    prompts: [
-      {
-        id: 'p13',
-        purpose: 'Roteiro de Reels de conversão real, escolhendo entre os 7 ângulos validados.',
-        text: 'Me ajuda a criar Reels de conversão sobre [tema/trava]. Me pergunta primeiro se eu quero focar em só um dos 7 ângulos (inimigo comum, história pessoal, números, confissão, contraintuitivo, passo a passo, prova de terceiro) ou se quero ver o tema desenvolvido nos 7 ângulos de uma vez, como um bloco de sequência. Depois de eu responder, monta o(s) roteiro(s) completo(s) nesse formato, sempre em primeira pessoa ou com dado real meu, sem cara de IA, sem virar acusação genérica nem regra fechada. E não force CTA em todo roteiro, só feche com CTA quando isso fizer sentido dentro do meu calendário de conteúdo, se eu não tiver um calendário definido ainda, me pergunte antes de decidir.'
-      }
-    ]
-  },
-  {
     id: 'sem-produto',
     title: 'Roteiro de jornada, sem produto ainda',
     prompts: [
@@ -128,17 +137,20 @@ export const PROMPT_GROUPS: PromptGroup[] = [
   },
   {
     id: 'doodle',
-    title: 'Combo Doodle (legenda + imagem)',
+    title: 'Combo Doodle (foto com rabiscos)',
+    intro: 'É um combo de 3 passos, usa a Renata OS e depois o ChatGPT: 1) você manda sua foto + o prompt abaixo pra Renata OS, ela sugere uma frase pra cada uma das 6 posições do doodle, de acordo com a sua mensagem principal. 2) Você pega essas frases. 3) Vai no ChatGPT e manda sua MESMA foto original (sem rabisco nenhum) + o prompt gerador de imagem (também abaixo) + as frases que a Renata OS te deu. O ChatGPT devolve a imagem final com os doodles desenhados por cima.',
+    exampleImage: '/assets/images/doodle-referencia.jpg',
+    exampleImageCaption: 'Exemplo de como fica o resultado final, com as 6 posições de frase preenchidas.',
     prompts: [
       {
         id: 'p12',
-        purpose: 'Preenche as frases de um doodle (rabiscos ao redor de uma foto) com a sua mensagem principal.',
-        text: 'Sou criadora de conteúdo [estágio] e minha mensagem principal é [mensagem principal]. Quero modificar as mensagens desse doodle de acordo com a minha mensagem principal mencionada acima pra você usando a mentalidade da RenaSer: fazer com que a audiência seja obcecada comigo, e as regras e leis gerais da RenaSer. Analise e me traga sua recomendação.'
+        purpose: 'Passo 1: manda pra Renata OS junto com sua foto, ela sugere as 6 frases do doodle.',
+        text: 'Sou criadora de conteúdo [estágio] e minha mensagem principal é [mensagem principal]. Quero que você sugira as frases pras 6 posições de um doodle (rabiscos ao redor da minha foto: topo, lado esquerdo, lado direito superior, centro direito, inferior direito, inferior esquerdo), de acordo com a minha mensagem principal, usando a mentalidade da RenaSer: fazer com que a audiência fique obcecada comigo. Analise e me traga sua recomendação, uma frase curta por posição.'
       },
       {
         id: 'p12b',
-        purpose: 'Prompt em inglês pra gerar a imagem final com os doodles desenhados por cima, no ChatGPT.',
-        text: 'Analyze the uploaded image and preserve the original subject, composition, and lighting. Do not alter the identity or structure of the main subject. Add playful, hand-drawn doodles that interact directly with the subject in the image. The doodles should mimic, follow, or exaggerate the shapes, gestures, or motion present, such as outlining poses, extending limbs, adding motion lines, or creating imaginative elements that "respond" to the subject. Ensure the doodles feel naturally integrated into the scene, as if they were drawn on top of the photo with intention. Use a sketchy, imperfect, hand-drawn style with organic lines, slightly uneven strokes, and a casual illustrated feel. Include whimsical handwritten text elements placed around the image. The text should match the mood or implied context of the scene, with a playful and spontaneous tone. Avoid fixed phrases, generate context-aware, creative, and humorous text that fits each unique image. Maintain a balanced composition so the doodles enhance the image without overwhelming the original subject. Keep the overall aesthetic fun, expressive, and social-media-ready. High resolution, clean overlay, vibrant yet natural color harmony. Gere a imagem em dimensões pra post de IG.'
+        purpose: 'Passo 3: manda no ChatGPT junto com a MESMA foto original (sem rabisco) e as frases que a Renata OS te deu.',
+        text: 'Analise a imagem enviada e preserve o assunto original, a composição e a iluminação. Não altere a identidade nem a estrutura do assunto principal. Adicione doodles divertidos, feitos à mão, que interagem diretamente com o assunto da imagem. Os doodles devem imitar, seguir ou exagerar as formas, gestos ou movimentos presentes, como contornar poses, estender membros, adicionar linhas de movimento, ou criar elementos imaginativos que "respondem" ao assunto. Garanta que os doodles pareçam naturalmente integrados à cena, como se tivessem sido desenhados sobre a foto com intenção. Use um estilo esboçado, imperfeito, feito à mão, com linhas orgânicas, traços levemente irregulares e uma sensação casual e ilustrada. Inclua elementos de texto manuscrito e brincalhão ao redor da imagem, usando as frases que a Renata OS gerou pra cada posição. O texto deve combinar com o clima ou contexto da cena, num tom brincalhão e espontâneo. Mantenha uma composição equilibrada, pra que os doodles reforcem a imagem sem sobrecarregar o assunto principal. Mantenha a estética geral divertida, expressiva e pronta pra rede social. Alta resolução, sobreposição limpa, cores vibrantes e harmônicas. Gere a imagem em dimensões pra post de Instagram.'
       }
     ]
   }
