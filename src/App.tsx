@@ -1437,7 +1437,9 @@ function AppContent() {
             }`}
           >
             <Compass className="h-4 w-4" />
-            <span className="text-[8px] tracking-tight font-sans uppercase font-medium leading-tight text-center">{labels.journey}</span>
+            <span className="text-[8px] tracking-tight font-sans uppercase font-medium leading-tight text-center">
+              {lang === 'pt' ? 'Jornada' : lang === 'es' ? 'Viaje' : 'Journey'}
+            </span>
             {activeTab === 'journey' && (
               <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
             )}
