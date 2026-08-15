@@ -341,6 +341,19 @@ function AppContent() {
 
   const activeMissionDay = days.find(d => d.dayNumber === focusedDayNumber) || days[0];
 
+  // Início e Missão Diária deixaram de ser abas separadas: Início mostra a
+  // missão do dia até ela ser concluída, e só então vira o painel de
+  // progresso (árvore, etc). Isso só se aplica ao dia real atual — navegar
+  // pra um dia passado (Jornada) ou usar as setas de admin continua
+  // mostrando o conteúdo daquele dia específico, não o painel.
+  // HomeView também é dono do wizard de onboarding inteiro, então quem
+  // ainda não passou por ele sempre vê o HomeView primeiro, nunca a
+  // Missão direto, senão o wizard nunca apareceria pra usuária nova.
+  const hasOnboarded = localStorage.getItem('renaser_onboarded') === 'true';
+  const isTodayDoneOnHome = !hasOnboarded
+    || (activeMissionDay.dayNumber === progress.currentDay
+      && progress.completionHistory.includes(progress.currentDay));
+
   // Chapter Introduction overlay used to auto-trigger for new chapters
   // (e.g. showing "DESPERTAR" the moment someone opened the link for the
   // first time), which interrupted people before they reached the actual
@@ -837,17 +850,6 @@ function AppContent() {
             </button>
 
             <button
-              onClick={() => setActiveTab('mission')}
-              className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
-                activeTab === 'mission' 
-                  ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25 dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:shadow-none'
-                  : 'text-slate-600 dark:text-ink-muted hover:bg-rose-50/50 dark:hover:bg-rosegold-light/10'
-              }`}
-            >
-              {labels.mission}
-            </button>
-            
-            <button
               onClick={() => setActiveTab('journey')}
               className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
                 activeTab === 'journey' 
@@ -997,13 +999,6 @@ function AppContent() {
                 className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'home' ? 'bg-rosegold text-white font-bold dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light' : 'text-slate-700 dark:text-ink-muted'}`}
               >
                 {labels.home}
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('mission'); setMobileMenuOpen(false); }}
-                className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'mission' ? 'bg-rosegold text-white font-bold dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light' : 'text-slate-700 dark:text-ink-muted'}`}
-              >
-                {labels.mission}
               </button>
 
               <button
@@ -1215,18 +1210,34 @@ function AppContent() {
           >
           <Suspense fallback={<div className="flex justify-center py-24"><div className="h-8 w-8 border-2 border-rosegold border-t-transparent rounded-full animate-spin" /></div>}>
             {activeTab === 'home' && (
-              <HomeView
-                currentDay={activeMissionDay}
-                progress={progress}
-                lang={lang}
-                onSelectTab={(tabId) => setActiveTab(tabId as any)}
-                onLanguageChange={handleLanguageChange}
-                onShowIntro={handleShowIntro}
-                onUpdateProgress={updateProgress}
-                onTriggerSos={() => setActiveTab('sos')}
-                isAdminUnlocked={isAdminUnlocked}
-                onJumpToDay={setFocusedDayNumber}
-              />
+              isTodayDoneOnHome ? (
+                <HomeView
+                  currentDay={activeMissionDay}
+                  progress={progress}
+                  lang={lang}
+                  onSelectTab={(tabId) => setActiveTab(tabId as any)}
+                  onLanguageChange={handleLanguageChange}
+                  onShowIntro={handleShowIntro}
+                  onUpdateProgress={updateProgress}
+                  onTriggerSos={() => setActiveTab('sos')}
+                  isAdminUnlocked={isAdminUnlocked}
+                  onJumpToDay={setFocusedDayNumber}
+                />
+              ) : (
+                <DailyMissionView
+                  currentDay={activeMissionDay}
+                  progress={progress}
+                  lang={lang}
+                  onCompleteDay={handleCompleteDay}
+                  onToggleFavorite={handleToggleFavorite}
+                  onCopyHook={handleCopyHook}
+                  onTriggerSos={() => setActiveTab('sos')}
+                  onBackToHome={() => setActiveTab('home')}
+                  onUpdateMood={handleUpdateMood}
+                  isAdminUnlocked={isAdminUnlocked}
+                  onJumpToDay={setFocusedDayNumber}
+                />
+              )
             )}
 
             {activeTab === 'transformation' && (
