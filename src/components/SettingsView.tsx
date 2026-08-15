@@ -19,8 +19,6 @@ interface SettingsViewProps {
   onResetProgress: () => void;
   onQuickSimulateCompletion: () => void;
   onQuickSimulateUnlockDay30: () => void;
-  onQuickSimulatePracticePhase: () => void;
-  onQuickSimulateExpirySoon: () => void;
   theme: 'light' | 'dark';
   onThemeChange: (theme: 'light' | 'dark') => void;
   onUpdateProgress: (updated: UserProgress) => void;
@@ -43,8 +41,6 @@ export default function SettingsView({
   onResetProgress,
   onQuickSimulateCompletion,
   onQuickSimulateUnlockDay30,
-  onQuickSimulatePracticePhase,
-  onQuickSimulateExpirySoon,
   theme,
   onThemeChange,
   onUpdateProgress,
@@ -353,20 +349,10 @@ export default function SettingsView({
               {textDict.simulateComplete30}
             </button>
 
-            <button
-              onClick={onQuickSimulatePracticePhase}
-              className="flex-1 py-3 px-4 bg-white dark:bg-transparent text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs font-sans font-semibold transition cursor-pointer"
-            >
-              Simular Fase de Prática (dia 31)
-            </button>
-
-            <button
-              onClick={onQuickSimulateExpirySoon}
-              className="flex-1 py-3 px-4 bg-white dark:bg-transparent text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs font-sans font-semibold transition cursor-pointer"
-            >
-              Simular expiração em 5 dias
-            </button>
           </div>
+          <p className="text-[11px] text-amber-900/60 dark:text-amber-100/60 font-mono pt-1">
+            Simulações de Fase de Prática e expiração agora ficam no Creator Studio → Configurações.
+          </p>
 
           <div className="border-t border-amber-200/60 dark:border-ink-hairline pt-4 text-[11px] text-amber-900/80 dark:text-amber-100/80 font-mono grid grid-cols-2 gap-4">
             <div>

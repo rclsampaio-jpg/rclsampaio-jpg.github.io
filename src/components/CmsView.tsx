@@ -15,9 +15,9 @@ import {
 } from 'lucide-react';
 import BrandIdentityView from './BrandIdentityView';
 
-import { 
-  Language, DayType, Journey, Chapter, Day, 
-  CommunityConfig, SupportConfig, MentoringConfig, LibraryAsset 
+import {
+  Language, DayType, Journey, Chapter, Day,
+  CommunityConfig, SupportConfig, MentoringConfig, LibraryAsset, UserProgress
 } from '../types';
 
 import { 
@@ -41,6 +41,9 @@ interface CmsViewProps {
   lang: Language;
   onSaveDays: (updatedDays: any[]) => void;
   onResetDays: () => void;
+  progress: UserProgress;
+  onQuickSimulatePracticePhase: () => void;
+  onQuickSimulateExpirySoon: () => void;
 }
 
 type StudioModule =
@@ -55,7 +58,10 @@ export default function CmsView({
   days: parentDays,
   lang,
   onSaveDays,
-  onResetDays
+  onResetDays,
+  progress,
+  onQuickSimulatePracticePhase,
+  onQuickSimulateExpirySoon
 }: CmsViewProps) {
   // Creator Studio navigation
   const [activeModule, setActiveModule] = useState<StudioModule>('dashboard');
@@ -1685,6 +1691,37 @@ export default function CmsView({
               </h1>
               <p className="text-xs text-slate-400 dark:text-ink-muted">
                 Ações administrativas de risco. Use com cuidado.
+              </p>
+            </div>
+
+            <div className="bg-white dark:bg-ink-raised rounded-2xl border border-amber-200/40 dark:border-amber-500/20 p-6 space-y-4">
+              <div className="flex items-start gap-3">
+                <Activity className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-wide text-slate-800 dark:text-white">
+                    Ferramentas de teste da jornada
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-ink-muted mt-1">
+                    Simula estados de conta pra testar telas sem precisar completar dias de verdade nem esperar meses.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-rose-100/10">
+                <button
+                  onClick={onQuickSimulatePracticePhase}
+                  className="flex-1 py-3 px-4 bg-amber-50 dark:bg-transparent text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs font-sans font-semibold transition cursor-pointer"
+                >
+                  Simular Fase de Prática (dia 31)
+                </button>
+                <button
+                  onClick={onQuickSimulateExpirySoon}
+                  className="flex-1 py-3 px-4 bg-amber-50 dark:bg-transparent text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs font-sans font-semibold transition cursor-pointer"
+                >
+                  Simular expiração em 5 dias
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-400 dark:text-ink-muted font-mono pt-1">
+                Dia atual: {progress.currentDay} · {progress.completionHistory.length} dias concluídos
               </p>
             </div>
 

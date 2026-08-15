@@ -1621,6 +1621,9 @@ function AppContent() {
                 lang={lang}
                 onSaveDays={handleSaveDays}
                 onResetDays={handleResetDays}
+                progress={progress}
+                onQuickSimulatePracticePhase={handleQuickSimulatePracticePhase}
+                onQuickSimulateExpirySoon={handleQuickSimulateExpirySoon}
               />
             )}
 
@@ -1632,8 +1635,6 @@ function AppContent() {
                 onResetProgress={handleResetProgress}
                 onQuickSimulateUnlockDay30={handleQuickSimulateUnlockDay30}
                 onQuickSimulateCompletion={handleQuickSimulateCompletion}
-                onQuickSimulatePracticePhase={handleQuickSimulatePracticePhase}
-                onQuickSimulateExpirySoon={handleQuickSimulateExpirySoon}
                 theme={theme}
                 onThemeChange={handleThemeChange}
                 onUpdateProgress={updateProgress}
