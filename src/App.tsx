@@ -386,6 +386,46 @@ function AppContent() {
     setShowIntroButterfly(true);
     setTimeout(() => setShowIntroButterfly(false), 10000);
   };
+  // Calculado uma vez aqui, ANTES de qualquer `return` antecipado (auth
+  // loading, showOpeningSplash, etc). App.tsx tem vários `return`
+  // diferentes pro mesmo componente (splash de abertura, tela de convite,
+  // app principal...), cada um sua própria árvore JSX — o portal só
+  // aparecia na árvore do app principal, então durante os 2.5s da tela de
+  // abertura (showOpeningSplash) nenhuma borboleta era renderizada de
+  // verdade, só passava a aparecer quando a árvore principal finalmente
+  // montava. Precisa ser incluído em CADA `return` que deve mostrá-la.
+  const introButterflyPortal = showIntroButterfly
+    ? createPortal(
+        <div className="fixed inset-0 z-[70] overflow-hidden pointer-events-none">
+          <motion.div
+            initial={{ x: '-15vw', y: '65vh', rotate: 15, opacity: 0 }}
+            animate={{
+              x: '115vw',
+              y: ['65vh', '48vh', '55vh', '32vh', '40vh', '15vh'],
+              rotate: [15, 18, 20, 19, 22, 25],
+              opacity: [0, 1, 1, 1, 1, 0]
+            }}
+            transition={{
+              duration: 6.5,
+              ease: 'easeInOut',
+              repeat: Infinity,
+              repeatDelay: 0.5
+            }}
+            className="absolute"
+          >
+            <motion.img
+              src="/assets/images/butterfly.png"
+              alt=""
+              animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
+              transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut' }}
+              className="h-8 w-auto"
+              style={{ transformOrigin: 'center 70%' }}
+            />
+          </motion.div>
+        </div>,
+        document.body
+      )
+    : null;
   // Fase de Prática: depois do dia 30, a Missão Diária passa a vir da
   // cadência semanal (ver PracticeMissionView), não mais do array de 30
   // dias gerados. "Hoje concluído" aqui significa progress.currentDay (o
@@ -650,6 +690,13 @@ function AppContent() {
     localStorage.removeItem('renaser_onboarded');
     setHasOnboarded(false); // hasOnboarded is React state now, clearing localStorage alone doesn't re-trigger onboarding
     setHasDismissedDailyGate(true); // make sure onboarding isn't blocked by daily gate!
+    // Sem isso, o pop-up de introdução de capítulo (com o áudio de
+    // transição de fase) nunca mais reaparecia depois de visto uma vez:
+    // essa marca de "já visto" é permanente no localStorage e não fazia
+    // parte do que "zerar progresso" limpava.
+    for (let chapterId = 1; chapterId <= 4; chapterId++) {
+      localStorage.removeItem(`renaser_intro_chapter_${chapterId}`);
+    }
     const todayISO = getLocalDateISO();
     const defaultProgress: UserProgress = {
       currentDay: 1,
@@ -947,6 +994,7 @@ function AppContent() {
   if (showOpeningSplash) {
     return (
       <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-ink flex flex-col justify-center items-center p-6 text-center select-none overflow-hidden transition-colors duration-500">
+        {introButterflyPortal}
         {/* Soft Ambient Gold Blurs — dark mode drops them, Luxo Contido stays flat */}
         <div className="absolute top-1/3 left-1/3 h-96 w-96 bg-rosegold/5 dark:hidden blur-3xl rounded-full" />
         <div className="absolute bottom-1/3 right-1/3 h-96 w-96 bg-accentgold/5 dark:hidden blur-3xl rounded-full" />
@@ -1733,36 +1781,7 @@ function AppContent() {
           </motion.div>
         </AnimatePresence>
 
-        {showIntroButterfly && createPortal(
-          <div className="fixed inset-0 z-[70] overflow-hidden pointer-events-none">
-            <motion.div
-              initial={{ x: '-15vw', y: '65vh', rotate: 15, opacity: 0 }}
-              animate={{
-                x: '115vw',
-                y: ['65vh', '48vh', '55vh', '32vh', '40vh', '15vh'],
-                rotate: [15, 18, 20, 19, 22, 25],
-                opacity: [0, 1, 1, 1, 1, 0]
-              }}
-              transition={{
-                duration: 6.5,
-                ease: 'easeInOut',
-                repeat: Infinity,
-                repeatDelay: 0.5
-              }}
-              className="absolute"
-            >
-              <motion.img
-                src="/assets/images/butterfly.png"
-                alt=""
-                animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
-                transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut' }}
-                className="h-8 w-auto"
-                style={{ transformOrigin: 'center 70%' }}
-              />
-            </motion.div>
-          </div>,
-          document.body
-        )}
+        {introButterflyPortal}
 
         {/* Dynamic Chapter Milestone & Celebration Overlays */}
         <AnimatePresence>

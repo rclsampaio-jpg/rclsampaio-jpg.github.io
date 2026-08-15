@@ -94,12 +94,15 @@ export default function ChapterMilestoneOverlay({
   // o anterior termina. Com "repeat: Infinity" reaproveitando o mesmo
   // trajeto, ela sempre saía e entrava exatamente no mesmo lugar, o que
   // parecia um robô resetando em vez de voar de verdade pela tela.
+  // Rotação sempre modesta (nunca perto de 180°/-180°, que deixa ela de
+  // cabeça pra baixo) — pra virar de direção usa espelhamento (flip),
+  // nunca rotação grande.
   const [butterflyPathIndex, setButterflyPathIndex] = useState(0);
   const BUTTERFLY_PATHS = [
-    { from: { x: '-15vw', y: '70vh', rotate: 20 }, to: { x: '115vw', y: ['70vh', '50vh', '60vh', '35vh', '45vh', '20vh'], rotate: [20, 0, 15, -10, 5, -20] } },
-    { from: { x: '115vw', y: '20vh', rotate: -160 }, to: { x: '-15vw', y: ['20vh', '38vh', '28vh', '55vh', '42vh', '65vh'], rotate: [-160, -180, -165, -195, -175, -200] } },
-    { from: { x: '20vw', y: '110vh', rotate: -70 }, to: { x: '75vw', y: ['110vh', '75vh', '40vh', '30vh', '15vh', '-10vh'], rotate: [-70, -50, -60, -30, -45, -20] } },
-    { from: { x: '85vw', y: '-10vh', rotate: 110 }, to: { x: '25vw', y: ['-10vh', '20vh', '45vh', '35vh', '60vh', '80vh'], rotate: [110, 130, 115, 145, 125, 150] } }
+    { flip: false, from: { x: '-15vw', y: '70vh', rotate: 20 }, to: { x: '115vw', y: ['70vh', '50vh', '60vh', '35vh', '45vh', '20vh'], rotate: [20, 0, 15, -10, 5, -20] } },
+    { flip: true, from: { x: '115vw', y: '15vh', rotate: -15 }, to: { x: '-15vw', y: ['15vh', '35vh', '25vh', '50vh', '40vh', '60vh'], rotate: [-15, 10, -5, 20, 0, -20] } },
+    { flip: false, from: { x: '10vw', y: '105vh', rotate: -25 }, to: { x: '80vw', y: ['105vh', '70vh', '45vh', '30vh', '15vh', '-5vh'], rotate: [-25, -5, -20, 5, -15, 15] } },
+    { flip: true, from: { x: '90vw', y: '-5vh', rotate: 25 }, to: { x: '15vw', y: ['-5vh', '25vh', '45vh', '35vh', '60vh', '80vh'], rotate: [25, 0, 15, -10, 10, -15] } }
   ];
 
   // Stop speech on unmount
@@ -306,7 +309,10 @@ export default function ChapterMilestoneOverlay({
             animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
             transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut' }}
             className="h-9 w-auto opacity-40"
-            style={{ transformOrigin: 'center 70%' }}
+            style={{
+              transformOrigin: 'center 70%',
+              scaleX: BUTTERFLY_PATHS[butterflyPathIndex].flip ? -1 : 1
+            }}
           />
         </motion.div>
       </div>
