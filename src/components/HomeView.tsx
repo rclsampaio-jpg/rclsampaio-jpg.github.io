@@ -454,7 +454,7 @@ export default function HomeView({
     // header and bottom nav visibly showing around it. A portal escapes
     // that ancestor entirely, so `fixed inset-0` covers the true viewport.
     return createPortal(
-      <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-ink text-slate-900 dark:text-ink-text flex flex-col justify-center items-center p-8 sm:p-12 text-center select-none transition-colors duration-500 paper-ivory">
+      <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-ink text-slate-900 dark:text-ink-text flex flex-col justify-center items-center p-8 sm:p-12 text-center select-none transition-colors duration-500 paper-ivory overflow-y-auto">
         {/* Ambient atmospheric backdrop light */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-rosegold/10 dark:bg-rosegold/5 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDuration: '6s' }} />
 
@@ -836,7 +836,7 @@ export default function HomeView({
                   Você faz parte do Destrave?
                 </h1>
                 <p className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed max-w-xs mx-auto">
-                  A Área da Profissional é um produto separado da jornada de 30 dias, vendido à parte.
+                  A Área da Profissional é um ambiente separado da Jornada Compartilhando sua História.
                 </p>
               </div>
               <div className="flex gap-3 w-full">
@@ -913,7 +913,7 @@ export default function HomeView({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-6 max-w-md w-full flex flex-col relative z-10 p-8 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none!"
+              className="space-y-7 max-w-md w-full flex flex-col relative z-10 p-8 my-10 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none! max-h-[80vh] overflow-y-auto"
             >
               <div className="text-center space-y-2">
                 <h1 className="text-2xl font-display font-light text-slate-900 dark:text-white leading-tight">
@@ -924,77 +924,77 @@ export default function HomeView({
                 </p>
               </div>
 
-              <div>
-                <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider mb-1">Nicho</p>
-                <p className="text-xs text-slate-500 dark:text-ink-muted mb-2">Pra quem é o seu conteúdo hoje?</p>
+              <div className="rounded-2xl bg-white/60 dark:bg-black/10 border border-rose-100/40 dark:border-ink-hairline p-4">
+                <p className="text-[10px] font-sans font-bold text-rosegold uppercase tracking-[0.15em] mb-3">Nicho</p>
+                <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-2">Pra quem é o seu conteúdo hoje?</label>
                 <input
                   type="text"
                   value={onboardNicho}
                   onChange={(e) => setOnboardNicho(e.target.value)}
                   placeholder="Ex: terapeutas iniciantes, coaches de carreira..."
-                  className="w-full text-sm bg-white/60 dark:bg-transparent border border-rose-100/30 dark:border-ink-hairline rounded-xl p-3 text-slate-700 dark:text-ink-text focus:outline-none focus:border-rosegold"
+                  className="w-full text-sm bg-white/80 dark:bg-transparent border border-rose-100/40 dark:border-ink-hairline rounded-xl p-3 text-slate-700 dark:text-ink-text focus:outline-none focus:border-rosegold"
                 />
               </div>
 
-              <div>
-                <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider mb-1">Voz</p>
-                <p className="text-xs text-slate-500 dark:text-ink-muted mb-2">Pode marcar mais de uma opção.</p>
-                <div className="space-y-3">
-                  {VOZ_PERGUNTAS.map((p) => (
-                    <div key={p.key}>
-                      <label className="text-xs text-slate-500 dark:text-ink-muted block mb-1.5">{p.label}</label>
-                      <div className="flex flex-wrap gap-2">
-                        {p.options.map((opt) => (
-                          <button
-                            key={opt}
-                            type="button"
-                            onClick={() => toggleOnboardDiagnosticOption(setOnboardVozRespostas, p.key, opt)}
-                            className={`px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition cursor-pointer ${
-                              (onboardVozRespostas[p.key] ?? []).includes(opt)
-                                ? 'bg-rosegold/15 text-rosegold dark:text-rosegold-light border border-rosegold/40'
-                                : 'bg-white/50 dark:bg-transparent text-slate-500 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline'
-                            }`}
-                          >
-                            {opt}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+              <div className="rounded-2xl bg-white/60 dark:bg-black/10 border border-rose-100/40 dark:border-ink-hairline p-4 space-y-4">
+                <div className="flex items-baseline justify-between">
+                  <p className="text-[10px] font-sans font-bold text-rosegold uppercase tracking-[0.15em]">Voz</p>
+                  <p className="text-[10px] text-slate-400 dark:text-ink-muted">pode marcar mais de uma</p>
                 </div>
+                {VOZ_PERGUNTAS.map((p) => (
+                  <div key={p.key}>
+                    <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-2">{p.label}</label>
+                    <div className="flex flex-wrap gap-2">
+                      {p.options.map((opt) => (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() => toggleOnboardDiagnosticOption(setOnboardVozRespostas, p.key, opt)}
+                          className={`px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition cursor-pointer border ${
+                            (onboardVozRespostas[p.key] ?? []).includes(opt)
+                              ? 'bg-rosegold text-white border-rosegold'
+                              : 'bg-white/80 dark:bg-transparent text-slate-500 dark:text-ink-muted border-rose-100/50 dark:border-ink-hairline'
+                          }`}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              <div>
-                <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider mb-1">Estrutura</p>
-                <p className="text-xs text-slate-500 dark:text-ink-muted mb-2">Pode marcar mais de uma opção.</p>
-                <div className="space-y-3">
-                  {ESTRUTURA_PERGUNTAS.map((p) => (
-                    <div key={p.key}>
-                      <label className="text-xs text-slate-500 dark:text-ink-muted block mb-1.5">{p.label}</label>
-                      <div className="flex flex-wrap gap-2">
-                        {p.options.map((opt) => (
-                          <button
-                            key={opt}
-                            type="button"
-                            onClick={() => toggleOnboardDiagnosticOption(setOnboardEstruturaRespostas, p.key, opt)}
-                            className={`px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition cursor-pointer ${
-                              (onboardEstruturaRespostas[p.key] ?? []).includes(opt)
-                                ? 'bg-rosegold/15 text-rosegold dark:text-rosegold-light border border-rosegold/40'
-                                : 'bg-white/50 dark:bg-transparent text-slate-500 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline'
-                            }`}
-                          >
-                            {opt}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+              <div className="rounded-2xl bg-white/60 dark:bg-black/10 border border-rose-100/40 dark:border-ink-hairline p-4 space-y-4">
+                <div className="flex items-baseline justify-between">
+                  <p className="text-[10px] font-sans font-bold text-rosegold uppercase tracking-[0.15em]">Estrutura</p>
+                  <p className="text-[10px] text-slate-400 dark:text-ink-muted">pode marcar mais de uma</p>
                 </div>
+                {ESTRUTURA_PERGUNTAS.map((p) => (
+                  <div key={p.key}>
+                    <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-2">{p.label}</label>
+                    <div className="flex flex-wrap gap-2">
+                      {p.options.map((opt) => (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() => toggleOnboardDiagnosticOption(setOnboardEstruturaRespostas, p.key, opt)}
+                          className={`px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition cursor-pointer border ${
+                            (onboardEstruturaRespostas[p.key] ?? []).includes(opt)
+                              ? 'bg-rosegold text-white border-rosegold'
+                              : 'bg-white/80 dark:bg-transparent text-slate-500 dark:text-ink-muted border-rose-100/50 dark:border-ink-hairline'
+                          }`}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
 
               <button
                 onClick={handleDestraveDiagnosticSave}
-                className="w-full px-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full px-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98] sticky bottom-0"
               >
                 Salvar e continuar
               </button>
