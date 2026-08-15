@@ -27,12 +27,8 @@ import ChapterMilestoneOverlay from './components/ChapterMilestoneOverlay';
 // library, transformation recap, next-level unlock) is code-split via
 // React.lazy so first paint doesn't have to download all of it up front.
 import HomeView from './components/HomeView';
-import DailyMissionView from './components/DailyMissionView';
 import PracticeMissionView from './components/PracticeMissionView';
-import JourneyView from './components/JourneyView';
-import EmotionalSosView from './components/EmotionalSosView';
 import SettingsView from './components/SettingsView';
-import ProfileView from './components/ProfileView';
 import RenaSerLogo from './components/RenaSerLogo';
 import RenataOSChat from './components/RenataOSChat';
 import DayCompletionOverlay from './components/DayCompletionOverlay';
@@ -46,6 +42,10 @@ import InviteGateView from './components/auth/InviteGateView';
 import { supabase } from './lib/supabase';
 import { useProgressSync, clearLocalProgressCache } from './hooks/useProgressSync';
 
+const DailyMissionView = lazy(() => import('./components/DailyMissionView'));
+const JourneyView = lazy(() => import('./components/JourneyView'));
+const EmotionalSosView = lazy(() => import('./components/EmotionalSosView'));
+const ProfileView = lazy(() => import('./components/ProfileView'));
 const CmsView = lazy(() => import('./components/CmsView'));
 const NextLevelView = lazy(() => import('./components/NextLevelView'));
 const MyTransformationView = lazy(() => import('./components/MyTransformationView'));
