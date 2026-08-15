@@ -1456,6 +1456,21 @@ function AppContent() {
           </button>
 
           <button
+            onClick={() => isProfessionalUnlocked ? setActiveTab('professional') : setShowProfessionalPrompt(true)}
+            className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
+              activeTab === 'professional'
+                ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
+                : 'text-slate-400 dark:text-ink-muted hover:text-slate-600 dark:hover:text-slate-300'
+            }`}
+          >
+            {isProfessionalUnlocked ? <Sparkles className="h-4.5 w-4.5" /> : <Lock className="h-4.5 w-4.5" />}
+            <span className="text-[9px] tracking-wider font-sans uppercase font-medium">{labels.professional}</span>
+            {activeTab === 'professional' && (
+              <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
+            )}
+          </button>
+
+          <button
             onClick={() => setActiveTab('profile')}
             className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
               activeTab === 'profile'

@@ -16,6 +16,9 @@ interface CommunityViewProps {
   lang: Language;
 }
 
+// Ocultada por agora, a pedido dela. Reversível: só voltar pra true.
+const SHOW_VIP_COMMUNITY = false;
+
 export default function CommunityView({ lang }: CommunityViewProps) {
   const [community, setCommunity] = useState<CommunityConfig>(() => loadCommunityConfig());
   const [freeCommunity, setFreeCommunity] = useState<FreeCommunityConfig>(() => loadFreeCommunityConfig());
@@ -110,9 +113,10 @@ export default function CommunityView({ lang }: CommunityViewProps) {
       {/* Upper Grid Layout: 2 Columns (Community Highlight & Mentoring VIP Card) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* Left: Community Core Portal Card */}
+        {/* Left: Community Core Portal Card (Comunidade VIP) */}
+        {SHOW_VIP_COMMUNITY && (
         <div className="lg:col-span-7 bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-rosegold/10 rounded-3xl overflow-hidden shadow-rosegold flex flex-col justify-between">
-          
+
           <div className="p-6 sm:p-8 space-y-4 flex-1 flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between gap-2">
@@ -131,9 +135,9 @@ export default function CommunityView({ lang }: CommunityViewProps) {
             </div>
 
             <div className="pt-6">
-              <a 
-                href={community.joinLink} 
-                target="_blank" 
+              <a
+                href={community.joinLink}
+                target="_blank"
                 rel="noreferrer"
                 style={{ backgroundColor: community.buttonColor }}
                 className="w-full py-4 px-6 rounded-2xl text-white font-sans font-bold tracking-wider text-xs uppercase flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-lg shadow-rosegold/15"
@@ -146,9 +150,10 @@ export default function CommunityView({ lang }: CommunityViewProps) {
           </div>
 
         </div>
+        )}
 
         {/* Right: Premium Mentoring Card */}
-        <div className="lg:col-span-5 bg-gradient-to-br from-warmbrown-light/40 to-[#2C221E] dark:bg-ink-raised dark:from-ink-raised dark:to-ink-raised border border-rosegold/15 dark:border-ink-hairline rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-rosegold dark:shadow-none relative overflow-hidden group">
+        <div className={`${SHOW_VIP_COMMUNITY ? 'lg:col-span-5' : 'lg:col-span-12'} bg-gradient-to-br from-warmbrown-light/40 to-[#2C221E] dark:bg-ink-raised dark:from-ink-raised dark:to-ink-raised border border-rosegold/15 dark:border-ink-hairline rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-rosegold dark:shadow-none relative overflow-hidden group`}>
 
           {/* Subtle Golden Glow — dark mode drops it, Luxo Contido stays flat */}
           <div className="absolute -top-12 -right-12 h-36 w-36 bg-[#D4AF37]/5 blur-3xl rounded-full dark:hidden" />
@@ -201,7 +206,7 @@ export default function CommunityView({ lang }: CommunityViewProps) {
         </div>
 
         {/* Below VIP: Free Community Card */}
-        <div className="lg:col-span-7 bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 shadow-rosegold space-y-5">
+        <div className={`${SHOW_VIP_COMMUNITY ? 'lg:col-span-7' : 'lg:col-span-12'} bg-white dark:bg-ink-raised border border-rose-100/40 dark:border-rosegold/10 rounded-3xl p-6 sm:p-8 shadow-rosegold space-y-5`}>
           <div className="flex flex-col sm:flex-row sm:items-center gap-5 justify-between">
             <div className="space-y-2">
               <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">

@@ -52,7 +52,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   const currentWeeklyVideo = support.weeklyVideos[support.weeklyVideos.length - 1] || '';
   const weeklyVideoThumbnail = getYouTubeThumbnail(currentWeeklyVideo);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory || 'all');
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory || 'prompts');
   
   // Media Player states
   const [activeAsset, setActiveAsset] = useState<LibraryAsset | null>(null);
@@ -269,22 +269,20 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   // Categories translation/icon maps
   // Ocultas temporariamente a pedido dela, sem conteúdo suficiente pra
   // justificar uma aba própria agora. Reversível: só tirar daqui.
-  const HIDDEN_LIBRARY_CATEGORIES = ['articles', 'pdfs', 'challenges', 'meditations'];
+  const HIDDEN_LIBRARY_CATEGORIES = ['all', 'articles', 'pdfs', 'challenges', 'meditations', 'masterclasses'];
 
-  // Ordem por prioridade de uso, não ordem de criação: conteúdo prático
-  // primeiro (o que ela vem buscar), bem-estar por último (suporte, não o
-  // motivo principal de abrir a Biblioteca).
+  // Ordem definida por ela diretamente: Prompts, Áudios, Vídeos, Bem-Estar.
   const categories = [
-    { key: 'all', icon: null },
-    { key: 'videos', icon: Play },
     { key: 'prompts', icon: MessageSquareText },
     { key: 'audios', icon: Volume2 },
+    { key: 'videos', icon: Play },
+    { key: 'wellness', icon: Wind },
+    { key: 'all', icon: null },
     { key: 'meditations', icon: Heart },
     { key: 'masterclasses', icon: Sparkles },
     { key: 'articles', icon: BookOpen },
     { key: 'pdfs', icon: FileText },
-    { key: 'challenges', icon: Sparkles },
-    { key: 'wellness', icon: Wind }
+    { key: 'challenges', icon: Sparkles }
   ].filter((cat) => !HIDDEN_LIBRARY_CATEGORIES.includes(cat.key));
 
   // Renderiza trechos entre ~~assim~~ como exemplo riscado de referência
