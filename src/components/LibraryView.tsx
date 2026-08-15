@@ -267,6 +267,10 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   };
 
   // Categories translation/icon maps
+  // Ocultas temporariamente a pedido dela, sem conteúdo suficiente pra
+  // justificar uma aba própria agora. Reversível: só tirar daqui.
+  const HIDDEN_LIBRARY_CATEGORIES = ['articles', 'pdfs', 'challenges'];
+
   const categories = [
     { key: 'all', icon: null },
     { key: 'wellness', icon: Wind },
@@ -278,7 +282,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
     { key: 'meditations', icon: Heart },
     { key: 'challenges', icon: Sparkles },
     { key: 'masterclasses', icon: Sparkles }
-  ];
+  ].filter((cat) => !HIDDEN_LIBRARY_CATEGORIES.includes(cat.key));
 
   const [expandedPromptGroup, setExpandedPromptGroup] = useState<string | null>(null);
   const [copiedPromptId, setCopiedPromptId] = useState<string | null>(null);
@@ -472,6 +476,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
       (asset.title[lang]?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
       (asset.description[lang]?.toLowerCase() || '').includes(searchQuery.toLowerCase());
 
+    if (HIDDEN_LIBRARY_CATEGORIES.includes(asset.category)) return false;
     if (selectedCategory === 'all') return matchesSearch;
     return asset.category === selectedCategory && matchesSearch;
   });

@@ -379,6 +379,14 @@ export default function HomeView({
   const totalJourneyDays = 30;
   const completionPercentage = Math.round((completedCount / totalJourneyDays) * 100);
 
+  // Admin day-jumper (arrows above): the tree should grow along with the
+  // previewed day automatically, not stay frozen at the real progress count.
+  // Manual milestone buttons below still take priority when explicitly set.
+  const adminDayPreviewCount = isAdminUnlocked && currentDay.dayNumber !== progress.currentDay
+    ? currentDay.dayNumber - 1
+    : null;
+  const treeDisplayCount = treeStagePreview ?? adminDayPreviewCount ?? completedCount;
+
   // Splash Screen & Onboarding Layout
   if (onboardState !== 'complete') {
     // Rendered via a portal straight to <body>, this component is mounted
@@ -875,7 +883,7 @@ export default function HomeView({
       {isAdminUnlocked && onJumpToDay && (
         <div className="flex items-center justify-center gap-3 rounded-xl border border-dashed border-rosegold/40 bg-rosegold/5 px-4 py-2.5 relative z-20 mb-2">
           <button
-            onClick={() => onJumpToDay(Math.max(1, currentDay.dayNumber - 1))}
+            onClick={() => { setTreeStagePreview(null); onJumpToDay(Math.max(1, currentDay.dayNumber - 1)); }}
             disabled={currentDay.dayNumber <= 1}
             className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
           >
@@ -885,7 +893,7 @@ export default function HomeView({
             Admin · Dia {currentDay.dayNumber} / 30
           </span>
           <button
-            onClick={() => onJumpToDay(Math.min(30, currentDay.dayNumber + 1))}
+            onClick={() => { setTreeStagePreview(null); onJumpToDay(Math.min(30, currentDay.dayNumber + 1)); }}
             disabled={currentDay.dayNumber >= 30}
             className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
           >
@@ -946,7 +954,7 @@ export default function HomeView({
         className="my-8 flex flex-col items-center justify-center relative z-20 w-full"
       >
         <div className="w-full max-w-[460px]">
-          <TreeOfRebirth completedCount={treeStagePreview ?? completedCount} lang={lang} />
+          <TreeOfRebirth completedCount={treeDisplayCount} lang={lang} />
         </div>
 
         {isAdminUnlocked && (
