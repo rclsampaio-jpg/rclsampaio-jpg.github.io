@@ -28,6 +28,7 @@ import ChapterMilestoneOverlay from './components/ChapterMilestoneOverlay';
 // React.lazy so first paint doesn't have to download all of it up front.
 import HomeView from './components/HomeView';
 import DailyMissionView from './components/DailyMissionView';
+import PracticeMissionView from './components/PracticeMissionView';
 import JourneyView from './components/JourneyView';
 import EmotionalSosView from './components/EmotionalSosView';
 import SettingsView from './components/SettingsView';
@@ -367,9 +368,16 @@ function AppContent() {
   const [hasOnboarded, setHasOnboarded] = useState(
     () => localStorage.getItem('renaser_onboarded') === 'true'
   );
+  // Fase de Prática: depois do dia 30, a Missão Diária passa a vir da
+  // cadência semanal (ver PracticeMissionView), não mais do array de 30
+  // dias gerados. "Hoje concluído" aqui significa progress.currentDay (o
+  // dia real, incrementado a cada conclusão) já estar em completionHistory.
+  const isPracticePhase = progress.completionHistory.includes(30);
   const isTodayDoneOnHome = !hasOnboarded
-    || (activeMissionDay.dayNumber === progress.currentDay
-      && progress.completionHistory.includes(progress.currentDay));
+    || (isPracticePhase
+      ? progress.completionHistory.includes(progress.currentDay)
+      : (activeMissionDay.dayNumber === progress.currentDay
+        && progress.completionHistory.includes(progress.currentDay)));
 
   // Dia de organização/produção: adiado pra fora do onboarding (perguntar
   // depois, não durante o funil de entrada). Pergunta uma vez assim que o
@@ -468,7 +476,12 @@ function AppContent() {
 
   // Action for completing a day's mission
   const handleCompleteDay = (reflectionText: string, videoLink: string, mood?: string) => {
-    const dayNum = focusedDayNumber;
+    // Fase de Prática (dia 31+): a jornada segue sendo trackeada dia a dia,
+    // mas não tem mais "days" pré-gerados pra focar/navegar, então usa
+    // sempre o dia real do progresso, não o focusedDayNumber (que fica
+    // travado em 30, usado só pra navegação/admin dos 30 dias iniciais).
+    const isPracticePhase = progress.completionHistory.includes(30);
+    const dayNum = isPracticePhase ? progress.currentDay : focusedDayNumber;
     if (progress.completionHistory.includes(dayNum)) return; // Already completed
 
     const history = [...progress.completionHistory, dayNum];
@@ -501,11 +514,13 @@ function AppContent() {
       longestStreak = currentStreak;
     }
 
-    // Advance to next day automatically
+    // Advance to next day automatically. Nos 30 dias iniciais só avança se
+    // for o dia real (não navegação de admin); na Fase de Prática sempre
+    // avança, pois lá dayNum já é sempre o dia real (nunca fica pra trás).
     let nextDay = progress.currentDay;
-    if (dayNum === progress.currentDay && progress.currentDay < 30) {
+    if (isPracticePhase || (dayNum === progress.currentDay && progress.currentDay < 30)) {
       nextDay = progress.currentDay + 1;
-      setFocusedDayNumber(nextDay);
+      if (!isPracticePhase) setFocusedDayNumber(nextDay);
       setActiveTab('home'); // Go to Home Screen showing today's fresh day overview!
     }
 
@@ -1480,6 +1495,14 @@ function AppContent() {
                   isAdminUnlocked={isAdminUnlocked}
                   onJumpToDay={setFocusedDayNumber}
                   onOnboardingComplete={() => setHasOnboarded(true)}
+                />
+              ) : isPracticePhase ? (
+                <PracticeMissionView
+                  progress={progress}
+                  lang={lang}
+                  onCompleteDay={handleCompleteDay}
+                  onTriggerSos={() => setActiveTab('sos')}
+                  onGoToLibrary={() => setActiveTab('library')}
                 />
               ) : (
                 <DailyMissionView

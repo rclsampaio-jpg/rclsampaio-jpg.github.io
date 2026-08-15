@@ -9,6 +9,7 @@ import { Award, Heart, Sparkles, Compass, CheckCircle2, Star, Share2, ExternalLi
 import { Language, UserProgress } from '../types';
 import { resolveGuideStyle, ToneVariants } from '../utils/grammar';
 import EditableText from './editable/EditableText';
+import { PRACTICE_WEEKS, getCurrentPracticeWeekIndex } from '../data/practiceWeeksData';
 
 interface NextLevelViewProps {
   progress: UserProgress;
@@ -18,46 +19,6 @@ interface NextLevelViewProps {
   onGoToDestrave?: () => void;
   onGoToLibrary?: () => void;
   onGoToCommunity?: () => void;
-}
-
-// Cadência semanal da Fase de Prática (dias 31-90): reaproveita os 4 tipos
-// de dia que já existem nos 30 dias (Verdade, Pensamento Contrário,
-// Storytelling, Presença), cada um com o exercício real já validado, não
-// um tema novo inventado. Cicla a cada 4 semanas.
-const PRACTICE_WEEKS: { theme: string; title: string; challenge: string; where: string }[] = [
-  {
-    theme: 'Verdade',
-    title: 'Semana da Verdade',
-    challenge: 'Grave um conteúdo sem preparo, sem decorar roteiro, sem ensaiar na frente do espelho. Abre o celular, aperta gravar, fala. A imperfeição é o ponto, não o risco.',
-    where: 'Usa o prompt de "Revisão de texto" da Biblioteca pra tirar cara de IA do que sair, sem regravar do zero.'
-  },
-  {
-    theme: 'Pensamento Contrário',
-    title: 'Semana da Opinião Impopular',
-    challenge: 'Grava uma opinião sua que nem todo mundo vai concordar. Uma coisa que você normalmente engoliria pra não incomodar ninguém, mas que é verdadeira pra você.',
-    where: 'Usa os prompts do grupo "Reels de conversão" da Biblioteca pra estruturar isso nos 7 ângulos validados.'
-  },
-  {
-    theme: 'Storytelling',
-    title: 'Semana da Jornada do Herói',
-    challenge: 'Conta um fracasso, uma vez que você tentou algo e não deu certo, e o que você aprendeu com isso. As pessoas se conectam com o caminho torto, não com a vitória perfeita.',
-    where: 'Usa os prompts do grupo "Reels até 90s" da Biblioteca, é exatamente pra história de bastidor.'
-  },
-  {
-    theme: 'Presença',
-    title: 'Semana de Falar pra Uma Pessoa',
-    challenge: 'Esquece o número de visualização. Grava pensando numa pessoa real que precisa ouvir exatamente o que você tem pra falar hoje. Não é escala, é profundidade.',
-    where: 'Usa o prompt do grupo "Mensagem central / audiência obcecada" da Biblioteca antes de gravar.'
-  }
-];
-
-function getCurrentPracticeWeekIndex(progress: UserProgress): number {
-  if (!progress.journeyStartDate) return 0;
-  const start = new Date(`${progress.journeyStartDate}T00:00:00`);
-  const day30 = new Date(start);
-  day30.setDate(day30.getDate() + 30);
-  const weeksElapsed = Math.floor((Date.now() - day30.getTime()) / (1000 * 60 * 60 * 24 * 7));
-  return ((weeksElapsed % 4) + 4) % 4;
 }
 
 // Link de WhatsApp real, o mesmo usado em /destrave (CTA "Quero começar meu
