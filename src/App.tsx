@@ -349,7 +349,13 @@ function AppContent() {
   // HomeView também é dono do wizard de onboarding inteiro, então quem
   // ainda não passou por ele sempre vê o HomeView primeiro, nunca a
   // Missão direto, senão o wizard nunca apareceria pra usuária nova.
-  const hasOnboarded = localStorage.getItem('renaser_onboarded') === 'true';
+  // Precisa ser state (não leitura direta do localStorage) pra reagir na
+  // hora em que o onboarding termina — senão a tela final do HomeView
+  // (hero + "Ir pra Missão Diária") continua aparecendo até o próximo
+  // re-render do App, mesmo já devendo mostrar a Missão direto.
+  const [hasOnboarded, setHasOnboarded] = useState(
+    () => localStorage.getItem('renaser_onboarded') === 'true'
+  );
   const isTodayDoneOnHome = !hasOnboarded
     || (activeMissionDay.dayNumber === progress.currentDay
       && progress.completionHistory.includes(progress.currentDay));
@@ -1222,6 +1228,7 @@ function AppContent() {
                   onTriggerSos={() => setActiveTab('sos')}
                   isAdminUnlocked={isAdminUnlocked}
                   onJumpToDay={setFocusedDayNumber}
+                  onOnboardingComplete={() => setHasOnboarded(true)}
                 />
               ) : (
                 <DailyMissionView

@@ -142,6 +142,7 @@ interface HomeViewProps {
   onTriggerSos?: () => void;
   isAdminUnlocked?: boolean;
   onJumpToDay?: (dayNumber: number) => void;
+  onOnboardingComplete?: () => void;
 }
 
 export default function HomeView({
@@ -154,7 +155,8 @@ export default function HomeView({
   onUpdateProgress,
   onTriggerSos,
   isAdminUnlocked,
-  onJumpToDay
+  onJumpToDay,
+  onOnboardingComplete
 }: HomeViewProps) {
   // Admin-only: preview any of the 10 Árvore do Renascimento stages without
   // touching real progress data (completionHistory drives streaks too).
@@ -210,6 +212,10 @@ export default function HomeView({
     else if (onboardState === 'intro') {
       localStorage.setItem('renaser_onboarded', 'true');
       setOnboardState('complete');
+      // Avisa o App imediatamente, senão ele só saberia que o onboarding
+      // terminou no próximo re-render por outro motivo, e essa mesma tela
+      // (hero + "Ir pra Missão Diária") continuaria aparecendo por engano.
+      onOnboardingComplete?.();
     }
   };
 
