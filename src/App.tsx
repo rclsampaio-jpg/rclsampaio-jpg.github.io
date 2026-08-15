@@ -648,38 +648,49 @@ function AppContent() {
     system.progressSystem.resetProgress();
   };
 
-  // Simulações de teste (Creator Studio) agora são um toggle real: clicar
-  // no mesmo botão de novo desliga e restaura o progresso de verdade dela,
-  // em vez de deixá-la travada na simulação até deslogar. O snapshot é
-  // salvo uma única vez (na primeira simulação ligada) pra não perder o
-  // estado real se ela ligar uma simulação diferente em seguida.
-  const SIMULATION_SNAPSHOT_KEY = 'renaser_pre_simulation_snapshot';
+  // Simulações de teste (Creator Studio) agora são um toggle real. A
+  // primeira versão tentava guardar um snapshot do progresso "de verdade"
+  // antes de simular e restaurar ele ao desligar, mas isso quebrou: depois
+  // de tanto teste, o primeiro snapshot salvo já não era mais o dia 1 real
+  // dela, então "desligar" sempre voltava pra um estado simulado antigo,
+  // nunca pro dia 1 de verdade. Mais simples e confiável: desligar sempre
+  // reseta pro dia 1 limpo (sem completionHistory, sem streak), igual ao
+  // "zerar progresso", em vez de depender de um snapshot que pode estar
+  // corrompido por testes anteriores.
   const ACTIVE_SIMULATION_KEY = 'renaser_active_simulation';
   const [activeSimulation, setActiveSimulation] = useState<string | null>(
     () => localStorage.getItem(ACTIVE_SIMULATION_KEY)
   );
 
+  const resetToRealDayOne = () => {
+    const todayISO = getLocalDateISO();
+    const cleanProgress: UserProgress = {
+      ...progress,
+      currentDay: 1,
+      completionHistory: [],
+      currentStreak: 0,
+      longestStreak: 0,
+      favoriteHooks: [],
+      copiedHooks: [],
+      videoLinks: {},
+      reflections: {},
+      lastActiveDate: null,
+      journeyStartDate: todayISO
+    };
+    updateProgress(cleanProgress);
+    const freshDays = generateInitialDays(todayISO);
+    setDays(freshDays);
+    saveDaysToStorage(freshDays);
+    setFocusedDayNumber(1);
+  };
+
   const runOrToggleSimulation = (key: string, apply: () => UserProgress, onApply?: () => void) => {
     if (activeSimulation === key) {
-      const snapshotRaw = localStorage.getItem(SIMULATION_SNAPSHOT_KEY);
-      if (snapshotRaw) {
-        const restored: UserProgress = JSON.parse(snapshotRaw);
-        updateProgress(restored);
-        setFocusedDayNumber(restored.currentDay <= 30 ? restored.currentDay : 30);
-      }
-      localStorage.removeItem(SIMULATION_SNAPSHOT_KEY);
+      resetToRealDayOne();
       localStorage.removeItem(ACTIVE_SIMULATION_KEY);
       setActiveSimulation(null);
-      // Vai pra Jornada, não pro Início: se o progresso real de base dela já
-      // passou do dia 30 (comum depois de tanto teste), o Início cairia de
-      // novo na Missão da Fase de Prática, dando a impressão de que a
-      // simulação não desligou. A Jornada sempre mostra o calendário dos
-      // 30 dias, então serve pra ela confirmar visualmente que desligou.
-      setActiveTab('journey');
+      setActiveTab('home');
       return;
-    }
-    if (!localStorage.getItem(SIMULATION_SNAPSHOT_KEY)) {
-      localStorage.setItem(SIMULATION_SNAPSHOT_KEY, JSON.stringify(progress));
     }
     updateProgress(apply());
     localStorage.setItem(ACTIVE_SIMULATION_KEY, key);
