@@ -559,6 +559,7 @@ export default function DailyMissionView({
     setAudioCompleted(false);
     setActiveHookTab(0);
     setCustomHookIdea('');
+    setIsDailyVideoPlaying(false);
     setReflectionInput(progress.reflections[currentDay.dayNumber] || '');
     const savedLinkData = progress.videoLinks[currentDay.dayNumber] || '';
     if (isBatchProductionDay) {
@@ -750,17 +751,21 @@ export default function DailyMissionView({
   };
 
   // Welcome-week support video preview (Days 1-7 only), same thumbnail
-  // pattern as the Library's "Vídeo da Semana".
-  const getYouTubeThumbnail = (url?: string): string | null => {
+  // pattern as the Library's "Vídeo da Semana". Plays embedded in-app
+  // (iframe) instead of linking out to YouTube: abrindo em outra aba
+  // obrigava a pessoa a voltar manualmente pro app depois de assistir.
+  const getYouTubeId = (url?: string): string | null => {
     if (!url) return null;
     const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{11})/);
-    return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
+    return match ? match[1] : null;
   };
   const showDailyVideo = currentDay.dayNumber <= 7 && !!localizedContent.videoUrl;
   // Days 1-7 skip the daily audio (the support video replaces it), so the
   // Passo 01/02/03 numbering shifts down by one for that first week.
   const showDailyAudio = currentDay.dayNumber > 7;
-  const dailyVideoThumbnail = getYouTubeThumbnail(localizedContent.videoUrl);
+  const dailyVideoId = getYouTubeId(localizedContent.videoUrl);
+  const dailyVideoThumbnail = dailyVideoId ? `https://img.youtube.com/vi/${dailyVideoId}/hqdefault.jpg` : null;
+  const [isDailyVideoPlaying, setIsDailyVideoPlaying] = useState(false);
 
   const hookOptions = getHookOptionsForDay(currentDay.dayNumber, lang, progress.journeyStartDate);
   const hookCategoryLabel = getHookCategoryLabel(currentDay.dayNumber, lang, progress.journeyStartDate);
@@ -1456,28 +1461,41 @@ export default function DailyMissionView({
                   <span className="text-[11px] font-sans tracking-[0.2em] text-rosegold uppercase font-bold">
                     <EditableText contentKey="dailyMission.videoTitle" fallback={textDict.videoTitle} as="span" />
                   </span>
-                  <a
-                    href={localizedContent.videoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => logEngagementEvent('daily_support_video', String(currentDay.dayNumber))}
-                    className="block group"
-                  >
-                    <div className="relative rounded-2xl overflow-hidden aspect-video bg-slate-900">
-                      {dailyVideoThumbnail && (
-                        <img
-                          src={dailyVideoThumbnail}
-                          alt={textDict.videoTitle}
-                          className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-250"
-                        />
-                      )}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors duration-250">
-                        <div className="h-14 w-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-250">
-                          <Play className="h-6 w-6 text-slate-900 ml-0.5" fill="currentColor" />
+                  {isDailyVideoPlaying && dailyVideoId ? (
+                    <div className="rounded-2xl overflow-hidden aspect-video bg-slate-900">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${dailyVideoId}?autoplay=1`}
+                        title={textDict.videoTitle}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                      />
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        logEngagementEvent('daily_support_video', String(currentDay.dayNumber));
+                        setIsDailyVideoPlaying(true);
+                      }}
+                      className="block group w-full cursor-pointer"
+                    >
+                      <div className="relative rounded-2xl overflow-hidden aspect-video bg-slate-900">
+                        {dailyVideoThumbnail && (
+                          <img
+                            src={dailyVideoThumbnail}
+                            alt={textDict.videoTitle}
+                            className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-250"
+                          />
+                        )}
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors duration-250">
+                          <div className="h-14 w-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-250">
+                            <Play className="h-6 w-6 text-slate-900 ml-0.5" fill="currentColor" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
+                    </button>
+                  )}
                   <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">{textDict.videoDesc}</p>
                 </motion.div>
               )}
