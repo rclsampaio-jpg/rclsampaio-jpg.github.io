@@ -55,7 +55,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
       moodLabel: 'Como você se sentiu hoje?',
       complete: 'Concluir hoje',
       streak: 'sequência',
-      sos: 'Preciso de apoio agora'
+      sos: 'Acione o SOS Emocional'
     },
     en: {
       badge: 'Practice Phase',
@@ -69,7 +69,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
       moodLabel: 'How did you feel today?',
       complete: 'Complete today',
       streak: 'streak',
-      sos: 'I need support now'
+      sos: 'Activate Emotional SOS'
     },
     es: {
       badge: 'Fase de Práctica',
@@ -83,7 +83,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
       moodLabel: '¿Cómo te sentiste hoy?',
       complete: 'Completar hoy',
       streak: 'racha',
-      sos: 'Necesito apoyo ahora'
+      sos: 'Activar SOS Emocional'
     }
   };
   const textVal = textDict[lang] || textDict.pt;
@@ -195,7 +195,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
       <button
         type="button"
         onClick={onTriggerSos}
-        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-200 dark:border-white/10 text-slate-500 dark:text-ink-muted text-sm hover:border-rose-300 hover:text-rose-500 transition"
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-rosegold hover:bg-[#A35D68] text-xs font-sans font-bold uppercase tracking-wider text-white transition-all duration-300 shadow-rosegold"
       >
         <LifeBuoy size={16} /> {textVal.sos}
       </button>
