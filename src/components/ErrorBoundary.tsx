@@ -48,7 +48,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
             Algo não carregou direito
           </h1>
           <p className="text-xs text-slate-500 dark:text-ink-muted max-w-xs">
-            Isso não deveria ter acontecido. Recarregue a página — seu progresso está salvo.
+            Isso não deveria ter acontecido. Recarregue a página, seu progresso está salvo.
           </p>
           <button
             onClick={this.handleReload}

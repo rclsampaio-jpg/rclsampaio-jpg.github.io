@@ -38,7 +38,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
     pt: {
       title: "Identidade de Marca RenaSer",
       subtitle: "Diretrizes de Marca, Conceitos Visuais e Suite de Ativos Premium",
-      intro: "Esta é a assinatura visual de um movimento. RenaSer não é sobre se tornar alguém novo — é sobre lembrar quem você já é. Uma marca projetada para ser atemporal, elegante e emocionalmente poderosa.",
+      intro: "Esta é a assinatura visual de um movimento. RenaSer não é sobre se tornar alguém novo, é sobre lembrar quem você já é. Uma marca projetada para ser atemporal, elegante e emocionalmente poderosa.",
       tabs: {
         story: "Manifesto & Conceito",
         logo: "A Suite de Logos",
@@ -57,7 +57,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
       },
       logoSuite: {
         title: "Tipografia como Identidade",
-        desc: "A palavra RenaSer é a heroína absoluta. A letra 'S' é sutilmente enfatizada — não de forma exagerada ou gigante, mas com o equilíbrio óptico perfeito para atuar como o ponto de virada, o despertar e o movimento contínuo.",
+        desc: "A palavra RenaSer é a heroína absoluta. A letra 'S' é sutilmente enfatizada, não de forma exagerada ou gigante, mas com o equilíbrio óptico perfeito para atuar como o ponto de virada, o despertar e o movimento contínuo.",
         renderStyle: "Estilo de Renderização",
         bgStyle: "Fundo de Visualização",
         primary: "Logotipo Principal",
@@ -118,7 +118,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
     en: {
       title: "RenaSer Brand Identity",
       subtitle: "Brand Guidelines, Visual Concepts & Premium Asset Suite",
-      intro: "This is the visual signature of a movement. RenaSer is not about becoming someone new — it is about remembering who you already are. A brand designed to be timeless, elegant, and emotionally powerful.",
+      intro: "This is the visual signature of a movement. RenaSer is not about becoming someone new, it is about remembering who you already are. A brand designed to be timeless, elegant, and emotionally powerful.",
       tabs: {
         story: "Manifesto & Concept",
         logo: "The Logo Suite",
@@ -137,7 +137,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
       },
       logoSuite: {
         title: "Typography is the Logo",
-        desc: "The word 'RenaSer' is the absolute hero. The capital 'S' is subtly emphasized — not oversized or exaggerated, but with the perfect optical alignment to symbolize the turning point, awakening, and continuous movement.",
+        desc: "The word 'RenaSer' is the absolute hero. The capital 'S' is subtly emphasized, not oversized or exaggerated, but with the perfect optical alignment to symbolize the turning point, awakening, and continuous movement.",
         renderStyle: "Render Finish",
         bgStyle: "Background View",
         primary: "Primary Logo",
@@ -809,7 +809,7 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                     Opção A
                   </span>
                   <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-500 dark:text-ink-muted">
-                    Modo Claro — Glam Acolhedor
+                    Modo Claro · Glam Acolhedor
                   </h4>
                 </div>
 
@@ -902,12 +902,12 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                     Opção B
                   </span>
                   <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-500 dark:text-ink-muted">
-                    Modo Escuro — Luxo Contido
+                    Modo Escuro · Luxo Contido
                   </h4>
                 </div>
                 <p className="text-xs text-slate-500 dark:text-ink-muted max-w-2xl -mt-2">
                   {lang === 'pt'
-                    ? 'Um único acento (rosegold-light) em vez do par rosegold+dourado do modo claro — restrição é o que separa "luxo contido" de "modo claro invertido". Superfícies planas, sem vidro nem gradiente.'
+                    ? 'Um único acento (rosegold-light) em vez do par rosegold+dourado do modo claro. Restrição é o que separa "luxo contido" de "modo claro invertido". Superfícies planas, sem vidro nem gradiente.'
                     : lang === 'es'
                     ? 'Un único acento (rosegold-light) en lugar del par rosegold+dorado del modo claro. Superficies planas, sin vidrio ni gradiente.'
                     : 'A single accent (rosegold-light) instead of the light mode\'s rosegold+gold pair. Flat surfaces, no glass or gradient.'}
@@ -916,10 +916,10 @@ export default function BrandIdentityView({ lang }: BrandIdentityViewProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                   {[
                     { name: 'Ink (Fundo Principal)', hex: '#17130F', rgb: '23, 19, 15', token: '--color-ink', bg: 'bg-[#17130F]', desc: 'Fundo principal das telas no dark mode.' },
-                    { name: 'Ink Raised (Superfícies)', hex: '#211C17', rgb: '33, 28, 23', token: '--color-ink-raised', bg: 'bg-[#211C17]', desc: 'Cards e headers elevados — um degrau sólido acima do fundo, sem gradiente.' },
+                    { name: 'Ink Raised (Superfícies)', hex: '#211C17', rgb: '33, 28, 23', token: '--color-ink-raised', bg: 'bg-[#211C17]', desc: 'Cards e headers elevados, um degrau sólido acima do fundo, sem gradiente.' },
                     { name: 'Ink Text (Texto Principal)', hex: '#F3ECE4', rgb: '243, 236, 228', token: '--color-ink-text', bg: 'bg-[#F3ECE4] border border-rose-100/30', desc: 'Texto principal sobre fundo escuro.' },
                     { name: 'Ink Muted (Texto Secundário)', hex: '#8C8078', rgb: '140, 128, 120', token: '--color-ink-muted', bg: 'bg-[#8C8078]', desc: 'Texto secundário, legendas.' },
-                    { name: 'Rosegold Light (Acento Único)', hex: '#EBB4A0', rgb: '235, 180, 160', token: '--color-rosegold-light', bg: 'bg-[#EBB4A0]', desc: 'Único acento do dark mode — CTAs, links, ícones.' },
+                    { name: 'Rosegold Light (Acento Único)', hex: '#EBB4A0', rgb: '235, 180, 160', token: '--color-rosegold-light', bg: 'bg-[#EBB4A0]', desc: 'Único acento do dark mode: CTAs, links, ícones.' },
                   ].map((color, idx) => (
                     <div
                       key={`dark_${idx}`}

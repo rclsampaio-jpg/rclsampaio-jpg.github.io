@@ -29,7 +29,7 @@ const SYNC_LABEL: Record<SyncStatus, Record<Language, string>> = {
   idle: { pt: '', en: '', es: '' },
   syncing: { pt: 'Sincronizando...', en: 'Syncing...', es: 'Sincronizando...' },
   synced: { pt: 'Sincronizado com a nuvem', en: 'Synced to the cloud', es: 'Sincronizado con la nube' },
-  error: { pt: 'Falha ao sincronizar — verifique sua conexão', en: 'Sync failed — check your connection', es: 'Fallo al sincronizar — revisa tu conexión' },
+  error: { pt: 'Falha ao sincronizar, verifique sua conexão', en: 'Sync failed, check your connection', es: 'Fallo al sincronizar, revisa tu conexión' },
 };
 
 export default function SettingsView({

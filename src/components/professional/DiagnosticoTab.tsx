@@ -93,7 +93,7 @@ export default function DiagnosticoTab({ progress, onUpdateProgress }: Diagnosti
         </div>
         <div>
           <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-1">Onde essa cliente ideal quer chegar, em cena concreta?</label>
-          <p className="text-[11px] text-slate-400 dark:text-ink-muted mb-2">Não "crescer no Instagram" — algo que ela reconheceria se você descrevesse pra ela.</p>
+          <p className="text-[11px] text-slate-400 dark:text-ink-muted mb-2">Não "crescer no Instagram". Um exemplo real, de outra profissional: "abrir a câmera e gravar sem editar sete vezes antes". Algo que ela reconheceria se você descrevesse pra ela.</p>
           <textarea
             value={pontoB}
             onChange={(e) => setPontoB(e.target.value)}
@@ -108,7 +108,7 @@ export default function DiagnosticoTab({ progress, onUpdateProgress }: Diagnosti
       <div className="rounded-2xl bg-rose-50/30 dark:bg-ink border border-rose-100/30 dark:border-ink-hairline p-4 space-y-4">
         <div>
           <p className="text-[10px] font-sans font-bold text-rosegold uppercase tracking-[0.15em]">Raio-X dos 5 Pilares</p>
-          <p className="text-[11px] text-slate-400 dark:text-ink-muted mt-1">Onde você já está na metodologia — isso vira seu mapa de progresso no Dashboard.</p>
+          <p className="text-[11px] text-slate-400 dark:text-ink-muted mt-1">Onde você já está na metodologia. Isso vira seu mapa de progresso no Dashboard.</p>
         </div>
         {PILARES.map((p) => (
           <div key={p.key}>
