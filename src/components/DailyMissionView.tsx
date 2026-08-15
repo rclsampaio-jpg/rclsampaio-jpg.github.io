@@ -775,6 +775,15 @@ export default function DailyMissionView({
   const dailyVideoId = getYouTubeId(localizedContent.videoUrl);
   const dailyVideoThumbnail = dailyVideoId ? `https://img.youtube.com/vi/${dailyVideoId}/hqdefault.jpg` : null;
   const [isDailyVideoPlaying, setIsDailyVideoPlaying] = useState(false);
+  const [showManualVideoFallback, setShowManualVideoFallback] = useState(false);
+  useEffect(() => {
+    if (!isDailyVideoPlaying) {
+      setShowManualVideoFallback(false);
+      return;
+    }
+    const timer = setTimeout(() => setShowManualVideoFallback(true), 20000);
+    return () => clearTimeout(timer);
+  }, [isDailyVideoPlaying]);
   const dailyVideoPlayerRef = useRef<any>(null);
   const dailyVideoPlayerElId = `daily-video-player-${currentDay.dayNumber}`;
 
@@ -1553,12 +1562,12 @@ export default function DailyMissionView({
                     </button>
                   )}
                   <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">{textDict.videoDesc}</p>
-                  {/* Fallback manual: a detecção automática de "vídeo
-                      terminou" depende de postMessage do player do
-                      YouTube, que pode falhar dependendo de rede/bloqueio
-                      de terceiros. Sem isso, ela ficaria travada de novo
-                      sem conseguir concluir o dia. */}
-                  {isDailyVideoPlaying && !videoCompleted && (
+                  {/* Fallback manual escondido por padrão agora que a
+                      detecção automática (YT.Player onStateChange) está
+                      funcionando. Só aparece depois de um tempo assistindo
+                      sem detectar o fim, pra nunca travar a conclusão do
+                      dia se algo falhar (rede, bloqueio de terceiros). */}
+                  {isDailyVideoPlaying && !videoCompleted && showManualVideoFallback && (
                     <button
                       type="button"
                       onClick={() => setVideoCompleted(true)}
