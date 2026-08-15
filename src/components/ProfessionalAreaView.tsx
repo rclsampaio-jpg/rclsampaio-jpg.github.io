@@ -508,13 +508,13 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
           <div className="rounded-2xl bg-rosegold/5 dark:bg-rosegold-light/5 border border-rosegold/20 p-5 space-y-2 mt-4">
             <p className="text-sm font-serif font-semibold text-slate-800 dark:text-ink-text">Pra praticar e achar sua voz</p>
             <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">
-              A Biblioteca do RenaSer já tem o guia de hooks/anti-hooks e os 7 ângulos de Reels de conversão, além dos 14 prompts prontos pra pedir conteúdo direto pro Renata OS. Não precisa duplicar aqui, é só ir lá.
+              Na Biblioteca você encontra o guia de hooks/anti-hooks e os 7 ângulos de Reels de conversão, além dos 14 prompts prontos pra pedir conteúdo direto pro Renata OS.
             </p>
             <button
               onClick={onGoToLibrary}
               className="text-xs font-sans font-bold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
             >
-              Ir pra Biblioteca →
+              Ver na Biblioteca (PDFs) →
             </button>
           </div>
         </motion.div>

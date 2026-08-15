@@ -33,9 +33,10 @@ interface LibraryViewProps {
   progress: UserProgress;
   onUpdateProgress: (newProgress: UserProgress) => void;
   onTriggerSos?: () => void;
+  initialCategory?: string;
 }
 
-export default function LibraryView({ lang, progress, onUpdateProgress, onTriggerSos }: LibraryViewProps) {
+export default function LibraryView({ lang, progress, onUpdateProgress, onTriggerSos, initialCategory }: LibraryViewProps) {
   const prefGrammar = resolveGrammarPreference(progress.grammarPreference);
   const [assets, setAssets] = useState<LibraryAsset[]>(() => loadLibraryAssets());
   const [support, setSupport] = useState<SupportConfig>(() => loadSupportConfig());
@@ -49,7 +50,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   const currentWeeklyVideo = support.weeklyVideos[support.weeklyVideos.length - 1] || '';
   const weeklyVideoThumbnail = getYouTubeThumbnail(currentWeeklyVideo);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory || 'all');
   
   // Media Player states
   const [activeAsset, setActiveAsset] = useState<LibraryAsset | null>(null);

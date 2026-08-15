@@ -329,6 +329,11 @@ function AppContent() {
   };
 
   // Select day to focus in Home view
+  // Categoria da Biblioteca a abrir direto, usada quando outra tela (ex:
+  // Destrave/Referência) leva a pessoa pra lá já filtrado, em vez de cair
+  // em "Todos" e ela ter que procurar. Nav normal da Biblioteca reseta isso.
+  const [libraryInitialCategory, setLibraryInitialCategory] = useState<string | undefined>(undefined);
+
   const [focusedDayNumber, setFocusedDayNumber] = useState<number>(() => {
     const defaultProgress = loadUserProgressFromStorage();
     return defaultProgress.currentDay <= 30 ? defaultProgress.currentDay : 30;
@@ -865,7 +870,7 @@ function AppContent() {
             </button>
 
             <button
-              onClick={() => setActiveTab('library')}
+              onClick={() => { setLibraryInitialCategory(undefined); setActiveTab('library'); }}
               className={`px-4 py-2 text-xs font-sans font-medium rounded-xl transition ${
                 activeTab === 'library'
                   ? 'bg-rosegold text-white shadow-sm shadow-rosegold/25'
@@ -1016,7 +1021,7 @@ function AppContent() {
               </button>
 
               <button
-                onClick={() => { setActiveTab('library'); setMobileMenuOpen(false); }}
+                onClick={() => { setLibraryInitialCategory(undefined); setActiveTab('library'); setMobileMenuOpen(false); }}
                 className={`w-full py-2.5 px-4 text-left rounded-xl transition ${activeTab === 'library' ? 'bg-rosegold text-white font-bold dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light' : 'text-slate-700 dark:text-ink-muted'}`}
               >
                 {labels.library}
@@ -1287,7 +1292,7 @@ function AppContent() {
                 progress={progress}
                 lang={lang}
                 onUpdateProgress={updateProgress}
-                onGoToLibrary={() => setActiveTab('library')}
+                onGoToLibrary={() => { setLibraryInitialCategory('pdfs'); setActiveTab('library'); }}
               />
             )}
 
@@ -1327,6 +1332,7 @@ function AppContent() {
                 progress={progress}
                 onUpdateProgress={updateProgress}
                 onTriggerSos={() => setActiveTab('sos')}
+                initialCategory={libraryInitialCategory}
               />
             )}
 
@@ -1423,7 +1429,7 @@ function AppContent() {
           </button>
 
           <button
-            onClick={() => setActiveTab('library')}
+            onClick={() => { setLibraryInitialCategory(undefined); setActiveTab('library'); }}
             className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
               activeTab === 'library'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
