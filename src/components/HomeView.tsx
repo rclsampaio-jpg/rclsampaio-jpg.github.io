@@ -174,6 +174,18 @@ export default function HomeView({
   });
   // Histórico de navegação do onboarding, pra permitir "Voltar".
   const [onboardHistory, setOnboardHistory] = useState<OnboardState[]>([]);
+  // Borboleta de abertura: fica voando por 10s fixos desde que a tela de
+  // splash apareceu, independente de ela clicar em "Começar Jornada" e
+  // avançar pro próximo passo. Antes ela sumia na hora do clique (o div
+  // só renderizava com onboardState === 'splash'), um corte abrupto no
+  // meio do voo.
+  const [showIntroButterfly, setShowIntroButterfly] = useState(() => onboardState === 'splash');
+  useEffect(() => {
+    if (onboardState !== 'splash') return;
+    const timer = setTimeout(() => setShowIntroButterfly(false), 10000);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const goToOnboardState = (next: OnboardState) => {
     setOnboardHistory((h) => [...h, onboardState]);
     setOnboardState(next);
@@ -438,11 +450,12 @@ export default function HomeView({
         {/* Ambient atmospheric backdrop light */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-rosegold/10 dark:bg-rosegold/5 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDuration: '6s' }} />
 
-        {/* Butterfly only on this first "Começar Jornada" screen, not
-            repeated across the later onboarding steps (lang/name/etc), so
-            new users only see the animation once, not on a loop through
-            the whole setup flow. */}
-        {onboardState === 'splash' && (
+        {/* Borboleta de abertura: voa em loop por 10s fixos desde que a
+            splash apareceu, mesmo depois de clicar "Começar Jornada" e
+            trocar de tela (showIntroButterfly não depende mais de
+            onboardState === 'splash'), pra não sumir de corte no meio do
+            voo. */}
+        {showIntroButterfly && (
           <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
             <motion.div
               initial={{ x: '-15vw', y: '65vh', rotate: 15, opacity: 0 }}
@@ -454,7 +467,9 @@ export default function HomeView({
               }}
               transition={{
                 duration: 6.5,
-                ease: "easeInOut"
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatDelay: 0.5
               }}
               className="absolute"
             >

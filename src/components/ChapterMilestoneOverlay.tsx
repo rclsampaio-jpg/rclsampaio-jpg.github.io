@@ -145,45 +145,43 @@ export default function ChapterMilestoneOverlay({
     }
   };
 
-  // Accent styles depending on chapter color
+  // Accent styles depending on chapter, sempre a partir dos 3 tokens reais
+  // de marca (rosegold, rosegold-light, accentgold — ver src/index.css),
+  // nunca hex inventado fora da paleta.
   const getChapterAccents = (cid: number) => {
     switch (cid) {
       case 1:
         return {
-          glow: 'shadow-[#C9A097]/30 border-[#C9A097]/40',
-          text: 'text-[#C9A097]',
-          bg: 'bg-[#C9A097]/15 text-[#C9A097]',
-          button: 'bg-[#C9A097] hover:bg-[#B58980] text-white',
-          accentGradient: 'from-[#FAF8F5] via-[#FCFBF9] to-[#FAF8F5]',
-          badgeText: 'text-[#C9A097]'
+          glow: 'shadow-rosegold-light/30 border-rosegold-light/40',
+          text: 'text-rosegold dark:text-rosegold-light',
+          bg: 'bg-rosegold-light/20 text-rosegold dark:text-rosegold-light',
+          button: 'bg-rosegold-light hover:brightness-95 text-warmbrown',
+          badgeText: 'text-rosegold dark:text-rosegold-light'
         };
       case 2:
         return {
-          glow: 'shadow-[#B76E79]/30 border-[#B76E79]/40',
-          text: 'text-[#B76E79]',
-          bg: 'bg-[#B76E79]/15 text-[#B76E79]',
-          button: 'bg-[#B76E79] hover:bg-[#A35D68] text-white',
-          accentGradient: 'from-[#FAF8F5] via-[#FFFBFB] to-[#FAF8F5]',
-          badgeText: 'text-[#B76E79]'
+          glow: 'shadow-rosegold/30 border-rosegold/40',
+          text: 'text-rosegold dark:text-rosegold-light',
+          bg: 'bg-rosegold/15 text-rosegold dark:text-rosegold-light',
+          button: 'bg-rosegold hover:bg-[#A35D68] text-white',
+          badgeText: 'text-rosegold dark:text-rosegold-light'
         };
       case 3:
         return {
-          glow: 'shadow-[#E8B4A0]/30 border-[#E8B4A0]/40',
-          text: 'text-[#E8B4A0]',
-          bg: 'bg-[#E8B4A0]/20 text-[#D4AF37]',
-          button: 'bg-gradient-to-r from-[#B76E79] to-[#D4AF37] text-white hover:opacity-95',
-          accentGradient: 'from-[#FAF8F5] via-[#FFFDF9] to-[#FAF8F5]',
-          badgeText: 'text-[#D4AF37]'
+          glow: 'shadow-accentgold/30 border-accentgold/40',
+          text: 'text-rosegold dark:text-rosegold-light',
+          bg: 'bg-accentgold/15 text-accentgold',
+          button: 'bg-gradient-to-r from-rosegold to-accentgold text-white hover:opacity-95',
+          badgeText: 'text-accentgold'
         };
       case 4:
       default:
         return {
-          glow: 'shadow-[#D4AF37]/40 border-[#D4AF37]/50',
-          text: 'text-[#D4AF37]',
-          bg: 'bg-[#D4AF37]/15 text-[#D4AF37]',
-          button: 'bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] text-[#2C221E] font-bold shadow-md hover:brightness-105',
-          accentGradient: 'from-[#FAF8F5] via-[#FFFDF5] to-[#FAF8F5]',
-          badgeText: 'text-[#D4AF37]'
+          glow: 'shadow-accentgold/40 border-accentgold/50',
+          text: 'text-accentgold',
+          bg: 'bg-accentgold/15 text-accentgold',
+          button: 'bg-accentgold hover:brightness-105 text-warmbrown font-bold shadow-md',
+          badgeText: 'text-accentgold'
         };
     }
   };
@@ -213,7 +211,8 @@ export default function ChapterMilestoneOverlay({
       qSurprised: 'O que mais te surpreendeu nesta semana de aprendizado?',
       qFeeling: 'Como você se sente exatamente agora?',
       qFutureNote: 'Quer deixar uma nota sincera para o seu eu do futuro? (Opcional, máx 300 caracteres)',
-      notePlaceholder: 'Escreva algo gentil que você queira ler mais para a frente...'
+      notePlaceholder: 'Escreva algo gentil que você queira ler mais para a frente...',
+      identityShiftLabel: 'Quem você está se tornando'
     },
     en: {
       chapter: 'Chapter',
@@ -234,7 +233,8 @@ export default function ChapterMilestoneOverlay({
       qSurprised: 'What surprised you the most during this week of learning?',
       qFeeling: 'How do you feel exactly right now?',
       qFutureNote: 'Would you like to leave an honest note for your future self? (Optional, max 300 chars)',
-      notePlaceholder: 'Write something gentle you would want to read in the future...'
+      notePlaceholder: 'Write something gentle you would want to read in the future...',
+      identityShiftLabel: 'Who you are becoming'
     },
     es: {
       chapter: 'Capítulo',
@@ -255,7 +255,8 @@ export default function ChapterMilestoneOverlay({
       qSurprised: '¿Qué fue lo que más te sorprendió durante esta semana de aprendizaje?',
       qFeeling: '¿Cómo te sientes exactamente en este momento?',
       qFutureNote: '¿Quieres dejar una nota sincera para tu yo del futuro? (Opcional, máx 300 caracteres)',
-      notePlaceholder: 'Escribe algo tierno que quieras leer más adelante...'
+      notePlaceholder: 'Escribe algo tierno que quieras leer más adelante...',
+      identityShiftLabel: 'Quién te estás convirtiendo'
     }
   }[lang];
 
@@ -266,9 +267,10 @@ export default function ChapterMilestoneOverlay({
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 select-none"
     >
-      {/* Borboleta voando pela tela inteira, igual à da tela de login, o
-          tempo todo que esse pop-up estiver aberto. */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Borboleta voando por cima do card (z-[60], acima do modal),
+          mais rápida que a da tela de login pra ficar visível durante o
+          tempo que a pessoa fica lendo esse pop-up especificamente. */}
+      <div className="absolute inset-0 z-[60] pointer-events-none overflow-hidden">
         <motion.div
           initial={{ x: '-15vw', y: '70vh', rotate: 20 }}
           animate={{
@@ -277,10 +279,10 @@ export default function ChapterMilestoneOverlay({
             rotate: [20, 0, 15, -10, 5, -20]
           }}
           transition={{
-            duration: 14,
+            duration: 7,
             ease: 'easeInOut',
             repeat: Infinity,
-            repeatDelay: 2
+            repeatDelay: 1
           }}
           className="absolute"
         >
@@ -310,14 +312,14 @@ export default function ChapterMilestoneOverlay({
           
           {/* Header section */}
           <div className="text-center space-y-2">
-            <span className={`text-[11px] font-sans tracking-widest font-extrabold uppercase px-3 py-1 rounded-full ${styles.bg}`}>
+            <span className={`text-[11px] font-sans tracking-widest font-bold uppercase px-3 py-1 rounded-full ${styles.bg}`}>
               {trans.chapter} {chapter.id}
             </span>
             <EditableText
               contentKey={`journey.chapter.${chapter.id}.title`}
               fallback={chapter.title[lang]}
               as="h1"
-              className={`text-4xl font-serif tracking-tight font-black uppercase mt-1 ${styles.text}`}
+              className={`text-3xl sm:text-4xl font-display font-light tracking-tight mt-1 ${styles.text}`}
             />
             <EditableText
               contentKey={`journey.chapter.${chapter.id}.theme`}
@@ -446,11 +448,11 @@ export default function ChapterMilestoneOverlay({
               </div>
 
               {/* Identity Reinforcement Block */}
-              <div className="text-center py-3 bg-[#FAF8F5] dark:bg-ink-raised rounded-xl border border-rose-100/10 dark:border-rosegold/5 space-y-0.5">
+              <div className="text-center py-3 bg-warmwhite dark:bg-ink-raised rounded-xl border border-rose-100/10 dark:border-rosegold/5 space-y-0.5">
                 <span className="text-[10px] text-slate-400 dark:text-ink-muted uppercase tracking-widest font-bold">
-                  Identity Shift
+                  {trans.identityShiftLabel}
                 </span>
-                <p className="text-sm font-sans font-bold text-[#D4AF37]">
+                <p className="text-sm font-sans font-bold text-accentgold">
                   {adaptMessage(
                     (chapter.id === 4 ? MILESTONE_COPY[lang].enteredNewVersion : MILESTONE_COPY[lang].anotherPromiseKept)[resolvedGuideStyle],
                     grammarPreference,
