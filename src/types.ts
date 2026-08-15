@@ -148,6 +148,16 @@ export interface UserProgress {
   // dos check-ins).
   professionalDiagnostic?: ProfessionalDiagnostic;
   professionalCheckIns?: Record<string, ProfessionalCheckIn>; // key = YYYY-MM-DD
+
+  // Dia da semana que ela escolheu pra organização/produção de conteúdo em
+  // lote (0=Segunda..6=Domingo, mesma convenção de getWeekdayPosition em
+  // templateData.ts). O app reconfirma periodicamente em vez de fixar pra
+  // sempre, ver ProductionDayPrompt em App.tsx.
+  productionDayPreference?: {
+    dayOfWeek: number;
+    permanent: boolean;
+    nextAskDate: string | null; // YYYY-MM-DD, null quando permanent = true
+  };
 }
 
 export interface ProfessionalDiagnostic {

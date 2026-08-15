@@ -118,6 +118,48 @@ function AppContent() {
     await signOut();
     clearLocalProgressCache();
   };
+
+  // Reconfirma periodicamente o dia de organização/produção escolhido no
+  // onboarding, em vez de fixar pra sempre. Só mostra quando a data marcada
+  // já passou e ela ainda não escolheu "manter definitivo".
+  const productionDayDue = Boolean(
+    progress.productionDayPreference
+    && !progress.productionDayPreference.permanent
+    && progress.productionDayPreference.nextAskDate
+    && progress.productionDayPreference.nextAskDate <= getLocalDateISO()
+  );
+  const [showProductionDayCheck, setShowProductionDayCheck] = useState(false);
+  useEffect(() => {
+    if (productionDayDue) setShowProductionDayCheck(true);
+  }, [productionDayDue]);
+
+  const PRODUCTION_DAY_LABELS_PT = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+
+  const snoozeProductionDay = (days: number) => {
+    const nextAsk = new Date();
+    nextAsk.setDate(nextAsk.getDate() + days);
+    updateProgress({
+      ...progress,
+      productionDayPreference: {
+        dayOfWeek: progress.productionDayPreference?.dayOfWeek ?? 1,
+        permanent: false,
+        nextAskDate: nextAsk.toISOString().slice(0, 10)
+      }
+    });
+    setShowProductionDayCheck(false);
+  };
+
+  const keepProductionDayForever = () => {
+    updateProgress({
+      ...progress,
+      productionDayPreference: {
+        dayOfWeek: progress.productionDayPreference?.dayOfWeek ?? 1,
+        permanent: true,
+        nextAskDate: null
+      }
+    });
+    setShowProductionDayCheck(false);
+  };
   const [lang, setLang] = useState<Language>('pt'); // Default language
   // Excludes 'cms' deliberately — that's admin-gated and re-entering it
   // without re-unlocking would be confusing; it always falls back to Home.
@@ -1104,6 +1146,44 @@ function AppContent() {
               )}
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Reconfirmação periódica do dia de organização/produção */}
+      <AnimatePresence>
+        {showProductionDayCheck && progress.productionDayPreference && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-6">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              className="bg-[#FAF8F5] dark:bg-ink-raised max-w-sm w-full rounded-3xl p-8 border border-rosegold/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none space-y-4"
+            >
+              <h3 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
+                Você gostaria de manter {PRODUCTION_DAY_LABELS_PT[progress.productionDayPreference.dayOfWeek]} como seu dia de organização e produção?
+              </h3>
+              <div className="space-y-2 pt-1">
+                <button
+                  onClick={() => snoozeProductionDay(7)}
+                  className="w-full py-3 px-4 rounded-xl bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
+                >
+                  Sim, perguntar de novo em 7 dias
+                </button>
+                <button
+                  onClick={() => snoozeProductionDay(15)}
+                  className="w-full py-3 px-4 rounded-xl bg-rose-50/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
+                >
+                  Sim, perguntar de novo em 15 dias
+                </button>
+                <button
+                  onClick={keepProductionDayForever}
+                  className="w-full py-3 px-4 rounded-xl bg-rose-50/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
+                >
+                  Manter definitivo, não perguntar mais
+                </button>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
 

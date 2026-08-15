@@ -170,13 +170,15 @@ export default function HomeView({
   // 'complete' for one frame, briefly flashing the normal Home screen
   // (header + bottom nav) underneath before switching to the onboarding
   // overlay on the next render.
-  const [onboardState, setOnboardState] = useState<'splash' | 'lang' | 'name' | 'guidestyle' | 'grammar' | 'welcome' | 'destraveAsk' | 'destraveCode' | 'destraveDiagnostic' | 'intro' | 'complete'>(() => {
+  const [onboardState, setOnboardState] = useState<'splash' | 'lang' | 'name' | 'guidestyle' | 'grammar' | 'productionDay' | 'welcome' | 'destraveAsk' | 'destraveCode' | 'destraveDiagnostic' | 'intro' | 'complete'>(() => {
     const isCompleted = localStorage.getItem('renaser_onboarded') === 'true';
     return isCompleted ? 'complete' : 'splash';
   });
   const [selectedStyle, setSelectedStyle] = useState<'gentle' | 'challenger' | 'strategic' | 'inspirational'>('gentle');
   const [selectedGrammar, setSelectedGrammar] = useState<'feminine' | 'masculine'>('feminine');
   const [nameInput, setNameInput] = useState('');
+  // 0=Segunda..6=Domingo. Terça (1) como padrão, combinado previamente.
+  const [selectedProductionDay, setSelectedProductionDay] = useState(1);
 
   // Passo "Você faz parte do Destrave?" dentro do onboarding: código +
   // diagnóstico ficam feitos ali mesmo pra quem já comprou, em vez de ela
@@ -254,6 +256,21 @@ export default function HomeView({
             skippedIntroCount: 0,
             totalSessions: 1,
             lastActiveTimestamp: Date.now()
+          }
+        });
+      }
+      setOnboardState('productionDay');
+    }
+    else if (onboardState === 'productionDay') {
+      if (onUpdateProgress) {
+        const nextAsk = new Date();
+        nextAsk.setDate(nextAsk.getDate() + 7);
+        onUpdateProgress({
+          ...progress,
+          productionDayPreference: {
+            dayOfWeek: selectedProductionDay,
+            permanent: false,
+            nextAskDate: nextAsk.toISOString().slice(0, 10)
           }
         });
       }
@@ -780,6 +797,55 @@ export default function HomeView({
                   as="span"
                 />
                 <ArrowRight className="h-4 w-4" />
+              </button>
+            </motion.div>
+          )}
+
+          {onboardState === 'productionDay' && (
+            <motion.div
+              key="productionDay"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-8 max-w-md flex flex-col items-center relative z-10 p-8 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none!"
+            >
+              <div className="w-16 h-16 bg-rosegold/10 border border-rosegold/15 text-rosegold rounded-[1.5rem] flex items-center justify-center">
+                <Award className="h-7 w-7" />
+              </div>
+              <div className="space-y-2 text-center">
+                <h1 className="text-2xl font-display font-light text-slate-900 dark:text-white leading-tight">
+                  {lang === 'pt' ? 'Qual dia você prefere pra organizar e produzir conteúdo?' : lang === 'es' ? '¿Qué día prefieres para organizar y producir contenido?' : 'Which day do you prefer for planning and batch-producing content?'}
+                </h1>
+                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed max-w-xs mx-auto">
+                  {lang === 'pt' ? 'Você pode mudar isso depois, o app vai perguntar de novo de tempos em tempos.' : lang === 'es' ? 'Puedes cambiarlo después, la app te lo preguntará de nuevo cada cierto tiempo.' : "You can change this later, the app will ask again from time to time."}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {(lang === 'pt'
+                  ? ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
+                  : lang === 'es'
+                  ? ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+                  : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+                ).map((dayLabel, idx) => (
+                  <button
+                    key={dayLabel}
+                    onClick={() => setSelectedProductionDay(idx)}
+                    className={`px-4 py-2.5 rounded-xl text-xs font-sans font-semibold transition cursor-pointer border ${
+                      selectedProductionDay === idx
+                        ? 'bg-rosegold text-white border-rosegold'
+                        : 'bg-white/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border-rose-100/40 dark:border-ink-hairline'
+                    }`}
+                  >
+                    {dayLabel}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={handleNextOnboard}
+                className="px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <EditableText contentKey="home.onboarding.continue" fallback={trans.continue} as="span" />
               </button>
             </motion.div>
           )}
