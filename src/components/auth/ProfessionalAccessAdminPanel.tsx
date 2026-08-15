@@ -25,7 +25,7 @@ export default function ProfessionalAccessAdminPanel() {
       });
       const json = await res.json();
       if (!json.code) {
-        setError('Não foi possível gerar o código.');
+        setError(json.error ? `${json.error} (status ${res.status})` : `Não foi possível gerar o código (status ${res.status}).`);
         return;
       }
       setLastCode(json.code);
