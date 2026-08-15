@@ -15,7 +15,8 @@
 export interface PromptItem {
   id: string;
   purpose: string; // "pra que serve", uma linha
-  text: string;
+  text: string; // versão limpa, copiada pelo botão "copiar prompt"
+  displayText?: string; // versão exibida no card, quando difere de `text`; trechos entre ~~assim~~ aparecem riscados (exemplo de referência, não pra copiar)
 }
 
 export interface PromptGroup {
@@ -138,18 +139,19 @@ export const PROMPT_GROUPS: PromptGroup[] = [
   {
     id: 'doodle',
     title: 'Combo Doodle (foto com rabiscos)',
-    intro: 'É um combo de 3 passos, usa a Renata OS e depois o ChatGPT: 1) você manda sua foto + o prompt abaixo pra Renata OS, ela sugere uma frase pra cada uma das 6 posições do doodle, de acordo com a sua mensagem principal. 2) Você pega essas frases. 3) Vai no ChatGPT e manda sua MESMA foto original (sem rabisco nenhum) + o prompt gerador de imagem (também abaixo) + as frases que a Renata OS te deu. O ChatGPT devolve a imagem final com os doodles desenhados por cima.',
+    intro: 'É um combo de 3 passos, usa a Renata OS e depois o ChatGPT: 1) Salve a imagem abaixo + manda o primeiro prompt abaixo da imagem pra Renata OS, ela sugere uma frase pra cada uma das 6 posições do doodle, de acordo com a sua mensagem principal. 2) Copie a resposta da Renata OS. 3) Vai no ChatGPT e manda uma foto sua original (que você quer transformar em doodle) + o prompt gerador de imagem (segundo prompt) + a resposta que a Renata OS te deu. O ChatGPT devolve a imagem final com os doodles desenhados por cima.',
     exampleImage: '/assets/images/doodle-referencia.jpg',
     exampleImageCaption: 'Exemplo de como fica o resultado final, com as 6 posições de frase preenchidas.',
     prompts: [
       {
         id: 'p12',
-        purpose: 'Passo 1: manda pra Renata OS junto com sua foto, ela sugere as 6 frases do doodle.',
-        text: 'Sou criadora de conteúdo [estágio] e minha mensagem principal é [mensagem principal]. Quero que você sugira as frases pras 6 posições de um doodle (rabiscos ao redor da minha foto: topo, lado esquerdo, lado direito superior, centro direito, inferior direito, inferior esquerdo), de acordo com a minha mensagem principal, usando a mentalidade da RenaSer: fazer com que a audiência fique obcecada comigo. Analise e me traga sua recomendação, uma frase curta por posição.'
+        purpose: 'Passo 1: salve a imagem acima e manda esse prompt pra Renata OS, ela sugere as 6 frases do doodle.',
+        text: 'Sou criadora de conteúdo [seu estágio] e minha mensagem principal é [sua mensagem principal]. Quero que você sugira as frases pras 6 posições de um doodle (rabiscos ao redor da minha foto: topo, lado esquerdo, lado direito superior, centro direito, inferior direito, inferior esquerdo), de acordo com a minha mensagem principal, usando a mentalidade da RenaSer: fazer com que a audiência fique obcecada comigo. Analise e me traga sua recomendação, uma frase curta por posição.',
+        displayText: 'Sou criadora de conteúdo ~~inicial~~ [seu estágio] e minha mensagem principal é ~~encorajar pessoas a começarem tb e provar que funciona. Criando um instagram do 0 e superando todos os medos de falhar/do julgamento que o começo traz~~ [sua mensagem principal]. Quero que você sugira as frases pras 6 posições de um doodle (rabiscos ao redor da minha foto: topo, lado esquerdo, lado direito superior, centro direito, inferior direito, inferior esquerdo), de acordo com a minha mensagem principal, usando a mentalidade da RenaSer: fazer com que a audiência fique obcecada comigo. Analise e me traga sua recomendação, uma frase curta por posição.'
       },
       {
         id: 'p12b',
-        purpose: 'Passo 3: manda no ChatGPT junto com a MESMA foto original (sem rabisco) e as frases que a Renata OS te deu.',
+        purpose: 'Passo 3: manda no ChatGPT junto com sua foto original e a resposta que a Renata OS te deu.',
         text: 'Analise a imagem enviada e preserve o assunto original, a composição e a iluminação. Não altere a identidade nem a estrutura do assunto principal. Adicione doodles divertidos, feitos à mão, que interagem diretamente com o assunto da imagem. Os doodles devem imitar, seguir ou exagerar as formas, gestos ou movimentos presentes, como contornar poses, estender membros, adicionar linhas de movimento, ou criar elementos imaginativos que "respondem" ao assunto. Garanta que os doodles pareçam naturalmente integrados à cena, como se tivessem sido desenhados sobre a foto com intenção. Use um estilo esboçado, imperfeito, feito à mão, com linhas orgânicas, traços levemente irregulares e uma sensação casual e ilustrada. Inclua elementos de texto manuscrito e brincalhão ao redor da imagem, usando as frases que a Renata OS gerou pra cada posição. O texto deve combinar com o clima ou contexto da cena, num tom brincalhão e espontâneo. Mantenha uma composição equilibrada, pra que os doodles reforcem a imagem sem sobrecarregar o assunto principal. Mantenha a estética geral divertida, expressiva e pronta pra rede social. Alta resolução, sobreposição limpa, cores vibrantes e harmônicas. Gere a imagem em dimensões pra post de Instagram.'
       }
     ]

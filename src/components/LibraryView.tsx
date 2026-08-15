@@ -287,6 +287,23 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
     { key: 'wellness', icon: Wind }
   ].filter((cat) => !HIDDEN_LIBRARY_CATEGORIES.includes(cat.key));
 
+  // Renderiza trechos entre ~~assim~~ como exemplo riscado de referência
+  // (não é markdown geral, só essa marcação específica dos prompts).
+  const renderPromptText = (text: string) => {
+    const parts = text.split(/(~~.+?~~)/g);
+    return parts.map((part, i) => {
+      const match = part.match(/^~~(.+)~~$/);
+      if (match) {
+        return (
+          <s key={i} className="opacity-50 decoration-1">
+            {match[1]}
+          </s>
+        );
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
+
   const [expandedPromptGroup, setExpandedPromptGroup] = useState<string | null>(null);
   const [copiedPromptId, setCopiedPromptId] = useState<string | null>(null);
   const copyLibraryPrompt = (id: string, text: string) => {
@@ -941,7 +958,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
                       {group.prompts.map((p) => (
                         <div key={p.id} className="rounded-xl bg-rose-50/40 dark:bg-ink p-3 space-y-2">
                           <p className="text-xs text-slate-500 dark:text-ink-muted">{p.purpose}</p>
-                          <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed">{p.text}</p>
+                          <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed">{renderPromptText(p.displayText ?? p.text)}</p>
                           <button
                             onClick={() => copyLibraryPrompt(p.id, p.text)}
                             className="flex items-center gap-1.5 text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
