@@ -697,6 +697,7 @@ function AppContent() {
     for (let chapterId = 1; chapterId <= 4; chapterId++) {
       localStorage.removeItem(`renaser_intro_chapter_${chapterId}`);
     }
+    localStorage.removeItem('renaser_nextlevel_confetti_seen');
     const todayISO = getLocalDateISO();
     const defaultProgress: UserProgress = {
       currentDay: 1,

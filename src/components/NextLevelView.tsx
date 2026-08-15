@@ -3,12 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Award, Heart, Sparkles, Compass, CheckCircle2, Star, Share2, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { resolveGuideStyle, ToneVariants } from '../utils/grammar';
 import EditableText from './editable/EditableText';
+import ConfettiBurst from './ConfettiBurst';
 import { PRACTICE_WEEKS, getCurrentPracticeWeekIndex } from '../data/practiceWeeksData';
 
 interface NextLevelViewProps {
@@ -177,6 +178,23 @@ export default function NextLevelView({ progress, lang, isProfessionalUnlocked, 
   const practiceWeek = PRACTICE_WEEKS[practiceWeekIndex];
   const guideStyle = resolveGuideStyle(progress.guideStyle);
 
+  // Confete só na primeira vez que ela chega aqui de verdade (marca
+  // permanente no localStorage), não toda vez que reabrir a aba depois.
+  // Admin sempre vê, pra poder testar sem precisar zerar essa marca.
+  const NEXTLEVEL_CONFETTI_SEEN_KEY = 'renaser_nextlevel_confetti_seen';
+  const [showConfetti, setShowConfetti] = useState(false);
+  useEffect(() => {
+    if (isAdminUnlocked) {
+      setShowConfetti(true);
+      return;
+    }
+    if (localStorage.getItem(NEXTLEVEL_CONFETTI_SEEN_KEY) !== 'true') {
+      setShowConfetti(true);
+      localStorage.setItem(NEXTLEVEL_CONFETTI_SEEN_KEY, 'true');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const textDict = {
     pt: {
       certificateTitle: 'Certificado de Autenticidade Digital',
@@ -228,9 +246,10 @@ export default function NextLevelView({ progress, lang, isProfessionalUnlocked, 
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="max-w-4xl mx-auto space-y-12 select-none"
+      className="max-w-4xl mx-auto space-y-12 select-none relative"
     >
-      
+      {showConfetti && <ConfettiBurst burstKey="nextlevel-mount" particleCount={80} />}
+
       {/* 1. Next Level Premium Hero Banner */}
       <div className="text-center space-y-4 py-8">
         <motion.div
