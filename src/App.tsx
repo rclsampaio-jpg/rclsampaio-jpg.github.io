@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Compass, Star, Settings, ShieldAlert,
@@ -367,6 +368,18 @@ function AppContent() {
   const [hasOnboarded, setHasOnboarded] = useState(
     () => localStorage.getItem('renaser_onboarded') === 'true'
   );
+  // Borboleta de abertura: renderizada aqui (raiz do app, via portal), não
+  // dentro do HomeView, porque HomeView é desmontado assim que o
+  // onboarding termina e a tela troca pra Missão Diária (isTodayDoneOnHome
+  // vira false no mesmo instante) — a borboleta cortava de corte nesse
+  // exato momento quando vivia só dentro do HomeView. Dispara uma vez, na
+  // splash inicial, e voa por 10s fixos independente de qual tela estiver
+  // por baixo dela.
+  const [showIntroButterfly, setShowIntroButterfly] = useState(false);
+  const handleIntroButterflyStart = () => {
+    setShowIntroButterfly(true);
+    setTimeout(() => setShowIntroButterfly(false), 10000);
+  };
   // Fase de Prática: depois do dia 30, a Missão Diária passa a vir da
   // cadência semanal (ver PracticeMissionView), não mais do array de 30
   // dias gerados. "Hoje concluído" aqui significa progress.currentDay (o
@@ -1578,6 +1591,7 @@ function AppContent() {
                   isAdminUnlocked={isAdminUnlocked}
                   onJumpToDay={setFocusedDayNumber}
                   onOnboardingComplete={() => setHasOnboarded(true)}
+                  onIntroButterflyStart={handleIntroButterflyStart}
                 />
               ) : isPracticePhase ? (
                 <PracticeMissionView
@@ -1732,6 +1746,37 @@ function AppContent() {
           </Suspense>
           </motion.div>
         </AnimatePresence>
+
+        {showIntroButterfly && createPortal(
+          <div className="fixed inset-0 z-[70] overflow-hidden pointer-events-none">
+            <motion.div
+              initial={{ x: '-15vw', y: '65vh', rotate: 15, opacity: 0 }}
+              animate={{
+                x: '115vw',
+                y: ['65vh', '48vh', '55vh', '32vh', '40vh', '15vh'],
+                rotate: [15, 18, 20, 19, 22, 25],
+                opacity: [0, 1, 1, 1, 1, 0]
+              }}
+              transition={{
+                duration: 6.5,
+                ease: 'easeInOut',
+                repeat: Infinity,
+                repeatDelay: 0.5
+              }}
+              className="absolute"
+            >
+              <motion.img
+                src="/assets/images/butterfly.png"
+                alt=""
+                animate={{ scaleY: [1, 0.78, 1], skewX: [0, 3, 0] }}
+                transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut' }}
+                className="h-8 w-auto"
+                style={{ transformOrigin: 'center 70%' }}
+              />
+            </motion.div>
+          </div>,
+          document.body
+        )}
 
         {/* Dynamic Chapter Milestone & Celebration Overlays */}
         <AnimatePresence>
