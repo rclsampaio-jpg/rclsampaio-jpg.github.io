@@ -71,7 +71,7 @@ export default function DiagnosticoTab({ progress, onUpdateProgress }: Diagnosti
       <div className="rounded-2xl bg-rose-50/30 dark:bg-ink border border-rose-100/30 dark:border-ink-hairline p-4 space-y-4">
         <div>
           <p className="text-[10px] font-sans font-bold text-rosegold uppercase tracking-[0.15em] mb-3">O Gap</p>
-          <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-2">Pra quem é o seu conteúdo hoje?</label>
+          <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-2">Quem é a sua cliente ideal, a pessoa que você quer atrair e converter?</label>
           <input
             type="text"
             value={nicho}
@@ -81,7 +81,7 @@ export default function DiagnosticoTab({ progress, onUpdateProgress }: Diagnosti
           />
         </div>
         <div>
-          <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-1">Qual é a dor real dela? Não a superficial, a de baixo.</label>
+          <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-1">Qual é a dor real da sua cliente ideal? Não a superficial, a de baixo.</label>
           <p className="text-[11px] text-slate-400 dark:text-ink-muted mb-2">Ex: não é "ela quer postar mais", é "ela vê as concorrentes crescendo e começa a duvidar se o que ela sabe fazer ainda vale alguma coisa".</p>
           <textarea
             value={dorReal}
@@ -92,8 +92,8 @@ export default function DiagnosticoTab({ progress, onUpdateProgress }: Diagnosti
           />
         </div>
         <div>
-          <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-1">Onde ela quer chegar, em cena concreta?</label>
-          <p className="text-[11px] text-slate-400 dark:text-ink-muted mb-2">Não "crescer no Instagram" — algo que ela reconheceria se você descrevesse.</p>
+          <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-1">Onde essa cliente ideal quer chegar, em cena concreta?</label>
+          <p className="text-[11px] text-slate-400 dark:text-ink-muted mb-2">Não "crescer no Instagram" — algo que ela reconheceria se você descrevesse pra ela.</p>
           <textarea
             value={pontoB}
             onChange={(e) => setPontoB(e.target.value)}
