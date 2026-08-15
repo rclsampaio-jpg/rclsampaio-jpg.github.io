@@ -710,17 +710,38 @@ function AppContent() {
     }
   }[lang];
 
-  const isNextLevelUnlocked = progress.completionHistory.includes(30);
+  // Admin sempre vê Próximo Nível, mesmo sem ter completado o dia 30 de
+  // verdade — senão não dava pra pré-visualizar a tela sem forjar progresso.
+  const isNextLevelUnlocked = progress.completionHistory.includes(30) || isAdminUnlocked;
 
   // Acesso à jornada de 30 dias (Compartilhando sua História, R$997) dura 90
   // dias por padrão. Quem já tem o Destrave ativo (mentoria de 6 meses) tem
   // 180 dias, pra cobrir o acompanhamento inteiro sem precisar renovar no
   // meio. Admin sempre passa, pra não travar teste.
   const journeyAccessExpiryDays = isProfessionalUnlocked ? 180 : 90;
+  const daysSinceJourneyStart = progress.journeyStartDate
+    ? (Date.now() - new Date(`${progress.journeyStartDate}T00:00:00`).getTime()) / (1000 * 60 * 60 * 24)
+    : null;
   const journeyAccessExpired = !isAdminUnlocked && Boolean(
-    progress.journeyStartDate
-    && (Date.now() - new Date(`${progress.journeyStartDate}T00:00:00`).getTime()) / (1000 * 60 * 60 * 24) > journeyAccessExpiryDays
+    daysSinceJourneyStart !== null && daysSinceJourneyStart > journeyAccessExpiryDays
   );
+  const daysUntilJourneyExpiry = daysSinceJourneyStart !== null ? journeyAccessExpiryDays - daysSinceJourneyStart : null;
+
+  // Avisa 7 dias antes de expirar, uma vez por dia (não bloqueia, só
+  // informa), pra ela ter tempo de decidir renovar ou escalar pro Destrave
+  // antes de perder acesso de repente.
+  const expiryWarningDismissKey = `renaser_expiry_warning_dismissed_${getLocalDateISO()}`;
+  const expiryWarningDue = !isAdminUnlocked && daysUntilJourneyExpiry !== null && daysUntilJourneyExpiry > 0 && daysUntilJourneyExpiry <= 7;
+  const [showExpiryWarning, setShowExpiryWarning] = useState(false);
+  useEffect(() => {
+    if (expiryWarningDue && localStorage.getItem(expiryWarningDismissKey) !== 'true') {
+      setShowExpiryWarning(true);
+    }
+  }, [expiryWarningDue]);
+  const dismissExpiryWarning = () => {
+    localStorage.setItem(expiryWarningDismissKey, 'true');
+    setShowExpiryWarning(false);
+  };
 
   if (authLoading) return null;
 
@@ -1201,6 +1222,47 @@ function AppContent() {
         )}
       </AnimatePresence>
 
+      {/* Aviso de expiração próxima, 7 dias antes, uma vez por dia */}
+      <AnimatePresence>
+        {showExpiryWarning && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-6">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              className="bg-[#FAF8F5] dark:bg-ink-raised max-w-sm w-full rounded-3xl p-8 border border-rosegold/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none space-y-4"
+            >
+              <div className="w-14 h-14 mx-auto bg-rosegold/10 border border-rosegold/15 text-rosegold rounded-2xl flex items-center justify-center">
+                <Lock className="h-6 w-6" />
+              </div>
+              <div className="text-center space-y-2">
+                <h3 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
+                  Faltam {Math.max(1, Math.ceil(daysUntilJourneyExpiry ?? 0))} dias pro seu acesso expirar
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">
+                  Quer renovar e continuar de onde parou, ou já dar o próximo passo e escalar pro Destrave? Fala com a gente antes de perder o acesso.
+                </p>
+              </div>
+              <a
+                href="https://wa.me/message/KJTHGYJ7JXGCI1"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={dismissExpiryWarning}
+                className="w-full py-3 px-4 rounded-xl bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer text-center block"
+              >
+                Falar com a gente
+              </a>
+              <button
+                onClick={dismissExpiryWarning}
+                className="w-full py-2 text-xs font-sans font-semibold text-slate-400 dark:text-ink-muted hover:text-slate-600 cursor-pointer"
+              >
+                Depois
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Dia de organização/produção: primeira pergunta (adiada do
           onboarding) ou reconfirmação periódica depois de já escolhido. */}
       <AnimatePresence>
@@ -1476,6 +1538,7 @@ function AppContent() {
                 progress={progress}
                 lang={lang}
                 isProfessionalUnlocked={isProfessionalUnlocked}
+                isAdminUnlocked={isAdminUnlocked}
                 onGoToDestrave={() => {
                   if (isProfessionalUnlocked) setActiveTab('professional');
                   else setShowProfessionalPrompt(true);

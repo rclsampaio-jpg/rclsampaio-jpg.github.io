@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Award, Heart, Sparkles, Compass, CheckCircle2, Star, Share2, ExternalLink } from 'lucide-react';
+import { Award, Heart, Sparkles, Compass, CheckCircle2, Star, Share2, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Language, UserProgress } from '../types';
 import { resolveGuideStyle, ToneVariants } from '../utils/grammar';
 import EditableText from './editable/EditableText';
@@ -13,9 +14,50 @@ interface NextLevelViewProps {
   progress: UserProgress;
   lang: Language;
   isProfessionalUnlocked?: boolean;
+  isAdminUnlocked?: boolean;
   onGoToDestrave?: () => void;
   onGoToLibrary?: () => void;
   onGoToCommunity?: () => void;
+}
+
+// Cadência semanal da Fase de Prática (dias 31-90): reaproveita os 4 tipos
+// de dia que já existem nos 30 dias (Verdade, Pensamento Contrário,
+// Storytelling, Presença), cada um com o exercício real já validado, não
+// um tema novo inventado. Cicla a cada 4 semanas.
+const PRACTICE_WEEKS: { theme: string; title: string; challenge: string; where: string }[] = [
+  {
+    theme: 'Verdade',
+    title: 'Semana da Verdade',
+    challenge: 'Grave um conteúdo sem preparo, sem decorar roteiro, sem ensaiar na frente do espelho. Abre o celular, aperta gravar, fala. A imperfeição é o ponto, não o risco.',
+    where: 'Usa o prompt de "Revisão de texto" da Biblioteca pra tirar cara de IA do que sair, sem regravar do zero.'
+  },
+  {
+    theme: 'Pensamento Contrário',
+    title: 'Semana da Opinião Impopular',
+    challenge: 'Grava uma opinião sua que nem todo mundo vai concordar. Uma coisa que você normalmente engoliria pra não incomodar ninguém, mas que é verdadeira pra você.',
+    where: 'Usa os prompts do grupo "Reels de conversão" da Biblioteca pra estruturar isso nos 7 ângulos validados.'
+  },
+  {
+    theme: 'Storytelling',
+    title: 'Semana da Jornada do Herói',
+    challenge: 'Conta um fracasso, uma vez que você tentou algo e não deu certo, e o que você aprendeu com isso. As pessoas se conectam com o caminho torto, não com a vitória perfeita.',
+    where: 'Usa os prompts do grupo "Reels até 90s" da Biblioteca, é exatamente pra história de bastidor.'
+  },
+  {
+    theme: 'Presença',
+    title: 'Semana de Falar pra Uma Pessoa',
+    challenge: 'Esquece o número de visualização. Grava pensando numa pessoa real que precisa ouvir exatamente o que você tem pra falar hoje. Não é escala, é profundidade.',
+    where: 'Usa o prompt do grupo "Mensagem central / audiência obcecada" da Biblioteca antes de gravar.'
+  }
+];
+
+function getCurrentPracticeWeekIndex(progress: UserProgress): number {
+  if (!progress.journeyStartDate) return 0;
+  const start = new Date(`${progress.journeyStartDate}T00:00:00`);
+  const day30 = new Date(start);
+  day30.setDate(day30.getDate() + 30);
+  const weeksElapsed = Math.floor((Date.now() - day30.getTime()) / (1000 * 60 * 60 * 24 * 7));
+  return ((weeksElapsed % 4) + 4) % 4;
 }
 
 // Link de WhatsApp real, o mesmo usado em /destrave (CTA "Quero começar meu
@@ -168,7 +210,10 @@ const GRADUATION_TONE: Record<Language, {
   }
 };
 
-export default function NextLevelView({ progress, lang, isProfessionalUnlocked, onGoToDestrave, onGoToLibrary, onGoToCommunity }: NextLevelViewProps) {
+export default function NextLevelView({ progress, lang, isProfessionalUnlocked, isAdminUnlocked, onGoToDestrave, onGoToLibrary, onGoToCommunity }: NextLevelViewProps) {
+  const [practiceWeekPreview, setPracticeWeekPreview] = useState<number | null>(null);
+  const practiceWeekIndex = practiceWeekPreview ?? getCurrentPracticeWeekIndex(progress);
+  const practiceWeek = PRACTICE_WEEKS[practiceWeekIndex];
   const guideStyle = resolveGuideStyle(progress.guideStyle);
 
   const textDict = {
@@ -434,10 +479,32 @@ export default function NextLevelView({ progress, lang, isProfessionalUnlocked, 
               Prompts prontos, o framework de conteúdo que converte, e vídeo novo toda semana. Continue postando sem precisar de missão nova.
             </p>
           </button>
-          <div className="text-left p-4 rounded-2xl bg-rose-50/40 dark:bg-ink border border-rose-100/30 dark:border-ink-hairline">
-            <p className="text-xs font-sans font-bold text-slate-700 dark:text-ink-text mb-1">Um foco por semana</p>
+          <div className="text-left p-4 rounded-2xl bg-rose-50/40 dark:bg-ink border border-rose-100/30 dark:border-ink-hairline space-y-2">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-sans font-bold text-rosegold uppercase tracking-wider">{practiceWeek.title}</p>
+              {isAdminUnlocked && (
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setPracticeWeekPreview(((practiceWeekIndex + 3) % 4))}
+                    className="h-5 w-5 flex items-center justify-center rounded border border-rosegold/40 text-rosegold cursor-pointer hover:bg-rosegold/10"
+                  >
+                    <ChevronLeft className="h-3 w-3" />
+                  </button>
+                  <span className="text-[9px] font-mono text-rosegold">{practiceWeekIndex + 1}/4</span>
+                  <button
+                    onClick={() => setPracticeWeekPreview(((practiceWeekIndex + 1) % 4))}
+                    className="h-5 w-5 flex items-center justify-center rounded border border-rosegold/40 text-rosegold cursor-pointer hover:bg-rosegold/10"
+                  >
+                    <ChevronRight className="h-3 w-3" />
+                  </button>
+                </div>
+              )}
+            </div>
             <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">
-              Reaproveite os temas que você já praticou (Verdade, Pensamento Contrário, Storytelling, Presença), aplicados a assuntos novos, sem precisar de currículo diário.
+              {practiceWeek.challenge}
+            </p>
+            <p className="text-[11px] text-slate-400 dark:text-ink-muted leading-relaxed italic">
+              {practiceWeek.where}
             </p>
           </div>
           <button
