@@ -42,15 +42,15 @@ const HOME_TONE: Record<Language, {
       inspirational: 'Uma experiência de visibilidade e coragem'
     },
     introTitle: {
-      gentle: 'Vamos começar devagar?',
-      challenger: 'Bora começar de verdade?',
-      strategic: '[Pronta/Pronto/Pronte] pra seguir o plano?',
+      gentle: 'Você está [pronta/pronto/pronte]?',
+      challenger: 'Você está [pronta/pronto/pronte]?',
+      strategic: 'Você está [pronta/pronto/pronte]?',
       inspirational: 'Você está [pronta/pronto/pronte]?'
     },
     introText: {
-      gentle: 'Nessa jornada, no seu ritmo, você vai receber um direcionamento diário, com áudios, vídeos de até 4 minutos e exercícios práticos pra executar. Não precisa sair perfeito nem controlar cada detalhe, solte um pouco e confie no processo. Este espaço existe pra você se lembrar, com calma, de quem você realmente é.',
-      challenger: 'Nessa jornada, sem desculpa: direcionamento diário, com áudios, vídeos de até 4 minutos e exercícios práticos pra executar, e a decisão de aparecer todo santo dia, mesmo com medo. Encarar o desconforto de frente é o caminho, não tem atalho por fora dele. Esse é o trato.',
-      strategic: 'Nessa jornada, você recebe direcionamento diário, com áudios, vídeos de até 4 minutos e exercícios práticos pra executar, um sistema simples, repetível, desenhado pra gerar consistência mensurável mesmo quando nem tudo sai como planejado.',
+      gentle: 'Nessa jornada, você receberá um direcionamento diário e com áudios, vídeos de até 4 minutos e exercícios práticos para executar. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar quem você realmente é.',
+      challenger: 'Nessa jornada, você receberá um direcionamento diário e com áudios, vídeos de até 4 minutos e exercícios práticos para executar. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar quem você realmente é.',
+      strategic: 'Nessa jornada, você receberá um direcionamento diário e com áudios, vídeos de até 4 minutos e exercícios práticos para executar. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar quem você realmente é.',
       inspirational: 'Nessa jornada, você receberá um direcionamento diário e com áudios, vídeos de até 4 minutos e exercícios práticos para executar. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar quem você realmente é.'
     },
     yesterdayReminder: {
