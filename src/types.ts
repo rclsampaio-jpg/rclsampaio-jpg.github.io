@@ -152,8 +152,8 @@ export interface UserProgress {
 
 export interface ProfessionalDiagnostic {
   nicho?: string;
-  vozRespostas?: Record<string, string>;
-  estruturaRespostas?: Record<string, string>;
+  vozRespostas?: Record<string, string[]>; // multi-seleção por pergunta
+  estruturaRespostas?: Record<string, string[]>; // multi-seleção por pergunta
   completedAt?: string | null; // YYYY-MM-DD
 }
 

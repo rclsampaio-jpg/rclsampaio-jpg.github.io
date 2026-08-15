@@ -271,17 +271,20 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   // justificar uma aba própria agora. Reversível: só tirar daqui.
   const HIDDEN_LIBRARY_CATEGORIES = ['articles', 'pdfs', 'challenges'];
 
+  // Ordem por prioridade de uso, não ordem de criação: conteúdo prático
+  // primeiro (o que ela vem buscar), bem-estar por último (suporte, não o
+  // motivo principal de abrir a Biblioteca).
   const categories = [
     { key: 'all', icon: null },
-    { key: 'wellness', icon: Wind },
-    { key: 'prompts', icon: MessageSquareText },
     { key: 'videos', icon: Play },
+    { key: 'prompts', icon: MessageSquareText },
     { key: 'audios', icon: Volume2 },
+    { key: 'meditations', icon: Heart },
+    { key: 'masterclasses', icon: Sparkles },
     { key: 'articles', icon: BookOpen },
     { key: 'pdfs', icon: FileText },
-    { key: 'meditations', icon: Heart },
     { key: 'challenges', icon: Sparkles },
-    { key: 'masterclasses', icon: Sparkles }
+    { key: 'wellness', icon: Wind }
   ].filter((cat) => !HIDDEN_LIBRARY_CATEGORIES.includes(cat.key));
 
   const [expandedPromptGroup, setExpandedPromptGroup] = useState<string | null>(null);

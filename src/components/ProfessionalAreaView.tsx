@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, Dispatch, SetStateAction } from 'react';
 import { motion } from 'motion/react';
 import { CheckCircle2, TrendingUp, MessageCircle, Calendar, Award, Compass, BookOpen } from 'lucide-react';
 import { Language, UserProgress, ProfessionalCheckIn, ProfessionalDiagnostic } from '../types';
@@ -213,8 +213,8 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
 
   const diagnostic = progress.professionalDiagnostic;
   const [nicho, setNicho] = useState(diagnostic?.nicho ?? '');
-  const [vozRespostas, setVozRespostas] = useState<Record<string, string>>(diagnostic?.vozRespostas ?? {});
-  const [estruturaRespostas, setEstruturaRespostas] = useState<Record<string, string>>(diagnostic?.estruturaRespostas ?? {});
+  const [vozRespostas, setVozRespostas] = useState<Record<string, string[]>>(diagnostic?.vozRespostas ?? {});
+  const [estruturaRespostas, setEstruturaRespostas] = useState<Record<string, string[]>>(diagnostic?.estruturaRespostas ?? {});
   const [diagnosticSaved, setDiagnosticSaved] = useState(false);
   const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
 
@@ -222,6 +222,18 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
     navigator.clipboard.writeText(text);
     setCopiedPrompt(title);
     setTimeout(() => setCopiedPrompt(null), 2000);
+  };
+
+  const toggleDiagnosticOption = (
+    setter: Dispatch<SetStateAction<Record<string, string[]>>>,
+    key: string,
+    opt: string
+  ) => {
+    setter((prev) => {
+      const current = prev[key] ?? [];
+      const next = current.includes(opt) ? current.filter((o) => o !== opt) : [...current, opt];
+      return { ...prev, [key]: next };
+    });
   };
 
   const toggleFormato = (f: string) => {
@@ -297,20 +309,20 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
     };
   }, [checkIns]);
 
-  const gargaloAtual = diagnostic?.estruturaRespostas?.gargalo;
+  const gargalosAtuais = diagnostic?.estruturaRespostas?.gargalo ?? [];
   const nichoAtual = diagnostic?.nicho || '[seu nicho]';
-  const tomAtual = diagnostic?.vozRespostas?.tom || '[seu tom de voz]';
+  const tomAtual = diagnostic?.vozRespostas?.tom?.join(', ') || '[seu tom de voz]';
 
-  // Prompts que resolvem o gargalo declarado no diagnóstico vêm primeiro,
-  // marcados como recomendados — o resto continua disponível embaixo.
+  // Prompts que resolvem QUALQUER gargalo declarado no diagnóstico vêm
+  // primeiro, marcados como recomendados — o resto continua embaixo.
   const orderedPrompts = useMemo(() => {
     const withText = PROMPT_LIBRARY.map((m) => ({
       ...m,
       text: m.prompt(nichoAtual, tomAtual),
-      recomendado: gargaloAtual ? m.resolveGargalo.includes(gargaloAtual) : false
+      recomendado: m.resolveGargalo.some((g) => gargalosAtuais.includes(g))
     }));
     return withText.sort((a, b) => Number(b.recomendado) - Number(a.recomendado));
-  }, [gargaloAtual, nichoAtual, tomAtual]);
+  }, [gargalosAtuais, nichoAtual, tomAtual]);
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
@@ -368,7 +380,8 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
           </div>
 
           <div>
-            <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider mb-3">Voz</p>
+            <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider mb-1">Voz</p>
+            <p className="text-xs text-slate-500 dark:text-ink-muted mb-2">Pode marcar mais de uma opção em cada pergunta.</p>
             <div className="space-y-4">
               {VOZ_PERGUNTAS.map((p) => (
                 <div key={p.key}>
@@ -378,9 +391,9 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
                       <button
                         key={opt}
                         type="button"
-                        onClick={() => setVozRespostas((prev) => ({ ...prev, [p.key]: opt }))}
+                        onClick={() => toggleDiagnosticOption(setVozRespostas, p.key, opt)}
                         className={`px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition cursor-pointer ${
-                          vozRespostas[p.key] === opt
+                          (vozRespostas[p.key] ?? []).includes(opt)
                             ? 'bg-rosegold/15 text-rosegold dark:text-rosegold-light border border-rosegold/40'
                             : 'bg-rose-50/40 dark:bg-ink text-slate-500 dark:text-ink-muted border border-transparent'
                         }`}
@@ -395,7 +408,8 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
           </div>
 
           <div>
-            <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider mb-3">Estrutura</p>
+            <p className="text-[11px] font-sans font-bold text-rosegold uppercase tracking-wider mb-1">Estrutura</p>
+            <p className="text-xs text-slate-500 dark:text-ink-muted mb-2">Pode marcar mais de uma opção em cada pergunta.</p>
             <div className="space-y-4">
               {ESTRUTURA_PERGUNTAS.map((p) => (
                 <div key={p.key}>
@@ -405,9 +419,9 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
                       <button
                         key={opt}
                         type="button"
-                        onClick={() => setEstruturaRespostas((prev) => ({ ...prev, [p.key]: opt }))}
+                        onClick={() => toggleDiagnosticOption(setEstruturaRespostas, p.key, opt)}
                         className={`px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition cursor-pointer ${
-                          estruturaRespostas[p.key] === opt
+                          (estruturaRespostas[p.key] ?? []).includes(opt)
                             ? 'bg-rosegold/15 text-rosegold dark:text-rosegold-light border border-rosegold/40'
                             : 'bg-rose-50/40 dark:bg-ink text-slate-500 dark:text-ink-muted border border-transparent'
                         }`}
@@ -439,7 +453,7 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
           <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted mb-2">
             Base do Escala Descomplicada, direto ao ponto.
           </p>
-          {gargaloAtual === 'Em criar conteúdo com constância' && (
+          {gargalosAtuais.includes('Em criar conteúdo com constância') && (
             <p className="text-center text-xs font-sans text-rosegold/80 dark:text-rosegold-light/80 mb-2">
               Seu diagnóstico aponta esse como seu gargalo, Big Idea e Autoridade Percebida ajudam mais direto aqui.
             </p>
@@ -486,7 +500,7 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
               Perguntas exatas pra mandar pro Renata OS e preencher isso com as suas informações.
             </p>
             {RENATA_OS_PROMPTS.map((p) => {
-              const text = p.prompt(nichoAtual, tomAtual, gargaloAtual || '[seu gargalo]');
+              const text = p.prompt(nichoAtual, tomAtual, gargalosAtuais.join(', ') || '[seu gargalo]');
               return (
                 <div
                   key={p.title}
@@ -660,21 +674,25 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
               <p className="text-[10px] font-sans font-bold text-rosegold uppercase tracking-wider">Seu posicionamento</p>
               <p className="text-xs text-slate-600 dark:text-ink-muted leading-relaxed">
                 {diagnostic.nicho && <>Nicho: <span className="font-semibold text-slate-800 dark:text-ink-text">{diagnostic.nicho}</span>. </>}
-                {diagnostic.vozRespostas?.tom && <>Voz: <span className="font-semibold text-slate-800 dark:text-ink-text">{diagnostic.vozRespostas.tom}</span>. </>}
-                {gargaloAtual && <>Gargalo atual: <span className="font-semibold text-slate-800 dark:text-ink-text">{gargaloAtual}</span>.</>}
+                {(diagnostic.vozRespostas?.tom?.length ?? 0) > 0 && <>Voz: <span className="font-semibold text-slate-800 dark:text-ink-text">{diagnostic.vozRespostas!.tom.join(', ')}</span>. </>}
+                {gargalosAtuais.length > 0 && <>Gargalos atuais: <span className="font-semibold text-slate-800 dark:text-ink-text">{gargalosAtuais.join(', ')}</span>.</>}
               </p>
-              {gargaloAtual && GARGALO_RESOLUCAO[gargaloAtual] && (
-                <div className="pt-2 border-t border-rosegold/15 space-y-2">
-                  <p className="text-xs text-slate-600 dark:text-ink-muted leading-relaxed">
-                    <span className="font-semibold text-slate-800 dark:text-ink-text">Como resolver: </span>
-                    {GARGALO_RESOLUCAO[gargaloAtual].oQueFazer}
-                  </p>
-                  <button
-                    onClick={() => setActiveSection(GARGALO_RESOLUCAO[gargaloAtual].aba)}
-                    className="text-xs font-sans font-bold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
-                  >
-                    {GARGALO_RESOLUCAO[gargaloAtual].abaLabel} →
-                  </button>
+              {gargalosAtuais.length > 0 && (
+                <div className="pt-2 border-t border-rosegold/15 space-y-3">
+                  {gargalosAtuais.filter((g) => GARGALO_RESOLUCAO[g]).map((g) => (
+                    <div key={g} className="space-y-1">
+                      <p className="text-xs text-slate-600 dark:text-ink-muted leading-relaxed">
+                        <span className="font-semibold text-slate-800 dark:text-ink-text">{g}: </span>
+                        {GARGALO_RESOLUCAO[g].oQueFazer}
+                      </p>
+                      <button
+                        onClick={() => setActiveSection(GARGALO_RESOLUCAO[g].aba)}
+                        className="text-xs font-sans font-bold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
+                      >
+                        {GARGALO_RESOLUCAO[g].abaLabel} →
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -731,7 +749,7 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
           <p className="text-center text-xs font-sans text-slate-400 dark:text-ink-muted mb-2">
             Copia o prompt, cola no Renata OS, e ele te ajuda a escrever a resposta na tua voz, pro teu momento real.
           </p>
-          {!gargaloAtual && (
+          {gargalosAtuais.length === 0 && (
             <p className="text-center text-xs font-sans text-rosegold/80 dark:text-rosegold-light/80 mb-2">
               Preenche o Diagnóstico pra eu te mostrar qual prompt resolve o seu gargalo primeiro.
             </p>
