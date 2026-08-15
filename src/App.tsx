@@ -1292,7 +1292,7 @@ function AppContent() {
                 progress={progress}
                 lang={lang}
                 onUpdateProgress={updateProgress}
-                onGoToLibrary={() => { setLibraryInitialCategory('pdfs'); setActiveTab('library'); }}
+                onGoToLibrary={() => { setLibraryInitialCategory('prompts'); setActiveTab('library'); }}
               />
             )}
 

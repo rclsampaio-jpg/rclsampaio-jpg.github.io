@@ -514,7 +514,7 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
               onClick={onGoToLibrary}
               className="text-xs font-sans font-bold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
             >
-              Ver na Biblioteca (PDFs) →
+              Ver na Biblioteca (Prompts) →
             </button>
           </div>
         </motion.div>

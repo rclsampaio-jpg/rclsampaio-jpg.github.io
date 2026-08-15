@@ -140,47 +140,13 @@ export const INITIAL_LIBRARY_ASSETS: LibraryAsset[] = [
     coverImage: '/assets/images/descalcificacao.png',
     requiresHeadphones: true
   },
-  {
-    id: 'lib_6',
-    title: {
-      pt: 'Como Crescer no Instagram Começando do Zero',
-      en: 'How to Grow on Instagram Starting From Zero',
-      es: 'Cómo Crecer en Instagram Empezando de Cero'
-    },
-    description: {
-      pt: 'Guia de hooks e anti-hooks, gatilhos de conexão, nomeação de ofertas, os 7 ângulos de Reels de conversão e o roteiro de jornada pra quem ainda não tem produto, use junto ao Passo 2 (Vitrine de Hooks) na hora de postar.',
-      en: 'A guide to hooks and anti-hooks, connection triggers, offer naming, the 7 conversion Reels angles, and the journey script for those without a product yet, use it alongside Step 2 (Hook Showcase) whenever you post.',
-      es: 'Guía de hooks y anti-hooks, gatillos de conexión, nombramiento de ofertas, los 7 ángulos de Reels de conversión y el guion de jornada para quien aún no tiene producto, úsala junto al Paso 2 (Vitrina de Hooks) al publicar.'
-    },
-    category: 'pdfs',
-    mediaUrl: '/assets/docs/como-crescer-no-instagram-do-zero.pdf',
-    durationOrSize: 'Documento',
-    coverImage: '/assets/images/como-crescer-no-instagram-cover.jpg'
-  },
-  {
-    id: 'lib_7',
-    title: {
-      pt: 'Prompts Prontos pra Usar na Renata OS (IA)',
-      en: 'Ready-Made Prompts for Renata OS (AI)',
-      es: 'Prompts Listos para Usar en Renata OS (IA)'
-    },
-    description: {
-      pt: 'Os 14 prompts prontos pra pedir conteúdo direto pra Renata OS: cole o tema entre colchetes e mande, ela entrega o conteúdo pronto.',
-      en: 'The 14 ready-made prompts to request content directly from Renata OS: fill in the topic and send, she delivers the finished content.',
-      es: 'Los 14 prompts listos para pedir contenido directo a Renata OS: completa el tema entre corchetes y envíalo, ella entrega el contenido listo.'
-    },
-    category: 'pdfs',
-    mediaUrl: '/assets/docs/prompts-prontos-renata-os.pdf',
-    durationOrSize: 'Documento',
-    coverImage: '/assets/images/prompts-prontos-cover.jpg'
-  }
 ];
 
 // Bump whenever a DEFAULT_*_CONFIG constant above changes, so browsers with an
 // already-cached config regenerate instead of showing stale copy (same
 // mechanism as DAYS_CONTENT_VERSION in templateData.ts). This does discard any
 // CMS hand-edits to these configs, acceptable while still being tuned from code.
-const ECOSYSTEM_CONFIG_VERSION = '22';
+const ECOSYSTEM_CONFIG_VERSION = '23';
 
 export function loadCommunityConfig(): CommunityConfig {
   const stored = localStorage.getItem('renaser_community_config');

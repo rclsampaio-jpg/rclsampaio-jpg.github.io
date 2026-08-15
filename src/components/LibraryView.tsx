@@ -5,13 +5,15 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
+import {
   Search, Play, Heart, Download, BookOpen, Volume2, FileText,
   Sparkles, CheckCircle2, RotateCcw, Maximize, Clock, ListFilter,
-  Check, Pause, RefreshCw, Eye, Settings, HelpCircle, AlertCircle, Headphones, Wind
+  Check, Pause, RefreshCw, Eye, Settings, HelpCircle, AlertCircle, Headphones, Wind,
+  MessageSquareText, ChevronDown, Copy
 } from 'lucide-react';
 import { Language, LibraryAsset, SupportConfig, UserProgress } from '../types';
 import { loadLibraryAssets, saveLibraryAssets, loadSupportConfig } from '../data/ecosystemData';
+import { PROMPT_GROUPS, HOOK_REFERENCE } from '../data/promptLibraryData';
 import { adaptMessage, resolveGrammarPreference } from '../utils/grammar';
 import { forceDownload } from '../utils/download';
 import { logEngagementEvent } from '../utils/engagement';
@@ -268,6 +270,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   const categories = [
     { key: 'all', icon: null },
     { key: 'wellness', icon: Wind },
+    { key: 'prompts', icon: MessageSquareText },
     { key: 'videos', icon: Play },
     { key: 'audios', icon: Volume2 },
     { key: 'articles', icon: BookOpen },
@@ -276,6 +279,14 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
     { key: 'challenges', icon: Sparkles },
     { key: 'masterclasses', icon: Sparkles }
   ];
+
+  const [expandedPromptGroup, setExpandedPromptGroup] = useState<string | null>(null);
+  const [copiedPromptId, setCopiedPromptId] = useState<string | null>(null);
+  const copyLibraryPrompt = (id: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedPromptId(id);
+    setTimeout(() => setCopiedPromptId(null), 2000);
+  };
 
   // Mock captions track for mock/real videos
   const getSubtitles = () => {
@@ -317,6 +328,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
       searchPlaceholder: 'Buscar vídeos, meditações, PDFs...',
       all: 'Todos',
       wellness: 'Bem-Estar',
+      prompts: 'Prompts',
       wellnessTitle: 'Por que estar centrada importa na hora de postar',
       wellnessExplanation: 'O sistema nervoso autônomo, a rede de comando do corpo, construída para precisão e velocidade, sobrevivência.\n\nEla conecta o cérebro, a medula espinhal e músculos, e todos os órgãos, permitindo que os sinais sensoriais entram, decisões são tomadas, instruções são enviadas, muitas vezes antes de você perceber, em frações de segundo.\n\nEsse sistema não espera pelo pensamento. Ela opera em 2 estados principais: simpático e parassimpático. Um prepara para a ação: ele reage, a frequência cardíaca aumenta e a energia é mobilizada. O outro o equilíbrio, a frequência cardíaca desacelera, a digestão volta ao normal.\n\nEsses estados mudam constantemente com base no ambiente e na sua segurança. Ele aprende por meio de repetição, os caminhos automáticos, transforma em reflexo, mas a ativação tem um custo!\n\nO estresse crônico, que é o que mantém o sistema em alerta, a recuperação é retardada, o sono é fragmentado, os sinais se tornam barulhentos, fadiga aparece sem esforço.\n\nA calma e a paz mental elas não acontecem pela ausência de atividade, e sim de uma boa regulação do seu sistema nervoso autônomo.\n\nA respiração é a nossa única influência voluntária. Cada vez que você respira conscientemente, você envia uma mensagem direta, tirando o sistema do automático. Quando equilibrado, você nem percebe. Quando cronicamente ativado, tudo parece urgente.\n\nEle não é uma parte do corpo, ele é o seu centro de controle, uma rede viva que responde diretamente à sua respiração.\n\nSaia do automático e desperte o seu superpoder.\n\nLembre-se de quem você é.',
       regulateSelf: 'Regule-se',
@@ -357,6 +369,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
       searchPlaceholder: 'Search videos, audios, PDFs...',
       all: 'All',
       wellness: 'Wellness',
+      prompts: 'Prompts',
       wellnessTitle: 'Why being centered matters before you post',
       wellnessExplanation: "The autonomic nervous system, the body's command network, built for precision, speed, and survival.\n\nIt connects the brain, spinal cord, muscles, and every organ, allowing sensory signals to come in, decisions to be made, and instructions to be sent, often before you even notice, in fractions of a second.\n\nThis system doesn't wait for thought. It operates in 2 main states: sympathetic and parasympathetic. One prepares for action: it reacts, heart rate rises, energy gets mobilized. The other is balance: heart rate slows, digestion returns to normal.\n\nThese states shift constantly based on your environment and your sense of safety. It learns through repetition, automatic pathways turn into reflex, but activation has a cost!\n\nChronic stress keeps the system on alert: recovery is delayed, sleep is fragmented, signals get noisy, fatigue shows up without effort.\n\nCalm and peace of mind don't come from the absence of activity, they come from good regulation of your autonomic nervous system.\n\nBreathing is our only voluntary influence over it. Every time you breathe consciously, you send a direct message that takes the system off autopilot. When balanced, you barely notice it. When chronically activated, everything feels urgent.\n\nIt isn't a body part, it's your control center, a living network that responds directly to your breath.\n\nStep out of autopilot and awaken your superpower.\n\nRemember who you are.",
       regulateSelf: 'Regulate Yourself',
@@ -397,6 +410,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
       searchPlaceholder: 'Buscar videos, audios, PDFs...',
       all: 'Todos',
       wellness: 'Bienestar',
+      prompts: 'Prompts',
       wellnessTitle: 'Por qué estar centrada importa al momento de publicar',
       wellnessExplanation: 'El sistema nervioso autónomo, la red de mando del cuerpo, construida para precisión, velocidad y supervivencia.\n\nConecta el cerebro, la médula espinal, los músculos y todos los órganos, permitiendo que las señales sensoriales entren, se tomen decisiones y se envíen instrucciones, muchas veces antes de que lo notes, en fracciones de segundo.\n\nEste sistema no espera al pensamiento. Opera en 2 estados principales: simpático y parasimpático. Uno prepara para la acción: reacciona, la frecuencia cardíaca aumenta y la energía se moviliza. El otro es el equilibrio: la frecuencia cardíaca desacelera, la digestión vuelve a la normalidad.\n\nEstos estados cambian constantemente según el ambiente y tu sensación de seguridad. Aprende por repetición, los caminos automáticos se transforman en reflejo, ¡pero la activación tiene un costo!\n\nEl estrés crónico mantiene el sistema en alerta: la recuperación se retrasa, el sueño se fragmenta, las señales se vuelven ruidosas, la fatiga aparece sin esfuerzo.\n\nLa calma y la paz mental no ocurren por ausencia de actividad, sino por una buena regulación de tu sistema nervioso autónomo.\n\nLa respiración es nuestra única influencia voluntaria. Cada vez que respiras conscientemente, envías un mensaje directo que saca al sistema del automático. Cuando está equilibrado, ni lo notas. Cuando está crónicamente activado, todo parece urgente.\n\nNo es una parte del cuerpo, es tu centro de control, una red viva que responde directamente a tu respiración.\n\nSal del automático y despierta tu superpoder.\n\nRecuerda quién eres.',
       regulateSelf: 'Regúlate',
@@ -863,10 +877,74 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
         </div>
       )}
 
-      {/* Wellness tab: not a media category, a short explanation of why a
-          regulated nervous system matters before posting, plus a direct
-          path into the Emotional SOS. */}
-      {selectedCategory === 'wellness' ? (
+      {/* Prompts tab: not a media category either, mesma lógica do wellness
+          acima. Cards recolhidos por grupo/propósito com botão de copiar,
+          em vez do PDF "Prompts Prontos" pra baixar, mais rápido de achar
+          e copiar direto do celular. */}
+      {selectedCategory === 'prompts' ? (
+        <div className="max-w-2xl mx-auto space-y-6">
+          <div className="rounded-2xl bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline p-5 space-y-3">
+            <p className="text-sm font-serif font-semibold text-slate-800 dark:text-ink-text">Antes de usar os prompts</p>
+            {HOOK_REFERENCE.map((ref) => (
+              <div key={ref.title}>
+                <p className="text-xs font-sans font-bold text-rosegold uppercase tracking-wider mb-1">{ref.title}</p>
+                <ul className="space-y-1">
+                  {ref.points.map((point, i) => (
+                    <li key={i} className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed flex gap-2">
+                      <span className="text-rosegold mt-0.5">•</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-3">
+            {PROMPT_GROUPS.map((group) => {
+              const isOpen = expandedPromptGroup === group.id;
+              return (
+                <div
+                  key={group.id}
+                  className="rounded-2xl bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline overflow-hidden"
+                >
+                  <button
+                    onClick={() => setExpandedPromptGroup(isOpen ? null : group.id)}
+                    className="w-full flex items-center justify-between px-4 py-3.5 cursor-pointer"
+                  >
+                    <span className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text text-left">{group.title}</span>
+                    <ChevronDown className={`h-4 w-4 text-slate-400 dark:text-ink-muted shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  {isOpen && (
+                    <div className="px-4 pb-4 space-y-3">
+                      {group.prompts.map((p) => (
+                        <div key={p.id} className="rounded-xl bg-rose-50/40 dark:bg-ink p-3 space-y-2">
+                          <p className="text-xs text-slate-500 dark:text-ink-muted">{p.purpose}</p>
+                          <p className="text-sm text-slate-700 dark:text-ink-text leading-relaxed">{p.text}</p>
+                          <button
+                            onClick={() => copyLibraryPrompt(p.id, p.text)}
+                            className="flex items-center gap-1.5 text-xs font-sans font-semibold text-rosegold dark:text-rosegold-light hover:underline cursor-pointer"
+                          >
+                            {copiedPromptId === p.id ? (
+                              <>
+                                <Check className="h-3.5 w-3.5" /> Copiado
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="h-3.5 w-3.5" /> Copiar prompt
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : selectedCategory === 'wellness' ? (
         <div className="max-w-2xl mx-auto text-center space-y-7 py-10">
           <div className="h-14 w-14 rounded-2xl bg-rose-50 dark:bg-rosegold/10 text-rosegold flex items-center justify-center mx-auto">
             <Wind className="h-6 w-6" />
