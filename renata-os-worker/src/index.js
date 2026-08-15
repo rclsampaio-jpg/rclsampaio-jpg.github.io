@@ -28,6 +28,7 @@ import tomDeVoz from '../referencias/tom-de-voz.md';
 import mentalidadeRenata from '../referencias/mentalidade-renata.md';
 import vslDestrave from '../referencias/vsl-destrave.md';
 import conteudoQueConverte from '../referencias/conteudo-que-converte.md';
+import destraveMetodologia from '../referencias/destrave-metodologia.md';
 
 // Every message resends the whole reference bundle from scratch (no fixed
 // model memory), and this bundle has grown a lot as more laws/prompts were
@@ -58,6 +59,20 @@ function buildReferencesContext(userMessage) {
   const wantsThumb = has('thumbnail', 'título', 'titulo', 'capa', 'miniatura');
   const wantsVsl = has('vsl', 'roteiro de vendas', 'video de vendas', 'vídeo de vendas', 'minha oferta', 'estrutura da minha oferta', 'big idea', 'oferta irrecusável', 'oferta irrecusavel', 'autoridade percebida');
   const wantsConteudoConverte = has('conteúdo que converte', 'conteudo que converte', 'conteúdo que vende', 'conteudo que vende', 'conteúdo de conversão', 'conteudo de conversao', 'fechar cliente', 'fechar venda pelo conteúdo', 'gancho de venda', 'crença falsa', 'crenca falsa');
+  // Cobre o resto dos conceitos da Área da Profissional (Destrave) que
+  // ainda não tinham nenhum documento de referência: o Gap/dor real,
+  // Ângulos de Conteúdo, e o funil de fechamento por mensagem/WhatsApp dos
+  // prompts de "Mensagens". Big Idea/Oferta/Autoridade já disparavam
+  // wantsVsl, mas o destrave-metodologia.md também entra nesses casos
+  // porque explica o CONCEITO, não só o roteiro da VSL.
+  const wantsDestrave = wantsVsl || has(
+    'ângulo', 'angulo', 'porta de entrada emocional', 'cliente ideal',
+    'dor real', 'gap', 'árvore de situações', 'arvore de situacoes',
+    'fechamento por mensagem', 'filtro de objetivo', 'objeção de preço',
+    'objecao de preco', 'abertura de conversa', 'momento atual dela',
+    'oferta sem preço', 'oferta sem preco', 'fechamento objetivo',
+    'destrave', 'área da profissional', 'area da profissional', 'fundamentos'
+  );
 
   const parts = [
     `# Metodologia e posicionamento da RenaSer\n${metodologiaRenaser}`,
@@ -77,6 +92,7 @@ function buildReferencesContext(userMessage) {
   if (wantsThumb) parts.push(`# Thumbnail e título\n${thumbnailTitulo}`);
   if (wantsVsl) parts.push(`# VSL original da Renata, referência de blocos e estrutura completa\n${vslDestrave}`);
   if (wantsConteudoConverte) parts.push(`# Conteúdo que Converte, framework de conversão de 7 partes\n${conteudoQueConverte}`);
+  if (wantsDestrave) parts.push(`# Metodologia do Destrave, conceitos de base\n${destraveMetodologia}`);
 
   return `\n${parts.join('\n\n')}\n`;
 }

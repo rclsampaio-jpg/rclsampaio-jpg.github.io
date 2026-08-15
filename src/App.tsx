@@ -665,16 +665,17 @@ function AppContent() {
       if (snapshotRaw) {
         const restored: UserProgress = JSON.parse(snapshotRaw);
         updateProgress(restored);
-        // Sem isso, a tela ficava travada no que a simulação tinha aberto
-        // (ex: dia 30, ou a aba Próximo Nível) mesmo com o progresso real
-        // já restaurado por baixo — precisa voltar pro ambiente normal de
-        // verdade, não só trocar o dado.
         setFocusedDayNumber(restored.currentDay <= 30 ? restored.currentDay : 30);
       }
       localStorage.removeItem(SIMULATION_SNAPSHOT_KEY);
       localStorage.removeItem(ACTIVE_SIMULATION_KEY);
       setActiveSimulation(null);
-      setActiveTab('home');
+      // Vai pra Jornada, não pro Início: se o progresso real de base dela já
+      // passou do dia 30 (comum depois de tanto teste), o Início cairia de
+      // novo na Missão da Fase de Prática, dando a impressão de que a
+      // simulação não desligou. A Jornada sempre mostra o calendário dos
+      // 30 dias, então serve pra ela confirmar visualmente que desligou.
+      setActiveTab('journey');
       return;
     }
     if (!localStorage.getItem(SIMULATION_SNAPSHOT_KEY)) {
