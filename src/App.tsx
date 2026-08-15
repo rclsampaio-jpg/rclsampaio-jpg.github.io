@@ -119,47 +119,6 @@ function AppContent() {
     clearLocalProgressCache();
   };
 
-  // Reconfirma periodicamente o dia de organização/produção escolhido no
-  // onboarding, em vez de fixar pra sempre. Só mostra quando a data marcada
-  // já passou e ela ainda não escolheu "manter definitivo".
-  const productionDayDue = Boolean(
-    progress.productionDayPreference
-    && !progress.productionDayPreference.permanent
-    && progress.productionDayPreference.nextAskDate
-    && progress.productionDayPreference.nextAskDate <= getLocalDateISO()
-  );
-  const [showProductionDayCheck, setShowProductionDayCheck] = useState(false);
-  useEffect(() => {
-    if (productionDayDue) setShowProductionDayCheck(true);
-  }, [productionDayDue]);
-
-  const PRODUCTION_DAY_LABELS_PT = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
-
-  const snoozeProductionDay = (days: number) => {
-    const nextAsk = new Date();
-    nextAsk.setDate(nextAsk.getDate() + days);
-    updateProgress({
-      ...progress,
-      productionDayPreference: {
-        dayOfWeek: progress.productionDayPreference?.dayOfWeek ?? 1,
-        permanent: false,
-        nextAskDate: nextAsk.toISOString().slice(0, 10)
-      }
-    });
-    setShowProductionDayCheck(false);
-  };
-
-  const keepProductionDayForever = () => {
-    updateProgress({
-      ...progress,
-      productionDayPreference: {
-        dayOfWeek: progress.productionDayPreference?.dayOfWeek ?? 1,
-        permanent: true,
-        nextAskDate: null
-      }
-    });
-    setShowProductionDayCheck(false);
-  };
   const [lang, setLang] = useState<Language>('pt'); // Default language
   // Excludes 'cms' deliberately — that's admin-gated and re-entering it
   // without re-unlocking would be confusing; it always falls back to Home.
@@ -411,6 +370,61 @@ function AppContent() {
   const isTodayDoneOnHome = !hasOnboarded
     || (activeMissionDay.dayNumber === progress.currentDay
       && progress.completionHistory.includes(progress.currentDay));
+
+  // Dia de organização/produção: adiado pra fora do onboarding (perguntar
+  // depois, não durante o funil de entrada). Pergunta uma vez assim que o
+  // onboarding termina, e depois reconfirma periodicamente, a não ser que
+  // ela escolha "manter definitivo".
+  const productionDayDue = Boolean(
+    hasOnboarded
+    && (!progress.productionDayPreference
+      || (!progress.productionDayPreference.permanent
+        && progress.productionDayPreference.nextAskDate
+        && progress.productionDayPreference.nextAskDate <= getLocalDateISO()))
+  );
+  const [showProductionDayCheck, setShowProductionDayCheck] = useState(false);
+  useEffect(() => {
+    if (productionDayDue) setShowProductionDayCheck(true);
+  }, [productionDayDue]);
+
+  const PRODUCTION_DAY_LABELS_PT = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+
+  const snoozeProductionDay = (days: number) => {
+    const nextAsk = new Date();
+    nextAsk.setDate(nextAsk.getDate() + days);
+    updateProgress({
+      ...progress,
+      productionDayPreference: {
+        dayOfWeek: progress.productionDayPreference?.dayOfWeek ?? 1,
+        permanent: false,
+        nextAskDate: nextAsk.toISOString().slice(0, 10)
+      }
+    });
+    setShowProductionDayCheck(false);
+  };
+
+  const setProductionDay = (dayOfWeek: number) => {
+    updateProgress({
+      ...progress,
+      productionDayPreference: { dayOfWeek, permanent: false, nextAskDate: (() => {
+        const nextAsk = new Date();
+        nextAsk.setDate(nextAsk.getDate() + 7);
+        return nextAsk.toISOString().slice(0, 10);
+      })() }
+    });
+  };
+
+  const keepProductionDayForever = () => {
+    updateProgress({
+      ...progress,
+      productionDayPreference: {
+        dayOfWeek: progress.productionDayPreference?.dayOfWeek ?? 1,
+        permanent: true,
+        nextAskDate: null
+      }
+    });
+    setShowProductionDayCheck(false);
+  };
 
   // Chapter Introduction overlay used to auto-trigger for new chapters
   // (e.g. showing "DESPERTAR" the moment someone opened the link for the
@@ -1149,9 +1163,10 @@ function AppContent() {
         )}
       </AnimatePresence>
 
-      {/* Reconfirmação periódica do dia de organização/produção */}
+      {/* Dia de organização/produção: primeira pergunta (adiada do
+          onboarding) ou reconfirmação periódica depois de já escolhido. */}
       <AnimatePresence>
-        {showProductionDayCheck && progress.productionDayPreference && (
+        {showProductionDayCheck && (
           <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-6">
             <motion.div
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -1159,29 +1174,57 @@ function AppContent() {
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               className="bg-[#FAF8F5] dark:bg-ink-raised max-w-sm w-full rounded-3xl p-8 border border-rosegold/20 dark:border-ink-hairline shadow-rosegold dark:shadow-none space-y-4"
             >
-              <h3 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
-                Você gostaria de manter {PRODUCTION_DAY_LABELS_PT[progress.productionDayPreference.dayOfWeek]} como seu dia de organização e produção?
-              </h3>
-              <div className="space-y-2 pt-1">
-                <button
-                  onClick={() => snoozeProductionDay(7)}
-                  className="w-full py-3 px-4 rounded-xl bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
-                >
-                  Sim, perguntar de novo em 7 dias
-                </button>
-                <button
-                  onClick={() => snoozeProductionDay(15)}
-                  className="w-full py-3 px-4 rounded-xl bg-rose-50/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
-                >
-                  Sim, perguntar de novo em 15 dias
-                </button>
-                <button
-                  onClick={keepProductionDayForever}
-                  className="w-full py-3 px-4 rounded-xl bg-rose-50/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
-                >
-                  Manter definitivo, não perguntar mais
-                </button>
-              </div>
+              {progress.productionDayPreference ? (
+                <>
+                  <h3 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
+                    Você gostaria de manter {PRODUCTION_DAY_LABELS_PT[progress.productionDayPreference.dayOfWeek]} como seu dia de organização e produção?
+                  </h3>
+                  <div className="space-y-2 pt-1">
+                    <button
+                      onClick={() => snoozeProductionDay(7)}
+                      className="w-full py-3 px-4 rounded-xl bg-rosegold hover:bg-[#A35D68] text-white text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
+                    >
+                      Sim, perguntar de novo em 7 dias
+                    </button>
+                    <button
+                      onClick={() => snoozeProductionDay(15)}
+                      className="w-full py-3 px-4 rounded-xl bg-rose-50/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
+                    >
+                      Sim, perguntar de novo em 15 dias
+                    </button>
+                    <button
+                      onClick={keepProductionDayForever}
+                      className="w-full py-3 px-4 rounded-xl bg-rose-50/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline text-xs font-sans font-bold uppercase tracking-wider transition cursor-pointer"
+                    >
+                      Manter definitivo, não perguntar mais
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h3 className="text-sm font-bold text-slate-800 dark:text-ink-text font-sans">
+                    Qual dia funciona melhor pra você organizar e produzir conteúdo?
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-ink-muted font-sans">
+                    Terça costuma funcionar bem, mas você escolhe. Pode mudar depois.
+                  </p>
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {PRODUCTION_DAY_LABELS_PT.map((dayLabel, idx) => (
+                      <button
+                        key={dayLabel}
+                        onClick={() => { setProductionDay(idx); setShowProductionDayCheck(false); }}
+                        className={`px-3 py-2 rounded-xl text-xs font-sans font-semibold transition cursor-pointer border ${
+                          idx === 1
+                            ? 'bg-rosegold text-white border-rosegold'
+                            : 'bg-white/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border-rose-100/40 dark:border-ink-hairline hover:border-rosegold/50'
+                        }`}
+                      >
+                        {dayLabel}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
             </motion.div>
           </div>
         )}
@@ -1320,7 +1363,6 @@ function AppContent() {
                   isAdminUnlocked={isAdminUnlocked}
                   onJumpToDay={setFocusedDayNumber}
                   onOnboardingComplete={() => setHasOnboarded(true)}
-                  onRedeemProfessionalCode={redeemProfessionalCode}
                 />
               ) : (
                 <DailyMissionView

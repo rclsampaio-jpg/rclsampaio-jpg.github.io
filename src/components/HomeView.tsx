@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -11,9 +11,8 @@ import {
   Settings, Award, Lock, HelpCircle, Check, Play, Compass, User, Heart,
   ChevronLeft, ChevronRight
 } from 'lucide-react';
-import { MissionDay, Language, UserProgress, DayType, ProfessionalDiagnostic } from '../types';
+import { MissionDay, Language, UserProgress, DayType } from '../types';
 import { getDayTypeLabel } from '../data/templateData';
-import { VOZ_PERGUNTAS, ESTRUTURA_PERGUNTAS } from '../data/professionalDiagnosticData';
 import { getLocalDateISO } from '../utils/date';
 import { adaptMessage, resolveGrammarPreference, ToneVariants } from '../utils/grammar';
 import EditableText from './editable/EditableText';
@@ -144,7 +143,6 @@ interface HomeViewProps {
   isAdminUnlocked?: boolean;
   onJumpToDay?: (dayNumber: number) => void;
   onOnboardingComplete?: () => void;
-  onRedeemProfessionalCode?: (code: string) => Promise<boolean>;
 }
 
 export default function HomeView({
@@ -158,8 +156,7 @@ export default function HomeView({
   onTriggerSos,
   isAdminUnlocked,
   onJumpToDay,
-  onOnboardingComplete,
-  onRedeemProfessionalCode
+  onOnboardingComplete
 }: HomeViewProps) {
   // Admin-only: preview any of the 10 Árvore do Renascimento stages without
   // touching real progress data (completionHistory drives streaks too).
@@ -170,14 +167,12 @@ export default function HomeView({
   // 'complete' for one frame, briefly flashing the normal Home screen
   // (header + bottom nav) underneath before switching to the onboarding
   // overlay on the next render.
-  type OnboardState = 'splash' | 'lang' | 'name' | 'guidestyle' | 'grammar' | 'productionDay' | 'welcome' | 'destraveAsk' | 'destraveCode' | 'destraveDiagnostic' | 'intro' | 'complete';
+  type OnboardState = 'splash' | 'lang' | 'name' | 'guidestyle' | 'grammar' | 'welcome' | 'intro' | 'complete';
   const [onboardState, setOnboardState] = useState<OnboardState>(() => {
     const isCompleted = localStorage.getItem('renaser_onboarded') === 'true';
     return isCompleted ? 'complete' : 'splash';
   });
-  // Histórico de navegação do onboarding, pra permitir "Voltar" — sem isso,
-  // uma vez que ela clica Sim/Ainda não no passo do Destrave (ou qualquer
-  // outro passo), não tinha como desfazer e refazer a escolha.
+  // Histórico de navegação do onboarding, pra permitir "Voltar".
   const [onboardHistory, setOnboardHistory] = useState<OnboardState[]>([]);
   const goToOnboardState = (next: OnboardState) => {
     setOnboardHistory((h) => [...h, onboardState]);
@@ -193,56 +188,6 @@ export default function HomeView({
   const [selectedStyle, setSelectedStyle] = useState<'gentle' | 'challenger' | 'strategic' | 'inspirational'>('gentle');
   const [selectedGrammar, setSelectedGrammar] = useState<'feminine' | 'masculine'>('feminine');
   const [nameInput, setNameInput] = useState('');
-  // 0=Segunda..6=Domingo. Terça (1) como padrão, combinado previamente.
-  const [selectedProductionDay, setSelectedProductionDay] = useState(1);
-
-  // Passo "Você faz parte do Destrave?" dentro do onboarding: código +
-  // diagnóstico ficam feitos ali mesmo pra quem já comprou, em vez de ela
-  // descobrir a área sozinha depois.
-  const [destraveCodeInput, setDestraveCodeInput] = useState('');
-  const [destraveCodeError, setDestraveCodeError] = useState(false);
-  const [destraveRedeeming, setDestraveRedeeming] = useState(false);
-  const [onboardNicho, setOnboardNicho] = useState('');
-  const [onboardVozRespostas, setOnboardVozRespostas] = useState<Record<string, string[]>>({});
-  const [onboardEstruturaRespostas, setOnboardEstruturaRespostas] = useState<Record<string, string[]>>({});
-
-  const toggleOnboardDiagnosticOption = (
-    setter: Dispatch<SetStateAction<Record<string, string[]>>>,
-    key: string,
-    opt: string
-  ) => {
-    setter((prev) => {
-      const current = prev[key] ?? [];
-      const next = current.includes(opt) ? current.filter((o) => o !== opt) : [...current, opt];
-      return { ...prev, [key]: next };
-    });
-  };
-
-  const handleDestraveCodeSubmit = async () => {
-    if (!destraveCodeInput.trim() || !onRedeemProfessionalCode) return;
-    setDestraveRedeeming(true);
-    setDestraveCodeError(false);
-    const success = await onRedeemProfessionalCode(destraveCodeInput.trim());
-    setDestraveRedeeming(false);
-    if (success) {
-      goToOnboardState('destraveDiagnostic');
-    } else {
-      setDestraveCodeError(true);
-    }
-  };
-
-  const handleDestraveDiagnosticSave = () => {
-    if (onUpdateProgress) {
-      const diagnostic: ProfessionalDiagnostic = {
-        nicho: onboardNicho.trim() || undefined,
-        vozRespostas: onboardVozRespostas,
-        estruturaRespostas: onboardEstruturaRespostas,
-        completedAt: getLocalDateISO()
-      };
-      onUpdateProgress({ ...progress, professionalDiagnostic: diagnostic });
-    }
-    goToOnboardState('intro');
-  };
 
   const handleNextOnboard = () => {
     if (onboardState === 'splash') goToOnboardState('lang');
@@ -275,24 +220,9 @@ export default function HomeView({
           }
         });
       }
-      goToOnboardState('productionDay');
-    }
-    else if (onboardState === 'productionDay') {
-      if (onUpdateProgress) {
-        const nextAsk = new Date();
-        nextAsk.setDate(nextAsk.getDate() + 7);
-        onUpdateProgress({
-          ...progress,
-          productionDayPreference: {
-            dayOfWeek: selectedProductionDay,
-            permanent: false,
-            nextAskDate: nextAsk.toISOString().slice(0, 10)
-          }
-        });
-      }
       goToOnboardState('welcome');
     }
-    else if (onboardState === 'welcome') goToOnboardState('destraveAsk');
+    else if (onboardState === 'welcome') goToOnboardState('intro');
     else if (onboardState === 'intro') {
       localStorage.setItem('renaser_onboarded', 'true');
       setOnboardState('complete');
@@ -828,55 +758,6 @@ export default function HomeView({
             </motion.div>
           )}
 
-          {onboardState === 'productionDay' && (
-            <motion.div
-              key="productionDay"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-8 max-w-md flex flex-col items-center relative z-10 p-8 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none!"
-            >
-              <div className="w-16 h-16 bg-rosegold/10 border border-rosegold/15 text-rosegold rounded-[1.5rem] flex items-center justify-center">
-                <Award className="h-7 w-7" />
-              </div>
-              <div className="space-y-2 text-center">
-                <h1 className="text-2xl font-display font-light text-slate-900 dark:text-white leading-tight">
-                  {lang === 'pt' ? 'Qual dia você prefere pra organizar e produzir conteúdo?' : lang === 'es' ? '¿Qué día prefieres para organizar y producir contenido?' : 'Which day do you prefer for planning and batch-producing content?'}
-                </h1>
-                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed max-w-xs mx-auto">
-                  {lang === 'pt' ? 'Você pode mudar isso depois, o app vai perguntar de novo de tempos em tempos.' : lang === 'es' ? 'Puedes cambiarlo después, la app te lo preguntará de nuevo cada cierto tiempo.' : "You can change this later, the app will ask again from time to time."}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2 justify-center">
-                {(lang === 'pt'
-                  ? ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
-                  : lang === 'es'
-                  ? ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
-                  : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-                ).map((dayLabel, idx) => (
-                  <button
-                    key={dayLabel}
-                    onClick={() => setSelectedProductionDay(idx)}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-sans font-semibold transition cursor-pointer border ${
-                      selectedProductionDay === idx
-                        ? 'bg-rosegold text-white border-rosegold'
-                        : 'bg-white/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border-rose-100/40 dark:border-ink-hairline'
-                    }`}
-                  >
-                    {dayLabel}
-                  </button>
-                ))}
-              </div>
-              <button
-                onClick={handleNextOnboard}
-                className="px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <EditableText contentKey="home.onboarding.continue" fallback={trans.continue} as="span" />
-              </button>
-            </motion.div>
-          )}
-
           {onboardState === 'welcome' && (
             <motion.div
               key="welcome"
@@ -908,188 +789,6 @@ export default function HomeView({
                 className="px-8 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 <EditableText contentKey="home.onboarding.continue" fallback={trans.continue} as="span" />
-              </button>
-            </motion.div>
-          )}
-
-          {onboardState === 'destraveAsk' && (
-            <motion.div
-              key="destraveAsk"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-8 max-w-md flex flex-col items-center relative z-10 p-8 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none!"
-            >
-              <div className="w-16 h-16 bg-rosegold/10 border border-rosegold/15 text-rosegold rounded-[1.5rem] flex items-center justify-center">
-                <Award className="h-7 w-7" />
-              </div>
-              <div className="space-y-3 text-center">
-                <h1 className="text-2xl font-display font-light text-slate-900 dark:text-white leading-tight">
-                  Você faz parte do Destrave?
-                </h1>
-                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed max-w-xs mx-auto">
-                  A Área da Profissional é um ambiente separado da Jornada Compartilhando sua História.
-                </p>
-              </div>
-              <div className="flex gap-3 w-full">
-                <button
-                  onClick={() => goToOnboardState('destraveCode')}
-                  className="flex-1 px-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  Sim
-                </button>
-                <button
-                  onClick={() => goToOnboardState('intro')}
-                  className="flex-1 px-6 py-4 bg-rose-50/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  Ainda não
-                </button>
-              </div>
-            </motion.div>
-          )}
-
-          {onboardState === 'destraveCode' && (
-            <motion.div
-              key="destraveCode"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-6 max-w-md flex flex-col items-center relative z-10 p-8 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none!"
-            >
-              <div className="w-16 h-16 bg-rosegold/10 border border-rosegold/15 text-rosegold rounded-[1.5rem] flex items-center justify-center">
-                <Award className="h-7 w-7" />
-              </div>
-              <div className="space-y-2 text-center">
-                <h1 className="text-2xl font-display font-light text-slate-900 dark:text-white leading-tight">
-                  Digite seu código de acesso
-                </h1>
-                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed max-w-xs mx-auto">
-                  O código que você recebeu ao comprar o Destrave.
-                </p>
-              </div>
-              <input
-                type="text"
-                autoFocus
-                value={destraveCodeInput}
-                onChange={(e) => { setDestraveCodeInput(e.target.value); setDestraveCodeError(false); }}
-                onKeyDown={(e) => e.key === 'Enter' && handleDestraveCodeSubmit()}
-                placeholder="Código de acesso"
-                className="w-full text-sm text-center bg-white/60 dark:bg-transparent border border-rose-100/30 dark:border-ink-hairline focus:border-rosegold dark:focus:border-rosegold-light focus:outline-none rounded-xl p-3.5 text-slate-700 dark:text-ink-text"
-              />
-              {destraveCodeError && (
-                <p className="text-[11px] text-red-500 font-sans -mt-3">Código inválido ou já utilizado.</p>
-              )}
-              <div className="flex gap-3 w-full">
-                <button
-                  onClick={() => goToOnboardState('intro')}
-                  className="flex-1 px-6 py-4 bg-rose-50/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  Não tenho agora
-                </button>
-                <button
-                  onClick={handleDestraveCodeSubmit}
-                  disabled={destraveRedeeming}
-                  className="flex-1 px-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
-                >
-                  {destraveRedeeming ? 'Verificando...' : 'Confirmar'}
-                </button>
-              </div>
-            </motion.div>
-          )}
-
-          {onboardState === 'destraveDiagnostic' && (
-            <motion.div
-              key="destraveDiagnostic"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-7 max-w-md w-full flex flex-col relative z-10 p-8 my-10 glass-premium dark:bg-ink-raised! dark:backdrop-blur-none! dark:border! dark:border-ink-hairline! rounded-[2.5rem] shadow-rosegold dark:shadow-none! max-h-[80vh] overflow-y-auto"
-            >
-              <div className="text-center space-y-2">
-                <h1 className="text-2xl font-display font-light text-slate-900 dark:text-white leading-tight">
-                  Seu diagnóstico Destrave
-                </h1>
-                <p className="text-xs text-slate-500 dark:text-ink-muted font-sans leading-relaxed">
-                  Já aproveita que você tá aqui e responde, isso já personaliza a área pra você.
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-white/60 dark:bg-black/10 border border-rose-100/40 dark:border-ink-hairline p-4">
-                <p className="text-[10px] font-sans font-bold text-rosegold uppercase tracking-[0.15em] mb-3">Nicho</p>
-                <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-2">Pra quem é o seu conteúdo hoje?</label>
-                <input
-                  type="text"
-                  value={onboardNicho}
-                  onChange={(e) => setOnboardNicho(e.target.value)}
-                  placeholder="Ex: terapeutas iniciantes, coaches de carreira..."
-                  className="w-full text-sm bg-white/80 dark:bg-transparent border border-rose-100/40 dark:border-ink-hairline rounded-xl p-3 text-slate-700 dark:text-ink-text focus:outline-none focus:border-rosegold"
-                />
-              </div>
-
-              <div className="rounded-2xl bg-white/60 dark:bg-black/10 border border-rose-100/40 dark:border-ink-hairline p-4 space-y-4">
-                <div className="flex items-baseline justify-between">
-                  <p className="text-[10px] font-sans font-bold text-rosegold uppercase tracking-[0.15em]">Voz</p>
-                  <p className="text-[10px] text-slate-400 dark:text-ink-muted">pode marcar mais de uma</p>
-                </div>
-                {VOZ_PERGUNTAS.map((p) => (
-                  <div key={p.key}>
-                    <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-2">{p.label}</label>
-                    <div className="flex flex-wrap gap-2">
-                      {p.options.map((opt) => (
-                        <button
-                          key={opt}
-                          type="button"
-                          onClick={() => toggleOnboardDiagnosticOption(setOnboardVozRespostas, p.key, opt)}
-                          className={`px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition cursor-pointer border ${
-                            (onboardVozRespostas[p.key] ?? []).includes(opt)
-                              ? 'bg-rosegold text-white border-rosegold'
-                              : 'bg-white/80 dark:bg-transparent text-slate-500 dark:text-ink-muted border-rose-100/50 dark:border-ink-hairline'
-                          }`}
-                        >
-                          {opt}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="rounded-2xl bg-white/60 dark:bg-black/10 border border-rose-100/40 dark:border-ink-hairline p-4 space-y-4">
-                <div className="flex items-baseline justify-between">
-                  <p className="text-[10px] font-sans font-bold text-rosegold uppercase tracking-[0.15em]">Estrutura</p>
-                  <p className="text-[10px] text-slate-400 dark:text-ink-muted">pode marcar mais de uma</p>
-                </div>
-                {ESTRUTURA_PERGUNTAS.map((p) => (
-                  <div key={p.key}>
-                    <label className="text-sm font-sans font-semibold text-slate-700 dark:text-ink-text block mb-2">{p.label}</label>
-                    <div className="flex flex-wrap gap-2">
-                      {p.options.map((opt) => (
-                        <button
-                          key={opt}
-                          type="button"
-                          onClick={() => toggleOnboardDiagnosticOption(setOnboardEstruturaRespostas, p.key, opt)}
-                          className={`px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition cursor-pointer border ${
-                            (onboardEstruturaRespostas[p.key] ?? []).includes(opt)
-                              ? 'bg-rosegold text-white border-rosegold'
-                              : 'bg-white/80 dark:bg-transparent text-slate-500 dark:text-ink-muted border-rose-100/50 dark:border-ink-hairline'
-                          }`}
-                        >
-                          {opt}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={handleDestraveDiagnosticSave}
-                className="w-full px-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-              >
-                Salvar e continuar
               </button>
             </motion.div>
           )}
