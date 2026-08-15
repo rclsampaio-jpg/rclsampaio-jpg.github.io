@@ -508,7 +508,7 @@ export default function ProfessionalAreaView({ progress, lang, onUpdateProgress,
           <div className="rounded-2xl bg-rosegold/5 dark:bg-rosegold-light/5 border border-rosegold/20 p-5 space-y-2 mt-4">
             <p className="text-sm font-serif font-semibold text-slate-800 dark:text-ink-text">Pra praticar e achar sua voz</p>
             <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">
-              Na Biblioteca você encontra o guia de hooks/anti-hooks e os 7 ângulos de Reels de conversão, além dos 14 prompts prontos pra pedir conteúdo direto pro Renata OS.
+              Na Biblioteca você encontra o guia de hooks/anti-hooks e os 7 ângulos de Reels de conversão, além dos 14 prompts prontos pra montar teu conteúdo autêntico com o Renata OS.
             </p>
             <button
               onClick={onGoToLibrary}
