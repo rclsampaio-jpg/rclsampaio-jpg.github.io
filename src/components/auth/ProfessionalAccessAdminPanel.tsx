@@ -1,9 +1,8 @@
 // src/components/auth/ProfessionalAccessAdminPanel.tsx
 import { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { supabase } from '../../lib/supabase';
 
 export default function ProfessionalAccessAdminPanel() {
-  const { session } = useAuth();
   const [generating, setGenerating] = useState(false);
   const [lastCode, setLastCode] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -15,12 +14,22 @@ export default function ProfessionalAccessAdminPanel() {
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
     const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
     try {
+      // Busca a sessão fresca na hora em vez de confiar no valor do contexto
+      // React, que pode estar desatualizado (token já renovado por baixo dos
+      // panos, mas o closure ainda aponta pro antigo) e causar "Sessão
+      // inválida" mesmo com is_admin correto no banco.
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+      if (!accessToken) {
+        setError('Sessão não encontrada, saia e entre de novo.');
+        return;
+      }
       const res = await fetch(`${supabaseUrl}/functions/v1/admin-generate-professional-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'apikey': supabaseAnonKey,
-          'Authorization': `Bearer ${session?.access_token ?? ''}`,
+          'Authorization': `Bearer ${accessToken}`,
         },
       });
       const json = await res.json();

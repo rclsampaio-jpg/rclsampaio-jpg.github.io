@@ -48,10 +48,10 @@ const HOME_TONE: Record<Language, {
       inspirational: 'Você está [pronta/pronto/pronte]?'
     },
     introText: {
-      gentle: 'Pelos próximos 30 dias, no seu ritmo, você vai receber um gancho diário e um áudio de até 10 minutos. Não precisa sair perfeito nem controlar cada detalhe, solte um pouco e confie no processo. Este espaço existe pra você se lembrar, com calma, de quem você realmente é.',
-      challenger: 'Pelos próximos 30 dias, sem desculpa: um gancho diário, um áudio de até 10 minutos, e a decisão de aparecer todo santo dia, mesmo com medo. Encarar o desconforto de frente é o caminho, não tem atalho por fora dele. Esse é o trato.',
-      strategic: 'Pelos próximos 30 dias, você recebe um gancho diário e um áudio prático de até 10 minutos, um sistema simples, repetível, desenhado pra gerar consistência mensurável mesmo quando nem tudo sai como planejado.',
-      inspirational: 'Pelos próximos 30 dias, você receberá um gancho (hook) diário e um áudio prático de até 10 minutos. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar quem você realmente é.'
+      gentle: 'Nessa jornada, no seu ritmo, você vai receber um direcionamento diário, com áudios, vídeos de até 4 minutos e exercícios práticos pra executar. Não precisa sair perfeito nem controlar cada detalhe, solte um pouco e confie no processo. Este espaço existe pra você se lembrar, com calma, de quem você realmente é.',
+      challenger: 'Nessa jornada, sem desculpa: direcionamento diário, com áudios, vídeos de até 4 minutos e exercícios práticos pra executar, e a decisão de aparecer todo santo dia, mesmo com medo. Encarar o desconforto de frente é o caminho, não tem atalho por fora dele. Esse é o trato.',
+      strategic: 'Nessa jornada, você recebe direcionamento diário, com áudios, vídeos de até 4 minutos e exercícios práticos pra executar, um sistema simples, repetível, desenhado pra gerar consistência mensurável mesmo quando nem tudo sai como planejado.',
+      inspirational: 'Nessa jornada, você receberá um direcionamento diário e com áudios, vídeos de até 4 minutos e exercícios práticos para executar. Este é um espaço seguro para você confiar que a vida está a favor de quem você está se tornando, e lembrar quem você realmente é.'
     },
     yesterdayReminder: {
       gentle: '✨ Sem pressa nenhuma. Volte exatamente de onde parou, no seu tempo, não existe atraso aqui, só o seu próprio ritmo. Soltar o controle também faz parte.',
@@ -170,10 +170,26 @@ export default function HomeView({
   // 'complete' for one frame, briefly flashing the normal Home screen
   // (header + bottom nav) underneath before switching to the onboarding
   // overlay on the next render.
-  const [onboardState, setOnboardState] = useState<'splash' | 'lang' | 'name' | 'guidestyle' | 'grammar' | 'productionDay' | 'welcome' | 'destraveAsk' | 'destraveCode' | 'destraveDiagnostic' | 'intro' | 'complete'>(() => {
+  type OnboardState = 'splash' | 'lang' | 'name' | 'guidestyle' | 'grammar' | 'productionDay' | 'welcome' | 'destraveAsk' | 'destraveCode' | 'destraveDiagnostic' | 'intro' | 'complete';
+  const [onboardState, setOnboardState] = useState<OnboardState>(() => {
     const isCompleted = localStorage.getItem('renaser_onboarded') === 'true';
     return isCompleted ? 'complete' : 'splash';
   });
+  // Histórico de navegação do onboarding, pra permitir "Voltar" — sem isso,
+  // uma vez que ela clica Sim/Ainda não no passo do Destrave (ou qualquer
+  // outro passo), não tinha como desfazer e refazer a escolha.
+  const [onboardHistory, setOnboardHistory] = useState<OnboardState[]>([]);
+  const goToOnboardState = (next: OnboardState) => {
+    setOnboardHistory((h) => [...h, onboardState]);
+    setOnboardState(next);
+  };
+  const handleBackOnboard = () => {
+    setOnboardHistory((h) => {
+      if (h.length === 0) return h;
+      setOnboardState(h[h.length - 1]);
+      return h.slice(0, -1);
+    });
+  };
   const [selectedStyle, setSelectedStyle] = useState<'gentle' | 'challenger' | 'strategic' | 'inspirational'>('gentle');
   const [selectedGrammar, setSelectedGrammar] = useState<'feminine' | 'masculine'>('feminine');
   const [nameInput, setNameInput] = useState('');
@@ -209,7 +225,7 @@ export default function HomeView({
     const success = await onRedeemProfessionalCode(destraveCodeInput.trim());
     setDestraveRedeeming(false);
     if (success) {
-      setOnboardState('destraveDiagnostic');
+      goToOnboardState('destraveDiagnostic');
     } else {
       setDestraveCodeError(true);
     }
@@ -225,19 +241,19 @@ export default function HomeView({
       };
       onUpdateProgress({ ...progress, professionalDiagnostic: diagnostic });
     }
-    setOnboardState('intro');
+    goToOnboardState('intro');
   };
 
   const handleNextOnboard = () => {
-    if (onboardState === 'splash') setOnboardState('lang');
-    else if (onboardState === 'lang') setOnboardState('name');
+    if (onboardState === 'splash') goToOnboardState('lang');
+    else if (onboardState === 'lang') goToOnboardState('name');
     else if (onboardState === 'name') {
       if (onUpdateProgress) {
         onUpdateProgress({ ...progress, displayName: nameInput.trim() || null });
       }
-      setOnboardState('guidestyle');
+      goToOnboardState('guidestyle');
     }
-    else if (onboardState === 'guidestyle') setOnboardState('grammar');
+    else if (onboardState === 'guidestyle') goToOnboardState('grammar');
     else if (onboardState === 'grammar') {
       // Save style and grammar preference on transition
       if (onUpdateProgress) {
@@ -259,7 +275,7 @@ export default function HomeView({
           }
         });
       }
-      setOnboardState('productionDay');
+      goToOnboardState('productionDay');
     }
     else if (onboardState === 'productionDay') {
       if (onUpdateProgress) {
@@ -274,9 +290,9 @@ export default function HomeView({
           }
         });
       }
-      setOnboardState('welcome');
+      goToOnboardState('welcome');
     }
-    else if (onboardState === 'welcome') setOnboardState('destraveAsk');
+    else if (onboardState === 'welcome') goToOnboardState('destraveAsk');
     else if (onboardState === 'intro') {
       localStorage.setItem('renaser_onboarded', 'true');
       setOnboardState('complete');
@@ -472,6 +488,17 @@ export default function HomeView({
     // that ancestor entirely, so `fixed inset-0` covers the true viewport.
     return createPortal(
       <div className="fixed inset-0 z-50 bg-[#FAF8F5] dark:bg-ink text-slate-900 dark:text-ink-text flex flex-col justify-center items-center p-8 sm:p-12 text-center select-none transition-colors duration-500 paper-ivory overflow-y-auto">
+        {/* Voltar — some steps (Destrave sim/não, etc) davam decisão sem
+            volta, sem nenhum jeito de corrigir um clique errado. */}
+        {onboardHistory.length > 0 && (
+          <button
+            onClick={handleBackOnboard}
+            className="fixed top-6 left-6 z-[60] flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/70 dark:bg-ink-raised/70 border border-rose-100/40 dark:border-ink-hairline text-slate-500 dark:text-ink-muted text-xs font-sans font-semibold cursor-pointer hover:bg-white dark:hover:bg-ink-raised transition"
+          >
+            ← Voltar
+          </button>
+        )}
+
         {/* Ambient atmospheric backdrop light */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-rosegold/10 dark:bg-rosegold/5 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDuration: '6s' }} />
 
@@ -907,13 +934,13 @@ export default function HomeView({
               </div>
               <div className="flex gap-3 w-full">
                 <button
-                  onClick={() => setOnboardState('destraveCode')}
+                  onClick={() => goToOnboardState('destraveCode')}
                   className="flex-1 px-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 shadow-rosegold cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Sim
                 </button>
                 <button
-                  onClick={() => setOnboardState('intro')}
+                  onClick={() => goToOnboardState('intro')}
                   className="flex-1 px-6 py-4 bg-rose-50/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Ainda não
@@ -956,7 +983,7 @@ export default function HomeView({
               )}
               <div className="flex gap-3 w-full">
                 <button
-                  onClick={() => setOnboardState('intro')}
+                  onClick={() => goToOnboardState('intro')}
                   className="flex-1 px-6 py-4 bg-rose-50/60 dark:bg-transparent text-slate-600 dark:text-ink-muted border border-rose-100/30 dark:border-ink-hairline rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Não tenho agora
@@ -1060,7 +1087,7 @@ export default function HomeView({
 
               <button
                 onClick={handleDestraveDiagnosticSave}
-                className="w-full px-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98] sticky bottom-0"
+                className="w-full px-6 py-4 bg-rosegold hover:bg-[#A35D68] text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light dark:hover:bg-rosegold-light/10 rounded-2xl text-xs font-sans font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 Salvar e continuar
               </button>
