@@ -1401,17 +1401,17 @@ function AppContent() {
         />
 
         {/* Ecosystem Bottom Navigation Bar */}
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-md bg-white/95 dark:bg-ink-raised backdrop-blur-md dark:backdrop-blur-none border border-rose-100/40 dark:border-ink-hairline py-2.5 px-4 rounded-full shadow-2xl dark:shadow-none flex items-center justify-around">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-[97%] max-w-lg bg-white/95 dark:bg-ink-raised backdrop-blur-md dark:backdrop-blur-none border border-rose-100/40 dark:border-ink-hairline py-2 px-1.5 rounded-full shadow-2xl dark:shadow-none flex items-center justify-around">
           <button
             onClick={() => setActiveTab('home')}
-            className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
+            className={`flex flex-col items-center gap-0.5 transition-all relative py-1 px-1 rounded-full shrink-0 ${
               activeTab === 'home'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
                 : 'text-slate-400 dark:text-ink-muted hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
-            <Home className="h-4.5 w-4.5" />
-            <span className="text-[9px] tracking-wider font-sans uppercase font-medium">{labels.home}</span>
+            <Home className="h-4 w-4" />
+            <span className="text-[8px] tracking-tight font-sans uppercase font-medium leading-tight text-center">{labels.home}</span>
             {activeTab === 'home' && (
               <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
             )}
@@ -1419,14 +1419,14 @@ function AppContent() {
 
           <button
             onClick={() => setActiveTab('journey')}
-            className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
+            className={`flex flex-col items-center gap-0.5 transition-all relative py-1 px-1 rounded-full shrink-0 ${
               activeTab === 'journey'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
                 : 'text-slate-400 dark:text-ink-muted hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
-            <Compass className="h-4.5 w-4.5" />
-            <span className="text-[9px] tracking-wider font-sans uppercase font-medium">{labels.journey}</span>
+            <Compass className="h-4 w-4" />
+            <span className="text-[8px] tracking-tight font-sans uppercase font-medium leading-tight text-center">{labels.journey}</span>
             {activeTab === 'journey' && (
               <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
             )}
@@ -1434,14 +1434,14 @@ function AppContent() {
 
           <button
             onClick={() => setActiveTab('community')}
-            className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
+            className={`flex flex-col items-center gap-0.5 transition-all relative py-1 px-1 rounded-full shrink-0 ${
               activeTab === 'community'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
                 : 'text-slate-400 dark:text-ink-muted hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
-            <Users className="h-4.5 w-4.5" />
-            <span className="text-[9px] tracking-wider font-sans uppercase font-medium">{labels.community}</span>
+            <Users className="h-4 w-4" />
+            <span className="text-[8px] tracking-tight font-sans uppercase font-medium leading-tight text-center">{labels.community}</span>
             {activeTab === 'community' && (
               <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
             )}
@@ -1449,14 +1449,14 @@ function AppContent() {
 
           <button
             onClick={() => { setLibraryInitialCategory(undefined); setActiveTab('library'); }}
-            className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
+            className={`flex flex-col items-center gap-0.5 transition-all relative py-1 px-1 rounded-full shrink-0 ${
               activeTab === 'library'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
                 : 'text-slate-400 dark:text-ink-muted hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
-            <BookOpen className="h-4.5 w-4.5" />
-            <span className="text-[9px] tracking-wider font-sans uppercase font-medium">{labels.library}</span>
+            <BookOpen className="h-4 w-4" />
+            <span className="text-[8px] tracking-tight font-sans uppercase font-medium leading-tight text-center">{labels.library}</span>
             {activeTab === 'library' && (
               <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
             )}
@@ -1464,14 +1464,14 @@ function AppContent() {
 
           <button
             onClick={() => isProfessionalUnlocked ? setActiveTab('professional') : setShowProfessionalPrompt(true)}
-            className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
+            className={`flex flex-col items-center gap-0.5 transition-all relative py-1 px-1 rounded-full shrink-0 ${
               activeTab === 'professional'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
                 : 'text-slate-400 dark:text-ink-muted hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
-            {isProfessionalUnlocked ? <Sparkles className="h-4.5 w-4.5" /> : <Lock className="h-4.5 w-4.5" />}
-            <span className="text-[9px] tracking-wider font-sans uppercase font-medium">{labels.professional}</span>
+            {isProfessionalUnlocked ? <Sparkles className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
+            <span className="text-[8px] tracking-tight font-sans uppercase font-medium leading-tight text-center">{labels.professional}</span>
             {activeTab === 'professional' && (
               <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
             )}
@@ -1479,14 +1479,14 @@ function AppContent() {
 
           <button
             onClick={() => setActiveTab('profile')}
-            className={`flex flex-col items-center gap-1 transition-all relative py-1 px-2.5 rounded-full ${
+            className={`flex flex-col items-center gap-0.5 transition-all relative py-1 px-1 rounded-full shrink-0 ${
               activeTab === 'profile'
                 ? 'text-rosegold dark:text-rosegold-light scale-105 font-bold'
                 : 'text-slate-400 dark:text-ink-muted hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
-            <User className="h-4.5 w-4.5" />
-            <span className="text-[9px] tracking-wider font-sans uppercase font-medium">{labels.profile}</span>
+            <User className="h-4 w-4" />
+            <span className="text-[8px] tracking-tight font-sans uppercase font-medium leading-tight text-center">{labels.profile}</span>
             {activeTab === 'profile' && (
               <motion.div layoutId="activeDot" className="absolute -bottom-1 w-1 h-1 bg-rosegold dark:bg-rosegold-light rounded-full" />
             )}
