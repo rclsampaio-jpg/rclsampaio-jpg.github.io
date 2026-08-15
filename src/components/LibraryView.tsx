@@ -267,9 +267,11 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   };
 
   // Categories translation/icon maps
-  // Ocultas temporariamente a pedido dela, sem conteúdo suficiente pra
-  // justificar uma aba própria agora. Reversível: só tirar daqui.
-  const HIDDEN_LIBRARY_CATEGORIES = ['all', 'articles', 'pdfs', 'challenges', 'meditations', 'masterclasses'];
+  // Ocultas a pedido dela: sem conteúdo suficiente pra justificar aba
+  // própria agora. Masterclasses e Desafios voltaram a ficar visíveis
+  // (mesmo vazias por enquanto) com uma explicação do que vai aparecer
+  // ali, pra já existir o lugar certo quando o conteúdo for publicado.
+  const HIDDEN_LIBRARY_CATEGORIES = ['all', 'articles', 'pdfs', 'meditations'];
 
   // Ordem definida por ela diretamente: Prompts, Áudios, Vídeos, Bem-Estar.
   const categories = [
@@ -344,7 +346,9 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
   const trans = {
     pt: {
       title: 'Biblioteca de Expansão RenaSer',
-      subtitle: 'Seu acervo vitalício de evolução. Masterclasses, meditações de calibração, desafios rápidos e materiais didáticos adicionais.',
+      subtitle: 'Os prompts prontos, áudios, vídeos e desafios que você usa pra continuar praticando. Tudo que a gente for soltando de novo entra aqui.',
+      masterclassesIntro: 'Aqui vão os links dos nossos encontros ao vivo. Toda Masterclass que rolar, o link fica aqui pra você assistir na hora ou depois. Quando tiver aula paga avulsa com convidada especial, o anúncio também vem pra cá.',
+      challengesIntro: 'Aqui ficam os desafios da turma. Sempre que a gente lançar um desafio novo pro grupo, ele é publicado aqui.',
       weeklyVideoTitle: 'Vídeo da Semana',
       weeklyVideoDesc: 'Um vídeo novo toda semana com dicas práticas para sua jornada de visibilidade.',
       searchPlaceholder: 'Buscar vídeos, meditações, PDFs...',
@@ -385,7 +389,9 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
     },
     en: {
       title: 'RenaSer Expansion Library',
-      subtitle: 'Your lifetime repository of growth. Masterclasses, calibration meditations, fast challenges, and worksheets.',
+      subtitle: 'The ready-made prompts, audios, videos and challenges you use to keep practicing. Everything new we release lands here.',
+      masterclassesIntro: "Here are the links to our live sessions. Every Masterclass we run, the link goes here so you can watch it live or later. Paid one-off classes with special guests get announced here too.",
+      challengesIntro: 'This is where the group challenges live. Every time we launch a new challenge for the group, it gets published here.',
       weeklyVideoTitle: 'Video of the Week',
       weeklyVideoDesc: 'A new video every week with practical tips for your visibility journey.',
       searchPlaceholder: 'Search videos, audios, PDFs...',
@@ -426,7 +432,9 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
     },
     es: {
       title: 'Biblioteca de Expansión RenaSer',
-      subtitle: 'Tu archivo vitalicio de evolución. Clases maestras, meditaciones, desafíos prácticos y folletos didácticos.',
+      subtitle: 'Los prompts listos, audios, videos y desafíos que usas para seguir practicando. Todo lo nuevo que lancemos entra aquí.',
+      masterclassesIntro: 'Aquí están los enlaces de nuestros encuentros en vivo. Cada Masterclass que hagamos, el enlace queda aquí para que la veas en el momento o después. Cuando haya una clase paga con invitada especial, el anuncio también va aquí.',
+      challengesIntro: 'Aquí están los desafíos del grupo. Cada vez que lancemos un desafío nuevo para el grupo, se publica aquí.',
       weeklyVideoTitle: 'Video de la Semana',
       weeklyVideoDesc: 'Un video nuevo cada semana con consejos prácticos para tu camino de visibilidad.',
       searchPlaceholder: 'Buscar videos, audios, PDFs...',
@@ -1009,6 +1017,14 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
           </div>
         </div>
       ) : (
+      <div>
+        {(selectedCategory === 'masterclasses' || selectedCategory === 'challenges') && (
+          <div className="max-w-2xl mx-auto text-center mb-8 px-4">
+            <p className="text-sm text-slate-500 dark:text-ink-muted leading-relaxed">
+              {selectedCategory === 'masterclasses' ? trans.masterclassesIntro : trans.challengesIntro}
+            </p>
+          </div>
+        )}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <AnimatePresence mode="popLayout">
           {filteredAssets.length > 0 ? (
@@ -1147,6 +1163,7 @@ export default function LibraryView({ lang, progress, onUpdateProgress, onTrigge
             </div>
           )}
         </AnimatePresence>
+      </div>
       </div>
       )}
 
