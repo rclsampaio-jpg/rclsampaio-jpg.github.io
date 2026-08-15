@@ -663,11 +663,18 @@ function AppContent() {
     if (activeSimulation === key) {
       const snapshotRaw = localStorage.getItem(SIMULATION_SNAPSHOT_KEY);
       if (snapshotRaw) {
-        updateProgress(JSON.parse(snapshotRaw));
+        const restored: UserProgress = JSON.parse(snapshotRaw);
+        updateProgress(restored);
+        // Sem isso, a tela ficava travada no que a simulação tinha aberto
+        // (ex: dia 30, ou a aba Próximo Nível) mesmo com o progresso real
+        // já restaurado por baixo — precisa voltar pro ambiente normal de
+        // verdade, não só trocar o dado.
+        setFocusedDayNumber(restored.currentDay <= 30 ? restored.currentDay : 30);
       }
       localStorage.removeItem(SIMULATION_SNAPSHOT_KEY);
       localStorage.removeItem(ACTIVE_SIMULATION_KEY);
       setActiveSimulation(null);
+      setActiveTab('home');
       return;
     }
     if (!localStorage.getItem(SIMULATION_SNAPSHOT_KEY)) {
