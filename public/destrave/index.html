@@ -728,6 +728,13 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
   var UNLOCK_AT = 0.9; // libera a página aos 90% do vídeo assistido
   var unlocked = false;
 
+  // Atalho de teste: abrindo a página com ?preview=1 no final do link,
+  // revela o conteúdo todo na hora, sem precisar assistir o vídeo.
+  if (window.location.search.indexOf('preview=1') !== -1) {
+    gated.classList.remove('gated');
+    return;
+  }
+
   lockMsg.classList.add('show');
 
   function unlock() {
