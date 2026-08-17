@@ -183,7 +183,53 @@ export function getActionHookOptions(lang: Language): string[] {
 // Adapted for the Brazilian creator market (not a literal translation) —
 // tone, references and slang adjusted to what performs on IG/TikTok BR today.
 const HOOK_OPTIONS_BY_TYPE: Record<DayType, Record<Language, string[]>> = {
-  [DayType.RestartIntention]: { pt: [], en: [], es: [] },
+  [DayType.RestartIntention]: {
+    pt: [
+      'Queria que alguém tivesse me contado isso antes: ___',
+      'Se eu tivesse que começar do zero hoje, eu ia ___',
+      'Isso mudou tudo pra mim quando eu ___',
+      'Quase não postei isso, mas ___',
+      'Eu tava fazendo ___ errado esse tempo todo',
+      'Eu achava que ___, até ___',
+      'Era assim que eu tava há um tempo atrás',
+      'Esse é o sinal que você tava esperando pra ___',
+      'Para de rolar se você quer ___',
+      'Antes de ___, vê isso',
+      'Se você tá travada, vê isso',
+      'A resposta pode te surpreender: ___',
+      'E se eu te dissesse que ___?'
+    ],
+    en: [
+      'I wish someone had told me this sooner: ___',
+      "If I had to start from zero today, I'd ___",
+      'This changed everything for me when I ___',
+      "I almost didn't post this, but ___",
+      "I've been doing ___ all wrong this whole time",
+      'I used to think ___, until ___',
+      'This was me a while ago',
+      "This is the sign you've been waiting for to ___",
+      'Stop scrolling if you want ___',
+      'Before you ___, watch this',
+      "If you're feeling stuck, watch this",
+      'The answer might surprise you: ___',
+      'What if I told you ___?'
+    ],
+    es: [
+      'Ojalá alguien me hubiera dicho esto antes: ___',
+      'Si tuviera que empezar de cero hoy, yo ___',
+      'Esto cambió todo para mí cuando ___',
+      'Casi no publico esto, pero ___',
+      'Estuve haciendo ___ mal todo este tiempo',
+      'Yo pensaba que ___, hasta que ___',
+      'Así era yo hace un tiempo',
+      'Esta es la señal que estabas esperando para ___',
+      'Deja de scrollear si quieres ___',
+      'Antes de ___, mira esto',
+      'Si te sientes estancada, mira esto',
+      'La respuesta puede sorprenderte: ___',
+      '¿Y si te dijera que ___?'
+    ]
+  },
   [DayType.Truth]: {
     pt: [
       'Aqui ninguém é pessoa da manhã!!! Chega de só reclamar, bora fazer alguma coisa sobre isso',
@@ -325,8 +371,103 @@ const HOOK_OPTIONS_BY_TYPE: Record<DayType, Record<Language, string[]>> = {
       'Ya no suscribimos a la idea de que ___'
     ]
   },
-  [DayType.Rest]: { pt: [], en: [], es: [] },
-  [DayType.Presence]: { pt: [], en: [], es: [] },
+  [DayType.Rest]: {
+    pt: [
+      'Você tá deixando ___ mais difícil do que precisa',
+      '3 coisas que você precisa saber antes de ___',
+      'O passo a passo pra ___',
+      'Faz isso em vez de ___',
+      'O jeito mais fácil de ___ é ___',
+      'O método que eu uso toda vez que ___',
+      'O atalho que ninguém fala é ___',
+      'O processo exato que eu sigo pra ___',
+      'Rouba essa estratégia pra ___',
+      'Salva esse post porque ___',
+      'Se você tá travando em ___, tenta isso',
+      'Esse um erro tá te custando ___',
+      'O motivo de você não ver ___ é ___',
+      'Deixa eu te mostrar o que realmente funciona pra ___'
+    ],
+    en: [
+      "You're making ___ harder than it needs to be",
+      '3 things you need to know before ___',
+      "Here's a step-by-step way to ___",
+      'Do this instead of ___',
+      'The easiest way to ___ is ___',
+      "Here's the framework I use every time I ___",
+      "The shortcut nobody is talking about is ___",
+      'The exact process I follow to ___',
+      'Steal this strategy for ___',
+      'Save this for later because ___',
+      "If you're struggling with ___, try this",
+      'This one mistake is costing you ___',
+      "The reason you're not seeing ___ is ___",
+      "Let me show you what's actually working for ___"
+    ],
+    es: [
+      'Estás haciendo ___ más difícil de lo que necesita ser',
+      '3 cosas que necesitas saber antes de ___',
+      'El paso a paso para ___',
+      'Haz esto en vez de ___',
+      'La forma más fácil de ___ es ___',
+      'El método que uso cada vez que ___',
+      'El atajo del que nadie habla es ___',
+      'El proceso exacto que sigo para ___',
+      'Róbate esta estrategia para ___',
+      'Guarda esto porque ___',
+      'Si estás batallando con ___, prueba esto',
+      'Este error te está costando ___',
+      'La razón por la que no ves ___ es ___',
+      'Déjame mostrarte lo que realmente funciona para ___'
+    ]
+  },
+  [DayType.Presence]: {
+    pt: [
+      'Ninguém fala sobre ___, mas ___',
+      'Isso que todo mundo erra sobre ___',
+      'O maior mito sobre ___ é que ___',
+      'Você não vai acreditar o que aconteceu quando eu ___',
+      'Essa é a parte que ninguém te conta sobre ___',
+      'Essa mudança simples em ___ fez toda diferença',
+      'É por isso que seu ___ não tá ___',
+      'Se isso soa com você: ___',
+      'Levanta a mão se você já ___',
+      'Eu sei exatamente como é quando ___',
+      'Você não tá sozinha se ___',
+      'A gente pode concordar que ___?',
+      'Aqui vai o seu lembrete de que ___'
+    ],
+    en: [
+      'Nobody talks about ___, but ___',
+      "Here's what everyone gets wrong about ___",
+      'The biggest myth about ___ is ___',
+      "You won't believe what happened when I ___",
+      "Here's the part nobody tells you about ___",
+      'This simple shift in ___ made all the difference',
+      "This is why your ___ isn't ___",
+      'If this sounds like you: ___',
+      "Raise your hand if you've ever ___",
+      'I know exactly how this feels when ___',
+      "You're not alone if ___",
+      'Can we all agree that ___?',
+      "Here's your reminder that ___"
+    ],
+    es: [
+      'Nadie habla de ___, pero ___',
+      'Esto es lo que todos entienden mal sobre ___',
+      'El mito más grande sobre ___ es que ___',
+      'No vas a creer lo que pasó cuando yo ___',
+      'Esta es la parte que nadie te cuenta sobre ___',
+      'Este pequeño cambio en ___ hizo toda la diferencia',
+      'Por eso tu ___ no está ___',
+      'Si esto te suena: ___',
+      'Levanta la mano si alguna vez ___',
+      'Sé exactamente cómo se siente cuando ___',
+      'No estás sola si ___',
+      '¿Podemos estar de acuerdo en que ___?',
+      'Aquí tienes tu recordatorio de que ___'
+    ]
+  },
   [DayType.Reflection]: {
     pt: [
       'Se eu pudesse sentar com uma versão mais nova de mim, eu diria ___',
@@ -372,14 +513,13 @@ export function getHookOptionsForDay(dayNumber: number, lang: Language, startDat
 
 // Category name for the themed hook set of the day (matches HOOK_OPTIONS_BY_TYPE
 // above), used to tell the user which kind of hook they're looking at today.
-// Null for day types with no themed set (RestartIntention, Rest, Presence).
 const HOOK_CATEGORY_LABEL: Record<DayType, Record<Language, string> | null> = {
-  [DayType.RestartIntention]: null,
+  [DayType.RestartIntention]: { pt: 'Recomeço', en: 'Restart', es: 'Reinicio' },
   [DayType.Truth]: { pt: 'Verdade', en: 'Truth', es: 'Verdad' },
   [DayType.Storytelling]: { pt: 'Storytelling', en: 'Storytelling', es: 'Storytelling' },
   [DayType.ContrarianThinking]: { pt: 'Pensamento Contrário', en: 'Contrarian Thinking', es: 'Pensamiento Contrario' },
-  [DayType.Rest]: null,
-  [DayType.Presence]: null,
+  [DayType.Rest]: { pt: 'Estratégia', en: 'Strategy', es: 'Estrategia' },
+  [DayType.Presence]: { pt: 'Conexão', en: 'Connection', es: 'Conexión' },
   [DayType.Reflection]: { pt: 'Reflexão', en: 'Reflection', es: 'Reflexión' }
 };
 
@@ -1007,7 +1147,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '23';
+const DAYS_CONTENT_VERSION = '24';
 
 export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
