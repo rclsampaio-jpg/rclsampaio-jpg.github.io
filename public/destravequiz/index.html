@@ -306,7 +306,7 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
     <!-- STEP 0: intro -->
     <div class="step active" data-step>
       <p class="question">Primeiramente, <em>UAU!</em></p>
-      <p class="hint" style="text-align:center">Querer transformar seu conhecimento real em conteúdo que converte, não só em mais dica de graça&hellip; menos de 20% das mulheres no desenvolvimento humano estão fazendo isso. Parabéns por já reconhecer. Muita gente não chega nem nessa fase.<br><br>Rapidinho (menos de 2 minutinhos) me responde 5 perguntinhas sobre você &#128525;</p>
+      <p class="hint" style="text-align:center">Querer transformar seu conhecimento real em conteúdo que converte, não só em mais dica de graça&hellip; menos de 20% das mulheres no desenvolvimento humano estão fazendo isso. Parabéns por já reconhecer. Muita gente não chega nem nessa fase.<br><br>Rapidinho me responde algumas perguntinhas sobre você &#128525;</p>
       <div class="nav"><button type="button" class="btn-primario next-btn">Vamos lá &rarr;</button></div>
     </div>
 
@@ -321,9 +321,20 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
     </div>
 
-    <!-- STEP 2: whatsapp -->
+    <!-- STEP 2: email -->
     <div class="step" data-step>
       <p class="qnum">02</p>
+      <p class="question">Qual o seu melhor email? <span class="req">*</span></p>
+      <div class="field"><input type="email" name="Email de contato" id="f_email" required autocomplete="email" enterkeyhint="next"></div>
+      <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:8px auto 0">voltar</button>
+      <span class="enter-hint">pressione Enter &crarr;</span>
+      <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
+    </div>
+
+    <!-- STEP 3: whatsapp -->
+    <div class="step" data-step>
+      <p class="qnum">03</p>
       <p class="question">Qual o seu WhatsApp? <span class="req">*</span></p>
       <div class="field"><input type="tel" name="WhatsApp" required autocomplete="tel" inputmode="tel" pattern="[\-0-9 \(\)\+]{8,20}" placeholder="(11) 91234-5678" enterkeyhint="next"></div>
       <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
@@ -332,9 +343,9 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
     </div>
 
-    <!-- STEP 3: instagram -->
+    <!-- STEP 4: instagram -->
     <div class="step" data-step>
-      <p class="qnum">03</p>
+      <p class="qnum">04</p>
       <p class="question">qual seu @ no insta? <span class="req">*</span></p>
       <div class="field"><input type="text" name="Instagram" required enterkeyhint="next"></div>
       <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
@@ -343,22 +354,27 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
     </div>
 
-    <!-- STEP 4: momento atual -->
+    <!-- STEP 5: momento atual -->
     <div class="step" data-step>
-      <p class="qnum">04</p>
+      <p class="qnum">05</p>
       <p class="question">Hoje, o que mais te representa? &#128522; <span class="req">*</span></p>
       <div class="options" data-radio-group>
         <label class="option"><input type="radio" name="Momento atual" value="Travo na hora de aparecer, então nem posto" required> Travo na hora de aparecer, então nem posto</label>
         <label class="option"><input type="radio" name="Momento atual" value="Já posto, mas ensino tudo de graça e ninguém contrata"> Já posto, mas ensino tudo de graça e ninguém contrata</label>
         <label class="option"><input type="radio" name="Momento atual" value="Posto de vez em quando, sem estrutura nem estratégia"> Posto de vez em quando, sem estrutura nem estratégia</label>
         <label class="option"><input type="radio" name="Momento atual" value="Já posto com constância, mas quero converter mais"> Já posto com constância, mas quero converter mais</label>
+        <label class="option outro-option"><input type="radio" name="Momento atual" value="Outro" data-outro-toggle> Outro</label>
       </div>
+      <div class="field outro-field" data-outro-field style="display:none">
+        <input type="text" name="Momento atual - detalhe" placeholder="Conta com suas palavras...">
+      </div>
+      <div class="nav outro-nav" style="display:none"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
       <button type="button" class="btn-voltar back-btn" style="display:block; margin:18px auto 0">voltar</button>
     </div>
 
-    <!-- STEP 5: trava -->
+    <!-- STEP 6: trava -->
     <div class="step" data-step>
-      <p class="qnum">05</p>
+      <p class="qnum">06</p>
       <p class="question">Onde você acha que trava mais hoje: no medo de aparecer, ou em transformar seguidores em clientes pagantes? <span class="req">*</span></p>
       <div class="field"><textarea name="Onde a trava pega" id="f_trava" required rows="3" enterkeyhint="next" placeholder="ex: Eu já posto, mas ensino o passo a passo inteiro de graça e ninguém sente necessidade de me contratar..."></textarea></div>
       <div class="hint"><em>ex. sobre mim:</em> Eu ensinava tudo no conteúdo achando que provava autoridade e competência. A pessoa saía sempre me elogiando que eu era incrível, mas eu nunca via o tal do Pix na minha conta! Quando estruturei meu conteúdo, essa história ACABOU!</div>
@@ -368,19 +384,71 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
     </div>
 
-    <!-- STEP 6: transformação até hoje -->
+    <!-- STEP 7: área de atuação -->
     <div class="step" data-step>
-      <p class="qnum">06</p>
+      <p class="qnum">07</p>
       <p class="question">Você atua ou quer atuar como terapeuta, coach ou mentora? <span class="req">*</span></p>
       <div class="options" data-radio-group>
         <label class="option"><input type="radio" name="Área de atuação" value="Sim, já atendo (terapia, coaching, mentoria ou similar)" required> Sim, já atendo (terapia, coaching, mentoria ou similar)</label>
         <label class="option"><input type="radio" name="Área de atuação" value="Ainda não, mas é pra isso que eu quero usar meu conteúdo"> Ainda não, mas é pra isso que eu quero usar meu conteúdo</label>
         <label class="option"><input type="radio" name="Área de atuação" value="Não, minha entrega é outra"> Não, minha entrega é outra</label>
+        <label class="option outro-option"><input type="radio" name="Área de atuação" value="Outro" data-outro-toggle> Outro</label>
       </div>
+      <div class="field outro-field" data-outro-field style="display:none">
+        <input type="text" name="Área de atuação - detalhe" placeholder="Conta com suas palavras...">
+      </div>
+      <div class="nav outro-nav" style="display:none"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
       <button type="button" class="btn-voltar back-btn" style="display:block; margin:18px auto 0">voltar</button>
     </div>
 
-    <!-- STEP 7: reveal + submit -->
+    <!-- STEP 8: o que já existe em você -->
+    <div class="step" data-step>
+      <p class="qnum">08</p>
+      <p class="question">Só por você ter chegado até aqui, tenho certeza que já existe algo em que você é <b>bom</b> e <em>você sabe</em>. O que você acredita que podemos expandir que já existe em você? <span class="req">*</span></p>
+      <div class="options" data-radio-group>
+        <label class="option"><input type="radio" name="O que já existe em você" value="Já atendo há anos e tenho resultado real com quem passa por mim" required> Já atendo há anos e tenho resultado real com quem passa por mim</label>
+        <label class="option"><input type="radio" name="O que já existe em você" value="Sei acolher e ouvir as pessoas, isso já me trouxe cliente por indicação"> Sei acolher e ouvir as pessoas, isso já me trouxe cliente por indicação</label>
+        <label class="option"><input type="radio" name="O que já existe em você" value="Tenho facilidade de explicar coisas complexas de um jeito simples"> Tenho facilidade de explicar coisas complexas de um jeito simples</label>
+        <label class="option"><input type="radio" name="O que já existe em você" value="Tenho uma história pessoal de transformação que as pessoas se identificam"> Tenho uma história pessoal de transformação que as pessoas se identificam</label>
+        <label class="option"><input type="radio" name="O que já existe em você" value="Ainda não sei bem, é isso que eu quero descobrir aqui dentro"> Ainda não sei bem, é isso que eu quero descobrir aqui dentro</label>
+        <label class="option outro-option"><input type="radio" name="O que já existe em você" value="Outro" data-outro-toggle> Outro</label>
+      </div>
+      <div class="field outro-field" data-outro-field style="display:none">
+        <input type="text" name="O que já existe em você - detalhe" placeholder="Conta com suas palavras...">
+      </div>
+      <div class="nav outro-nav" style="display:none"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:18px auto 0">voltar</button>
+    </div>
+
+    <!-- STEP 9: nivel tecnologia -->
+    <div class="step" data-step>
+      <p class="qnum">09</p>
+      <p class="question">Qual o seu nível de conhecimento e interação com a tecnologia/rede social? <span class="req">*</span></p>
+      <div class="options" data-radio-group>
+        <label class="option"><input type="radio" name="Nível tecnologia" value="Tenho facilidade de criar conteúdo, mas faltam ideias e consistência" required> Tenho facilidade de criar conteúdo, mas faltam ideias e consistência</label>
+        <label class="option"><input type="radio" name="Nível tecnologia" value="Tenho facilidade com as redes sociais mas não crio nada"> Tenho facilidade com as redes sociais mas não crio nada</label>
+        <label class="option"><input type="radio" name="Nível tecnologia" value="Não tenho fácil interatividade com as redes sociais/tecnologia"> Não tenho fácil interatividade com as redes sociais/tecnologia</label>
+        <label class="option outro-option"><input type="radio" name="Nível tecnologia" value="Outro" data-outro-toggle> Outro</label>
+      </div>
+      <div class="field outro-field" data-outro-field style="display:none">
+        <input type="text" name="Nível tecnologia - detalhe" placeholder="Conta com suas palavras...">
+      </div>
+      <div class="nav outro-nav" style="display:none"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:18px auto 0">voltar</button>
+    </div>
+
+    <!-- STEP 10: como conectou -->
+    <div class="step" data-step>
+      <p class="qnum">10</p>
+      <p class="question">Alguém te indicou? Você veio por alguém, como você se conectou comigo? &#128525; <span class="req">*</span></p>
+      <div class="field"><textarea name="Como se conectou" id="f_conectou" required rows="3" enterkeyhint="next"></textarea></div>
+      <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:8px auto 0">voltar</button>
+      <span class="enter-hint">Enter pra continuar</span>
+      <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
+    </div>
+
+    <!-- STEP 11: reveal + submit -->
     <div class="step" data-step>
       <div class="reveal-card">
         <p class="reveal-label">Eu li o que você escreveu</p>
@@ -421,7 +489,7 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
     progressBar.style.width = (i / (steps.length - 1) * 100) + '%';
     var errorMsg = steps[i].querySelector('.error-msg');
     if (errorMsg) errorMsg.classList.remove('show');
-    if (i === 7) updateReveal();
+    if (steps[i].querySelector('.reveal-card')) updateReveal();
     current = i;
     window.scrollTo(0, 0);
   }
@@ -446,7 +514,13 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
     if (!required.length) return true;
     var radioGroup = step.querySelector('[data-radio-group]');
     if (radioGroup) {
-      return !!step.querySelector('input[type="radio"]:checked');
+      var checked = step.querySelector('input[type="radio"]:checked');
+      if (!checked) return false;
+      if (checked.hasAttribute('data-outro-toggle')) {
+        var outroInput = step.querySelector('[data-outro-field] input');
+        return !!(outroInput && outroInput.value.trim());
+      }
+      return true;
     }
     for (var k = 0; k < required.length; k++) {
       if (!required[k].value.trim()) return false;
@@ -498,7 +572,25 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       var group = opt.closest('[data-radio-group]');
       group.querySelectorAll('.option').forEach(function (o) { o.classList.remove('selected'); });
       opt.classList.add('selected');
-      setTimeout(goNext, 260);
+
+      var step = opt.closest('.step');
+      var outroField = step.querySelector('[data-outro-field]');
+      var outroNav = step.querySelector('.outro-nav');
+      var isOutro = opt.querySelector('input').hasAttribute('data-outro-toggle');
+
+      if (outroField) {
+        var outroInput = outroField.querySelector('input');
+        outroField.style.display = isOutro ? 'block' : 'none';
+        if (isOutro) {
+          outroInput.setAttribute('required', 'required');
+          outroInput.focus();
+        } else {
+          outroInput.removeAttribute('required');
+        }
+      }
+      if (outroNav) outroNav.style.display = isOutro ? 'flex' : 'none';
+
+      if (!isOutro) setTimeout(goNext, 260);
     });
   });
 
