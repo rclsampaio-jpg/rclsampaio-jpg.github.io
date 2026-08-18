@@ -321,9 +321,20 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
     </div>
 
-    <!-- STEP 2: whatsapp -->
+    <!-- STEP 2: email -->
     <div class="step" data-step>
       <p class="qnum">02</p>
+      <p class="question">Qual o seu melhor email? <span class="req">*</span></p>
+      <div class="field"><input type="email" name="Email de contato" id="f_email" required autocomplete="email" enterkeyhint="next"></div>
+      <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:8px auto 0">voltar</button>
+      <span class="enter-hint">pressione Enter &crarr;</span>
+      <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
+    </div>
+
+    <!-- STEP 3: whatsapp -->
+    <div class="step" data-step>
+      <p class="qnum">03</p>
       <p class="question">Qual o seu WhatsApp? <span class="req">*</span></p>
       <div class="field"><input type="tel" name="WhatsApp" required autocomplete="tel" inputmode="tel" pattern="[\-0-9 \(\)\+]{8,20}" placeholder="(11) 91234-5678" enterkeyhint="next"></div>
       <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
@@ -332,9 +343,9 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
     </div>
 
-    <!-- STEP 3: instagram -->
+    <!-- STEP 4: instagram -->
     <div class="step" data-step>
-      <p class="qnum">03</p>
+      <p class="qnum">04</p>
       <p class="question">qual seu @ no insta? <span class="req">*</span></p>
       <div class="field"><input type="text" name="Instagram" required enterkeyhint="next"></div>
       <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
@@ -343,9 +354,9 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
     </div>
 
-    <!-- STEP 4: momento atual -->
+    <!-- STEP 5: momento atual -->
     <div class="step" data-step>
-      <p class="qnum">04</p>
+      <p class="qnum">05</p>
       <p class="question">Hoje, o que mais te representa? &#128522; <span class="req">*</span></p>
       <div class="options" data-radio-group>
         <label class="option"><input type="radio" name="Momento atual" value="Tenho ideias, mas travo na hora de aparecer" required> Tenho ideias, mas travo na hora de aparecer</label>
@@ -356,9 +367,9 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <button type="button" class="btn-voltar back-btn" style="display:block; margin:18px auto 0">voltar</button>
     </div>
 
-    <!-- STEP 5: trava -->
+    <!-- STEP 6: trava -->
     <div class="step" data-step>
-      <p class="qnum">05</p>
+      <p class="qnum">06</p>
       <p class="question">Você acha que está travado no medo de ser visto, julgamento? Onde você acha que seus desafios te pegam mais hoje? <span class="req">*</span></p>
       <div class="field"><textarea name="Onde a trava pega" id="f_trava" required rows="3" enterkeyhint="next" placeholder="ex: Eu travo na hora de aparecer no vídeo, mesmo já tendo o conteúdo pronto na cabeça..."></textarea></div>
       <div class="hint"><em>ex. sobre mim:</em> Eu era inconsistente e tinha muito bloqueio criativo mesmo quando tinha coragem de postar. Nesse processo, entendi que minhas crenças e padrões inconscientes estavam me travando e sabotando. E quando trabalhei o meu DESTRAVE, tudo mudou!</div>
@@ -368,9 +379,9 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
     </div>
 
-    <!-- STEP 6: transformação até hoje -->
+    <!-- STEP 7: transformação até hoje -->
     <div class="step" data-step>
-      <p class="qnum">06</p>
+      <p class="qnum">07</p>
       <p class="question">O que você já fez pela sua transformação até hoje? <span class="req">*</span></p>
       <div class="options" data-radio-group>
         <label class="option"><input type="radio" name="Transformação até hoje" value="Ainda não investi em nada" required> Ainda não investi em nada</label>
@@ -380,7 +391,64 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <button type="button" class="btn-voltar back-btn" style="display:block; margin:18px auto 0">voltar</button>
     </div>
 
-    <!-- STEP 7: reveal + submit -->
+    <!-- STEP 8: o que já existe -->
+    <div class="step" data-step>
+      <p class="qnum">08</p>
+      <p class="question">Só por você ter chegado até aqui, tenho certeza que já existe algo em que você é <b>bom</b> e <em>você sabe</em>. Algo que você se conecta. O que você acredita que podemos expandir que já existe em você? Me dê um breve resumo. <span class="req">*</span></p>
+      <div class="field"><textarea name="O que já existe em você" id="f_existe" required rows="3" enterkeyhint="next"></textarea></div>
+      <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:8px auto 0">voltar</button>
+      <span class="enter-hint">Enter pra continuar</span>
+      <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
+    </div>
+
+    <!-- STEP 9: acredita que destrava -->
+    <div class="step" data-step>
+      <p class="qnum">09</p>
+      <p class="question">Você acredita que é isso que vai permitir que você destrave e comece a compartilhar a sua história com mais confiança e autenticidade? <span class="req">*</span></p>
+      <div class="options" data-radio-group>
+        <label class="option"><input type="radio" name="Acredita que destrava" value="Com certeza! Era só isso que tava faltando" required> Com certeza! Era só isso que tava faltando</label>
+        <label class="option"><input type="radio" name="Acredita que destrava" value="Acredito que sim"> Acredito que sim</label>
+        <label class="option"><input type="radio" name="Acredita que destrava" value="Não"> Não</label>
+      </div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:18px auto 0">voltar</button>
+    </div>
+
+    <!-- STEP 10: nivel tecnologia -->
+    <div class="step" data-step>
+      <p class="qnum">10</p>
+      <p class="question">Qual o seu nível de conhecimento e interação com a tecnologia/rede social? <span class="req">*</span></p>
+      <div class="options" data-radio-group>
+        <label class="option"><input type="radio" name="Nível tecnologia" value="Tenho facilidade de criar conteúdo, mas faltam ideias e consistência" required> Tenho facilidade de criar conteúdo, mas faltam ideias e consistência</label>
+        <label class="option"><input type="radio" name="Nível tecnologia" value="Tenho facilidade com as redes sociais mas não crio nada"> Tenho facilidade com as redes sociais mas não crio nada</label>
+        <label class="option"><input type="radio" name="Nível tecnologia" value="Não tenho fácil interatividade com as redes sociais/tecnologia"> Não tenho fácil interatividade com as redes sociais/tecnologia</label>
+      </div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:18px auto 0">voltar</button>
+    </div>
+
+    <!-- STEP 11: interesse -->
+    <div class="step" data-step>
+      <p class="qnum">11</p>
+      <p class="question">O que fez você se interessar pelo grupo? <span class="req">*</span></p>
+      <div class="field"><textarea name="O que fez se interessar" id="f_interesse" required rows="3" enterkeyhint="next"></textarea></div>
+      <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:8px auto 0">voltar</button>
+      <span class="enter-hint">Enter pra continuar</span>
+      <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
+    </div>
+
+    <!-- STEP 12: como conectou -->
+    <div class="step" data-step>
+      <p class="qnum">12</p>
+      <p class="question">Alguém te indicou? Você veio por alguém, como você se conectou comigo? &#128525; <span class="req">*</span></p>
+      <div class="field"><textarea name="Como se conectou" id="f_conectou" required rows="3" enterkeyhint="next"></textarea></div>
+      <div class="nav"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:8px auto 0">voltar</button>
+      <span class="enter-hint">Enter pra continuar</span>
+      <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
+    </div>
+
+    <!-- STEP 13: reveal + submit -->
     <div class="step" data-step>
       <div class="reveal-card">
         <p class="reveal-label">Eu li o que você escreveu</p>
@@ -421,7 +489,7 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
     progressBar.style.width = (i / (steps.length - 1) * 100) + '%';
     var errorMsg = steps[i].querySelector('.error-msg');
     if (errorMsg) errorMsg.classList.remove('show');
-    if (i === 7) updateReveal();
+    if (steps[i].querySelector('.reveal-card')) updateReveal();
     current = i;
     window.scrollTo(0, 0);
   }
