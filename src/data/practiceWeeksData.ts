@@ -11,6 +11,11 @@ export interface PracticeWeek {
   range: [number, number];
   theme: string;
   title: string;
+  // O nível esperado dentro do bloco: 1ª semana do bloco introduz, 2ª
+  // aprofunda, 3ª consolida. Substitui o subtítulo fixo do bloco (que
+  // ficava idêntico as 3 semanas inteiras, sem transmitir progressão)
+  // por algo que escala junto com o avanço real dela.
+  expectativa: string;
   challenge: string;
   where: string;
 }
@@ -55,6 +60,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     range: [31, 37],
     theme: 'Autoridade',
     title: 'Semana da Prova de Resultado',
+    expectativa: 'Essa semana é sobre provar que você já sabe o que faz. Não precisa ser grande, precisa ser real.',
     challenge: 'Uma prova sempre vai valer mais do que qualquer discurso lindo que você fizer. Essa semana, vamos construir a sua.\n\nGrave contando uma vez que algo que você disse ou fez mudou alguma coisa pra alguém. Não precisa ser resultado de trabalho. Pode ser uma amiga que tomou uma decisão depois de uma conversa com você, um comentário que destravou algo na cabeça de alguém, uma ajuda que virou ponte pra outra coisa na vida dela. Se você já atua profissionalmente, também vale mostrar um resultado real de cliente. O ponto é o mesmo: uma vez, o que você fez ou disse, mudou algo de verdade pra alguém.\n\nEx: "Uma seguidora me chamou de arrogante nos comentários. Respondi em vídeo, sem editar, sem suavizar. Perdi uns 30 seguidores naquela semana. Foi o vídeo que trouxe minhas cinco primeiras clientes pagantes, porque parei de me policiar pra agradar todo mundo."',
     where: 'Usa o prompt de "Revisão de texto" da Biblioteca pra tirar cara de IA do que sair, sem regravar do zero.'
   },
@@ -64,6 +70,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     range: [38, 44],
     theme: 'Autoridade',
     title: 'Semana dos Ângulos',
+    expectativa: 'Agora o nível sobe: não basta mostrar prova, precisa mostrar ela de mais de um jeito, pra mais gente reconhecer.',
     challenge: 'Repetir a mesma mensagem do mesmo jeito faz até quem já te segue parar de prestar atenção. Bora cobrir ela de outros ângulos essa semana?!\n\nEscolhe uma mensagem central sua. Essa semana a gente cria ela em 3 formatos diferentes: como conselho direto, como história pessoal, e como resposta a uma objeção. Assim você sai da repetição e cobre a mensagem por vários ângulos, aumentando a chance de alcançar quem processa informação de um jeito diferente do seu.',
     where: 'Usa os prompts do grupo "Reels de conversão" da Biblioteca pra estruturar isso nos 7 ângulos validados.'
   },
@@ -73,6 +80,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     range: [45, 50],
     theme: 'Autoridade',
     title: 'Semana da Objeção Real',
+    expectativa: 'Última semana desse bloco. Depois de mostrar prova e variar o ângulo, agora é hora de provar que você aguenta ser questionada.',
     challenge: 'Você só deixa de travar numa objeção quando se expõe a ela o suficiente pra treinar a naturalidade disso dentro de você. Essa semana, vamos treinar a sua.\n\nGrave respondendo de frente uma dúvida ou objeção que alguém já te fez de verdade, não uma que você imaginou. Pode ser "isso realmente funciona?", "não é caro demais?", "e se eu não tiver tempo?", qualquer coisa que alguém te perguntou olho no olho ou por mensagem. Responde do jeito que você responderia pra essa pessoa, não um script de venda.',
     where: 'Usa os prompts do grupo "Reels de conversão" da Biblioteca se precisar de estrutura pra resposta.'
   },
@@ -82,6 +90,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     range: [51, 57],
     theme: 'Audiência',
     title: 'Semana de Falar pra Uma Pessoa',
+    expectativa: 'Esse bloco troca alcance por profundidade. Uma pessoa de verdade importa mais que mil visualizações vazias.',
     challenge: 'Quem tenta falar com todo mundo ao mesmo tempo, no fim, não conecta com ninguém de verdade. Essa semana, bora falar só pra uma pessoa!\n\nEsquece o número de visualização. Grava pensando numa pessoa real que precisa ouvir exatamente o que você tem pra falar hoje. Não é escala, é profundidade.',
     where: 'Usa o prompt do grupo "Mensagem central / audiência obcecada" da Biblioteca antes de gravar.'
   },
@@ -91,6 +100,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     range: [58, 64],
     theme: 'Audiência',
     title: 'Semana da Jornada do Herói',
+    expectativa: 'Se a semana passada foi sobre ser ouvida por uma pessoa, essa é sobre deixar essa pessoa ver você por inteiro, erro incluso.',
     challenge: 'As pessoas sempre vão se conectar com a sua imperfeição, o que você teve que superar, não com algo que você conquistou de forma perfeita!\n\nConta um fracasso, uma vez que você tentou algo e não deu certo, e o que você aprendeu com isso. As pessoas se conectam com o caminho torto, não com a vitória perfeita.',
     where: 'Usa os prompts do grupo "Reels até 90s" da Biblioteca, é exatamente pra história de bastidor.'
   },
@@ -100,6 +110,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     range: [65, 70],
     theme: 'Audiência',
     title: 'Semana da Opinião Impopular',
+    expectativa: 'Última semana desse bloco. Depois de se abrir e se mostrar imperfeita, agora é hora de defender uma opinião sua sem se esconder atrás de ninguém.',
     challenge: 'Concordar com todo mundo o tempo inteiro é a forma mais rápida de ser esquecida. Vamos gravar a opinião que você andou engolindo essa semana?\n\nGrava uma opinião sua que nem todo mundo vai concordar. Uma coisa que você normalmente engoliria pra não incomodar ninguém, mas que é verdadeira pra você.',
     where: 'Usa os prompts do grupo "Reels de conversão" da Biblioteca pra estruturar isso nos 7 ângulos validados.'
   },
@@ -109,6 +120,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     range: [71, 77],
     theme: 'Prontidão',
     title: 'Semana da Verdade, de Novo',
+    expectativa: 'Esse bloco não ensina nada novo, testa o que já ficou. Você ainda trava do jeito que travava no início?',
     challenge: 'Será que você ainda trava do mesmo jeito que travava no dia 1? Essa semana, a gente descobre isso de novo, sem preparo, sem roteiro.\n\nA mesma prática do início da sua jornada: grave um conteúdo sem preparo, sem decorar roteiro, sem ensaiar na frente do espelho. Abre o celular, aperta gravar, fala. Dessa vez é teste: você ainda trava?',
     where: 'Usa o prompt de "Revisão de texto" da Biblioteca pra tirar cara de IA do que sair, sem regravar do zero.'
   },
@@ -118,6 +130,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     range: [78, 84],
     theme: 'Prontidão',
     title: 'Semana da Auto-Auditoria de Autoridade',
+    expectativa: 'Depois de testar se ainda trava, agora é hora de olhar pra trás com prova na mão, não só com sensação.',
     challenge: 'Ninguém enxerga o próprio crescimento só de dentro, às vezes precisa reler as provas. Essa semana, bora revisar as suas!\n\nAntes de gravar essa semana, abre os links que você salvou nas semanas 31 a 50. Reveja o que você mostrou de prova, de ângulos e de resposta a objeção. Grava contando o que mudou em você entre o primeiro link e o último.',
     where: 'Usa a Comunidade pra compartilhar o que percebeu, às vezes a gente só enxerga o próprio crescimento quando fala em voz alta pra alguém.'
   },
@@ -127,6 +140,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     range: [85, 90],
     theme: 'Prontidão',
     title: 'Semana da Auto-Auditoria de Audiência',
+    expectativa: 'Última semana da sua jornada de 90 dias. O que você reunir aqui decide se já é hora de aplicar pro Destrave, ou se ainda quer mais uma volta nisso.',
     challenge: 'Sentir que já tá pronta e ter prova de que já tá pronta são coisas diferentes. Bora descobrir qual das duas é a sua essa semana?!\n\nRevê os links das semanas 51 a 70. Depois responde, com sinceridade: alguém que te acompanha já te mandou mensagem por conta própria? Você já tem resposta pronta pra objeção comum? Se sentir que já construiu isso, o Destrave tá logo ali em Próximo Nível.',
     where: 'Sem link novo pra gravar essa semana. O exercício é revisão e decisão.'
   }

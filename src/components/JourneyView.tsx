@@ -528,7 +528,8 @@ export default function JourneyView({
                             </div>
                             <div className="min-w-0">
                               <p className="text-[10px] font-bold text-slate-800 dark:text-white truncate">{week.title}</p>
-                              <p className="text-[9px] text-slate-400 dark:text-ink-muted font-mono">{wCompleted}/{wTotal}</p>
+                              <p className="text-[9px] text-slate-400 dark:text-ink-muted leading-snug">{week.expectativa}</p>
+                              <p className="text-[9px] text-slate-400 dark:text-ink-muted font-mono mt-0.5">{wCompleted}/{wTotal}</p>
                             </div>
                           </div>
                         );

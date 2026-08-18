@@ -185,6 +185,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
         <h1 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 dark:text-white">
           {week.title}
         </h1>
+        <p className="text-sm text-rosegold-dark dark:text-rosegold-light mt-1">{week.expectativa}</p>
       </div>
 
       {/* Camada diária: a tarefa da semana continua igual (repetição de
