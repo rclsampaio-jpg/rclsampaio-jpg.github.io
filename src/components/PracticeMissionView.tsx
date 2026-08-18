@@ -7,7 +7,8 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Flame, Link2, ExternalLink, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Language, UserProgress } from '../types';
-import { PRACTICE_WEEKS, getPracticeWeekIndexForDay } from '../data/practiceWeeksData';
+import { PRACTICE_WEEKS, getPracticeWeekIndexForDay, PRACTICE_DAILY_MESSAGES, PRACTICE_DAILY_WHERE } from '../data/practiceWeeksData';
+import { getWeekdayPosition } from '../data/templateData';
 import LinkListInput from './LinkListInput';
 
 const LINK_SEPARATOR = '|||';
@@ -64,6 +65,9 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
 
   const weekIndex = getPracticeWeekIndexForDay(displayDay);
   const week = PRACTICE_WEEKS[weekIndex];
+  const weekdayPosition = getWeekdayPosition(displayDay, progress.journeyStartDate);
+  const dailyMessage = PRACTICE_DAILY_MESSAGES[weekdayPosition];
+  const dailyWhere = PRACTICE_DAILY_WHERE[weekdayPosition];
 
   const textDict = {
     pt: {
@@ -183,6 +187,13 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
         </h1>
       </div>
 
+      {/* Camada diária: a tarefa da semana continua igual (repetição de
+          propósito), mas essa mensagem e o apoio abaixo mudam por dia da
+          semana, pra não parecer que ninguém tá guiando o resto dos dias. */}
+      <div className="rounded-2xl bg-rosegold/5 border border-rosegold/15 p-4">
+        <p className="text-sm text-slate-800 dark:text-ink-text leading-relaxed">{dailyMessage}</p>
+      </div>
+
       <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-5 space-y-2">
         <p className="text-xs font-bold uppercase tracking-wide text-rosegold-dark dark:text-rosegold-light">
           {textVal.challengeLabel}
@@ -198,7 +209,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
         <ExternalLink size={18} className="text-rosegold-dark dark:text-rosegold-light shrink-0" />
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-ink-muted mb-0.5">{textVal.whereLabel}</p>
-          <p className="text-sm text-slate-700 dark:text-ink-base">{week.where}</p>
+          <p className="text-sm text-slate-700 dark:text-ink-base">{dailyWhere}</p>
         </div>
       </button>
 

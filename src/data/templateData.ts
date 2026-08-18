@@ -10,7 +10,7 @@ import { GuideStyle, resolveGuideStyle } from '../utils/grammar';
 // Maps a day number to its real-calendar weekday position (0=Monday..6=Sunday),
 // anchored to journeyStartDate (the real date Day 1 was first opened). Falls
 // back to the plain (dayNumber-1)%7 cycle when no start date is known yet.
-function getWeekdayPosition(dayNumber: number, startDate?: string | null): number {
+export function getWeekdayPosition(dayNumber: number, startDate?: string | null): number {
   if (startDate) {
     const start = new Date(`${startDate}T00:00:00`);
     if (!isNaN(start.getTime())) {
