@@ -416,14 +416,14 @@ export default function NextLevelView({ progress, lang, isProfessionalUnlocked, 
               {isAdminUnlocked && (
                 <div className="flex items-center gap-1">
                   <button
-                    onClick={() => setPracticeWeekPreview(((practiceWeekIndex + 3) % 4))}
+                    onClick={() => setPracticeWeekPreview(((practiceWeekIndex + PRACTICE_WEEKS.length - 1) % PRACTICE_WEEKS.length))}
                     className="h-5 w-5 flex items-center justify-center rounded border border-rosegold/40 text-rosegold cursor-pointer hover:bg-rosegold/10"
                   >
                     <ChevronLeft className="h-3 w-3" />
                   </button>
-                  <span className="text-[9px] font-mono text-rosegold">{practiceWeekIndex + 1}/4</span>
+                  <span className="text-[9px] font-mono text-rosegold">{practiceWeekIndex + 1}/{PRACTICE_WEEKS.length}</span>
                   <button
-                    onClick={() => setPracticeWeekPreview(((practiceWeekIndex + 1) % 4))}
+                    onClick={() => setPracticeWeekPreview(((practiceWeekIndex + 1) % PRACTICE_WEEKS.length))}
                     className="h-5 w-5 flex items-center justify-center rounded border border-rosegold/40 text-rosegold cursor-pointer hover:bg-rosegold/10"
                   >
                     <ChevronRight className="h-3 w-3" />
@@ -431,7 +431,7 @@ export default function NextLevelView({ progress, lang, isProfessionalUnlocked, 
                 </div>
               )}
             </div>
-            <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed">
+            <p className="text-xs text-slate-500 dark:text-ink-muted leading-relaxed whitespace-pre-line">
               {practiceWeek.challenge}
             </p>
             <p className="text-[11px] text-slate-400 dark:text-ink-muted leading-relaxed italic">

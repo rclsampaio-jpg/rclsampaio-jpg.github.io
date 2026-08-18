@@ -12,6 +12,7 @@ import {
 
 import { Language, DayType, UserProgress, Journey, Chapter, Day } from '../types';
 import { getButterflyConfig } from '../data/chaptersData';
+import { PRACTICE_BLOCKS, PRACTICE_WEEKS } from '../data/practiceWeeksData';
 import ButterflyIcon from './ButterflyIcon';
 import { getLocalDateISO } from '../utils/date';
 import EditableText from './editable/EditableText';
@@ -434,6 +435,112 @@ export default function JourneyView({
           })}
         </div>
       </div>
+
+      {/* Fase de Prática (dias 31-90) — vive fora do loop de capítulos
+          acima de propósito: aquele loop vem do modelo Journey/Chapter/Day
+          editável via CMS (journeysData.ts), pensado pra lições únicas
+          travadas uma a uma. A prática é tema semanal reciclado dentro de
+          uma progressão linear (não uma lição por dia), então é mais simples
+          e mais seguro renderizar como seção própria em vez de fingir que
+          cada semana é um "dia" naquele sistema. Só aparece na jornada
+          principal, as outras jornadas (storytelling etc.) não têm fase de
+          prática. */}
+      {activeJourneyId === 'destrave_visibilidade' && (
+        <div className="bg-gradient-to-b from-[#FAF8F5] to-white dark:bg-none! dark:bg-ink-raised! border border-rose-100/30 dark:border-ink-hairline rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs dark:shadow-none">
+          <div className="text-center max-w-md mx-auto space-y-1">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-rosegold block">
+              Fase de Prática · dias 31-90
+            </span>
+            <h3 className="text-xl font-serif text-slate-800 dark:text-white font-black uppercase">
+              Depois dos 30 dias
+            </h3>
+            <p className="text-xs text-slate-400 dark:text-ink-muted font-sans">
+              3 blocos, 9 semanas, sem repetir o mesmo tema duas vezes
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center gap-2 py-4">
+            {PRACTICE_BLOCKS.map((block, index) => {
+              const blockWeeks = PRACTICE_WEEKS.filter(w => w.blockId === block.id);
+              const [rangeStart, rangeEnd] = block.range;
+              const totalBlockDays = rangeEnd - rangeStart + 1;
+              const completedBlockDays = progress.completionHistory.filter(
+                d => d >= rangeStart && d <= rangeEnd
+              ).length;
+              const isBlockCompleted = completedBlockDays >= totalBlockDays;
+
+              return (
+                <div key={block.id} className="w-full max-w-lg flex flex-col items-center">
+                  {index > 0 && (
+                    <div className="my-2 text-rosegold dark:text-rosegold/30 animate-pulse text-lg font-black font-sans leading-none">
+                      ↓
+                    </div>
+                  )}
+
+                  <div
+                    className={`w-full p-5 sm:p-6 rounded-3xl border transition-all ${
+                      isBlockCompleted
+                        ? 'bg-rose-50/15 dark:bg-rosegold-light/5 border-rosegold/20 dark:border-rosegold-light/30'
+                        : 'bg-white dark:bg-ink-raised border-rose-100/20 dark:border-ink-hairline'
+                    }`}
+                  >
+                    <div className="flex justify-between items-start gap-4">
+                      <div>
+                        <span className="text-[11px] font-mono font-black uppercase text-rosegold tracking-wider">
+                          Bloco {block.id} · Dias {rangeStart}-{rangeEnd}
+                        </span>
+                        <h4 className="text-base font-serif font-black uppercase text-slate-800 dark:text-white mt-0.5">
+                          {block.title}
+                        </h4>
+                        <p className="text-xs text-slate-400 dark:text-ink-muted font-sans leading-relaxed mt-1">
+                          {block.subtitle}
+                        </p>
+                      </div>
+                      <span className="shrink-0 text-[10px] font-mono font-bold uppercase text-slate-400 whitespace-nowrap">
+                        {completedBlockDays}/{totalBlockDays} dias
+                      </span>
+                    </div>
+
+                    <div className="mt-4 pt-4 border-t border-rose-100/10 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                      {blockWeeks.map(week => {
+                        const [wStart, wEnd] = week.range;
+                        const wTotal = wEnd - wStart + 1;
+                        const wCompleted = progress.completionHistory.filter(
+                          d => d >= wStart && d <= wEnd
+                        ).length;
+                        const wDone = wCompleted >= wTotal;
+
+                        return (
+                          <div
+                            key={week.id}
+                            className={`flex items-center gap-2.5 p-3 rounded-2xl border ${
+                              wDone
+                                ? 'border-rosegold/30 dark:border-rosegold-light/30 bg-rose-50/10 dark:bg-rosegold-light/5'
+                                : 'border-rose-100/15 dark:border-ink-hairline bg-white dark:bg-ink-raised'
+                            }`}
+                          >
+                            <div className={`h-7 w-7 rounded-lg flex items-center justify-center font-bold text-[10px] shrink-0 ${
+                              wDone
+                                ? 'bg-rosegold text-white dark:bg-transparent dark:border dark:border-rosegold-light dark:text-rosegold-light'
+                                : 'bg-rose-50 dark:bg-rosegold-light/10 text-rosegold dark:text-rosegold-light'
+                            }`}>
+                              {wDone ? <Check className="h-3.5 w-3.5 stroke-[3px]" /> : week.id}
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-[10px] font-bold text-slate-800 dark:text-white truncate">{week.title}</p>
+                              <p className="text-[9px] text-slate-400 dark:text-ink-muted font-mono">{wCompleted}/{wTotal}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

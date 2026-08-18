@@ -161,7 +161,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
       {isPreviewingOtherDay && (
         <div className="rounded-xl border border-dashed border-amber-400/50 bg-amber-50 dark:bg-amber-500/10 px-4 py-2.5 text-center">
           <p className="text-[11px] text-amber-700 dark:text-amber-300 font-sans">
-            Prévia — esse ainda não é o dia real. Nada aqui é salvo até você chegar nele de verdade.
+            Prévia, esse ainda não é o dia real. Nada aqui é salvo até você chegar nele de verdade.
           </p>
         </div>
       )}
@@ -187,7 +187,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
         <p className="text-xs font-bold uppercase tracking-wide text-rosegold-dark dark:text-rosegold-light">
           {textVal.challengeLabel}
         </p>
-        <p className="text-base text-slate-800 dark:text-ink-base leading-relaxed">{week.challenge}</p>
+        <p className="text-base text-slate-800 dark:text-ink-base leading-relaxed whitespace-pre-line">{week.challenge}</p>
       </div>
 
       <button
