@@ -209,8 +209,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
           onChange={(e) => setReflectionInput(e.target.value)}
           placeholder={textVal.reflectionPlaceholder}
           rows={4}
-          disabled={isPreviewingOtherDay}
-          className="w-full rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-3 text-sm text-slate-800 dark:text-ink-base focus:outline-none focus:ring-2 focus:ring-rosegold/40 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-3 text-sm text-slate-800 dark:text-ink-base focus:outline-none focus:ring-2 focus:ring-rosegold/40"
         />
       </div>
 
@@ -222,7 +221,6 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
           links={links}
           onChange={setLinks}
           placeholder={textVal.linkPlaceholder}
-          disabled={isPreviewingOtherDay}
           inputClassName="flex-1 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-3 text-sm text-slate-800 dark:text-ink-base focus:outline-none focus:ring-2 focus:ring-rosegold/40"
         />
       </div>
