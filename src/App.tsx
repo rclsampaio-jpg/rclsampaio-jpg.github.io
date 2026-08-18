@@ -103,7 +103,7 @@ function AppContent() {
   }, [user?.id]);
 
   const { progress, updateProgress, syncStatus } = useProgressSync(loadUserProgressFromStorage());
-  const [days, setDays] = useState<MissionDay[]>(() => loadDaysFromStorage(progress.journeyStartDate));
+  const [days, setDays] = useState<MissionDay[]>(() => loadDaysFromStorage(progress.journeyStartDate, progress.guideStyle));
   const loadedJourneyStartDate = useRef(progress.journeyStartDate);
 
   // Cross-device sync: if the cloud replaces `progress` with a different
@@ -112,7 +112,7 @@ function AppContent() {
   useEffect(() => {
     if (progress.journeyStartDate === loadedJourneyStartDate.current) return;
     loadedJourneyStartDate.current = progress.journeyStartDate;
-    setDays(loadDaysFromStorage(progress.journeyStartDate));
+    setDays(loadDaysFromStorage(progress.journeyStartDate, progress.guideStyle));
   }, [progress.journeyStartDate]);
 
   const handleSignOut = async () => {
@@ -679,7 +679,7 @@ function AppContent() {
   };
 
   const handleResetDays = () => {
-    const initial = generateInitialDays(progress.journeyStartDate);
+    const initial = generateInitialDays(progress.journeyStartDate, progress.guideStyle);
     setDays(initial);
     saveDaysToStorage(initial);
     system.creatorSystem.resetDays();
@@ -713,7 +713,7 @@ function AppContent() {
       displayName: progress.displayName
     };
     updateProgress(defaultProgress);
-    const restartedDays = generateInitialDays(todayISO);
+    const restartedDays = generateInitialDays(todayISO, progress.guideStyle);
     setDays(restartedDays);
     saveDaysToStorage(restartedDays);
     setFocusedDayNumber(1);

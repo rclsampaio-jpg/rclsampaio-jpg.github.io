@@ -636,7 +636,7 @@ export default function HomeView({
                   { 
                     code: 'strategic', 
                     title: lang === 'pt' ? '💪 Estratégico' : '💪 Strategic', 
-                    desc: lang === 'pt' ? 'Disciplinado. Objetivos claros e linguagem emocional mínima.' : 'Disciplined. Clear goals, minimal emotional language.' 
+                    desc: lang === 'pt' ? 'Disciplinado. Objetivos claros e linguagem emocional mínima. Recomendado para profissionais que já atuam em alguma área oferecendo serviço.' : 'Disciplined. Clear goals, minimal emotional language. Recommended for professionals already offering a service.'
                   },
                   { 
                     code: 'inspirational', 

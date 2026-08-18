@@ -138,7 +138,7 @@ export default function ProfileView({ lang, progress, days, onUpdateProgress, us
       challengerTitle: '⚡ Guia Desafiador (Guerreiro)',
       challengerDesc: 'Provocações intensas, empurrões amorosos e quebra de desculpas.',
       strategicTitle: '🎯 Guia Estratégico (Arquiteto)',
-      strategicDesc: 'Foco na estrutura técnica dos roteiros de vídeo e ganho de autoridade rápida.',
+      strategicDesc: 'Foco na estrutura técnica dos roteiros de vídeo e ganho de autoridade rápida. Recomendado para profissionais que já atuam em alguma área oferecendo serviço.',
       inspirationalTitle: '✨ Guia Inspiracional (Sábio)',
       inspirationalDesc: 'Provocações existenciais, metáforas profundas e conexão espiritual com o público.',
       grammarFem: 'Feminino (Amada, Destravada)',

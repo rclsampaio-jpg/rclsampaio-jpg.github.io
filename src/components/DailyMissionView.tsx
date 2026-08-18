@@ -68,7 +68,10 @@ function getPhaseId(dayNum: number): number {
 }
 
 // Identity Loop Phrases Lookup (Days 1 to 30)
-const identityPhrases: Record<number, Record<Language, string>> = {
+// The original day-completion phrases, unchanged — used as the
+// 'inspirational' tone (the default guideStyle) and as the EN/ES fallback
+// for the other three tones until those get their own translations.
+const identityPhrasesBase: Record<number, Record<Language, string>> = {
   1: {
     pt: "Você apareceu hoje. Você manteve sua promessa consigo mesma.",
     en: "You showed up today. You kept your promise to yourself.",
@@ -220,6 +223,128 @@ const identityPhrases: Record<number, Record<Language, string>> = {
     es: "Te recordaste quién eres verdaderamente. El camino ahora es tuyo."
   }
 };
+
+// PT-only day-completion phrases in the 'strategic' (professional/Destrave
+// audience), 'gentle' and 'challenger' voices, indexed 1-30 same as above.
+// Written in Renata's own voice/vocabulary (padrão, programação, camadas,
+// versão anterior), not translated to EN/ES yet — those languages fall back
+// to identityPhrasesBase (see buildIdentityPhrases below).
+const identityPhrasesPtByStyle: Record<Exclude<GuideStyle, 'inspirational'>, string[]> = {
+  strategic: [
+    'Você apareceu hoje, mesmo com a vozinha pedindo pra esperar mais um pouco.',
+    'Você tá criando prova real de que esse padrão pode ser diferente. Continue.',
+    'Você mexeu numa camada hoje. Não precisa ter sido grande pra ter sido real.',
+    'Mais uma repetição, mais um tijolinho tirado do que antes parecia automático.',
+    'Você ensinou seu corpo hoje que se expressar não é perigo, só desconfortável às vezes.',
+    'Isso não foi sobre motivação. Foi sobre repetição criando uma identidade nova, de verdade.',
+    'Você assumiu o que entrega hoje, sem esperar se sentir pronta antes. Isso é raro.',
+    'Cada ação dessas reescreve uma linha do que você aprendeu a acreditar sobre você.',
+    'Você quebrou um padrão hoje. Amanhã tem mais uma camada, e tá tudo bem.',
+    'O que você fez hoje é exatamente o tipo de repetição que muda identidade de verdade, não só disciplina.',
+    'Você mostrou pro seu sistema que ser vista não custa o que ele imaginava. Guarda isso.',
+    'Você tá mais perto de acreditar, na prática, que o que você entrega já é bom o suficiente.',
+    'Hoje você trocou uma identidade antiga por uma ação real. Conta, mesmo pequena.',
+    'Metade do caminho. A ação já tá mais fácil que no dia 1, repara nisso.',
+    'Você entregou hoje sem esperar o resultado confirmar primeiro. É assim que se constrói confiança de verdade.',
+    'Sua verdade apareceu hoje, sem precisar de permissão de ninguém. Guarda esse dado.',
+    'Você fez de novo, mesmo sem cobrar perfeição. A camada de hoje já saiu do caminho.',
+    'Aparecer com alma hoje foi um recado novo pro seu sistema. Ele já entendeu, continue.',
+    'O medo não sumiu, mas sua voz venceu ele hoje. Repete amanhã.',
+    'Sua presença de hoje foi construída, não nascida pronta. Lembra disso quando duvidar.',
+    'Você provou de novo, com uma ação concreta, que esse padrão não manda mais em você sozinho.',
+    'Cada dia desses tira o peso de uma identidade que nunca foi tua de verdade.',
+    'Você mostrou hoje que merece receber pelo que entrega. Isso muda como você se posiciona amanhã.',
+    'Continuar aparecendo enquanto os outros esperam ficar prontos, isso já é diferencial.',
+    'Você assumiu o que entrega, sem se esconder atrás de "ainda não tá bom o suficiente". Camada removida.',
+    'Esse padrão que te mantinha quieta perdeu um pouco de força hoje.',
+    'Você confiou no processo hoje, não no resultado. É assim que fica sustentável.',
+    'Sua voz tremeu e você gravou assim mesmo. Seu corpo guarda isso como prova.',
+    'Você pediu, entregou ou apareceu hoje sem se diminuir. Repara no que isso muda.',
+    'Mais uma repetição pra reconstruir o que você acredita que é possível pra tua vida.'
+  ],
+  gentle: [
+    'Você apareceu hoje, e isso já basta.',
+    'Você tá indo no seu tempo, e seu tempo é válido.',
+    'Cada tentativa sua, mesmo pequena, importa mais do que parece.',
+    'Você se permitiu um pouco mais hoje. Isso é cuidado, não fraqueza.',
+    'Aparecer com medo e continuar mesmo assim, isso é coragem silenciosa.',
+    'Você não precisou ser perfeita pra valer a pena. Só precisou ser você.',
+    'Fase 1 concluída, com carinho. Você chegou até aqui do seu jeito.',
+    'Cada escolha de hoje é um voto gentil em quem você quer se tornar.',
+    'Sua história vale, mesmo sem estar polida.',
+    'Você tirou um pouco do peso de fingir ser outra pessoa hoje.',
+    'A confiança vai crescendo devagar, e hoje ela cresceu um pouquinho mais.',
+    'Mais um dia em que você não deixou a desculpa vencer. Se orgulhe disso, com leveza.',
+    'Você escolheu se mostrar, mesmo com vontade de recuar. Isso conta.',
+    'Metade do caminho, com você inteira nele.',
+    'Sua forma de ser é sua vantagem, não precisa ser igual a mais ninguém.',
+    'Você é livre pra contar sua história do seu jeito, sem pedir licença.',
+    'Você se permitiu criar sem cobrar um resultado perfeito. Isso é liberdade.',
+    'Você se expressou com alma hoje, e isso já é motivo de orgulho.',
+    'O medo ainda existe, mas sua voz ficou um pouco mais forte hoje.',
+    'Sua presença hoje veio de um olhar mais honesto com você mesma.',
+    'Você confiou em você hoje, e essa confiança se constrói assim, aos poucos.',
+    'Você foi gentil consigo mesma e ainda assim apareceu. As duas coisas são possíveis juntas.',
+    'Cada vídeo seu é um convite pra alguém também se permitir aparecer.',
+    'Você não desistiu, mesmo nos dias mais difíceis. Reconhece isso.',
+    'Aparecer imperfeita hoje também é um jeito de cuidar de você.',
+    'Você tá construindo, com paciência, uma relação mais gentil com sua imagem.',
+    'Confiar no processo, sem pressa pelo resultado, também é uma forma de força.',
+    'Sua voz tremeu, e mesmo assim você seguiu. Se acolhe por isso.',
+    'Você apareceu do seu jeito hoje, sem precisar se encaixar em nenhum molde.',
+    'Hoje não foi sobre ser perfeita. Foi sobre estar presente, e você esteve.'
+  ],
+  challenger: [
+    'Você apareceu hoje. Sem desculpa, sem enrolação.',
+    'Menos uma desculpa no seu repertório. Continua assim.',
+    'Você provou hoje que dava pra fazer, mesmo com medo. Não esquece disso amanhã.',
+    'Mais uma prova de que o medo não decide por você.',
+    'Você fez, sem esperar se sentir confortável primeiro. É assim que muda.',
+    'Você cumpriu com você mesma hoje. Ontem prometeu, hoje entregou.',
+    'Fase 1 concluída. Você passou da fase de só falar que ia fazer.',
+    'Consistência é a prova, não a intenção. Hoje você deu a prova.',
+    'Sua história pesa mais quando você para de tentar parecer perfeita. Hoje você parou.',
+    'Você tirou a máscara um pouco mais hoje. Continua tirando.',
+    'Ação venceu a dúvida hoje. De novo.',
+    'Mais uma desculpa que não colou hoje.',
+    'Você escolheu agir em vez de esperar ficar confortável. Repete isso amanhã.',
+    'Metade do caminho. Não é hora de dar desculpa nova.',
+    'Ninguém mais tem sua voz. Hoje você usou ela em vez de esconder.',
+    'Você contou sua verdade hoje, sem pedir permissão pra ninguém.',
+    'Você parou de cobrar resultado perfeito e fez mesmo assim. Nota isso.',
+    'Você se expressou de verdade hoje, sem editar demais.',
+    'O medo não foi embora, mas você não deixou ele decidir hoje.',
+    'Sua presença hoje veio de encarar, não de fugir.',
+    'Você confiou em você hoje. Continua confiando amanhã, na prática.',
+    'Você não esperou se sentir pronta. Fez, e ficou pronta depois.',
+    'Cada vídeo seu tira a desculpa de quem ainda tá se escondendo.',
+    'Você não parou nos dias difíceis. Isso separa quem faz de quem só planeja.',
+    'Você apareceu imperfeita hoje em vez de não aparecer. Escolha certa.',
+    'Você tá deixando de ser mais uma que só fala que vai fazer.',
+    'Confiar no processo em vez do resultado imediato, hoje você fez isso na prática.',
+    'Voz tremendo e você gravou assim mesmo. Prova que a trava é mental, não real.',
+    'Você apareceu do seu jeito, sem se encaixar em molde de ninguém. Continua assim.',
+    'Hoje não foi sobre ser perfeita, foi sobre não se esconder. E você não se escondeu.'
+  ]
+};
+
+const identityPhrases: Record<number, Record<Language, Record<GuideStyle, string>>> = Object.fromEntries(
+  Object.entries(identityPhrasesBase).map(([dayStr, byLang]) => {
+    const day = Number(dayStr);
+    const byLangByStyle = Object.fromEntries(
+      (['pt', 'en', 'es'] as Language[]).map((lang) => [
+        lang,
+        {
+          inspirational: byLang[lang],
+          strategic: lang === 'pt' ? identityPhrasesPtByStyle.strategic[day - 1] : byLang[lang],
+          gentle: lang === 'pt' ? identityPhrasesPtByStyle.gentle[day - 1] : byLang[lang],
+          challenger: lang === 'pt' ? identityPhrasesPtByStyle.challenger[day - 1] : byLang[lang]
+        }
+      ])
+    ) as Record<Language, Record<GuideStyle, string>>;
+    return [day, byLangByStyle];
+  })
+);
 
 // Surprise letters data, each letter is written in 4 tones (gentle/challenger/
 // strategic/inspirational) matched to the user's guideStyle preference.
@@ -2151,7 +2276,7 @@ export default function DailyMissionView({
                     className="text-[11px] font-extrabold uppercase text-slate-400 tracking-[0.15em] block"
                   />
                   <p className="text-sm text-slate-700 dark:text-ink-text font-medium italic font-display leading-relaxed">
-                    "{adaptMessage(identityPhrases[currentDay.dayNumber as keyof typeof identityPhrases]?.[lang] || 'You showed up today.', prefGrammar, lang)}"
+                    "{adaptMessage(identityPhrases[currentDay.dayNumber as keyof typeof identityPhrases]?.[lang]?.[guideStyle] || 'You showed up today.', prefGrammar, lang)}"
                   </p>
                 </div>
 

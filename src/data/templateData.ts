@@ -5,6 +5,7 @@
 
 import { MissionDay, DayType, Language, UserProgress } from '../types';
 import { getLocalDateISO } from '../utils/date';
+import { GuideStyle, resolveGuideStyle } from '../utils/grammar';
 
 // Maps a day number to its real-calendar weekday position (0=Monday..6=Sunday),
 // anchored to journeyStartDate (the real date Day 1 was first opened). Falls
@@ -576,8 +577,9 @@ function getVideoUrlForDay(dayNumber: number): string | undefined {
 // repeating the same templated line with just the day number swapped in).
 // Order below (index 0 = message #1, etc.) matches DAILY_MESSAGE_ORDER, which
 // front-loads the "getting started" messages into the first 10 days.
-const DAILY_MESSAGES: Record<Language, string[]> = {
-  pt: [
+const DAILY_MESSAGES: Record<Language, Record<GuideStyle, string[]>> = {
+  pt: {
+    inspirational: [
     'O maior erro que você comete ao tentar gravar vídeos hoje é achar que precisa ser [perfeita/perfeito/perfeite]. Hoje, vamos quebrar isso.',
     'Ninguém se conecta com quem é perfeito. As pessoas se conectam com quem é real. Grava assim mesmo.',
     'Você não precisa estar [pronta/pronto/pronte] pra começar. Você só precisa começar pra ficar [pronta/pronto/pronte].',
@@ -608,8 +610,110 @@ const DAILY_MESSAGES: Record<Language, string[]> = {
     'Você não precisa de mais um curso. Você precisa apertar o botão de gravar.',
     'Toda vez que você aparece do jeito que é, você dá permissão pra outra pessoa fazer o mesmo.',
     'Hoje não é sobre ser vista perfeitamente. É sobre ser vista de verdade.'
-  ],
-  en: [
+    ],
+    strategic: [
+      'Você sabe que não te falta de competência. Se alguma coisa ainda te trava, é algum padrão que ainda não foi quebrado. Talvez ainda nem tenha sido revelado pra você poder quebrar. Pode gravar, é seguro, e vai ficar ainda mais.',
+      'Dentro da nossa cabeça tem uma vozinha que costuma ecoar e ela fala "espera mais um pouco" "termina isso primeiro" "isso ainda não tá muito bom" - ela não é sabedoria, é um padrão antigo de proteção te fazendo sustentar a identidade antiga. Vai lá e grava! Você tá pronta :)',
+      'Cada vez que você aparece apesar do medo, você mexe numa programação que nem é sua, mas foi instalada em você, herdada. A repetição das práticas certas é o que muda sua identidade, não motivação.',
+      'O que você entrega já nessa versão de hoje, é bom o suficiente pra quem chegou até você pra receber. Assumir que você já tem tudo que precisa pra impactar a vida do outro não é arrogância, é responsabilidade. Hoje você internaliza mais um pouco dessa responsabilidade gravando.',
+      'O seu cliente ideal é a tua versão anterior. Você não se conectou com quem tinha tudo resolvido. Você se conectou com quem já falava a tua língua, sobre algo que você entendia e queria explorar mais pra evoluir. Essa conexão mostrava um caminho mais possível. Você já pode fazer isso por alguém hoje. Você já percorreu muita coisa. Lembre-se disso.',
+      'O medo de aparecer não é sobre a câmera, e sim sobre a identidade que a câmera mostra. E ela ainda está programada como "perigo". Hoje você mostra pro seu sistema que não é.',
+      'Você pode ter quebrado um padrão essa semana. Ainda existem camadas. Isso não é retrocesso, é o processo funcionando. Celebre e siga o caminho. Grave ainda mais :))',
+      'O que trava você hoje não é falta de conhecimento. É o que você aprendeu a fazer a vida toda sem nunca ter parado pra questionar se ainda serve.',
+      'Toda vez que você grava incomodada, você ensina um comportamento novo pra uma parte sua que só sabia se proteger. Continue.',
+      'Não é sobre ter coragem, isso é conversa de curso. É sobre repetir a ação até a identidade antiga perder o argumento.',
+      'Você não vai se sentir pronta antes. Vai sentir depois, porque foi repetindo que virou familiar. É assim que funciona, sempre foi.',
+      'Ser ouvida não é sorte de quem "nasceu carismática". É consequência de quem apareceu vezes suficientes pra virar referência na cabeça de alguém.',
+      'Esse padrão que te faz adiar não tá te protegendo de nada real hoje. Tá te protegendo de uma dor que já nem existe mais.',
+      'Cada vídeo que você posta incomodada tira uma camada do que te fazia achar que seu lugar era menor.',
+      'Você não tá atrasada. Só ainda não repetiu o suficiente pra essa versão nova virar automática, tipo escovar dente.',
+      '"Ainda não tô pronta" é só a identidade antiga tentando manter o que já é conhecido, mesmo sendo desconfortável. Conhecido dá uma falsa sensação de segurança.',
+      'Toda decisão de aparecer, mesmo pequena, mexe numa casinha do que você acredita que é possível pra você. Uma casinha já é muito.',
+      'Segurança não vem antes, vem depois. É o que a repetição da ação constrói, não o contrário. Ninguém te contou isso direito antes.',
+      'Às vezes o medo de aparecer de verdade esconde o medo de ser cobrada por ser tão boa quanto você é. Grava assim mesmo, você aguenta.',
+      'Cada exposição que você faz hoje é um recado novo pro seu corpo, não só mais um post no feed.',
+      'Você não precisa desmontar o padrão inteiro hoje. Só precisa fazer uma coisa que ele não esperava que você fizesse.',
+      'O que você aprendeu a vida toda sobre se esconder não é verdade sobre você. É só o que foi repetido tantas vezes que virou automático.',
+      'Quem trava na hora de vender quase nunca trava no preço. Trava em acreditar que merece receber por aquilo.',
+      'Você não precisa ser a mais preparada da sala. Precisa ser a que continuou aparecendo enquanto os outros esperavam se sentir prontos.',
+      'Toda vez que você assume o que entrega, sem se esconder atrás de "ainda não tá bom o suficiente", uma camada sai do caminho.',
+      'Esse padrão que te mantém quieta não é sua personalidade. É proteção que você aprendeu, e o que se aprende dá pra reaprender diferente.',
+      'Você não precisa confiar no resultado hoje. Confia no processo de repetir até o resultado virar consequência, não milagre.',
+      'Toda vez que você aparece com a voz tremendo, você mostra pro seu corpo que tremer não é motivo pra recuar. Ele guarda isso.',
+      'O que te impede de pedir a venda é a mesma coisa que te impede de pedir o que você merece em qualquer outra área da vida. Repara nisso.',
+      'Você não tá só construindo um perfil. Tá reconstruindo, repetição por repetição, o que você acredita que é possível pra tua vida.'
+    ],
+    gentle: [
+      'Hoje não precisa ser perfeito. Precisa só ser seu, do jeitinho que você consegue agora.',
+      'Vai com calma, mas vai. Um vídeo tremendo hoje vale mais que um vídeo perfeito nunca.',
+      'Você não precisa se sentir pronta pra começar. A prontidão chega depois, no seu tempo.',
+      'Respira. Grava. Você não precisa fazer isso perfeito, só precisa fazer.',
+      'Quem te julga também tem medo de aparecer. Isso não é sobre eles, é sobre você se permitir.',
+      'Ninguém lembra dos vídeos que você nunca postou. Posta esse, mesmo incompleto.',
+      'Sua voz pode tremer. Ainda assim ela merece ser ouvida.',
+      'Você não está atrasada. Está no seu tempo, e seu tempo também conta.',
+      'Dá medo porque importa pra você. Isso é sinal de que vale a pena, não de que deve parar.',
+      'O vídeo de hoje não precisa esperar o dia em que tudo estiver em ordem.',
+      'Um passo de cada vez. Hoje o passo é aparecer, só isso.',
+      'Você não precisa ser a melhor. Precisa só continuar aparecendo, no seu ritmo.',
+      'Não existe o momento perfeito. Existe esse, e ele já é suficiente.',
+      'A confiança vai chegar devagar, à medida que você for repetindo. Comece hoje, mesmo sem ela.',
+      'Cada vídeo que você grava com medo já é uma vitória silenciosa.',
+      'Ninguém está prestando tanta atenção assim. Você pode se soltar um pouco.',
+      'Se esperar se sentir segura pra gravar, o tempo passa e nada muda. Grava assim mesmo, com carinho por você.',
+      'Sua imperfeição é o que aproxima as pessoas de você.',
+      'Não saber o que falar também é válido. Grava mesmo assim, do seu jeito.',
+      'Toda pessoa que hoje aparece com facilidade, também gravou um vídeo horrível antes.',
+      'Você não vai se sentir pronta antes. Vai se sentir depois, com carinho e paciência consigo.',
+      'Sua maior barreira não é a câmera, é a voz interna que pede perfeição demais.',
+      'Publicar imperfeito vale mais que guardar perfeito. Poste com leveza.',
+      'Ontem você disse "depois eu gravo". Hoje pode ser esse depois, sem pressa, mas com decisão.',
+      'Ninguém te vê de verdade atrás de tanta edição. Deixa aparecer um pouco mais de você.',
+      'Sua história bagunçada tem mais valor do que você imagina.',
+      'O medo de errar na câmera passa. O arrependimento de nunca tentar, fica.',
+      'Você não precisa de mais preparo. Precisa só se permitir apertar o gravar.',
+      'Cada vez que você aparece como é, ajuda outra pessoa a se permitir também.',
+      'Hoje não precisa ser sobre ser vista perfeita. Pode ser só sobre ser vista, com gentileza.'
+    ],
+    challenger: [
+      'Parou de gravar por perfeccionismo? Isso é desculpa bonita pra medo feio.',
+      'Ninguém vai te aplaudir por esperar. Grava agora.',
+      'Você não tá esperando ficar pronta. Tá esperando ter uma desculpa nova.',
+      'Vergonha da câmera não passa esperando, passa você fazendo o que tá evitando.',
+      'Quem te julga não paga seu boleto. Grava o vídeo e ignora.',
+      'O algoritmo esqueceu todos os vídeos perfeitos que você não postou. Literalmente não existem.',
+      'Voz tremendo? Ótimo, prova que você tá fazendo algo que importa. Continua.',
+      'Você não tá atrasada, tá enrolando. São coisas diferentes, encara isso.',
+      'Medo de ser vista é sinal de que importa. Não é sinal pra recuar, é sinal pra ir.',
+      'O vídeo que você não posta hoje, você vai continuar não postando amanhã. Quebra esse ciclo agora.',
+      'Parar de se esconder não é opcional se você quer ser lembrada. Escolhe.',
+      'Você não precisa ser a melhor. Precisa parar de ser a que nunca aparece.',
+      'Momento perfeito não existe. Só existe quem grava e quem inventa desculpa.',
+      'Confiança não vem antes. Vem de fazer com medo, repetidas vezes. Para de esperar o contrário.',
+      'Cada vídeo gravado com medo é prova de que o medo não manda em você. Prova de novo hoje.',
+      'Ninguém tá olhando pra você do jeito que você imagina. Solta essa fantasia e grava.',
+      'Se você esperar se sentir confiante, vai esperar pra sempre. Grava assim mesmo.',
+      'Sua imperfeição é o que separa você de mais um perfil genérico. Usa isso.',
+      '"Não sei o que falar" é desculpa, não trava real. Grava e resolve no processo.',
+      'Toda pessoa visível hoje também postou um vídeo ruim. A diferença é que ela postou.',
+      'Você não vai se sentir pronta antes de fazer. Para de esperar por isso, faz.',
+      'O obstáculo não é a câmera. É você dando ouvidos pra voz que pede perfeição.',
+      'Publicar vale mais que polir. Se você tá polindo há dias, já devia ter postado.',
+      'Você já disse "depois eu grava" ontem. Continuar adiando é escolha, não circunstância.',
+      'Editar demais é só outra forma de se esconder. Aparece de verdade.',
+      'Sua história real vale mais que a versão editada da vida de outra pessoa. Para de comparar e grava.',
+      'O medo de errar na câmera é pequeno perto do preço de nunca ter tentado. Faz as contas.',
+      'Você não precisa de mais um curso. Precisa parar de procrastinar com aprendizado e apertar gravar.',
+      'Toda vez que você aparece como é, você tira a desculpa de quem também tá se escondendo.',
+      'Hoje não é sobre perfeição. É sobre parar de se esconder atrás dela.'
+    ]
+  },
+  en: (() => {
+    // EN translations for the strategic/gentle/challenger tones haven't been
+    // written yet (pt content was only just approved) — every tone falls
+    // back to this same set until they are, so non-pt users still see
+    // complete content.
+    const base = [
     "The biggest mistake you make trying to record videos today is thinking you need to be perfect. Today, we break that.",
     "Nobody connects with perfect. People connect with real. Record it anyway.",
     "You don't need to feel ready to start. You just need to start to feel ready.",
@@ -640,8 +744,11 @@ const DAILY_MESSAGES: Record<Language, string[]> = {
     "You don't need another course. You need to press record.",
     "Every time you show up as you are, you give someone else permission to do the same.",
     "Today isn't about being seen perfectly. It's about being truly seen."
-  ],
-  es: [
+    ];
+    return { inspirational: base, strategic: base, gentle: base, challenger: base };
+  })(),
+  es: (() => {
+    const base = [
     'El mayor error que cometes al intentar grabar videos hoy es pensar que necesitas ser [perfecta/perfecto/perfecte]. Hoy, vamos a romper eso.',
     'Nadie se conecta con la perfección. La gente se conecta con lo real. Grábalo de todos modos.',
     'No necesitas sentirte [lista/listo/liste] para empezar. Solo necesitas empezar para sentirte [lista/listo/liste].',
@@ -672,7 +779,9 @@ const DAILY_MESSAGES: Record<Language, string[]> = {
     'No necesitas otro curso. Necesitas apretar el botón de grabar.',
     'Cada vez que apareces tal como eres, le das permiso a otra persona para hacer lo mismo.',
     'Hoy no se trata de que te vean perfecta. Se trata de que te vean de verdad.'
-  ]
+    ];
+    return { inspirational: base, strategic: base, gentle: base, challenger: base };
+  })()
 };
 
 // Provocative "remember who you are" messages, mixed into the pool below —
@@ -721,9 +830,11 @@ const DAILY_MESSAGE_ORDER: number[] = [
   34, 12, 16, 35, 10, 36, 18, 37, 26, 38
 ];
 
-function getDailyMessage(dayNumber: number, lang: Language): string {
+export function getDailyMessage(dayNumber: number, lang: Language, guideStyle?: GuideStyle): string {
+  const style = resolveGuideStyle(guideStyle);
   const messageNumber = DAILY_MESSAGE_ORDER[(dayNumber - 1) % DAILY_MESSAGE_ORDER.length];
-  const messages = [...(DAILY_MESSAGES[lang] || DAILY_MESSAGES.pt), ...(PROVOCATIVE_MESSAGES[lang] || PROVOCATIVE_MESSAGES.pt)];
+  const tonePool = (DAILY_MESSAGES[lang] || DAILY_MESSAGES.pt)[style] || (DAILY_MESSAGES[lang] || DAILY_MESSAGES.pt).inspirational;
+  const messages = [...tonePool, ...(PROVOCATIVE_MESSAGES[lang] || PROVOCATIVE_MESSAGES.pt)];
   return messages[messageNumber - 1];
 }
 
@@ -1078,7 +1189,7 @@ function formatExposureAction(plan: DailyPlan): string {
 // Generate initial 30 days structure based on the rhythm, anchored to the
 // real calendar date Day 1 was first opened (startDate) so the weekday theme
 // (and its hooks) match the actual day of the week.
-export function generateInitialDays(startDate?: string | null): MissionDay[] {
+export function generateInitialDays(startDate?: string | null, guideStyle?: GuideStyle): MissionDay[] {
   const days: MissionDay[] = [];
 
   for (let i = 1; i <= 30; i++) {
@@ -1101,7 +1212,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
         pt: {
           audioUrl, // Real recording if available for this day, otherwise placeholder
           videoUrl,
-          hook: getDailyMessage(i, 'pt'),
+          hook: getDailyMessage(i, 'pt', guideStyle),
           scripts: [
             `Roteiro Opção 1 (Conexão Rápida):\n"Se você tem vergonha de gravar vídeos, deixa eu te contar um segredo... eu também tinha. Mas hoje eu decidi..."`,
             `Roteiro Opção 2 (Provocação):\n"Pare de tentar agradar a todo mundo nas redes sociais. A verdade é que quem te julga não paga seus boletos..."`,
@@ -1113,7 +1224,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
         },
         en: {
           audioUrl,
-          hook: getDailyMessage(i, 'en'),
+          hook: getDailyMessage(i, 'en', guideStyle),
           scripts: [
             `Script Option 1 (Quick Connection):\n"If you are afraid of recording videos, let me tell you a secret... I was too. But today I decided to..."`,
             `Script Option 2 (Provocation):\n"Stop trying to please everyone on social media. The truth is, those who judge you don't pay your bills..."`,
@@ -1125,7 +1236,7 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
         },
         es: {
           audioUrl,
-          hook: getDailyMessage(i, 'es'),
+          hook: getDailyMessage(i, 'es', guideStyle),
           scripts: [
             `Guión Opción 1 (Conexión Rápida):\n"Si tienes vergüenza de grabar videos, déjame contarte un secreto... yo también la tenía. Pero hoy decidí..."`,
             `Guión Opción 2 (Provocación):\n"Deja de intentar agradar a todos en las redes sociales. La verdad es que quien te juzga no paga tus cuentas..."`,
@@ -1147,9 +1258,9 @@ export function generateInitialDays(startDate?: string | null): MissionDay[] {
 // stale copy. NOTE: this also discards any day content hand-edited via
 // Creator Studio (CMS), acceptable while content is still being tuned from
 // code, but worth knowing once the CMS is used for real day-by-day editing.
-const DAYS_CONTENT_VERSION = '24';
+const DAYS_CONTENT_VERSION = '25';
 
-export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
+export function loadDaysFromStorage(startDate?: string | null, guideStyle?: GuideStyle): MissionDay[] {
   const stored = localStorage.getItem('renaser_days');
   const storedVersion = localStorage.getItem('renaser_days_version');
   if (stored && storedVersion === DAYS_CONTENT_VERSION) {
@@ -1160,7 +1271,7 @@ export function loadDaysFromStorage(startDate?: string | null): MissionDay[] {
     }
   }
 
-  const initial = generateInitialDays(startDate);
+  const initial = generateInitialDays(startDate, guideStyle);
   localStorage.setItem('renaser_days', JSON.stringify(initial));
   localStorage.setItem('renaser_days_version', DAYS_CONTENT_VERSION);
   return initial;
