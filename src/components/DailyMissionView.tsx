@@ -1528,7 +1528,7 @@ export default function DailyMissionView({
             </span>
             <button
               onClick={() => onJumpToDay(Math.min(90, currentDay.dayNumber + 1))}
-              disabled={currentDay.dayNumber >= 30}
+              disabled={currentDay.dayNumber >= 90}
               className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
             >
               <ChevronRight className="h-4 w-4" />
@@ -1605,7 +1605,7 @@ export default function DailyMissionView({
           </span>
           <button
             onClick={() => onJumpToDay(Math.min(90, currentDay.dayNumber + 1))}
-            disabled={currentDay.dayNumber >= 30}
+            disabled={currentDay.dayNumber >= 90}
             className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
           >
             <ChevronRight className="h-4 w-4" />
