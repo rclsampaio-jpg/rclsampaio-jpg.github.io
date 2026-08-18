@@ -354,7 +354,7 @@ function AppContent() {
 
   const [focusedDayNumber, setFocusedDayNumber] = useState<number>(() => {
     const defaultProgress = loadUserProgressFromStorage();
-    return defaultProgress.currentDay <= 30 ? defaultProgress.currentDay : 30;
+    return defaultProgress.currentDay;
   });
 
   const activeMissionDay = days.find(d => d.dayNumber === focusedDayNumber) || days[0];
@@ -442,7 +442,11 @@ function AppContent() {
     && progress.dayUnlockAnchorDate === getLocalDateISO();
   const isTodayDoneOnHome = !hasOnboarded
     || (isPracticePhase
-      ? progress.completionHistory.includes(progress.currentDay)
+      // Admin previewing a different day (jumper) always sees the mission
+      // interface for that day, never the "today's done" panel — mirrors
+      // the dayNumber-vs-currentDay check the non-practice branch already
+      // does below.
+      ? (focusedDayNumber === progress.currentDay && progress.completionHistory.includes(progress.currentDay))
       : (isWaitingForNewCalendarDay
         || (activeMissionDay.dayNumber === progress.currentDay
           && progress.completionHistory.includes(progress.currentDay))));
@@ -592,10 +596,13 @@ function AppContent() {
     // Advance to next day automatically. Nos 30 dias iniciais só avança se
     // for o dia real (não navegação de admin); na Fase de Prática sempre
     // avança, pois lá dayNum já é sempre o dia real (nunca fica pra trás).
+    // focusedDayNumber sempre acompanha o dia real nos dois casos, senão o
+    // preview de admin (previewDayNumber vs. progress.currentDay) compara
+    // contra um valor desatualizado e trava o botão de concluir por engano.
     let nextDay = progress.currentDay;
     if (isPracticePhase || (dayNum === progress.currentDay && progress.currentDay < 30)) {
       nextDay = progress.currentDay + 1;
-      if (!isPracticePhase) setFocusedDayNumber(nextDay);
+      setFocusedDayNumber(nextDay);
       setActiveTab('home'); // Go to Home Screen showing today's fresh day overview!
     }
 
@@ -1628,7 +1635,7 @@ function AppContent() {
                   onOnboardingComplete={() => setHasOnboarded(true)}
                   onIntroButterflyStart={handleIntroButterflyStart}
                 />
-              ) : isPracticePhase ? (
+              ) : (isPracticePhase || focusedDayNumber > 30) ? (
                 <PracticeMissionView
                   progress={progress}
                   lang={lang}
@@ -1636,6 +1643,9 @@ function AppContent() {
                   onUpdateMood={handleUpdateMood}
                   onTriggerSos={() => setActiveTab('sos')}
                   onGoToLibrary={() => setActiveTab('library')}
+                  isAdminUnlocked={isAdminUnlocked}
+                  onJumpToDay={setFocusedDayNumber}
+                  previewDayNumber={isAdminUnlocked ? focusedDayNumber : undefined}
                 />
               ) : (
                 <DailyMissionView

@@ -1524,10 +1524,10 @@ export default function DailyMissionView({
               <ChevronLeft className="h-4 w-4" />
             </button>
             <span className="text-[11px] font-mono uppercase tracking-wider text-rosegold">
-              Admin · Dia {currentDay.dayNumber} / 30
+              Admin · Dia {currentDay.dayNumber} / 90
             </span>
             <button
-              onClick={() => onJumpToDay(Math.min(30, currentDay.dayNumber + 1))}
+              onClick={() => onJumpToDay(Math.min(90, currentDay.dayNumber + 1))}
               disabled={currentDay.dayNumber >= 30}
               className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
             >
@@ -1601,10 +1601,10 @@ export default function DailyMissionView({
             <ChevronLeft className="h-4 w-4" />
           </button>
           <span className="text-[11px] font-mono uppercase tracking-wider text-rosegold">
-            Admin · Dia {currentDay.dayNumber} / 30
+            Admin · Dia {currentDay.dayNumber} / 90
           </span>
           <button
-            onClick={() => onJumpToDay(Math.min(30, currentDay.dayNumber + 1))}
+            onClick={() => onJumpToDay(Math.min(90, currentDay.dayNumber + 1))}
             disabled={currentDay.dayNumber >= 30}
             className="h-8 w-8 flex items-center justify-center rounded-lg border border-rosegold/40 text-rosegold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-rosegold/10 transition cursor-pointer"
           >
