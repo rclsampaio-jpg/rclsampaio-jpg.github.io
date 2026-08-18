@@ -224,12 +224,11 @@ const identityPhrasesBase: Record<number, Record<Language, string>> = {
   }
 };
 
-// PT-only day-completion phrases in the 'strategic' (professional/Destrave
+// Day-completion phrases in the 'strategic' (professional/Destrave
 // audience), 'gentle' and 'challenger' voices, indexed 1-30 same as above.
-// Written in Renata's own voice/vocabulary (padrão, programação, camadas,
-// versão anterior), not translated to EN/ES yet — those languages fall back
-// to identityPhrasesBase (see buildIdentityPhrases below).
-const identityPhrasesPtByStyle: Record<Exclude<GuideStyle, 'inspirational'>, string[]> = {
+// pt is written in Renata's own voice/vocabulary (padrão, programação,
+// camadas, versão anterior); en/es are translations of that same voice.
+const identityPhrasesPt: Record<Exclude<GuideStyle, 'inspirational'>, string[]> = {
   strategic: [
     'Você apareceu hoje, mesmo com a vozinha pedindo pra esperar mais um pouco.',
     'Você tá criando prova real de que esse padrão pode ser diferente. Continue.',
@@ -328,6 +327,210 @@ const identityPhrasesPtByStyle: Record<Exclude<GuideStyle, 'inspirational'>, str
   ]
 };
 
+const identityPhrasesEn: Record<Exclude<GuideStyle, 'inspirational'>, string[]> = {
+  strategic: [
+    'You showed up today, even with that little voice asking you to wait a bit longer.',
+    "You're building real proof that this pattern can be different. Keep going.",
+    "You moved a layer today. It didn't need to be big to be real.",
+    'One more repetition, one more brick removed from what used to feel automatic.',
+    "You taught your body today that expressing yourself isn't danger, just uncomfortable sometimes.",
+    'This wasn\'t about motivation. It was about repetition creating a real new identity.',
+    "You owned what you deliver today, without waiting to feel ready first. That's rare.",
+    'Every action like this rewrites a line of what you learned to believe about yourself.',
+    "You broke a pattern today. Tomorrow there's another layer, and that's okay.",
+    'What you did today is exactly the kind of repetition that changes identity for real, not just discipline.',
+    "You showed your system that being seen doesn't cost what it imagined. Keep that.",
+    "You're getting closer to believing, in practice, that what you deliver is already good enough.",
+    'Today you traded an old identity for a real action. It counts, even small.',
+    'Halfway there. The action is already easier than on day 1, notice that.',
+    "You delivered today without waiting for the outcome to confirm first. That's how real confidence gets built.",
+    "Your truth showed up today, without needing anyone's permission. Keep that data.",
+    "You did it again, even without demanding perfection. Today's layer is already off the path.",
+    'Showing up with soul today was a new message to your system. It already got it, keep going.',
+    "Fear didn't disappear, but your voice won today. Repeat it tomorrow.",
+    'Your presence today was built, not born ready. Remember that when you doubt.',
+    "You proved again, with a concrete action, that this pattern doesn't run you alone anymore.",
+    'Every day like this lifts the weight of an identity that was never really yours.',
+    'You showed today that you deserve to be paid for what you deliver. That changes how you position yourself tomorrow.',
+    "Continuing to show up while others wait to feel ready, that's already a difference-maker.",
+    'You owned what you deliver, without hiding behind "it\'s still not good enough." Layer removed.',
+    'That pattern that used to keep you quiet lost a bit of strength today.',
+    "You trusted the process today, not the outcome. That's what makes it sustainable.",
+    'Your voice shook and you recorded anyway. Your body keeps that as proof.',
+    'You asked, delivered, or showed up today without shrinking yourself. Notice what that changes.',
+    'One more repetition to rebuild what you believe is possible for your life.'
+  ],
+  gentle: [
+    "You showed up today, and that's already enough.",
+    "You're moving at your own pace, and your pace is valid.",
+    'Every attempt of yours, even small, matters more than it seems.',
+    "You allowed yourself a little more today. That's care, not weakness.",
+    "Showing up afraid and continuing anyway, that's quiet courage.",
+    "You didn't need to be perfect for it to be worth it. You just needed to be you.",
+    'Phase 1 complete, gently. You got here your own way.',
+    'Every choice today is a gentle vote for who you want to become.',
+    'Your story matters, even unpolished.',
+    'You let go of a little of the weight of pretending to be someone else today.',
+    'Confidence is growing slowly, and today it grew a little more.',
+    "One more day you didn't let the excuse win. Be proud of that, lightly.",
+    'You chose to show up, even wanting to pull back. That counts.',
+    'Halfway there, with all of you in it.',
+    "The way you are is your advantage, you don't need to be like anyone else.",
+    "You're free to tell your story your own way, without asking permission.",
+    "You allowed yourself to create without demanding a perfect outcome. That's freedom.",
+    "You expressed yourself with soul today, and that's already something to be proud of.",
+    'The fear is still there, but your voice got a little louder today.',
+    'Your presence today came from a more honest look at yourself.',
+    'You trusted yourself today, and that\'s how trust gets built, little by little.',
+    'You were gentle with yourself and still showed up. Both things are possible together.',
+    'Every video of yours is an invitation for someone else to allow themselves to show up too.',
+    "You didn't give up, even on the hardest days. Recognize that.",
+    'Showing up imperfect today is also a way of caring for yourself.',
+    "You're building, patiently, a gentler relationship with your image.",
+    'Trusting the process, without rushing the outcome, is also a form of strength.',
+    'Your voice shook, and you kept going anyway. Be gentle with yourself for that.',
+    "You showed up your own way today, without needing to fit any mold.",
+    "Today wasn't about being perfect. It was about being present, and you were."
+  ],
+  challenger: [
+    'You showed up today. No excuse, no stalling.',
+    'One less excuse in your repertoire. Keep it that way.',
+    "You proved today it was possible, even scared. Don't forget that tomorrow.",
+    "One more proof fear doesn't decide for you.",
+    "You did it without waiting to feel comfortable first. That's how it changes.",
+    'You kept your word to yourself today. Yesterday you promised, today you delivered.',
+    'Phase 1 complete. You moved past just talking about doing it.',
+    'Consistency is the proof, not the intention. Today you gave the proof.',
+    'Your story carries more weight when you stop trying to look perfect. Today you stopped.',
+    'You took the mask off a little more today. Keep taking it off.',
+    'Action beat doubt today. Again.',
+    "One more excuse that didn't work today.",
+    'You chose to act instead of waiting to feel comfortable. Do it again tomorrow.',
+    'Halfway there. Not the time for a new excuse.',
+    'No one else has your voice. Today you used it instead of hiding it.',
+    "You told your truth today, without asking anyone's permission.",
+    'You stopped demanding a perfect result and did it anyway. Notice that.',
+    'You expressed yourself for real today, without over-editing.',
+    "Fear didn't leave, but you didn't let it decide today.",
+    "Your presence today came from facing it, not from running.",
+    'You trusted yourself today. Keep trusting tomorrow, in practice.',
+    'You didn\'t wait to feel ready. You did it, and got ready after.',
+    "Every video of yours takes away the excuse from whoever's still hiding.",
+    "You didn't stop on the hard days. That's what separates doing from just planning.",
+    "You showed up imperfect today instead of not showing up. Right choice.",
+    "You're stopping being one more person who just talks about doing it.",
+    'Trusting the process over the immediate result, today you did that in practice.',
+    'Voice shaking, and you recorded anyway. Proof the block is mental, not real.',
+    "You showed up your own way, without fitting anyone's mold. Keep it that way.",
+    "Today wasn't about being perfect, it was about not hiding. And you didn't hide."
+  ]
+};
+
+const identityPhrasesEs: Record<Exclude<GuideStyle, 'inspirational'>, string[]> = {
+  strategic: [
+    'Apareciste hoy, incluso con esa vocecita pidiéndote que esperaras un poco más.',
+    'Estás creando prueba real de que este patrón puede ser diferente. Continúa.',
+    'Moviste una capa hoy. No necesitaba ser grande para ser real.',
+    'Una repetición más, un ladrillo menos de lo que antes parecía automático.',
+    'Le enseñaste a tu cuerpo hoy que expresarte no es peligro, solo incómodo a veces.',
+    'Esto no fue sobre motivación. Fue sobre repetición creando una identidad nueva, de verdad.',
+    'Asumiste lo que entregas hoy, sin esperar sentirte lista antes. Eso es raro.',
+    'Cada acción como esta reescribe una línea de lo que aprendiste a creer sobre ti.',
+    'Rompiste un patrón hoy. Mañana hay otra capa, y está bien.',
+    'Lo que hiciste hoy es exactamente el tipo de repetición que cambia la identidad de verdad, no solo disciplina.',
+    'Le mostraste a tu sistema que ser vista no cuesta lo que imaginaba. Guarda eso.',
+    'Estás más cerca de creer, en la práctica, que lo que entregas ya es suficientemente bueno.',
+    'Hoy cambiaste una identidad vieja por una acción real. Cuenta, aunque sea pequeña.',
+    'Mitad del camino. La acción ya está más fácil que el día 1, fíjate en eso.',
+    'Entregaste hoy sin esperar que el resultado lo confirmara primero. Así se construye la confianza de verdad.',
+    'Tu verdad apareció hoy, sin necesitar permiso de nadie. Guarda ese dato.',
+    'Lo hiciste de nuevo, incluso sin exigir perfección. La capa de hoy ya salió del camino.',
+    'Aparecer con alma hoy fue un mensaje nuevo para tu sistema. Ya lo entendió, continúa.',
+    'El miedo no desapareció, pero tu voz le ganó hoy. Repítelo mañana.',
+    'Tu presencia de hoy fue construida, no nació lista. Recuerda eso cuando dudes.',
+    'Probaste de nuevo, con una acción concreta, que este patrón ya no te maneja solo.',
+    'Cada día como este quita el peso de una identidad que nunca fue realmente tuya.',
+    'Mostraste hoy que mereces que te paguen por lo que entregas. Eso cambia cómo te posicionas mañana.',
+    'Seguir apareciendo mientras otros esperan sentirse listos, eso ya es una diferencia.',
+    'Asumiste lo que entregas, sin esconderte detrás de "todavía no es suficientemente bueno". Capa removida.',
+    'Ese patrón que te mantenía callada perdió un poco de fuerza hoy.',
+    'Confiaste en el proceso hoy, no en el resultado. Así es como se vuelve sostenible.',
+    'Tu voz tembló y grabaste de todos modos. Tu cuerpo guarda eso como prueba.',
+    'Pediste, entregaste o apareciste hoy sin achicarte. Fíjate en lo que eso cambia.',
+    'Una repetición más para reconstruir lo que crees posible para tu vida.'
+  ],
+  gentle: [
+    'Apareciste hoy, y eso ya es suficiente.',
+    'Vas a tu propio ritmo, y tu ritmo es válido.',
+    'Cada intento tuyo, aunque sea pequeño, importa más de lo que parece.',
+    'Te permitiste un poco más hoy. Eso es cuidado, no debilidad.',
+    'Aparecer con miedo y seguir de todos modos, eso es coraje silencioso.',
+    'No necesitabas ser perfecta para que valiera la pena. Solo necesitabas ser tú.',
+    'Fase 1 completada, con cariño. Llegaste hasta aquí a tu manera.',
+    'Cada elección de hoy es un voto gentil por quien quieres llegar a ser.',
+    'Tu historia vale, aunque no esté pulida.',
+    'Hoy soltaste un poco el peso de fingir ser otra persona.',
+    'La confianza va creciendo despacio, y hoy creció un poquito más.',
+    'Un día más en que no dejaste que la excusa ganara. Enorgullécete de eso, con ligereza.',
+    'Elegiste mostrarte, aunque tenías ganas de retroceder. Eso cuenta.',
+    'Mitad del camino, contigo entera en él.',
+    'Tu forma de ser es tu ventaja, no necesitas ser igual a nadie más.',
+    'Eres libre de contar tu historia a tu manera, sin pedir permiso.',
+    'Te permitiste crear sin exigir un resultado perfecto. Eso es libertad.',
+    'Te expresaste con alma hoy, y eso ya es motivo de orgullo.',
+    'El miedo todavía existe, pero tu voz se hizo un poco más fuerte hoy.',
+    'Tu presencia de hoy vino de una mirada más honesta hacia ti misma.',
+    'Confiaste en ti hoy, y así es como se construye la confianza, poco a poco.',
+    'Fuiste gentil contigo misma y aun así apareciste. Las dos cosas son posibles juntas.',
+    'Cada video tuyo es una invitación para que otra persona también se permita aparecer.',
+    'No te rendiste, ni siquiera en los días más difíciles. Reconócelo.',
+    'Aparecer imperfecta hoy también es una forma de cuidarte.',
+    'Estás construyendo, con paciencia, una relación más gentil con tu imagen.',
+    'Confiar en el proceso, sin apurar el resultado, también es una forma de fuerza.',
+    'Tu voz tembló, y aun así seguiste. Sé gentil contigo por eso.',
+    'Apareciste a tu manera hoy, sin necesitar encajar en ningún molde.',
+    'Hoy no se trató de ser perfecta. Se trató de estar presente, y lo estuviste.'
+  ],
+  challenger: [
+    'Apareciste hoy. Sin excusa, sin dar vueltas.',
+    'Una excusa menos en tu repertorio. Sigue así.',
+    'Hoy probaste que se podía, incluso con miedo. No lo olvides mañana.',
+    'Una prueba más de que el miedo no decide por ti.',
+    'Lo hiciste sin esperar sentirte cómoda primero. Así es como cambia.',
+    'Cumpliste contigo misma hoy. Ayer prometiste, hoy entregaste.',
+    'Fase 1 completada. Dejaste de solo hablar de hacerlo.',
+    'La consistencia es la prueba, no la intención. Hoy diste la prueba.',
+    'Tu historia pesa más cuando dejas de intentar parecer perfecta. Hoy dejaste de hacerlo.',
+    'Te quitaste la máscara un poco más hoy. Sigue quitándotela.',
+    'La acción le ganó a la duda hoy. De nuevo.',
+    'Una excusa más que no funcionó hoy.',
+    'Elegiste actuar en vez de esperar sentirte cómoda. Repítelo mañana.',
+    'Mitad del camino. No es momento de una excusa nueva.',
+    'Nadie más tiene tu voz. Hoy la usaste en vez de esconderla.',
+    'Contaste tu verdad hoy, sin pedirle permiso a nadie.',
+    'Dejaste de exigir un resultado perfecto e hiciste de todos modos. Fíjate en eso.',
+    'Te expresaste de verdad hoy, sin editar de más.',
+    'El miedo no se fue, pero hoy no dejaste que decidiera.',
+    'Tu presencia de hoy vino de enfrentar, no de huir.',
+    'Confiaste en ti hoy. Sigue confiando mañana, en la práctica.',
+    'No esperaste sentirte lista. Lo hiciste, y te sentiste lista después.',
+    'Cada video tuyo le quita la excusa a quien todavía se está escondiendo.',
+    'No te detuviste en los días difíciles. Eso separa a quien hace de quien solo planea.',
+    'Apareciste imperfecta hoy en vez de no aparecer. Elección correcta.',
+    'Estás dejando de ser una más que solo habla de hacerlo.',
+    'Confiar en el proceso en vez del resultado inmediato, hoy lo hiciste en la práctica.',
+    'Voz temblando, y grabaste de todos modos. Prueba de que el bloqueo es mental, no real.',
+    'Apareciste a tu manera, sin encajar en el molde de nadie. Sigue así.',
+    'Hoy no se trató de ser perfecta, se trató de no esconderte. Y no te escondiste.'
+  ]
+};
+
+const identityPhrasesByLangStyle: Record<Language, Record<Exclude<GuideStyle, 'inspirational'>, string[]>> = {
+  pt: identityPhrasesPt,
+  en: identityPhrasesEn,
+  es: identityPhrasesEs
+};
+
 const identityPhrases: Record<number, Record<Language, Record<GuideStyle, string>>> = Object.fromEntries(
   Object.entries(identityPhrasesBase).map(([dayStr, byLang]) => {
     const day = Number(dayStr);
@@ -336,9 +539,9 @@ const identityPhrases: Record<number, Record<Language, Record<GuideStyle, string
         lang,
         {
           inspirational: byLang[lang],
-          strategic: lang === 'pt' ? identityPhrasesPtByStyle.strategic[day - 1] : byLang[lang],
-          gentle: lang === 'pt' ? identityPhrasesPtByStyle.gentle[day - 1] : byLang[lang],
-          challenger: lang === 'pt' ? identityPhrasesPtByStyle.challenger[day - 1] : byLang[lang]
+          strategic: identityPhrasesByLangStyle[lang].strategic[day - 1],
+          gentle: identityPhrasesByLangStyle[lang].gentle[day - 1],
+          challenger: identityPhrasesByLangStyle[lang].challenger[day - 1]
         }
       ])
     ) as Record<Language, Record<GuideStyle, string>>;
