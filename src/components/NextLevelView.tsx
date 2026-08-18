@@ -203,9 +203,9 @@ export default function NextLevelView({ progress, lang, isProfessionalUnlocked, 
       statStreaks: 'Melhor Sequência',
       statHooks: 'Ganchos Salvos',
       blueprintTitle: 'Sua Nova Identidade de Marca',
-      ctaHeading: 'O Próximo Nível: Destrave',
-      ctaDescReal: 'Você já aprendeu a aparecer. O Destrave é pra quem quer o próximo passo: transformar quem já te segue em cliente pagante, com mensagem estruturada pra vender. Pensado pra mentoras, coaches e terapeutas que já têm o que oferecer.',
-      ctaBtnReal: 'Falar sobre o Destrave',
+      ctaHeading: 'O Destrave é pra quem já sente esse nível',
+      ctaDescReal: 'Você não precisa terminar seus 90 dias de RenaSer pra aplicar. Precisa sentir que já construiu autoridade e audiência de verdade, mesmo que ainda em construção. Se for esse o seu momento, o Destrave estrutura tudo isso em oferta, mensagem e venda.\n\nFale com o nosso time pra entender melhor se a tua versão atual está preparada para este passo, que envolverá construir sua jornada para a monetização no digital.',
+      ctaBtnReal: 'Aplicar pro Destrave',
       ctaBtnUnlocked: 'Ir pra Destrave'
     },
     en: {
@@ -215,9 +215,9 @@ export default function NextLevelView({ progress, lang, isProfessionalUnlocked, 
       statStreaks: 'Peak Consistency',
       statHooks: 'Saved Hooks',
       blueprintTitle: 'Your New Brand Identity Blueprint',
-      ctaHeading: 'The Next Level: Destrave',
-      ctaDescReal: "You've already learned to show up. Destrave is the next step: turning your followers into paying clients, with a message structured to sell. Built for mentors, coaches, and therapists who already have something to offer.",
-      ctaBtnReal: 'Talk about Destrave',
+      ctaHeading: "Destrave is for when you already feel at that level",
+      ctaDescReal: "You don't need to finish your 90 days of RenaSer to apply. You need to feel you've already built real authority and audience, even if still under construction. If this is your moment, Destrave structures all of that into an offer, a message, and a sale.\n\nTalk to our team to understand if where you're at now is ready for this step, which involves building your path to monetization online.",
+      ctaBtnReal: 'Apply for Destrave',
       ctaBtnUnlocked: 'Go to Destrave'
     },
     es: {
@@ -227,10 +227,34 @@ export default function NextLevelView({ progress, lang, isProfessionalUnlocked, 
       statStreaks: 'Mejor Consistencia',
       statHooks: 'Ganchos Guardados',
       blueprintTitle: 'El Plan de tu Nueva Identidad',
-      ctaHeading: 'El Siguiente Nivel: Destrave',
-      ctaDescReal: 'Ya aprendiste a aparecer. Destrave es el siguiente paso: convertir a quien ya te sigue en cliente que paga, con un mensaje estructurado para vender. Pensado para mentoras, coaches y terapeutas que ya tienen algo que ofrecer.',
-      ctaBtnReal: 'Hablar sobre Destrave',
+      ctaHeading: 'Destrave es para quien ya siente ese nivel',
+      ctaDescReal: 'No necesitas terminar tus 90 días de RenaSer para aplicar. Necesitas sentir que ya construiste autoridad y audiencia de verdad, aunque todavía estén en construcción. Si es tu momento, Destrave estructura todo eso en oferta, mensaje y venta.\n\nHabla con nuestro equipo para entender mejor si tu versión actual está preparada para este paso, que implica construir tu camino hacia la monetización digital.',
+      ctaBtnReal: 'Aplicar a Destrave',
       ctaBtnUnlocked: 'Ir a Destrave'
+    }
+  }[lang];
+
+  const practiceDict = {
+    pt: {
+      practiceEyebrow: 'SUA JORNADA DE PRÁTICA',
+      practiceTitle: 'Você desbloqueou os próximos 60 dias',
+      practiceSubtitle: 'Você terminou os 30 dias guiados. Agora entra na segunda metade do seu acesso ao RenaSer: 60 dias de acompanhamento, com uma tarefa nova a cada semana, sem depender de missão nova todo dia. É aqui que o que você construiu vira hábito de verdade.',
+      transitionLine: 'Em algum momento dessa fase, você vai sentir se já tá pronta pra transformar o que aprendeu em serviço estruturado. Quando sentir, o Destrave tá aberto.',
+      destraveLabel: 'SE VOCÊ JÁ SENTE QUE CHEGOU AQUI'
+    },
+    en: {
+      practiceEyebrow: 'YOUR PRACTICE JOURNEY',
+      practiceTitle: 'You unlocked the next 60 days',
+      practiceSubtitle: "You finished the 30 guided days. Now you enter the second half of your RenaSer access: 60 days of ongoing support, with a new task each week, without needing a new mission every day. This is where what you built turns into a real habit.",
+      transitionLine: "At some point in this phase, you'll feel whether you're ready to turn what you learned into a structured service. When you feel it, Destrave is open.",
+      destraveLabel: 'IF YOU ALREADY FEEL YOU\'RE THERE'
+    },
+    es: {
+      practiceEyebrow: 'TU JORNADA DE PRÁCTICA',
+      practiceTitle: 'Desbloqueaste los próximos 60 días',
+      practiceSubtitle: 'Terminaste los 30 días guiados. Ahora entras en la segunda mitad de tu acceso a RenaSer: 60 días de acompañamiento, con una tarea nueva cada semana, sin depender de una misión nueva todos los días. Aquí es donde lo que construiste se vuelve un hábito de verdad.',
+      transitionLine: 'En algún momento de esta fase, vas a sentir si ya estás lista para convertir lo que aprendiste en un servicio estructurado. Cuando lo sientas, Destrave está abierto.',
+      destraveLabel: 'SI YA SIENTES QUE LLEGASTE AQUÍ'
     }
   }[lang];
 
@@ -349,105 +373,32 @@ export default function NextLevelView({ progress, lang, isProfessionalUnlocked, 
         </div>
       </motion.div>
 
-      {/* 3. Blueprint & Core Truths */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        
-        <div className="space-y-4">
-          <EditableText
-            contentKey="nextLevel.coreIntegrationLabel"
-            fallback="RenaSer Core Integration"
-            as="span"
-            className="text-[10px] uppercase font-sans tracking-widest text-rosegold font-bold block"
-          />
-          <EditableText
-            contentKey="nextLevel.blueprintTitle"
-            fallback={textDict.blueprintTitle}
-            as="h3"
-            className="text-xl font-display text-slate-800 dark:text-white"
-          />
-          <EditableText
-            contentKey="nextLevel.blueprintIntro"
-            fallback={blueprintIntro}
-            as="p"
-            className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
-          />
-
-          <div className="space-y-3 pt-2">
-            {[truth1, truth2, truth3].map((truth, idx) => (
-              <div key={idx} className="flex items-start gap-3 bg-white dark:bg-ink-raised p-4 rounded-xl border border-rose-100/20 dark:border-rosegold/10">
-                <CheckCircle2 className="h-5 w-5 text-rosegold shrink-0 mt-0.5" />
-                <EditableText
-                  contentKey={`nextLevel.truth${idx + 1}`}
-                  fallback={truth}
-                  as="p"
-                  className="text-slate-700 dark:text-ink-text text-xs sm:text-sm font-sans font-medium"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 4. Elite Mastermind Invitation / CTA */}
-        <div className="bg-gradient-to-br from-rose-50/20 to-[#FAF8F5]/30 dark:bg-ink-raised dark:from-ink-raised dark:to-ink-raised border border-rose-100/30 dark:border-ink-hairline rounded-3xl p-8 space-y-6">
-          <div className="flex items-center gap-2 text-rosegold">
-            <Sparkles className="h-6 w-6 animate-pulse" />
-            <EditableText
-              contentKey="nextLevel.eliteInvitationLabel"
-              fallback="Elite Invitation"
-              as="h4"
-              className="text-xs font-sans uppercase tracking-widest font-bold"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <EditableText
-              contentKey="nextLevel.ctaHeading"
-              fallback={textDict.ctaHeading}
-              as="h3"
-              className="text-lg sm:text-xl font-display font-bold text-slate-900 dark:text-white leading-snug"
-            />
-            <EditableText
-              contentKey="nextLevel.ctaDesc"
-              fallback={textDict.ctaDescReal}
-              as="p"
-              className="text-slate-500 dark:text-ink-muted text-xs sm:text-sm leading-relaxed font-sans"
-            />
-          </div>
-
-          {isProfessionalUnlocked ? (
-            <button
-              onClick={onGoToDestrave}
-              className="w-full py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-xl text-xs font-sans font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-rosegold/20"
-            >
-              <EditableText contentKey="nextLevel.ctaBtnUnlocked" fallback={textDict.ctaBtnUnlocked} as="span" />
-              <ExternalLink className="h-4 w-4" />
-            </button>
-          ) : (
-            <a
-              href={DESTRAVE_WHATSAPP_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-xl text-xs font-sans font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-rosegold/20"
-            >
-              <EditableText contentKey="nextLevel.ctaBtnReal" fallback={textDict.ctaBtnReal} as="span" />
-              <ExternalLink className="h-4 w-4" />
-            </a>
-          )}
-        </div>
-
-      </div>
-
-      {/* 5. Fase de Prática — dias 31 a 90, sem depender de missão diária
-          nova. Reaproveita o que já existe (Renata OS, Biblioteca,
-          Comunidade) em vez de exigir currículo novo todo dia. */}
+      {/* 3. Fase de Prática — dias 31 a 90, a metade final dos 90 dias de
+          acesso ao RenaSer. Vem logo depois do certificado, antes do card
+          do Destrave: é o próximo passo padrão de todo mundo que termina
+          os 30 dias guiados, não uma opção entre duas ofertas equivalentes.
+          Reaproveita o que já existe (Renata OS, Biblioteca, Comunidade)
+          em vez de exigir currículo novo todo dia. */}
       <div className="bg-white dark:bg-ink-raised border border-rose-100/20 dark:border-ink-hairline rounded-3xl p-8 space-y-5">
         <div>
-          <span className="text-[10px] uppercase font-sans tracking-widest text-rosegold font-bold block mb-1">
-            Sua Fase de Prática
-          </span>
-          <h3 className="text-lg font-display text-slate-800 dark:text-white">
-            Dos dias 31 a 90, você continua crescendo sem depender de mim todo dia
-          </h3>
+          <EditableText
+            contentKey="nextLevel.practiceEyebrow"
+            fallback={practiceDict.practiceEyebrow}
+            as="span"
+            className="text-[10px] uppercase font-sans tracking-widest text-rosegold font-bold block mb-1"
+          />
+          <EditableText
+            contentKey="nextLevel.practiceTitle"
+            fallback={practiceDict.practiceTitle}
+            as="h3"
+            className="text-lg font-display text-slate-800 dark:text-white"
+          />
+          <EditableText
+            contentKey="nextLevel.practiceSubtitle"
+            fallback={practiceDict.practiceSubtitle}
+            as="p"
+            className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted leading-relaxed font-sans mt-2"
+          />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <button
@@ -497,6 +448,102 @@ export default function NextLevelView({ progress, lang, isProfessionalUnlocked, 
             </p>
           </button>
         </div>
+      </div>
+
+      {/* Transition line — makes explicit that Destrave is opt-in based on
+          how ready she feels, not a milestone tied to finishing day 90. */}
+      <p className="text-center text-xs sm:text-sm text-slate-500 dark:text-ink-muted max-w-xl mx-auto font-sans leading-relaxed px-4">
+        <EditableText contentKey="nextLevel.transitionLine" fallback={practiceDict.transitionLine} as="span" />
+      </p>
+
+      {/* 4. Blueprint & Core Truths */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        
+        <div className="space-y-4">
+          <EditableText
+            contentKey="nextLevel.coreIntegrationLabel"
+            fallback="RenaSer Core Integration"
+            as="span"
+            className="text-[10px] uppercase font-sans tracking-widest text-rosegold font-bold block"
+          />
+          <EditableText
+            contentKey="nextLevel.blueprintTitle"
+            fallback={textDict.blueprintTitle}
+            as="h3"
+            className="text-xl font-display text-slate-800 dark:text-white"
+          />
+          <EditableText
+            contentKey="nextLevel.blueprintIntro"
+            fallback={blueprintIntro}
+            as="p"
+            className="text-xs sm:text-sm text-slate-500 dark:text-ink-muted leading-relaxed font-sans"
+          />
+
+          <div className="space-y-3 pt-2">
+            {[truth1, truth2, truth3].map((truth, idx) => (
+              <div key={idx} className="flex items-start gap-3 bg-white dark:bg-ink-raised p-4 rounded-xl border border-rose-100/20 dark:border-rosegold/10">
+                <CheckCircle2 className="h-5 w-5 text-rosegold shrink-0 mt-0.5" />
+                <EditableText
+                  contentKey={`nextLevel.truth${idx + 1}`}
+                  fallback={truth}
+                  as="p"
+                  className="text-slate-700 dark:text-ink-text text-xs sm:text-sm font-sans font-medium"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 5. Destrave CTA — secondary, opt-in card. Comes after the
+            Practice section, not before it: Destrave isn't the default
+            next step, it's for whoever already feels ready for it. */}
+        <div className="bg-gradient-to-br from-rose-50/20 to-[#FAF8F5]/30 dark:bg-ink-raised dark:from-ink-raised dark:to-ink-raised border border-rose-100/30 dark:border-ink-hairline rounded-3xl p-8 space-y-6">
+          <div className="flex items-center gap-2 text-rosegold">
+            <Sparkles className="h-6 w-6 animate-pulse" />
+            <EditableText
+              contentKey="nextLevel.eliteInvitationLabel"
+              fallback={practiceDict.destraveLabel}
+              as="h4"
+              className="text-xs font-sans uppercase tracking-widest font-bold"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <EditableText
+              contentKey="nextLevel.ctaHeading"
+              fallback={textDict.ctaHeading}
+              as="h3"
+              className="text-lg sm:text-xl font-display font-bold text-slate-900 dark:text-white leading-snug"
+            />
+            <EditableText
+              contentKey="nextLevel.ctaDesc"
+              fallback={textDict.ctaDescReal}
+              as="p"
+              className="text-slate-500 dark:text-ink-muted text-xs sm:text-sm leading-relaxed font-sans whitespace-pre-line"
+            />
+          </div>
+
+          {isProfessionalUnlocked ? (
+            <button
+              onClick={onGoToDestrave}
+              className="w-full py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-xl text-xs font-sans font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-rosegold/20"
+            >
+              <EditableText contentKey="nextLevel.ctaBtnUnlocked" fallback={textDict.ctaBtnUnlocked} as="span" />
+              <ExternalLink className="h-4 w-4" />
+            </button>
+          ) : (
+            <a
+              href={DESTRAVE_WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-4 bg-rosegold hover:bg-[#A35D68] text-white rounded-xl text-xs font-sans font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-rosegold/20"
+            >
+              <EditableText contentKey="nextLevel.ctaBtnReal" fallback={textDict.ctaBtnReal} as="span" />
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          )}
+        </div>
+
       </div>
 
     </motion.div>
