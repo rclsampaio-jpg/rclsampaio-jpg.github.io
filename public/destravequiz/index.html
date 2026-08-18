@@ -448,7 +448,25 @@ src="https://www.facebook.com/tr?id=1528437418985321&ev=PageView&noscript=1"/></
       <p class="error-msg">Preenche esse campo pra eu continuar &#128536;</p>
     </div>
 
-    <!-- STEP 11: reveal + submit -->
+    <!-- STEP 11: investimento -->
+    <div class="step" data-step>
+      <p class="qnum">11</p>
+      <p class="question">O Destrave é uma Jornada de desenvolvimento de Autoridade, Audiência e Auto-confiança. Você terá um acompanhamento completo por 6 meses.</p>
+      <p class="question" style="font-size: clamp(17px, 5vw, 22px); margin-top: 10px;">Quanto você está disposta a investir nesse acompanhamento? <span class="req">*</span></p>
+      <div class="options" data-radio-group>
+        <label class="option"><input type="radio" name="Investimento" value="R$1.000 a R$3.000" required> R$1.000 a R$3.000</label>
+        <label class="option"><input type="radio" name="Investimento" value="R$3.001 a R$5.001"> R$3.001 a R$5.001</label>
+        <label class="option"><input type="radio" name="Investimento" value="Acima de R$5.001"> Acima de R$5.001</label>
+        <label class="option outro-option"><input type="radio" name="Investimento" value="Outro" data-outro-toggle> Outro</label>
+      </div>
+      <div class="field outro-field" data-outro-field style="display:none">
+        <input type="text" name="Investimento - detalhe" placeholder="Conta com suas palavras...">
+      </div>
+      <div class="nav outro-nav" style="display:none"><button type="button" class="btn-primario next-btn">Continuar &rarr;</button></div>
+      <button type="button" class="btn-voltar back-btn" style="display:block; margin:18px auto 0">voltar</button>
+    </div>
+
+    <!-- STEP 12: reveal + submit -->
     <div class="step" data-step>
       <div class="reveal-card">
         <p class="reveal-label">Eu li o que você escreveu</p>
