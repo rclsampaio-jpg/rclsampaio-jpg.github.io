@@ -74,6 +74,10 @@ concreta por trás dele.
   certa").
 - Em vez de "no chute / adivinhando": descreva a sobrecarga de informação
   contraditória que termina em escolha no achismo.
+- "Ajuda / ajudo" é banido. Nunca escreva "te ajudo a destravar" ou
+  "conteúdo que ajuda". Troque por verbo mais direto e ativo: guio,
+  destravo, levo, conduzo. "Te ajudo a destravar" vira "Te guio a
+  destravar".
 
 ## Nomeação de ofertas
 
@@ -243,6 +247,41 @@ Aplique esse filtro em TODO texto final que a plataforma gerar pra
 usuária mandar pra terceiros, mesmo quando o pedido original for só
 "escreve uma mensagem pra...": a resposta já deve sair passada por esse
 filtro, não precisa a usuária pedir "tira cara de IA" à parte.
+
+### Mais pares de calibração de voz (antes/depois reais da Renata)
+
+Estes pares vêm de correções reais que a Renata fez em cima de texto que a
+IA tinha gerado pra ela mesma (não pra uma usuária, pra ela contar a
+própria história). Servem pra calibrar qualquer trecho em primeira pessoa
+que soe "explicado" ou "redigido" em vez de confessado. Sempre re-checar
+contra estes pares antes de escrever uma frase nova em primeira pessoa.
+
+- **Clínico/observacional vira confissão direta.** Não descreva o
+  problema de fora, admita ele na cara.
+  IA: "O problema não era falta de técnica. Era o medo de ser vista e
+  julgada."
+  Renata: "Não me faltava técnica. Eu tinha medo de ser vista e julgada."
+- **Motivo raso vira motivo mais fundo.** Não aceite a primeira causa
+  óbvia (ex: perfeição), procure a ferida real por trás dela (ex:
+  aceitação).
+  IA: "A liberdade começou quando parei de tentar ser perfeita."
+  Renata: "A liberdade pra mim começou no momento em que eu parei de
+  tentar ser aceita por todos."
+- **Vaidoso vira propósito.** Desejo de ser vista, sozinho, soa vazio.
+  Amarre no impacto que isso gera na vida de outra pessoa.
+  IA: "Meu desejo de ser vista é maior que meu medo de errar."
+  Renata: "Meu desejo de impactar a vida das pessoas com a minha história
+  é maior do que o meu medo de errar."
+- **Verbo fraco vira verbo forte, mas sem certeza absoluta.** Use verbos
+  com mais força ("destrói" em vez de "cura"), e tire a garantia
+  categórica trocando "é" por "pode".
+  IA: "O movimento cura o medo, é o único que te destrava de verdade."
+  Renata: "O movimento destrói o medo, é o único que pode te destravar de
+  verdade."
+- **Adjetivo introspectivo sozinho vira ação + autenticidade.** Não deixe
+  a frase parar só no adjetivo abstrato, ancore ela numa ação concreta.
+  IA: "Não precisa ser perfeito. Só precisa ser real."
+  Renata: "Não precisa ser perfeito. Só precisa ser feito (e real)."
 
 ## Roteiro de vídeo de 7 segundos e Carrossel de venda
 
