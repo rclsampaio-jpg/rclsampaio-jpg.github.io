@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Flame, Link2, ExternalLink, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Language, UserProgress } from '../types';
-import { PRACTICE_WEEKS, getPracticeWeekIndexForDay, PRACTICE_DAILY_MESSAGES, PRACTICE_DAILY_WHERE } from '../data/practiceWeeksData';
+import { PRACTICE_WEEKS, getPracticeWeekIndexForDay, PRACTICE_DAILY_WHERE } from '../data/practiceWeeksData';
 import { getWeekdayPosition } from '../data/templateData';
 import LinkListInput from './LinkListInput';
 
@@ -66,7 +66,7 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
   const weekIndex = getPracticeWeekIndexForDay(displayDay);
   const week = PRACTICE_WEEKS[weekIndex];
   const weekdayPosition = getWeekdayPosition(displayDay, progress.journeyStartDate);
-  const dailyMessage = PRACTICE_DAILY_MESSAGES[weekdayPosition];
+  const dailyMessage = week.dailyMessages[weekdayPosition];
   const dailyWhere = PRACTICE_DAILY_WHERE[weekdayPosition];
 
   const textDict = {
@@ -185,7 +185,6 @@ export default function PracticeMissionView({ progress, lang, onCompleteDay, onU
         <h1 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 dark:text-white">
           {week.title}
         </h1>
-        <p className="text-sm text-rosegold-dark dark:text-rosegold-light mt-1">{week.expectativa}</p>
       </div>
 
       {/* Camada diária: a tarefa da semana continua igual (repetição de
