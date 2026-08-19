@@ -92,9 +92,9 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     challenge: 'Repetir a mesma mensagem do mesmo jeito faz até quem já te segue parar de prestar atenção. Bora cobrir ela de outros ângulos essa semana?!\n\nEscolhe uma trava ou crença que você já percebeu na sua audiência. Essa semana você grava ela em 3 dos 7 ângulos validados: Inimigo comum (nomeia o padrão sem acusar), Confissão (revela algo que você não diria em público) e Números (um resultado real e exato, com o tempo que levou). Mesmo tema, três portas de entrada diferentes.',
     where: 'Usa os prompts do grupo "Reels de conversão" da Biblioteca pra estruturar isso nos 7 ângulos validados.',
     dailyMessages: [
-      'Essa semana você grava a mesma trava da sua audiência em três ângulos diferentes: Inimigo comum, Confissão e Números.',
+      'Essa semana você escolhe uma trava ou crença da sua audiência, agora, e grava ela em três ângulos diferentes: Inimigo comum, Confissão e Números.',
       'Usa o prompt de Reels de conversão pra gerar o ângulo Inimigo comum de hoje. É sobre a trava que você escolheu ontem.',
-      'Ainda não gravou o de Confissão? Pede pra Renata OS esse ângulo específico, é o mais difícil dos três.',
+      'Grava o ângulo de Confissão hoje: revela algo que você não diria em público, tom de desabafo, não de lição pronta.',
       'Pro ângulo Números, a Renata OS só monta certo se você entrar com o resultado real e o tempo que levou. Separa esse dado antes de pedir.',
       'Compara os três que saíram essa semana. Qual soou mais com a sua voz, sem parecer forçado?',
       'Hoje é dia de ajustar o que já saiu, sem gravar mais um ângulo.',
@@ -106,18 +106,18 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     blockId: 1,
     range: [45, 50],
     theme: 'Autoridade',
-    title: 'Semana da Objeção Real',
+    title: 'Semana da Dúvida Real',
     expectativa: 'Última semana desse bloco. Depois de mostrar prova e variar o ângulo, agora é hora de provar que você aguenta ser questionada.',
-    challenge: 'Você só deixa de travar numa objeção quando se expõe a ela o suficiente pra treinar a naturalidade disso dentro de você. Essa semana, vamos treinar a sua.\n\nGrave respondendo de frente uma dúvida ou objeção que alguém já te fez de verdade, não uma que você imaginou. Pode ser "isso realmente funciona?", "não é caro demais?", "e se eu não tiver tempo?", qualquer coisa que alguém te perguntou olho no olho ou por mensagem. Responde do jeito que você responderia pra essa pessoa, não um script de venda.',
+    challenge: 'Você só deixa de travar numa dúvida quando se expõe a ela o suficiente pra treinar a naturalidade disso dentro de você. Essa semana, vamos treinar a sua.\n\nGrave respondendo de frente uma dúvida ou desconfiança que alguém já teve sobre você ou sobre o que você fala, de verdade, não uma que você imaginou. Pode ser "isso funciona mesmo?", "quem é você pra falar disso?", "já vi gente falar isso e não deu certo". Se você já vende algo, também vale ser uma objeção de venda de verdade. Responde do jeito que você responderia pra essa pessoa, não um discurso pronto.',
     where: 'Usa os prompts do grupo "Reels de conversão" da Biblioteca se precisar de estrutura pra resposta.',
     dailyMessages: [
-      'Essa semana você grava respondendo, de frente, a objeção que mais te trava. Não é rótulo tipo "medo de vender", é a cena real: o que a pessoa te escreveu, palavra por palavra.',
-      'Ex: alguém te perguntou "isso funciona mesmo pra mim?" e você travou porque não sabia se tava prometendo demais. Se foi algo assim, é ela que precisa ser gravada hoje.',
-      'Grava a resposta pra objeção que você escolheu, antes de reescrever ela na cabeça dez vezes.',
-      'Reescuta a resposta que você gravou pra objeção. Se ainda soa discurso decorado, grava de novo do jeito que você falaria numa ligação real com essa pessoa.',
-      'A resposta que ficou é a que você usaria de novo amanhã, com um cliente de verdade na sua frente.',
-      'Hoje é dia de deixar a resposta mais curta, não mais longa.',
-      'Guarda essa resposta. Da próxima vez que alguém perguntar isso, você já sabe o que dizer.'
+      'Essa semana você grava respondendo, de frente, a dúvida ou desconfiança que mais te trava quando você aparece. Escolhe ela agora: pode ser "isso funciona mesmo?", "quem é você pra falar disso?", ou uma objeção de venda de verdade, se você já vende algo.',
+      'A dúvida que você escolheu ontem: pensa exatamente nas palavras que a pessoa usou ou insinuou. Isso vai direto pro vídeo de amanhã.',
+      'Grava a resposta pra dúvida que você escolheu, antes de reescrever ela na cabeça dez vezes.',
+      'Reescuta a resposta que você gravou ontem. Se ainda tá soando incoerência com a sua voz real, com o que você diria, grava de novo do jeito que você falaria numa conversa real com essa pessoa.',
+      'A resposta que ficou boa é a que você usaria de novo amanhã, com essa pessoa na sua frente de verdade, não só a que soou bem pra câmera.',
+      'Hoje é dia de cortar palavra, não de gravar de novo. Deixa a resposta mais curta do que ficou ontem.',
+      'Guarda essa resposta pronta. Da próxima vez que alguém duvidar disso de verdade, você já sabe o que dizer.'
     ]
   },
   {
@@ -130,9 +130,9 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     challenge: 'Quem tenta falar com todo mundo ao mesmo tempo, no fim, não conecta com ninguém de verdade. Essa semana, bora falar só pra uma pessoa!\n\nEsquece o número de visualização. Grava pensando numa pessoa real que precisa ouvir exatamente o que você tem pra falar hoje. Não é escala, é profundidade.',
     where: 'Usa o prompt do grupo "Mensagem central / audiência obcecada" da Biblioteca antes de gravar.',
     dailyMessages: [
-      'Essa semana você grava pensando numa pessoa real, só uma. O que faz alguém ficar obcecado por quem fala não é informação, é conexão: sua perspectiva, sua emoção real, o quanto ela se vê em você.',
-      'A pessoa que você escolheu pra essa semana: o que ela te perguntaria hoje, se pudesse te mandar mensagem agora?',
-      'Se ainda tá falando pra "todo mundo", volta pra uma pessoa só. Ex: troca "isso é pra quem quer evoluir" por "isso é pra você que travou numa objeção ontem".',
+      'Essa semana você escolhe uma pessoa real, só uma, agora, e grava pensando nela até domingo.',
+      'A pessoa que você escolheu ontem: o que ela te perguntaria hoje, se pudesse te mandar mensagem agora?',
+      'Grava hoje lembrando: é uma pessoa só, não "todo mundo". Ex: troca "isso é pra quem quer evoluir" por "isso é pra você que travou numa objeção ontem".',
       'Grava pensando na pessoa que você escolheu, sozinha, ouvindo isso sem mais ninguém por perto. Mostra o processo, não só o resultado, é isso que cria o "isso sou eu também".',
       'Pergunta pra você mesma: a pessoa que você escolheu se sentiria vista com o que você gravou?',
       'Hoje revisa se o tom ficou íntimo ou ficou palestra.',
@@ -151,7 +151,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     dailyMessages: [
       'Essa semana você conta um fracasso, não uma vitória.',
       'Pensa numa vez que você tentou alugar um apartamento, pedir aumento, postar um vídeo, e não deu certo. Escolhe uma dessas.',
-      'Grava contando o que você sentiu no meio do fracasso, antes de saber que ia dar certo depois.',
+      'Grava contando o que você sentiu no meio do fracasso que você lembrou ontem, antes de saber que ia dar certo depois.',
       'Revê o que gravou. Ainda parece herói perfeito, ou já parece gente de verdade?',
       'A parte da história que você quase cortou por vergonha, essa é a parte que fica.',
       'Hoje é dia de cortar o que sobra, não de contar mais um fracasso.',
@@ -168,12 +168,12 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
     challenge: 'Concordar com todo mundo o tempo inteiro é a forma mais rápida de ser esquecida. Vamos gravar a opinião que você andou engolindo essa semana?\n\nGrava uma opinião sua que nem todo mundo vai concordar. Uma coisa que você normalmente engoliria pra não incomodar ninguém, mas que é verdadeira pra você.',
     where: 'Usa os prompts do grupo "Reels de conversão" da Biblioteca pra estruturar isso nos 7 ângulos validados.',
     dailyMessages: [
-      'Essa semana você grava uma opinião sua, mesmo sabendo que nem todo mundo vai gostar.',
-      'Pensa numa coisa que você engole toda vez pra não incomodar ninguém. Usa o formato contraintuitivo: "Todo mundo acha que [crença popular do seu nicho], mas...", com a sua experiência real como prova.',
-      'Se ainda tá suavizando a opinião, para de suavizar.',
-      'Grava do jeito que você falaria pra uma amiga de confiança, sem editar pra ficar mais aceitável.',
+      'Essa semana você grava uma opinião sua, mesmo sabendo que nem todo mundo vai gostar. Escolhe ela agora: uma coisa que você engole toda vez pra não incomodar ninguém.',
+      'A opinião que você escolheu ontem: usa o formato contraintuitivo pra estruturar ela. "Todo mundo acha que [crença popular do seu nicho], mas...", com a sua experiência real como prova.',
+      'Grava a opinião de hoje, sem editar ela pra ficar mais aceitável do que realmente é.',
+      'Reescuta o que gravou ontem. Se ainda tá mais educada do que você realmente é sobre isso, grava de novo do jeito que você falaria pra uma amiga de confiança.',
       'Vê quem discordou. Discordância também é sinal de que alguém escutou.',
-      'Hoje não precisa de opinião nova. Revisa a de terça e deixa mais direta.',
+      'Hoje não precisa de opinião nova. Revisa a que você gravou nessa semana e deixa mais direta.',
       'Opinião guardada na cabeça não muda a audiência de ninguém. Só a que sai.'
     ]
   },
@@ -210,7 +210,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
       'Abre os links que salvou nas semanas 31 a 50 antes de gravar hoje. Compara o primeiro com o mais recente.',
       'Grava respondendo: o que você faria diferente se gravasse a Prova de Resultado hoje?',
       'Escolhe um dos três exercícios anteriores (prova, ângulos, objeção) e grava a versão 2.0 dele.',
-      'Compartilha na Comunidade o que essa auditoria revelou. Ex: "Reli meus primeiros vídeos e percebi que hoje eu já não peço desculpa antes de falar", isso é consistência de essência aparecendo.',
+      'Compartilha na Comunidade o que essa auditoria revelou. Ex: "Reli meus primeiros vídeos e percebi que hoje eu já não peço desculpa antes de falar."',
       'Grava um resumo curto: o que ficou mais fácil desde o dia 31.',
       'Guarda esse resumo. Ele vira prova real quando alguém perguntar se você mudou mesmo.'
     ]
