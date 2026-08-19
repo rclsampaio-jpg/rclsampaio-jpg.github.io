@@ -114,7 +114,7 @@ export const PRACTICE_WEEKS: PracticeWeek[] = [
       'Essa semana você grava respondendo, de frente, a objeção que mais te trava. Não é rótulo tipo "medo de vender", é a cena real: o que a pessoa te escreveu, palavra por palavra.',
       'Ex: alguém te perguntou "isso funciona mesmo pra mim?" e você travou porque não sabia se tava prometendo demais. Se foi algo assim, é ela que precisa ser gravada hoje.',
       'Grava a resposta pra objeção que você escolheu, antes de reescrever ela na cabeça dez vezes.',
-      'Reescuta o que você gravou. Soou defesa ou soou verdade?',
+      'Reescuta a resposta que você gravou pra objeção. Se ainda soa discurso decorado, grava de novo do jeito que você falaria numa ligação real com essa pessoa.',
       'A resposta que ficou é a que você usaria de novo amanhã, com um cliente de verdade na sua frente.',
       'Hoje é dia de deixar a resposta mais curta, não mais longa.',
       'Guarda essa resposta. Da próxima vez que alguém perguntar isso, você já sabe o que dizer.'
